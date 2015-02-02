@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>11D05C56-45E8-4FDA-91AF-4D64F14BD204</string>
+	<key>IDESourceControlProjectName</key>
+	<string>suntry</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C4836F6403FD0646B61EBF963B27C442C4D82CDD</key>
+		<string>https://github.com/Cain1127/SunTry1.0.0.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>suntry.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C4836F6403FD0646B61EBF963B27C442C4D82CDD</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Cain1127/SunTry1.0.0.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C4836F6403FD0646B61EBF963B27C442C4D82CDD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C4836F6403FD0646B61EBF963B27C442C4D82CDD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SunTry1.0.0</string>
+		</dict>
+	</array>
+</dict>
+</plist>
