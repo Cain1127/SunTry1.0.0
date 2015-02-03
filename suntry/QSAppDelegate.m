@@ -7,15 +7,41 @@
 //
 
 #import "QSAppDelegate.h"
-
+#import "QSTabBarViewController.h"
+#import "QSMapManager.h"
 @implementation QSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    QSTabBarViewController *main=[[QSTabBarViewController alloc]init];
+    [self.window setRootViewController:main];
+    
     [self.window makeKeyAndVisible];
+    
+    ///获取用户地理位置
+    QSMapManager *manager=[[QSMapManager alloc]init];
+    
+    ///定位用户经纬度回调
+    [manager startUserLocation:^(BOOL isLocalSuccess, double longitude, double latitude) {
+        
+        if (isLocalSuccess) {
+            NSLog(@"==============用户经纬度回调成功================");
+            NSLog(@"%f,%f",latitude,longitude);
+        }
+    }];
+    
+    ///反地理编码回调用户地理位置
+    [manager getUserLocation:^(BOOL isLocalSuccess, NSString *placename) {
+        if (isLocalSuccess) {
+            NSLog(@"=============用户地标回调成功====================");
+            NSLog(@"%@",placename);
+        }
+    }];
+    
     return YES;
 }
 
