@@ -11,7 +11,7 @@
 ///当前网络请求返回的标识
 typedef enum
 {
-
+    
     rRequestResultStatusDefault = 0,    //!<默认返回
     rRequestResultTypeSuccess,          //!<请求成功/解析成功
     rRequestResultTypeFail,             //!<服务端返回false
@@ -22,16 +22,17 @@ typedef enum
     rRequestResultTypeMappingClassError,//!<数据解析时，mapping错误
     
     rRequestResultTypeBadNetworking,    //!<当前网络不稳定
-
+    
 }REQUEST_RESULT_STATUS;
 
 ///网络请求类型
 typedef enum
 {
     
-    rRequestTypeDefault = 999,//!<默认无效请求
+    rRequestTypeDefault = 998,  //!<默认无效请求
+    rRequestTypeDistrict = 999, //!<地区选择
     
-    rRequestTypeMaxLimited  //!<最大值限制
+    rRequestTypeMaxLimited      //!<最大值限制
     
 }REQUEST_TYPE;
 

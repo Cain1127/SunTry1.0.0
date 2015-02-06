@@ -67,8 +67,9 @@
     // 2.包装一个导航控制器
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:childVc];
     
-    ///设置导航栏背景颜色
-    nav.navigationBar.backgroundColor=COLOR_CHARACTERS_RED;
+    ///设置导航栏背景图片
+    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forBarMetrics: UIBarMetricsDefault];
+    //[nav.navigationBar setBackIndicatorImage:[UIImage imageNamed:@"nav_backgroud"]];
     
     [self addChildViewController:nav];
 }

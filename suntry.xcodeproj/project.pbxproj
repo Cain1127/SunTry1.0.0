@@ -43,6 +43,13 @@
 		CE5341A51A7FBFD8002BA188 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CE5341A41A7FBFD8002BA188 /* Readme.rtf */; };
 		CE5341A91A7FC268002BA188 /* QSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341A81A7FC268002BA188 /* QSTextField.m */; };
 		CE5342021A808042002BA188 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5342011A808042002BA188 /* MapKit.framework */; };
+		CE571ED91A84798800609788 /* QSDistrictDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571ED01A84798800609788 /* QSDistrictDataModel.m */; };
+		CE571EDA1A84798800609788 /* QSHeaderDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571ED31A84798800609788 /* QSHeaderDataModel.m */; };
+		CE571EDB1A84798800609788 /* QSBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571ED51A84798800609788 /* QSBaseModel.m */; };
+		CE571EDC1A84798800609788 /* QSDistrictReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571ED81A84798800609788 /* QSDistrictReturnData.m */; };
+		CE571EE01A848AF500609788 /* QSWMerchantIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571EDE1A848AF500609788 /* QSWMerchantIndexViewController.m */; };
+		CE571EE11A848AF500609788 /* QSWMerchantIndexViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE571EDF1A848AF500609788 /* QSWMerchantIndexViewController.xib */; };
+		CE571EE41A84A37C00609788 /* QSWMerchantIndexCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571EE31A84A37C00609788 /* QSWMerchantIndexCell.m */; };
 		CEF7D8701A80B09B00E14730 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF7D86F1A80B09B00E14730 /* CoreLocation.framework */; };
 		CEF7D8721A80BEE700E14730 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF7D8711A80BEE700E14730 /* SystemConfiguration.framework */; };
 		E499385CF0045A0843FE9A75 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE9B580549DCA38D48BB605 /* libPods.a */; };
@@ -128,6 +135,19 @@
 		CE5341A71A7FC268002BA188 /* QSTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTextField.h; sourceTree = "<group>"; };
 		CE5341A81A7FC268002BA188 /* QSTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTextField.m; sourceTree = "<group>"; };
 		CE5342011A808042002BA188 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		CE571ECF1A84798800609788 /* QSDistrictDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSDistrictDataModel.h; sourceTree = "<group>"; };
+		CE571ED01A84798800609788 /* QSDistrictDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSDistrictDataModel.m; sourceTree = "<group>"; };
+		CE571ED21A84798800609788 /* QSHeaderDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSHeaderDataModel.h; sourceTree = "<group>"; };
+		CE571ED31A84798800609788 /* QSHeaderDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSHeaderDataModel.m; sourceTree = "<group>"; };
+		CE571ED41A84798800609788 /* QSBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSBaseModel.h; sourceTree = "<group>"; };
+		CE571ED51A84798800609788 /* QSBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSBaseModel.m; sourceTree = "<group>"; };
+		CE571ED71A84798800609788 /* QSDistrictReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSDistrictReturnData.h; sourceTree = "<group>"; };
+		CE571ED81A84798800609788 /* QSDistrictReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSDistrictReturnData.m; sourceTree = "<group>"; };
+		CE571EDD1A848AF500609788 /* QSWMerchantIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWMerchantIndexViewController.h; sourceTree = "<group>"; };
+		CE571EDE1A848AF500609788 /* QSWMerchantIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWMerchantIndexViewController.m; sourceTree = "<group>"; };
+		CE571EDF1A848AF500609788 /* QSWMerchantIndexViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QSWMerchantIndexViewController.xib; sourceTree = "<group>"; };
+		CE571EE21A84A37C00609788 /* QSWMerchantIndexCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSWMerchantIndexCell.h; path = ../QSWMerchantIndexCell.h; sourceTree = "<group>"; };
+		CE571EE31A84A37C00609788 /* QSWMerchantIndexCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSWMerchantIndexCell.m; path = ../QSWMerchantIndexCell.m; sourceTree = "<group>"; };
 		CEF7D86F1A80B09B00E14730 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CEF7D8711A80BEE700E14730 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -199,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				CE5341A41A7FBFD8002BA188 /* Readme.rtf */,
+				CE571ECC1A84798800609788 /* Model */,
 				CE53418A1A7FBFAA002BA188 /* Category */,
 				CE53416F1A7FBB4E002BA188 /* QSTool */,
 				CE5341651A7FAF2A002BA188 /* Header */,
@@ -266,8 +287,12 @@
 		CE53412D1A7FA4CE002BA188 /* Hmoe */ = {
 			isa = PBXGroup;
 			children = (
+				CE571EE51A84A39200609788 /* Cell */,
 				CE53412E1A7FA4CE002BA188 /* QSHomeViewController.h */,
 				CE53412F1A7FA4CE002BA188 /* QSHomeViewController.m */,
+				CE571EDD1A848AF500609788 /* QSWMerchantIndexViewController.h */,
+				CE571EDE1A848AF500609788 /* QSWMerchantIndexViewController.m */,
+				CE571EDF1A848AF500609788 /* QSWMerchantIndexViewController.xib */,
 			);
 			path = Hmoe;
 			sourceTree = "<group>";
@@ -517,6 +542,62 @@
 			path = TextField;
 			sourceTree = "<group>";
 		};
+		CE571ECC1A84798800609788 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE571ECD1A84798800609788 /* Base */,
+				CE571ED61A84798800609788 /* Configuration */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE571ECD1A84798800609788 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				CE571ECE1A84798800609788 /* District */,
+				CE571ED11A84798800609788 /* Header */,
+				CE571ED41A84798800609788 /* QSBaseModel.h */,
+				CE571ED51A84798800609788 /* QSBaseModel.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		CE571ECE1A84798800609788 /* District */ = {
+			isa = PBXGroup;
+			children = (
+				CE571ECF1A84798800609788 /* QSDistrictDataModel.h */,
+				CE571ED01A84798800609788 /* QSDistrictDataModel.m */,
+			);
+			path = District;
+			sourceTree = "<group>";
+		};
+		CE571ED11A84798800609788 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				CE571ED21A84798800609788 /* QSHeaderDataModel.h */,
+				CE571ED31A84798800609788 /* QSHeaderDataModel.m */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		CE571ED61A84798800609788 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				CE571ED71A84798800609788 /* QSDistrictReturnData.h */,
+				CE571ED81A84798800609788 /* QSDistrictReturnData.m */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		CE571EE51A84A39200609788 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CE571EE21A84A37C00609788 /* QSWMerchantIndexCell.h */,
+				CE571EE31A84A37C00609788 /* QSWMerchantIndexCell.m */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -597,6 +678,7 @@
 			files = (
 				183674091A7F8FA800BCCF39 /* InfoPlist.strings in Resources */,
 				CE53415E1A7FA527002BA188 /* RequestInfo.plist in Resources */,
+				CE571EE11A848AF500609788 /* QSWMerchantIndexViewController.xib in Resources */,
 				CE5341A51A7FBFD8002BA188 /* Readme.rtf in Resources */,
 				183674111A7F8FA800BCCF39 /* Images.xcassets in Resources */,
 			);
@@ -655,12 +737,15 @@
 				CE5341761A7FBC6F002BA188 /* QSBlockButtonStyleModel.m in Sources */,
 				CE5341821A7FBCAC002BA188 /* QSImageView.m in Sources */,
 				CE53415D1A7FA527002BA188 /* QSRequestTaskDataModel.m in Sources */,
+				CE571EDA1A84798800609788 /* QSHeaderDataModel.m in Sources */,
+				CE571EE01A848AF500609788 /* QSWMerchantIndexViewController.m in Sources */,
 				CE53414B1A7FA4CE002BA188 /* QSPointMealViewController.m in Sources */,
 				CE5341A21A7FBFAA002BA188 /* QSImageView+Block.m in Sources */,
 				CE5341811A7FBCAC002BA188 /* UIImageView+CacheImage.m in Sources */,
 				1836740F1A7F8FA800BCCF39 /* QSAppDelegate.m in Sources */,
 				CE5341491A7FA4CE002BA188 /* QSOrderViewController.m in Sources */,
 				CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */,
+				CE571EE41A84A37C00609788 /* QSWMerchantIndexCell.m in Sources */,
 				CE53415B1A7FA527002BA188 /* QSMapManager.m in Sources */,
 				CE53415C1A7FA527002BA188 /* QSRequestManager.m in Sources */,
 				CE5341A91A7FC268002BA188 /* QSTextField.m in Sources */,
@@ -668,9 +753,12 @@
 				CE5341481A7FA4CE002BA188 /* QSMyinfoViewController.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,
 				CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */,
+				CE571EDC1A84798800609788 /* QSDistrictReturnData.m in Sources */,
 				CE5341751A7FBC6F002BA188 /* QSBlockButton.m in Sources */,
+				CE571EDB1A84798800609788 /* QSBaseModel.m in Sources */,
 				CE53415A1A7FA527002BA188 /* QSDataMappingManager.m in Sources */,
 				CE5341A01A7FBFAA002BA188 /* NSString+Calculation.m in Sources */,
+				CE571ED91A84798800609788 /* QSDistrictDataModel.m in Sources */,
 				CE5341441A7FA4CE002BA188 /* QSHomeViewController.m in Sources */,
 				CE5341861A7FBD4C002BA188 /* QSLabel.m in Sources */,
 			);

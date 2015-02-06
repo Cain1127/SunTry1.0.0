@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="QSWMerchantIndexViewController">
+            <connections>
+                <outlet property="carButton" destination="65P-Qm-PRo" id="11B-fN-UGd"/>
+                <outlet property="customButton" destination="Z6w-kT-bNB" id="DKV-lb-CLW"/>
+                <outlet property="foodImageView" destination="jfY-eb-VSB" id="Xs4-Sg-sA0"/>
+                <outlet property="moreButton" destination="NIO-Dx-kN7" id="4Jq-kq-NJi"/>
+                <outlet property="packageButton" destination="jYE-AN-aIR" id="uLj-BW-cVk"/>
+                <outlet property="sharkButton" destination="Bl8-Zm-1j5" id="KUP-js-gsw"/>
+                <outlet property="specialsLabel" destination="dPU-yJ-kqp" id="rCN-AA-ns0"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="zfy-8C-upQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_bannar" id="jfY-eb-VSB" userLabel="foodImageView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Bl8-Zm-1j5" userLabel="sharkButton">
+                    <rect key="frame" x="8" y="175" width="78" height="74"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="home_shark_normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="home_shark_selected"/>
+                    <connections>
+                        <action selector="sharkButtonClick:" destination="-1" eventType="touchUpInside" id="cTo-S6-c4q"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="jYE-AN-aIR" userLabel="packageButton">
+                    <rect key="frame" x="107" y="175" width="78" height="74"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="home_package_normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="home_package_selected"/>
+                    <connections>
+                        <action selector="packageButtonClick:" destination="-1" eventType="touchUpInside" id="Ud8-3b-hRh"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Z6w-kT-bNB" userLabel="customButton">
+                    <rect key="frame" x="284" y="175" width="78" height="74"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="home_custom_normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="home_custom_selected"/>
+                    <connections>
+                        <action selector="customButtonClick:" destination="-1" eventType="touchUpInside" id="1Ih-Kt-O2z"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每日特价菜品" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dPU-yJ-kqp">
+                    <rect key="frame" x="20" y="278" width="145" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="65P-Qm-PRo" userLabel="carButton">
+                    <rect key="frame" x="198" y="175" width="78" height="74"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="home_car_normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="home_car_selected"/>
+                    <connections>
+                        <action selector="carButtonClick:" destination="-1" eventType="touchUpInside" id="kAp-vg-haj"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NIO-Dx-kN7" userLabel="moreButton">
+                    <rect key="frame" x="308" y="274" width="30" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="home_more_normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="home_more_selected"/>
+                    <connections>
+                        <action selector="moreButtonClick:" destination="-1" eventType="touchUpInside" id="KfY-ic-9qd"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <point key="canvasLocation" x="303.5" y="231.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="home_bannar" width="375" height="200"/>
+        <image name="home_car_normal" width="78" height="74"/>
+        <image name="home_car_selected" width="78" height="74"/>
+        <image name="home_custom_normal" width="78" height="74"/>
+        <image name="home_custom_selected" width="78" height="74"/>
+        <image name="home_more_normal" width="30" height="30"/>
+        <image name="home_more_selected" width="30" height="30"/>
+        <image name="home_package_normal" width="78" height="74"/>
+        <image name="home_package_selected" width="78" height="74"/>
+        <image name="home_shark_normal" width="78" height="74"/>
+        <image name="home_shark_selected" width="78" height="74"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

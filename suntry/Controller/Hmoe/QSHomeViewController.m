@@ -11,6 +11,8 @@
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
 #import "QSMapManager.h"
+#import "QSWMerchantIndexViewController.h"
+
 @interface QSHomeViewController ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,copy)  NSString *inputContent;//!<输入框内容
@@ -34,7 +36,7 @@
     }
     
     return _inputContent;
-
+    
 }
 
 ///获取接口数据
@@ -43,7 +45,7 @@
     if (_searchDataSource==nil) {
         //NSArray *dictArry=[NSArray arrayWithObject:<#(id)#>];
     }
-
+    
     return _searchDataSource;
 }
 
@@ -64,7 +66,7 @@
     textfield.tag = 200;
     textfield.borderStyle = UITextBorderStyleRoundedRect;
     [self.view addSubview:textfield];
-
+    
     ///2.添加搜索框按钮
     UIButton *searchButton=[[UIButton alloc] init];
     searchButton.translatesAutoresizingMaskIntoConstraints=NO;
@@ -89,7 +91,7 @@
     _locationTextField.leftViewMode=UITextFieldViewModeAlways;
     _locationTextField.delegate = self;
     _locationTextField.tag=201;
-
+    
     [self.view addSubview:_locationTextField];
     
     ///textfiled公共属性
@@ -108,24 +110,25 @@
     
     ///添加约束
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_textField options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_locationTextField options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_locationTextField options:0 metrics:___sizeVFL views:___viewsVFL]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all options:0 metrics:___sizeVFL views:___viewsVFL]];
-
+    
 }
 
 ///点击按钮搜索事件
 -(void)locationSearch
 {
+    [self touchesBegan:nil withEvent:nil];
     ///删除定位按钮
-   [UIView animateWithDuration:0.5 animations:^{
-       
-       [_locationTextField removeFromSuperview];
-       
-   } completion:^(BOOL finished) {
-       
-       [self setupTabbleView];
-       
-   }];
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        [_locationTextField removeFromSuperview];
+        
+    } completion:^(BOOL finished) {
+        
+        [self setupTabbleView];
+        
+    }];
 }
 
 ///加载返回的搜索tabbleview
@@ -137,23 +140,23 @@
     tabbleView.delegate=self;
     tabbleView.dataSource=self;
     [self.view addSubview:tabbleView];
- 
+    
 }
 
 #pragma mark --UItabbleViewDelegate方法
 ///返回行数
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-   
+    
     return 5;
     //return self.searchDataSource.count;
-
+    
 }
 
 /// 返回行高
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     return 44.0f;
     
 }
@@ -161,7 +164,7 @@
 ///返回的每行
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+    
     static NSString *Indentifier=@"cellIndentifier";
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:Indentifier];
     
@@ -171,17 +174,19 @@
         cell.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
         cell.textLabel.text=[NSString stringWithFormat:@"城建大厦"];
     }
-  
+    
     return cell;
-
+    
 }
 
 ///点击每一行事件
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-   
-
+    
+    [self touchesBegan:nil withEvent:nil];
+    QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc]init];
+    [self.navigationController pushViewController:VC animated:YES];
+    
 }
 
 #pragma mark--UItextFieldDelegate方法
@@ -191,6 +196,7 @@
     
     if (textField.tag == 200) {
         
+        _inputContent=nil;
         _inputContent=textField.text;
         
         return YES;
@@ -198,31 +204,44 @@
     }
     
     if (textField.tag==201) {
-       
-        QSMapManager *mapManager=[[QSMapManager alloc]init];
-        [mapManager getUserLocation:^(BOOL isLocalSuccess, NSString *placename) {
-            
-            NSLog(@"当前用户地标%@",placename);
-            _inputContent=placename;
-            [self locationSearch];
-            
-        }];
+        
+        [self locationSearch];
+        
+        ///定位搜索
+        //        QSMapManager *mapManager=[[QSMapManager alloc]init];
+        //        [mapManager getUserLocation:^(BOOL isLocalSuccess, NSString *placename) {
+        //
+        //            NSLog(@"当前用户地标%@",placename);
+        //            _inputContent=placename;
+        //            [self locationSearch];
+        //
+        //        }];
         
     }
-   
+    
     
     return NO;
-
+    
 }
 
 ///键盘回收
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-  
-    //[textField resignFirstResponder];
+    
+    [textField resignFirstResponder];
     [self locationSearch];
     NSLog(@"%@",textField.text);
     return YES;
-
+    
 }
+
+///键盘回收
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+    UITextField *textField = (UITextField *)[self.view viewWithTag:200];
+    [textField resignFirstResponder];
+    
+}
+
 @end

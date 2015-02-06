@@ -15,6 +15,9 @@
 ///内部宏定义：自操作线程关键字
 #define QUEUE_REQUEST_OPERATION "com.77tng.car.request"
 
+///数据请求根地址
+#define REQUEST_ROOT_URL @"http://test.9dxz.com/"
+
 @interface QSRequestManager ()
 
 ///网络请求管理器
@@ -51,7 +54,7 @@
  */
 + (instancetype)shareRequestManager
 {
-
+    
     static QSRequestManager *requestManager;
     
     static dispatch_once_t onceToken;
@@ -66,7 +69,7 @@
     });
     
     return requestManager;
-
+    
 }
 
 #pragma mark - 网络请求相关的属性/变量等初始化
@@ -77,7 +80,7 @@
     ///网络请求管理器初始化
     self.httpRequestManager = [AFHTTPRequestOperationManager manager];
     self.httpRequestManager.responseSerializer.acceptableContentTypes = [self.httpRequestManager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
-
+    
     ///任务池初始化
     self.taskPool = [[NSMutableArray alloc] init];
     
@@ -86,14 +89,14 @@
     
     ///添加任务池观察
     [self addObserver:self forKeyPath:@"taskPool" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
-
+    
 }
 
 #pragma mark - 任务池的添加/删除/返回
 ///添加一个网络请求任务
 - (void)addRequestTaskToPool:(QSRequestTaskDataModel *)taskModel
 {
-
+    
     ///判断任务是否有效
     if (nil == taskModel) {
         
@@ -129,13 +132,13 @@
         [[self mutableArrayValueForKey:@"taskPool"] addObject:taskModel];
         
     });
-
+    
 }
 
 ///从任务池中删除第一个任务
 - (void)removeFirstObjectFromTaskPool
 {
-
+    
     ///如果任务池已为空，则不再删除
     if (0 >= [self.taskPool count]) {
         
@@ -149,13 +152,13 @@
         [[self mutableArrayValueForKey:@"taskPool"] removeObjectAtIndex:0];
         
     });
-
+    
 }
 
 ///获取第一个请求任务
 - (QSRequestTaskDataModel *)getFirstObjectFromTaskPool
 {
-
+    
     if (0 >= [self.taskPool count]) {
         
         return nil;
@@ -165,13 +168,13 @@
     NSArray *tempArray = [self getRequestTaskPool];
     
     return tempArray[0];
-
+    
 }
 
 ///返回当前所有的任务请求队列
 - (NSArray *)getRequestTaskPool
 {
-
+    
     __block NSArray *tempArray = nil;
     
     dispatch_sync(self.requestOperationQueue, ^{
@@ -181,7 +184,7 @@
     });
     
     return tempArray;
-
+    
 }
 
 #pragma mark - 任务池观察者回调
@@ -203,12 +206,12 @@
         NSLog(@"====================当前网络请求请任务正在处理中==========");
         
     } else {
-    
+        
         requestTask.isCurrentRequest = YES;
         [self startRequestDataWithRequestTaskModel:requestTask];
-    
+        
     }
-
+    
 }
 
 #pragma mark - http请求数据
@@ -255,7 +258,7 @@
         return;
         
     }
-
+    
 }
 
 ///处理请求成功时的回调
@@ -340,39 +343,9 @@
 #pragma mark - POST请求参数封装
 - (NSDictionary *)getPostParamsWithRequestType:(REQUEST_TYPE)requestType
 {
-
-    switch (requestType) {
-            
-            ///应用基本配置信息请求参数
-        case rRequestTypeDefault:
-            
-        default:
-            
-            break;
-    }
     
     ///返回默认的参数
-    return [self postDefaultParams];
-
-}
-
-///默认无用户信息的post请求参数
-- (NSDictionary *)postDefaultParams
-{
-    
-    ///获取token信息：返回本地token信息
-    return @{@"token" : @"hello"};
-
-}
-
-///默认无用户信息，有其他参数的post请求参数
-- (NSDictionary *)postDefaultParams:(NSDictionary *)params
-{
-    
-    NSMutableDictionary *tempParams = [params mutableCopy];
-    [tempParams setObject:@"iOS" forKey:@"device"];
-    
-    return tempParams;
+    return [self postUserInfoParams];
     
 }
 
@@ -380,28 +353,30 @@
 - (NSDictionary *)postUserInfoParams
 {
     
-    return @{@"device" : @"iOS"};
-
+    ///这里需要获取本地用户的ID
+    return [self packPostParamsWithBody:@{@"device" : @"iOS",@"user_id" : @"1"}];
+    
 }
 
 ///配置用户信息，有其他参数的post请求参数
 - (NSDictionary *)postUserInfoParams:(NSDictionary *)params
 {
-
-    return @{@"device" : @"iOS"};
-
+    
+    NSMutableDictionary *tempParams = [params mutableCopy];
+    [tempParams setObject:@"iOS" forKey:@"device"];
+    [tempParams setObject:@"1" forKey:@"user_id"];
+    return [self packPostParamsWithBody:tempParams];
+    
 }
 
 ///按给定的body参数，封装请求参数
-- (NSDictionary *)packPostParamsWithBody:(NSDictionary *)bodyParams andTokenKey:(NSString *)tokenKey andTokenID:(NSString *)tokenID
+- (NSDictionary *)packPostParamsWithBody:(NSDictionary *)bodyParams
 {
-
+    
     /**
      *  k: 加密后的字符串
      *  d:传递的数据
      *  t:访问接口的时间
-     *  p:随机的数字
-     *  i:token的id
      */
     
     ///时间戳
@@ -418,7 +393,7 @@
     }
     
     ///加密串封装
-    NSString *k_key = [t stringByAppendingString:tokenKey];
+    NSString *k_key = [t stringByAppendingString:@"mmzybdxwdjcl"];
     NSString *k_temp = [d stringByAppendingString:k_key];
     NSString *k = [self paramsMD5Encryption:k_temp];
     
@@ -427,19 +402,17 @@
     [resultTempDictionary setValue:k forKey:@"k"];
     [resultTempDictionary setValue:d forKey:@"d"];
     [resultTempDictionary setValue:t forKey:@"t"];
-    [resultTempDictionary setValue:[NSString stringWithFormat:@"%d",(arc4random() % 999) + 1] forKey:@"p"];
-    [resultTempDictionary setValue:tokenID forKey:@"i"];
     
     ///返回一个不可变参数列
     return [NSDictionary dictionaryWithDictionary:resultTempDictionary];
-
+    
 }
 
 #pragma mark - MD5加密
 ///MD5加密请求参数
 - (NSString *)paramsMD5Encryption:(NSString *)params
 {
-
+    
     const char *cStr = [params UTF8String];
     unsigned char result[16];
     CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
@@ -476,7 +449,7 @@
 {
     
     [self requestDataWithType:requestType andParams:nil andCallBack:callBack];
-
+    
 }
 
 /**
@@ -492,7 +465,7 @@
  */
 + (void)requestDataWithType:(REQUEST_TYPE)requestType andParams:(NSDictionary *)params andCallBack:(void(^)(REQUEST_RESULT_STATUS resultStatus,id resultData,NSString *errorInfo,NSString *errorCode))callBack
 {
-
+    
     ///判断类型是否准确
     if ((rRequestTypeDefault > requestType) || (rRequestTypeMaxLimited < requestType)) {
         
@@ -569,14 +542,14 @@
     
     ///添加请求任务
     [[self shareRequestManager] addRequestTaskToPool:requestTask];
-
+    
 }
 
 #pragma mark - 返回不同请求的网络请求地址
 ///返回不同的请求类型的请求地址
 + (NSString *)getRequestURLWithRequestType:(REQUEST_TYPE)requestType
 {
-
+    
     NSDictionary *taskDictionary = [self getTaskInfoDictionaryWithRequsetType:requestType];
     
     ///校验
@@ -589,8 +562,8 @@
     ///获取配置的类名
     NSString *urlString = [taskDictionary valueForKey:@"url"];
     
-    return [NSString stringWithFormat:@"%@%@",@"http://",urlString];
-
+    return [NSString stringWithFormat:@"%@/%@",REQUEST_ROOT_URL,urlString];
+    
 }
 
 #pragma mark - 返回不同请求类型所使用的http请求类型
@@ -600,10 +573,10 @@
     
     switch (taskType) {
             
-            ///广告信息
-        case rRequestTypeDefault:
+            ///广州所有区的信息
+        case rRequestTypeDistrict:
             
-            return rRequestHttpRequestTypeGet;
+            return rRequestHttpRequestTypePost;
             
             break;
             
@@ -621,7 +594,7 @@
 ///返回每个请求类型的数据解析使用的类名
 + (NSString *)getDataMappingObjectName:(REQUEST_TYPE)requestType
 {
-
+    
     NSDictionary *taskDictionary = [self getTaskInfoDictionaryWithRequsetType:requestType];
     
     ///校验
@@ -635,13 +608,13 @@
     NSString *className = [taskDictionary valueForKey:@"class"];
     
     return className;
-
+    
 }
 
 ///返回给定类型的请求配置信息字典
 + (NSDictionary *)getTaskInfoDictionaryWithRequsetType:(REQUEST_TYPE)requestType
 {
-
+    
     NSDictionary *requestInfoDictionary = [self getRequestInfoDictionary];
     
     ///校验
@@ -658,18 +631,18 @@
     NSDictionary *taskDictionary = [requestInfoDictionary valueForKey:keyword];
     
     return taskDictionary;
-
+    
 }
 
 #pragma mark - 返回网络请求的配置字典
 ///返回网络请求的配置字典
 + (NSDictionary *)getRequestInfoDictionary
 {
-
+    
     NSString *path = [[NSBundle mainBundle] pathForResource:@"RequestInfo" ofType:@"plist"];
     
     return [NSDictionary dictionaryWithContentsOfFile:path];
-
+    
 }
 
 @end

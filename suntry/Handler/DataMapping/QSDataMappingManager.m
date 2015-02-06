@@ -27,7 +27,7 @@
  */
 + (void)analyzeDataWithData:(NSData *)data andMappingClass:(NSString *)mappingClassString andMappingCallBack:(void(^)(BOOL mappingStatus,id mappingResult))mappingCallBack
 {
-
+    
     ///判断给定的对象是否已实现对应的数据mapping接口
     Class mappingTempObject = NSClassFromString(mappingClassString);
     
@@ -51,7 +51,7 @@
     id<QSDataMappingProtocol> mappingObject = (id<QSDataMappingProtocol>)mappingTempObject;
     
     [self analyzeDataWithMapping:[mappingObject objectMapping] andData:data andMappingCallBack:mappingCallBack];
-
+    
 }
 
 + (void)analyzeDataWithMapping:(RKObjectMapping *)mapping andData:(NSData *)data andMappingCallBack:(void(^)(BOOL mappingStatus,id mappingResult))mappingCallBack
@@ -79,7 +79,7 @@
     RKMapperOperation *mapperOperation = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingDictionary];
     [mapperOperation execute:&error];
     [mapperOperation waitUntilFinished];
-        
+    
     mappingCallBack(YES,mapperOperation.mappingResult.dictionary[[NSNull null]]);
     
 }

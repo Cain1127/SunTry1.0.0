@@ -9,12 +9,17 @@
 #import "QSAppDelegate.h"
 #import "QSTabBarViewController.h"
 #import "QSMapManager.h"
+#import "QSRequestManager.h"
+#import "QSDistrictReturnData.h"
+#import "QSDistrictDataModel.h"
+
 @implementation QSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
+    
     self.window.backgroundColor = [UIColor whiteColor];
     
     QSTabBarViewController *main=[[QSTabBarViewController alloc]init];
@@ -42,7 +47,49 @@
         }
     }];
     
+    ///请求区信息
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        [self downloadDistrictInfo];
+        
+    });
+    
     return YES;
+}
+
+#pragma mark - 请求区信息
+///请求区信息
+- (void)downloadDistrictInfo
+{
+    
+    [QSRequestManager requestDataWithType:rRequestTypeDistrict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///模型转换
+            QSDistrictReturnData *tempModel = resultData;
+            
+            for (int i = 0; i < [tempModel.districtList count]; i++) {
+                
+                QSDistrictDataModel *districtModel = tempModel.districtList[i];
+                NSLog(@"================区信息================");
+                NSLog(@"ID : %@     显示名 : %@",districtModel.districtID,districtModel.val);
+                NSLog(@"================区信息================");
+                
+            }
+            
+            
+        } else {
+            
+            NSLog(@"================区信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================区信息请求失败================");
+            
+        }
+        
+    }];
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -53,7 +100,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
