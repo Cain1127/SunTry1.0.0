@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSWSettingViewController.h"
 
-@interface QSMyinfoViewController : UIViewController
+@interface QSMyinfoViewController :QSWSettingViewController
 
 @end

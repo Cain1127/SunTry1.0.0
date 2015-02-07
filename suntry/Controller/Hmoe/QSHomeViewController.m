@@ -53,7 +53,7 @@
     
     [super viewDidLoad];
     
-    self.navigationItem.title=[NSString stringWithFormat:@"广州"];
+    self.navigationItem.title=[NSString stringWithFormat:@"天河"];
     
     ///1.添加textfield输入框控件
     UITextField *textfield=[[UITextField alloc] init];
@@ -106,7 +106,7 @@
     ///约束
     NSString *___hVFL_textField = @"H:|-margin-[textfield]-5-[searchButton(44)]-margin-|";
     NSString *___hVFL_locationTextField = @"H:|-margin-[_locationTextField(>=160)]-margin-|";
-    NSString *___vVFL_all = @"V:|-74-[textfield(44)]-8-[_locationTextField(textfield)]";
+    NSString *___vVFL_all = @"V:|-10-[textfield(44)]-8-[_locationTextField(textfield)]";
     
     ///添加约束
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_textField options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
@@ -135,7 +135,7 @@
 -(void)setupTabbleView
 {
     
-    CGRect rect=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 130.0f, SIZE_DEFAULT_MAX_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44 * 5);
+    CGRect rect=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 66.0f, SIZE_DEFAULT_MAX_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44 * 5);
     UITableView *tabbleView=[[UITableView alloc]initWithFrame:rect];
     tabbleView.delegate=self;
     tabbleView.dataSource=self;

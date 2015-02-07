@@ -21,6 +21,8 @@
     NSDictionary *mappingDict = @{@"id" : @"districtID", @"zone" : @"val"};
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
+    [shared_mapping addAttributeMappingsFromArray:@[@"id_"]];
+    
     return shared_mapping;
     
 }

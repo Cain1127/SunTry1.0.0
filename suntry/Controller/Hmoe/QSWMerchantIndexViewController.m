@@ -10,6 +10,7 @@
 #import "DeviceSizeHeader.h"
 #import "FontHeader.h"
 #import "QSMapNavigationViewController.h"
+#import "QSWMerchantIndexCell.h"
 
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -35,7 +36,6 @@
     ///加载食品列表
     [self setupFoodListView];
     
-    
 }
 
 ///加载顶部view
@@ -56,7 +56,7 @@
     
      _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT*4+3*buttonW, buttonY, buttonW, buttonH);
     
-    _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 80.0f, 30.0f);
+    _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 30.0f);
     
     _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT-30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 30.0f);
     
@@ -77,7 +77,7 @@
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
     
     //注册Cell，必须要有
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
+    [self.collectionView registerClass:[QSWMerchantIndexCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
     [self.view addSubview:self.collectionView];
 }
@@ -100,16 +100,27 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * CellIdentifier = @"UICollectionViewCell";
-    UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.backgroundColor=[UIColor redColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    label.textColor = [UIColor redColor];
-    label.text = [NSString stringWithFormat:@"%d",indexPath.row];
     
-    for (id subView in cell.contentView.subviews) {
-        [subView removeFromSuperview];
+    QSWMerchantIndexCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (cell==nil) {
+        
+        cell=[[QSWMerchantIndexCell alloc]init];
+    
     }
-    [cell.contentView addSubview:label];
+    cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
+    cell.foodNameLabel.text=@"都城辣子鸡";
+    cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
+    cell.priceLabel.text=@"188";
+//    cell.backgroundColor=[UIColor redColor];
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+//    label.textColor = [UIColor redColor];
+//    label.text = [NSString stringWithFormat:@"%d",indexPath.row];
+//    
+//    for (id subView in cell.contentView.subviews) {
+//        [subView removeFromSuperview];
+//    }
+//    [cell.contentView addSubview:label];
     return cell;
 }
 
@@ -119,7 +130,8 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5;
-    return CGSizeMake(viewW, viewW);
+    CGFloat viewH=viewW*289/335;
+    return CGSizeMake(viewW, viewH);
 }
 
 //定义每个UICollectionView 的 margin

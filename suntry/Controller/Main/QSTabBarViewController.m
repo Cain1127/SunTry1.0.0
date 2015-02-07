@@ -32,7 +32,7 @@
     
     ///1.首页
     QSHomeViewController *home=[[QSHomeViewController alloc]init];
-    [self setupChildViewController:home title:@"广州" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"];
+    [self setupChildViewController:home title:@"" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"];
     
     ///2.点餐
     QSPointMealViewController *pointmeal=[[QSPointMealViewController alloc]init];
@@ -69,7 +69,6 @@
     
     ///设置导航栏背景图片
     [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forBarMetrics: UIBarMetricsDefault];
-    //[nav.navigationBar setBackIndicatorImage:[UIImage imageNamed:@"nav_backgroud"]];
     
     [self addChildViewController:nav];
 }
