@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QSPointMealViewController : UIViewController
+@interface QSPointMealViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @end

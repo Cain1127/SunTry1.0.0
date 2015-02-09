@@ -10,6 +10,9 @@
 #import "DeviceSizeHeader.h"
 #import "FontHeader.h"
 #import "QSMapNavigationViewController.h"
+#import "NSString+Calculation.h"
+#import "QSLabel.h"
+#import "QSPShakeFoodView.h"
 
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -148,10 +151,21 @@
     return YES;
 }
 
-- (IBAction)sharkButtonClick:(id)sender {
+- (IBAction)sharkButtonClick:(id)sender
+{
+    
+    QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
+    [self.tabBarController.view addSubview:shakeFoodView];
+    [shakeFoodView upFoodData:nil];
+    [shakeFoodView showShakeFoodView];
+    
 }
 
-- (IBAction)packageButtonClick:(id)sender {
+- (IBAction)packageButtonClick:(id)sender
+{
+   
+    [self.tabBarController setSelectedIndex:1];
+    
 }
 
 - (IBAction)carButtonClick:(id)sender {

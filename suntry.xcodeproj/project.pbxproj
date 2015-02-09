@@ -19,6 +19,11 @@
 		1836741A1A7F8FA800BCCF39 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 183674021A7F8FA800BCCF39 /* UIKit.framework */; };
 		183674221A7F8FA800BCCF39 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 183674201A7F8FA800BCCF39 /* InfoPlist.strings */; };
 		183674241A7F8FA800BCCF39 /* suntryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 183674231A7F8FA800BCCF39 /* suntryTests.m */; };
+		478935411A876B0D008E12A1 /* QSPShakeFoodView.m in Sources */ = {isa = PBXBuildFile; fileRef = 478935401A876B0D008E12A1 /* QSPShakeFoodView.m */; };
+		478935441A876B20008E12A1 /* QSPFoodCountControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 478935431A876B20008E12A1 /* QSPFoodCountControlView.m */; };
+		478935491A878B21008E12A1 /* QSPFoodTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 478935481A878B21008E12A1 /* QSPFoodTypeTableViewCell.m */; };
+		4789354C1A878DD0008E12A1 /* QSPFoodInfoListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4789354B1A878DD0008E12A1 /* QSPFoodInfoListTableViewCell.m */; };
+		47DF5A2A1A88B7230088C87D /* QSPShoppingCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47DF5A291A88B7230088C87D /* QSPShoppingCarView.m */; };
 		CE5341441A7FA4CE002BA188 /* QSHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE53412F1A7FA4CE002BA188 /* QSHomeViewController.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
@@ -82,6 +87,16 @@
 		1836741F1A7F8FA800BCCF39 /* suntryTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "suntryTests-Info.plist"; sourceTree = "<group>"; };
 		183674211A7F8FA800BCCF39 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		183674231A7F8FA800BCCF39 /* suntryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = suntryTests.m; sourceTree = "<group>"; };
+		4789353F1A876B0D008E12A1 /* QSPShakeFoodView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPShakeFoodView.h; sourceTree = "<group>"; };
+		478935401A876B0D008E12A1 /* QSPShakeFoodView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPShakeFoodView.m; sourceTree = "<group>"; };
+		478935421A876B20008E12A1 /* QSPFoodCountControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodCountControlView.h; sourceTree = "<group>"; };
+		478935431A876B20008E12A1 /* QSPFoodCountControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodCountControlView.m; sourceTree = "<group>"; };
+		478935471A878B21008E12A1 /* QSPFoodTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodTypeTableViewCell.h; sourceTree = "<group>"; };
+		478935481A878B21008E12A1 /* QSPFoodTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodTypeTableViewCell.m; sourceTree = "<group>"; };
+		4789354A1A878DD0008E12A1 /* QSPFoodInfoListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodInfoListTableViewCell.h; sourceTree = "<group>"; };
+		4789354B1A878DD0008E12A1 /* QSPFoodInfoListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodInfoListTableViewCell.m; sourceTree = "<group>"; };
+		47DF5A281A88B7230088C87D /* QSPShoppingCarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPShoppingCarView.h; sourceTree = "<group>"; };
+		47DF5A291A88B7230088C87D /* QSPShoppingCarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPShoppingCarView.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -287,6 +302,8 @@
 		CE53412D1A7FA4CE002BA188 /* Hmoe */ = {
 			isa = PBXGroup;
 			children = (
+				4789353F1A876B0D008E12A1 /* QSPShakeFoodView.h */,
+				478935401A876B0D008E12A1 /* QSPShakeFoodView.m */,
 				CE571EE51A84A39200609788 /* Cell */,
 				CE53412E1A7FA4CE002BA188 /* QSHomeViewController.h */,
 				CE53412F1A7FA4CE002BA188 /* QSHomeViewController.m */,
@@ -338,8 +355,16 @@
 		CE53413E1A7FA4CE002BA188 /* PointMeal */ = {
 			isa = PBXGroup;
 			children = (
+				47DF5A281A88B7230088C87D /* QSPShoppingCarView.h */,
+				47DF5A291A88B7230088C87D /* QSPShoppingCarView.m */,
+				478935421A876B20008E12A1 /* QSPFoodCountControlView.h */,
+				478935431A876B20008E12A1 /* QSPFoodCountControlView.m */,
 				CE5341421A7FA4CE002BA188 /* QSPointMealViewController.h */,
 				CE5341431A7FA4CE002BA188 /* QSPointMealViewController.m */,
+				478935471A878B21008E12A1 /* QSPFoodTypeTableViewCell.h */,
+				478935481A878B21008E12A1 /* QSPFoodTypeTableViewCell.m */,
+				4789354A1A878DD0008E12A1 /* QSPFoodInfoListTableViewCell.h */,
+				4789354B1A878DD0008E12A1 /* QSPFoodInfoListTableViewCell.m */,
 			);
 			path = PointMeal;
 			sourceTree = "<group>";
@@ -746,12 +771,17 @@
 				CE5341491A7FA4CE002BA188 /* QSOrderViewController.m in Sources */,
 				CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */,
 				CE571EE41A84A37C00609788 /* QSWMerchantIndexCell.m in Sources */,
+				47DF5A2A1A88B7230088C87D /* QSPShoppingCarView.m in Sources */,
+				478935411A876B0D008E12A1 /* QSPShakeFoodView.m in Sources */,
+				478935441A876B20008E12A1 /* QSPFoodCountControlView.m in Sources */,
+				4789354C1A878DD0008E12A1 /* QSPFoodInfoListTableViewCell.m in Sources */,
 				CE53415B1A7FA527002BA188 /* QSMapManager.m in Sources */,
 				CE53415C1A7FA527002BA188 /* QSRequestManager.m in Sources */,
 				CE5341A91A7FC268002BA188 /* QSTextField.m in Sources */,
 				CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */,
 				CE5341481A7FA4CE002BA188 /* QSMyinfoViewController.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,
+				478935491A878B21008E12A1 /* QSPFoodTypeTableViewCell.m in Sources */,
 				CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */,
 				CE571EDC1A84798800609788 /* QSDistrictReturnData.m in Sources */,
 				CE5341751A7FBC6F002BA188 /* QSBlockButton.m in Sources */,
@@ -881,7 +911,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "suntry/suntry-Prefix.pch";
 				INFOPLIST_FILE = "suntry/suntry-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -896,7 +926,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "suntry/suntry-Prefix.pch";
 				INFOPLIST_FILE = "suntry/suntry-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
