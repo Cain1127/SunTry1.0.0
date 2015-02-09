@@ -64,6 +64,7 @@
 		CEB630BF1A85C21700F64DEE /* QSWAddSendAdsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630BE1A85C21700F64DEE /* QSWAddSendAdsViewController.m */; };
 		CEB630C21A865BAF00F64DEE /* QSWLabelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630C11A865BAF00F64DEE /* QSWLabelItem.m */; };
 		CEB630CB1A88643A00F64DEE /* QSWSettingButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630CA1A88643A00F64DEE /* QSWSettingButtonItem.m */; };
+		CEB630CE1A88A01700F64DEE /* QSWTheSuntryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630CD1A88A01700F64DEE /* QSWTheSuntryView.m */; };
 		CEF7D8701A80B09B00E14730 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF7D86F1A80B09B00E14730 /* CoreLocation.framework */; };
 		CEF7D8721A80BEE700E14730 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF7D8711A80BEE700E14730 /* SystemConfiguration.framework */; };
 		E499385CF0045A0843FE9A75 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE9B580549DCA38D48BB605 /* libPods.a */; };
@@ -191,6 +192,8 @@
 		CEB630C11A865BAF00F64DEE /* QSWLabelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWLabelItem.m; sourceTree = "<group>"; };
 		CEB630C91A88643A00F64DEE /* QSWSettingButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWSettingButtonItem.h; sourceTree = "<group>"; };
 		CEB630CA1A88643A00F64DEE /* QSWSettingButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWSettingButtonItem.m; sourceTree = "<group>"; };
+		CEB630CC1A88A01700F64DEE /* QSWTheSuntryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWTheSuntryView.h; sourceTree = "<group>"; };
+		CEB630CD1A88A01700F64DEE /* QSWTheSuntryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWTheSuntryView.m; sourceTree = "<group>"; };
 		CEF7D86F1A80B09B00E14730 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CEF7D8711A80BEE700E14730 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -380,6 +383,8 @@
 				CE571F031A84C8E000609788 /* QSWLoginPswViewController.m */,
 				CE571F051A84C92B00609788 /* QSWUserSettingViewController.h */,
 				CE571F061A84C92B00609788 /* QSWUserSettingViewController.m */,
+				CEB630CC1A88A01700F64DEE /* QSWTheSuntryView.h */,
+				CEB630CD1A88A01700F64DEE /* QSWTheSuntryView.m */,
 			);
 			path = MyInfo;
 			sourceTree = "<group>";
@@ -857,6 +862,7 @@
 				CE571EF71A84AFEE00609788 /* QSWSettingCell.m in Sources */,
 				CE5341481A7FA4CE002BA188 /* QSMyinfoViewController.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,
+				CEB630CE1A88A01700F64DEE /* QSWTheSuntryView.m in Sources */,
 				CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */,
 				CEB630C21A865BAF00F64DEE /* QSWLabelItem.m in Sources */,
 				CE571F011A84C86A00609788 /* QSWMyStoredCardViewController.m in Sources */,

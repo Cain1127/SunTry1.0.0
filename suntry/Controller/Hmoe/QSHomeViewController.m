@@ -113,6 +113,11 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_locationTextField options:0 metrics:___sizeVFL views:___viewsVFL]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all options:0 metrics:___sizeVFL views:___viewsVFL]];
     
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
+    self.navigationItem.backBarButtonItem=backItem;
+    //backItem.image=[UIImage imageNamed:@"nav_back_normal"];
+    backItem.title=@"";
+    
 }
 
 ///点击按钮搜索事件

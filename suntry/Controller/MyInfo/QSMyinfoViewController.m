@@ -40,6 +40,11 @@
     [self setupGroup4];
     [self setupGroup5];
     
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
+    self.navigationItem.backBarButtonItem=backItem;
+    //backItem.image=[UIImage imageNamed:@"nav_back_normal"];
+    backItem.title=@"";
+    
     
 }
 

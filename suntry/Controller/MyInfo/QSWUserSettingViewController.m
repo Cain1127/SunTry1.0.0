@@ -12,6 +12,7 @@
 #import "QSWSettingGroup.h"
 #import "QSWSettingArrowItem.h"
 #import "DeviceSizeHeader.h"
+#import "QSWTheSuntryView.h"
 
 @interface QSWUserSettingViewController ()
 
@@ -53,7 +54,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"关于香哉" destVcClass:nil];
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"关于香哉" destVcClass:[QSWTheSuntryView class]];
     group.items = @[item];
     
 }

@@ -70,8 +70,16 @@
     UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.moreButton.frame.origin.y+30+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-self.moreButton.frame.origin.y-30-49.0f) collectionViewLayout:flowLayout];
+    ///设置
+    CGFloat viewW = (SIZE_DEVICE_WIDTH - 3.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) * 0.5;
+    CGFloat viewH = viewW * 289.0f / 335.0f;
+    CGSize itemSize = CGSizeMake(viewW, viewH);
+    flowLayout.itemSize = itemSize;
+    flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
+    
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.moreButton.frame.origin.y+30+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-self.moreButton.frame.origin.y-30-49.0f) collectionViewLayout:flowLayout];
     self.collectionView.showsVerticalScrollIndicator=NO;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
     
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
@@ -117,31 +125,14 @@
     return cell;
 }
 
-#pragma mark --UICollectionViewDelegateFlowLayout
-
-//定义每个Item 的大小
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5-10;
-    CGFloat viewH=viewW*289/335;
-    return CGSizeMake(viewW, viewH);
-}
-
-//定义每个UICollectionView 的 margin
--(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    CGFloat margin=SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
-    return UIEdgeInsetsMake(margin, margin, margin, margin);
-}
-
 #pragma mark --UICollectionViewDelegate
 
 //UICollectionView被选中时调用的方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell * cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+   // UICollectionViewCell * cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     //临时改变个颜色，看好，只是临时改变的。如果要永久改变，可以先改数据源，然后在cellForItemAtIndexPath中控制。
-    cell.backgroundColor = [UIColor greenColor];
+    //cell.backgroundColor = [UIColor greenColor];
     NSLog(@"item======%d",indexPath.item);
     NSLog(@"row=======%d",indexPath.row);
     NSLog(@"section===%d",indexPath.section);
