@@ -10,10 +10,12 @@
 #import "QSWSettingGroup.h"
 #import "QSWSettingCell.h"
 #import "QSWSettingArrowItem.h"
+#import "QSWSettingButtonItem.h"
 #import "CommonHeader.h"
 #import "DeviceSizeHeader.h"
+#import "QSWTextFieldItem.h"
 
-@interface QSWSettingViewController ()
+@interface QSWSettingViewController ()<UITextFieldDelegate>
 
 @end
 
@@ -110,7 +112,8 @@
         item.operation();
     }
     
-    // 3.跳转
+    // 3.右侧类型
+    //右侧是跳转箭头
     if ([item isKindOfClass:[QSWSettingArrowItem class]]) {
         QSWSettingArrowItem *arrowItem = (QSWSettingArrowItem *)item;
         if (arrowItem.destVcClass) {
@@ -119,6 +122,17 @@
             [self.navigationController pushViewController:destVc animated:YES];
         }
     }
+    
+    //右侧是按钮
+    if ([item isKindOfClass:[QSWSettingButtonItem class]]) {
+        QSWSettingButtonItem *buttonItem = (QSWSettingButtonItem*)item;
+        if (buttonItem.destVcClass) {
+            UIViewController *destVc = [[buttonItem.destVcClass alloc] init];
+            destVc.title = buttonItem.title;
+            [self.navigationController pushViewController:destVc animated:YES];
+    }
+    }
+   
 }
 
 @end

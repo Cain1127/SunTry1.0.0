@@ -7,7 +7,7 @@
 		<key>class</key>
 		<string>QSDistrictReturnData</string>
 		<key>url</key>
-		<string>sendPosition/list</string>
+		<string>sendPosition/Zone</string>
 	</dict>
 </dict>
 </plist>

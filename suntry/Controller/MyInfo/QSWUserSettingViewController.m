@@ -7,6 +7,11 @@
 //
 
 #import "QSWUserSettingViewController.h"
+#import "QSWSettingCell.h"
+#import "QSWSettingItem.h"
+#import "QSWSettingGroup.h"
+#import "QSWSettingArrowItem.h"
+#import "DeviceSizeHeader.h"
 
 @interface QSWUserSettingViewController ()
 
@@ -17,7 +22,43 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"帐户设置";
+    [self setupGroup0];
+    [self setupGroup1];
+    [self setupGroup2];
+    
 }
+
+-(void)setupGroup0
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"服务条款" destVcClass:nil];
+    group.items = @[item];
+    
+}
+
+-(void)setupGroup1
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"检查更新" destVcClass:nil];
+    group.items = @[item];
+    
+}
+
+-(void)setupGroup2
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"关于香哉" destVcClass:nil];
+    group.items = @[item];
+    
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

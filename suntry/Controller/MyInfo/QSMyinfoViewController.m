@@ -18,6 +18,8 @@
 #import "QSWUserSettingViewController.h"
 #import "QSWMyStoredCardViewController.h"
 #import "QSWLoginPswViewController.h"
+#import "QSWAddSendAdsViewController.h"
+#import "QSWTextFieldItem.h"
 
 @interface QSMyinfoViewController ()
 

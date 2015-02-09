@@ -61,6 +61,9 @@
 		CE571F041A84C8E000609788 /* QSWLoginPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571F031A84C8E000609788 /* QSWLoginPswViewController.m */; };
 		CE571F071A84C92B00609788 /* QSWUserSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571F061A84C92B00609788 /* QSWUserSettingViewController.m */; };
 		CEB630BC1A85BE0C00F64DEE /* QSWTextFieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630BB1A85BE0C00F64DEE /* QSWTextFieldItem.m */; };
+		CEB630BF1A85C21700F64DEE /* QSWAddSendAdsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630BE1A85C21700F64DEE /* QSWAddSendAdsViewController.m */; };
+		CEB630C21A865BAF00F64DEE /* QSWLabelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630C11A865BAF00F64DEE /* QSWLabelItem.m */; };
+		CEB630CB1A88643A00F64DEE /* QSWSettingButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630CA1A88643A00F64DEE /* QSWSettingButtonItem.m */; };
 		CEF7D8701A80B09B00E14730 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF7D86F1A80B09B00E14730 /* CoreLocation.framework */; };
 		CEF7D8721A80BEE700E14730 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF7D8711A80BEE700E14730 /* SystemConfiguration.framework */; };
 		E499385CF0045A0843FE9A75 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE9B580549DCA38D48BB605 /* libPods.a */; };
@@ -182,6 +185,12 @@
 		CE571F061A84C92B00609788 /* QSWUserSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWUserSettingViewController.m; sourceTree = "<group>"; };
 		CEB630BA1A85BE0C00F64DEE /* QSWTextFieldItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWTextFieldItem.h; sourceTree = "<group>"; };
 		CEB630BB1A85BE0C00F64DEE /* QSWTextFieldItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWTextFieldItem.m; sourceTree = "<group>"; };
+		CEB630BD1A85C21700F64DEE /* QSWAddSendAdsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWAddSendAdsViewController.h; sourceTree = "<group>"; };
+		CEB630BE1A85C21700F64DEE /* QSWAddSendAdsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWAddSendAdsViewController.m; sourceTree = "<group>"; };
+		CEB630C01A865BAF00F64DEE /* QSWLabelItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWLabelItem.h; sourceTree = "<group>"; };
+		CEB630C11A865BAF00F64DEE /* QSWLabelItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWLabelItem.m; sourceTree = "<group>"; };
+		CEB630C91A88643A00F64DEE /* QSWSettingButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWSettingButtonItem.h; sourceTree = "<group>"; };
+		CEB630CA1A88643A00F64DEE /* QSWSettingButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWSettingButtonItem.m; sourceTree = "<group>"; };
 		CEF7D86F1A80B09B00E14730 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CEF7D8711A80BEE700E14730 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -361,6 +370,8 @@
 				CE53413A1A7FA4CE002BA188 /* QSMyinfoViewController.m */,
 				CE571EF91A84C66500609788 /* QSWMySendAdsViewController.h */,
 				CE571EFA1A84C66500609788 /* QSWMySendAdsViewController.m */,
+				CEB630BD1A85C21700F64DEE /* QSWAddSendAdsViewController.h */,
+				CEB630BE1A85C21700F64DEE /* QSWAddSendAdsViewController.m */,
 				CE571EFC1A84C7B200609788 /* QSWMyCouponViewController.h */,
 				CE571EFD1A84C7B200609788 /* QSWMyCouponViewController.m */,
 				CE571EFF1A84C86A00609788 /* QSWMyStoredCardViewController.h */,
@@ -662,8 +673,12 @@
 				CE571EED1A84AFB200609788 /* QSWSettingGroup.m */,
 				CE571EEE1A84AFB200609788 /* QSWSettingArrowItem.h */,
 				CE571EEF1A84AFB200609788 /* QSWSettingArrowItem.m */,
+				CEB630C91A88643A00F64DEE /* QSWSettingButtonItem.h */,
+				CEB630CA1A88643A00F64DEE /* QSWSettingButtonItem.m */,
 				CEB630BA1A85BE0C00F64DEE /* QSWTextFieldItem.h */,
 				CEB630BB1A85BE0C00F64DEE /* QSWTextFieldItem.m */,
+				CEB630C01A865BAF00F64DEE /* QSWLabelItem.h */,
+				CEB630C11A865BAF00F64DEE /* QSWLabelItem.m */,
 				CE571EF01A84AFB200609788 /* QSWSettingItem.h */,
 				CE571EF11A84AFB200609788 /* QSWSettingItem.m */,
 			);
@@ -824,6 +839,7 @@
 				CE571EE01A848AF500609788 /* QSWMerchantIndexViewController.m in Sources */,
 				CE53414B1A7FA4CE002BA188 /* QSPointMealViewController.m in Sources */,
 				CE5341A21A7FBFAA002BA188 /* QSImageView+Block.m in Sources */,
+				CEB630BF1A85C21700F64DEE /* QSWAddSendAdsViewController.m in Sources */,
 				CE5341811A7FBCAC002BA188 /* UIImageView+CacheImage.m in Sources */,
 				1836740F1A7F8FA800BCCF39 /* QSAppDelegate.m in Sources */,
 				CE5341491A7FA4CE002BA188 /* QSOrderViewController.m in Sources */,
@@ -833,6 +849,7 @@
 				CE53415B1A7FA527002BA188 /* QSMapManager.m in Sources */,
 				CE571F071A84C92B00609788 /* QSWUserSettingViewController.m in Sources */,
 				CE571EF41A84AFB200609788 /* QSWSettingItem.m in Sources */,
+				CEB630CB1A88643A00F64DEE /* QSWSettingButtonItem.m in Sources */,
 				CE53415C1A7FA527002BA188 /* QSRequestManager.m in Sources */,
 				CE571EF21A84AFB200609788 /* QSWSettingGroup.m in Sources */,
 				CE5341A91A7FC268002BA188 /* QSTextField.m in Sources */,
@@ -841,6 +858,7 @@
 				CE5341481A7FA4CE002BA188 /* QSMyinfoViewController.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,
 				CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */,
+				CEB630C21A865BAF00F64DEE /* QSWLabelItem.m in Sources */,
 				CE571F011A84C86A00609788 /* QSWMyStoredCardViewController.m in Sources */,
 				CE571EDC1A84798800609788 /* QSDistrictReturnData.m in Sources */,
 				CE5341751A7FBC6F002BA188 /* QSBlockButton.m in Sources */,

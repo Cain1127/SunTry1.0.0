@@ -1,44 +1,47 @@
 //
-//  QSWLoginPswViewController.m
+//  QSWAddSendAdsViewController.m
 //  suntry
 //
-//  Created by 王树朋 on 15/2/6.
+//  Created by 王树朋 on 15/2/7.
 //  Copyright (c) 2015年 广州七升网络科技有限公司. All rights reserved.
 //
 
-#import "QSWLoginPswViewController.h"
+#import "QSWAddSendAdsViewController.h"
 #import "QSWSettingCell.h"
 #import "QSWSettingItem.h"
 #import "QSWSettingGroup.h"
+#import "QSWSettingArrowItem.h"
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
-
-
-@interface QSWLoginPswViewController ()
+@interface QSWAddSendAdsViewController ()<UITextFieldDelegate>
 
 @end
 
-@implementation QSWLoginPswViewController
+@implementation QSWAddSendAdsViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
-    self.title=@"登录密码";
+    self.title=@"新增送餐地址";
     [self setupGroup0];
     [self setupGroup1];
     [self setupGroup2];
+    [self setupGroup3];
+    [self setupGroup4];
     [self setupFooter];
+    
 }
 
 -(void)setupGroup0
 {
-    
+
     QSWSettingGroup *group = [self addGroup];
     
     QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
     
     
     group.items = @[item];
-    
+
 }
 
 -(void)setupGroup1
@@ -65,6 +68,30 @@
     
 }
 
+-(void)setupGroup3
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
+    
+    
+    group.items = @[item];
+    
+}
+
+-(void)setupGroup4
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
+    
+    
+    group.items = @[item];
+    
+}
+
 - (void)setupFooter
 {
     // 按钮
@@ -78,7 +105,7 @@
     // 背景和文字
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
-    [footterButton setTitle:@"提交" forState:UIControlStateNormal];
+    [footterButton setTitle:@"添加" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
@@ -93,17 +120,55 @@
 
 -(void)gotoNextVC
 {
+
+
+}
+#pragma mark--UItextFieldDelegate方法
+///开始编辑
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
     
+    if (textField.tag == 200) {
+        
+        
+        
+        return YES;
+        
+    }
+    
+    if (textField.tag==201) {
+        
+        
+    }
+    
+    
+    return NO;
     
 }
 
+///键盘回收
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    
+    [textField resignFirstResponder];
+    NSLog(@"%@",textField.text);
+    return YES;
+    
+}
 
-
-
+///键盘回收
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+    UITextField *textField = (UITextField *)[self.view viewWithTag:200];
+    [textField resignFirstResponder];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end

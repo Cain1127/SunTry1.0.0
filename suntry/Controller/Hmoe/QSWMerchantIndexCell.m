@@ -11,38 +11,37 @@
 
 @implementation QSWMerchantIndexCell
 
-
-
--(void)setFoodImageView:(UIImageView *)foodImageView
+-(id)initWithFrame:(CGRect)frame
 {
-    CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5;
-    CGFloat viewH=viewW*289/335;
-    _foodImageView.frame=CGRectMake(0, 0, viewW, viewH);
-    [self.contentView addSubview:_foodImageView];
+    
+    self=[super initWithFrame:frame];
+    if (self) {
+        
+        CGFloat viewW=self.contentView.frame.size.width;
+        CGFloat viewH=self.contentView.frame.size.height;
+        _foodImageView=[[UIImageView alloc]init];
+        _foodImageView.frame=CGRectMake(0, 0, viewW, viewH-30);
+        
+        _foodNameLabel=[[UILabel alloc]init];
+        _foodNameLabel.frame=CGRectMake(0, viewH-20.0f, 100.0f, 20.0f);
+        
+        _priceMarkImageView=[[UIImageView alloc]init];
+        _priceMarkImageView.frame=CGRectMake(viewW-30.0f-5.0f-20.0f, viewH-20.0f, 20.0f, 20.0f);
+        
+        _priceLabel=[[UILabel alloc]init];
+        _priceLabel.frame=CGRectMake(viewW-30.0f, viewH-20.f, 30.0f, 30.0f);
+        
+   
+        
+        [self.contentView addSubview:_foodImageView];
+        [self.contentView addSubview:_foodNameLabel];
+        [self.contentView addSubview:_priceLabel];
+        [self.contentView addSubview:_priceMarkImageView];
+        
+    }
+    
+    return self;
 }
 
--(void)setFoodNameLabel:(UILabel *)foodNameLabel
-{
-    CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5;
-    CGFloat viewH=viewW*289/335;
-    _foodNameLabel.frame=CGRectMake(0, viewH+10.0f, 80.0f, 20.0f);
-    [self.contentView addSubview:_foodNameLabel];
-}
 
--(void)setPriceLabel:(UILabel *)priceLabel
-{
-    CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5;
-    CGFloat viewH=viewW*289/335;
-    _priceLabel.frame=CGRectMake(viewW-30.0f, viewH+10.f, 30.0f, 30.0f);
-    [self.contentView addSubview:_priceLabel];
-
-}
-
--(void)setPriceMarkImageView:(UIImageView *)priceMarkImageView
-{
-    CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5;
-    CGFloat viewH=viewW*289/335;
-   _priceMarkImageView.frame=CGRectMake(viewW-30.0f-5.0f-20.0f, viewH+10.0f, 20.0f, 20.0f);
-  [self.contentView addSubview:_priceMarkImageView];
-}
 @end

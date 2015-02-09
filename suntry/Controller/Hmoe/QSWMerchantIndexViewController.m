@@ -71,6 +71,7 @@
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     
     self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.moreButton.frame.origin.y+30+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-self.moreButton.frame.origin.y-30-49.0f) collectionViewLayout:flowLayout];
+    self.collectionView.showsVerticalScrollIndicator=NO;
     
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
@@ -93,7 +94,7 @@
 //定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 2;
+    return 1;
 }
 
 //每个UICollectionView展示的内容
@@ -108,19 +109,11 @@
         cell=[[QSWMerchantIndexCell alloc]init];
     
     }
+   
     cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
     cell.foodNameLabel.text=@"都城辣子鸡";
     cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
     cell.priceLabel.text=@"188";
-//    cell.backgroundColor=[UIColor redColor];
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-//    label.textColor = [UIColor redColor];
-//    label.text = [NSString stringWithFormat:@"%d",indexPath.row];
-//    
-//    for (id subView in cell.contentView.subviews) {
-//        [subView removeFromSuperview];
-//    }
-//    [cell.contentView addSubview:label];
     return cell;
 }
 
@@ -129,7 +122,7 @@
 //定义每个Item 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5;
+    CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5-10;
     CGFloat viewH=viewW*289/335;
     return CGSizeMake(viewW, viewH);
 }

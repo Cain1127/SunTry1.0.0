@@ -10,16 +10,21 @@
 #import "QSWSettingItem.h"
 #import "QSWSettingArrowItem.h"
 #import "QSWTextFielditem.h"
+#import "QSWLabelItem.h"
+#import "QSWSettingButtonItem.h"
 #import "CommonHeader.h"
 #import "DeviceSizeHeader.h"
 
-@interface QSWSettingCell()
-/**
- *  箭头
- */
+@interface QSWSettingCell()<UITextFieldDelegate>
+
+  //右侧箭头
 @property (strong, nonatomic) UIImageView *arrowView;
+ //右侧按钮
+@property (strong,nonatomic) UIImageView *buttonView;
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic,strong) UITextField *textFieldView;
+@property (nonatomic,strong) UILabel *labelView;
+
 @end
 
 @implementation QSWSettingCell
@@ -36,6 +41,22 @@
     return _arrowView;
     
 }
+
+- (UIImageView *)buttonView
+{
+    
+    if (_buttonView == nil) {
+        
+        _buttonView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_edit_normal"]];
+
+        
+    }
+    
+    return _buttonView;
+    
+}
+
+
 
 + (instancetype)cellWithTableView:(UITableView *)tableView
 {
@@ -91,7 +112,7 @@
     [self setupData];
     
     // 2.设置右边的控件
-    [self setupRightView];
+    [self setupCellView];
 }
 
 /**
@@ -121,48 +142,77 @@
         
     }
     
+    
+    
 }
 
 ///设置自定义
 
 /**
- *  设置右边的控件
+ *  设置cell的控件
  */
-- (void)setupRightView
+- (void)setupCellView
 {
-   
-     if ([self.item isKindOfClass:[QSWSettingArrowItem class]]) {
-         
-         // 右边是箭头
-       self.accessoryView=self.arrowView;
-//         self.arrowView.frame = CGRectMake(0, 0.0f, self.arrowView.frame.size.width, self.frame.size.height);
-//         [self.contentView addSubview:self.arrowView];
-         
+    ///原生cell
+    if ([self.item isKindOfClass:[QSWSettingArrowItem class]]) {
+        
+        // 右边是箭头
+        self.accessoryView=self.arrowView;
+        
     }
     
-    if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
-        for (UIView *obj in [self.contentView subviews]) {
-            
-                        [obj removeFromSuperview];
-            
-                    }
+    ///自定义textField样式cell
+    else if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
         
-        _textFieldView.frame = CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, self.contentView.frame.size.width, self.frame.size.height);
-        [self.contentView addSubview:self.arrowView];
-
-    }
-     else {
+        /*for (UIView *obj in [self.contentView subviews]) {
+         
+         [obj removeFromSuperview];
+         
+         }
+         */
         
-        // 右边没有东西
-        self.accessoryView=nil;
-//        for (UIView *obj in [self.accessoryView subviews]) {
-//            
-//            [obj removeFromSuperview];
-//            
-//        }
-//        
+        ///1.添加textfield输入框控件
+        _textFieldView=[[UITextField alloc]initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.frame.size.height)];
+        _textFieldView.placeholder=@"注册香哉得豪礼";
+        // _textFieldView.placeholder = _textFieldItem.placeHolder;
+        _textFieldView.translatesAutoresizingMaskIntoConstraints=NO;
+        _textFieldView.returnKeyType=UIReturnKeyDone;
+        //textfield.autocorrectionType=UITextAutocorrectionTypeNo;
+        _textFieldView.clearButtonMode=UITextFieldViewModeUnlessEditing;
+        _textFieldView.delegate=self;
+        _textFieldView.tag = 200;
+        _textFieldView.borderStyle = UITextBorderStyleRoundedRect;
+        _textFieldView.delegate=self;
+        [self.contentView addSubview:_textFieldView];
+        
     }
+    
+    else if ([self.item isKindOfClass:[QSWLabelItem class]]) {
+        
+        // 右边是标签
+        self.accessoryView = self.labelView;
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
+        
+    }
+    
+    else if ([self.item isKindOfClass:[QSWSettingButtonItem class]]) {
+        
+        // 右边是按钮
+        self.accessoryView = self.buttonView;
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+    
+    
+    
+    //     else {
+    //
+    //        // 右边没有东西
+    //        self.accessoryView=nil;
+    //
+    //    }
     
 }
+
+
 
 @end
