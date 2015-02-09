@@ -9,6 +9,17 @@
 #import "QSMyinfoViewController.h"
 #import "QSMapManager.h"
 #import "QSMapNavigationViewController.h"
+#import "QSWSettingGroup.h"
+#import "QSWSettingCell.h"
+#import "QSWSettingItem.h"
+#import "QSWSettingArrowItem.h"
+#import "QSWMySendAdsViewController.h"
+#import "QSWMyCouponViewController.h"
+#import "QSWUserSettingViewController.h"
+#import "QSWMyStoredCardViewController.h"
+#import "QSWLoginPswViewController.h"
+#import "QSWAddSendAdsViewController.h"
+#import "QSWTextFieldItem.h"
 
 @interface QSMyinfoViewController ()
 
@@ -22,35 +33,80 @@
     
     [super viewDidLoad];
     
-    ///隐藏导航栏
-    self.navigationController.navigationBarHidden = NO;
+    [self setupGroup0];
+    [self setupGroup1];
+    [self setupGroup2];
+    [self setupGroup3];
+    [self setupGroup4];
+    [self setupGroup5];
     
-    
-    ///可展示信息的
-    
-    UIButton *mapButton=[[UIButton alloc]initWithFrame:CGRectMake(20.0f, 200.0f, 100.0f, 40.0f)];
-    
-    [mapButton setTitle:@"地图导航" forState:UIControlStateNormal];
-    [mapButton setTintColor:[UIColor blueColor]];
-    mapButton.backgroundColor=[UIColor redColor];
-    
-    [self.view addSubview:mapButton];
-    
-    [mapButton addTarget:self action:@selector(gotoMapVC) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
+    self.navigationItem.backBarButtonItem=backItem;
+    //backItem.image=[UIImage imageNamed:@"nav_back_normal"];
+    backItem.title=@"";
     
     
 }
 
-
-#pragma mark -进入地图导航页面
--(void)gotoMapVC
+-(void)setupGroup0
 {
-    QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init] ;
+  
+    QSWSettingGroup *group = [self addGroup];
     
-    [self.navigationController pushViewController:VC animated:YES];
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_sendads_normal" title:@"我的送餐地址" destVcClass:[QSWMySendAdsViewController class]];
+    group.items = @[item];
     
 }
 
+-(void)setupGroup1
+{
+
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_coupon_normal" title:@"我的优惠券" destVcClass:[QSWMyCouponViewController class]];
+    group.items = @[item];
+    
+}
+
+-(void)setupGroup2
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_storagecard_normal" title:@"我的储值卡" destVcClass:[QSWMyStoredCardViewController class]];
+    group.items = @[item];
+
+}
+
+-(void)setupGroup3
+{
+
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_loginpsw_normal" title:@"登录密码" destVcClass:[QSWLoginPswViewController class]];
+    group.items = @[item];
+}
+
+-(void)setupGroup4
+{
+
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_setting_normal" title:@"帐号设置" destVcClass:[QSWUserSettingViewController class]];
+    group.items = @[item];
+
+}
+
+-(void)setupGroup5
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWSettingItem *item = [QSWSettingItem item];
+    item.title=@"   香哉客户服务热线:4006780022";
+    group.items = @[item];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

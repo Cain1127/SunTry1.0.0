@@ -10,9 +10,9 @@
 #import "DeviceSizeHeader.h"
 #import "FontHeader.h"
 #import "QSMapNavigationViewController.h"
-#import "NSString+Calculation.h"
 #import "QSLabel.h"
 #import "QSPShakeFoodView.h"
+#import "QSWMerchantIndexCell.h"
 
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -38,7 +38,6 @@
     ///加载食品列表
     [self setupFoodListView];
     
-    
 }
 
 ///加载顶部view
@@ -59,7 +58,7 @@
     
      _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT*4+3*buttonW, buttonY, buttonW, buttonH);
     
-    _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 80.0f, 30.0f);
+    _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 30.0f);
     
     _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT-30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 30.0f);
     
@@ -73,14 +72,23 @@
     UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.moreButton.frame.origin.y+30+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-self.moreButton.frame.origin.y-30-49.0f) collectionViewLayout:flowLayout];
+    ///设置
+    CGFloat viewW = (SIZE_DEVICE_WIDTH - 3.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) * 0.5;
+    CGFloat viewH = viewW * 289.0f / 335.0f;
+    CGSize itemSize = CGSizeMake(viewW, viewH);
+    flowLayout.itemSize = itemSize;
+    flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
+    
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.moreButton.frame.origin.y+30+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-self.moreButton.frame.origin.y-30-49.0f) collectionViewLayout:flowLayout];
+    self.collectionView.showsVerticalScrollIndicator=NO;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
     
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
     
     //注册Cell，必须要有
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
+    [self.collectionView registerClass:[QSWMerchantIndexCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
     [self.view addSubview:self.collectionView];
 }
@@ -96,40 +104,27 @@
 //定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 2;
+    return 1;
 }
 
 //每个UICollectionView展示的内容
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * CellIdentifier = @"UICollectionViewCell";
-    UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.backgroundColor=[UIColor redColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    label.textColor = [UIColor redColor];
-    label.text = [NSString stringWithFormat:@"%d",indexPath.row];
     
-    for (id subView in cell.contentView.subviews) {
-        [subView removeFromSuperview];
+    QSWMerchantIndexCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (cell==nil) {
+        
+        cell=[[QSWMerchantIndexCell alloc]init];
+    
     }
-    [cell.contentView addSubview:label];
+   
+    cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
+    cell.foodNameLabel.text=@"都城辣子鸡";
+    cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
+    cell.priceLabel.text=@"188";
     return cell;
-}
-
-#pragma mark --UICollectionViewDelegateFlowLayout
-
-//定义每个Item 的大小
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGFloat viewW=(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5;
-    return CGSizeMake(viewW, viewW);
-}
-
-//定义每个UICollectionView 的 margin
--(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    CGFloat margin=SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
-    return UIEdgeInsetsMake(margin, margin, margin, margin);
 }
 
 #pragma mark --UICollectionViewDelegate
@@ -137,9 +132,9 @@
 //UICollectionView被选中时调用的方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell * cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+   // UICollectionViewCell * cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     //临时改变个颜色，看好，只是临时改变的。如果要永久改变，可以先改数据源，然后在cellForItemAtIndexPath中控制。
-    cell.backgroundColor = [UIColor greenColor];
+    //cell.backgroundColor = [UIColor greenColor];
     NSLog(@"item======%d",indexPath.item);
     NSLog(@"row=======%d",indexPath.row);
     NSLog(@"section===%d",indexPath.section);

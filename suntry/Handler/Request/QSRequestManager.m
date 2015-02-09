@@ -354,7 +354,7 @@
 {
     
     ///这里需要获取本地用户的ID
-    return [self packPostParamsWithBody:@{@"device" : @"iOS",@"user_id" : @"1"}];
+    return [self packPostParamsWithBody:@{@"device":@"iOS",@"user_id":@"1"}];
     
 }
 
@@ -393,7 +393,7 @@
     }
     
     ///加密串封装
-    NSString *k_key = [t stringByAppendingString:@"mmzybdxwdjcl"];
+    NSString *k_key = [t stringByAppendingString:@"mmzybydxwdjcl"];
     NSString *k_temp = [d stringByAppendingString:k_key];
     NSString *k = [self paramsMD5Encryption:k_temp];
     
@@ -562,7 +562,7 @@
     ///获取配置的类名
     NSString *urlString = [taskDictionary valueForKey:@"url"];
     
-    return [NSString stringWithFormat:@"%@/%@",REQUEST_ROOT_URL,urlString];
+    return [NSString stringWithFormat:@"%@%@",REQUEST_ROOT_URL,urlString];
     
 }
 

@@ -44,7 +44,7 @@
     
     ///初始化mapView
     _mapView=[[MKMapView alloc]init];
-    _mapView.frame=CGRectMake(0, 64.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height-64.0f);
+    _mapView.frame=CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height-64.0f);
     
     _mapView.delegate=self;
     [self.view addSubview:_mapView];

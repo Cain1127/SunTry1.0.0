@@ -12,7 +12,7 @@
 
 @property (nonatomic,strong) UIImageView *foodImageView;
 @property (nonatomic,strong) UILabel *foodNameLabel;
-@property (nonatomic,strong) UILabel *priceMarkLabel;
+@property (nonatomic,strong) UIImageView *priceMarkImageView;
 @property (nonatomic,strong) UILabel *priceLabel;
 
 @end
