@@ -23,8 +23,48 @@
     
     [shared_mapping addAttributeMappingsFromArray:@[@"id_"]];
     
+    
+    // 1.利用NSUserDefaults,就能直接访问软件的偏好设置(Library/Preferences)
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    // 2.存储数据
+    [defaults setObject:@"districtID" forKey:@"id"];
+    [defaults setObject:@"val" forKey:@"name"];
+    
+    // 3.立刻同步
+    [defaults synchronize];
+    
+    
+    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *districtID = [defaults objectForKey:@"id"];
+    NSString *val = [defaults objectForKey:@"name"];
+    NSLog(@"%@ -- %@", districtID,val);
+    
     return shared_mapping;
     
+    
 }
+
+
+//- (IBAction)save {
+//    // 1.利用NSUserDefaults,就能直接访问软件的偏好设置(Library/Preferences)
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    
+//    // 2.存储数据
+//    [defaults setObject:@"districtID" forKey:@"id"];
+//    [defaults setObject:@"val" forKey:@"name"];
+//    
+//    // 3.立刻同步
+//    [defaults synchronize];
+//}
+//
+//- (IBAction)read {
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    
+//    NSString *districtID = [defaults objectForKey:@"id"];
+//    NSString *val = [defaults objectForKey:@"name"];
+//    NSLog(@"%@ -- %@", districtID,val);
+//}
 
 @end
