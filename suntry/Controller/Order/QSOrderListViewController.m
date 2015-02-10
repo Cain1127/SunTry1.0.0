@@ -1,18 +1,18 @@
 //
-//  QSOrderViewController.m
-//  SunTry
+//  QSOrderListViewController.m
+//  suntry
 //
-//  Created by 王树朋 on 15/1/31.
-//  Copyright (c) 2015年 wangshupeng. All rights reserved.
+//  Created by 王树朋 on 15/2/10.
+//  Copyright (c) 2015年 广州七升网络科技有限公司. All rights reserved.
 //
 
-#import "QSOrderViewController.h"
+#import "QSOrderListViewController.h"
 
-@interface QSOrderViewController ()
+@interface QSOrderListViewController ()
 
 @end
 
-@implementation QSOrderViewController
+@implementation QSOrderListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

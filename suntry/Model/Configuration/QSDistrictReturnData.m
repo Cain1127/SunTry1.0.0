@@ -19,9 +19,6 @@
     //mapping字典
     [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"msg" toKeyPath:@"districtList" withMapping:[QSDistrictDataModel objectMapping]]];
     
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
     [[NSUserDefaults standardUserDefaults] arrayForKey:@"msg"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];

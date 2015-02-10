@@ -9,10 +9,11 @@
 #import "QSTabBarViewController.h"
 #import "QSHomeViewController.h"
 #import "QSMyinfoViewController.h"
-#import "QSOrderViewController.h"
 #import "QSPointMealViewController.h"
 #import "ColorHeader.h"
 #import "ImageHeader.h"
+#import "QSOrderListViewController.h"
+
 @interface QSTabBarViewController ()
 
 @end
@@ -32,14 +33,14 @@
     
     ///1.首页
     QSHomeViewController *home=[[QSHomeViewController alloc]init];
-    [self setupChildViewController:home title:@"" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"];
+    [self setupChildViewController:home title:@"越秀" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"];
     
     ///2.点餐
     QSPointMealViewController *pointmeal=[[QSPointMealViewController alloc]init];
-    [self setupChildViewController:pointmeal title:@"美食餐单" imageName:@"tab_pointmeal_normal" selectedImageName:@"tab_pointmeal_selected"];
+    [self setupChildViewController:pointmeal title:@"美食餐" imageName:@"tab_pointmeal_normal" selectedImageName:@"tab_pointmeal_selected"];
     
     ///3.定餐
-    QSOrderViewController *order=[[QSOrderViewController alloc]init];
+    QSOrderListViewController *order=[[QSOrderListViewController alloc]init];
     [self setupChildViewController:order title:@"订单" imageName:@"tab_order_normal" selectedImageName:@"tab_order_selected"];
     
     ///4.我的

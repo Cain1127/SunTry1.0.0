@@ -12,14 +12,27 @@
 #import "ColorHeader.h"
 #import "QSMapManager.h"
 #import "QSWMerchantIndexViewController.h"
+#import "QSBlockButton.h"
+
+typedef enum {
+    DistrictListTable= 1,
+    SearchListTable
+}tableViewType;
 
 @interface QSHomeViewController ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
+{
+    BOOL isOpened;
+}
+@property(nonatomic,strong) UITableView *districtListTableView;//区选择view
+@property(nonatomic,strong) NSArray     *districtList;//区选择数据列表
+@property(nonatomic,strong) UIButton *districtButton;//区选择按钮
 
 @property (nonatomic,copy)  NSString *inputContent;//!<输入框内容
-@property (nonatomic,strong)NSArray *searchDataSource;//!<返回数据源
 @property (nonatomic,strong)UITextField *locationTextField;//!<定位搜索
 @property (nonatomic,strong)UIImageView *chooseImage;//选择图片框
 
+@property(nonatomic,strong) UITableView *searchListTableView;//搜索返回列表view
+@property(nonatomic,strong) NSArray     *searchList;//搜索返回数据
 @end
 
 @implementation QSHomeViewController
@@ -40,20 +53,38 @@
 }
 
 ///获取接口数据
--(NSArray *)searchDataSource
+-(NSArray *)searchList
 {
-    if (_searchDataSource==nil) {
+    if (_searchList==nil) {
         //NSArray *dictArry=[NSArray arrayWithObject:<#(id)#>];
     }
     
-    return _searchDataSource;
+    return _searchList;
 }
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+     isOpened=NO;
     
-    self.navigationItem.title=[NSString stringWithFormat:@"天河"];
+    ///0.添加导航栏主题view
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70.0f, 30.0f)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentRight];
+    [navTitle setText:@"天河区"];
+    
+    UIImageView *titleImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_arrow_down"] highlightedImage:[UIImage imageNamed:@"home_arrow_up"]];
+    
+    _districtButton=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 110.0f, 30.0f)];
+    [_districtButton addSubview:navTitle];
+    [_districtButton addSubview:titleImageView];
+    self.navigationItem.titleView = _districtButton;
+    [_districtButton addTarget:self action:@selector(setupTopTableView) forControlEvents:UIControlEventTouchUpInside];
+    
+    //默认选中天河
+    [self.districtListTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
     
     ///1.添加textfield输入框控件
     UITextField *textfield=[[UITextField alloc] init];
@@ -131,66 +162,185 @@
         
     } completion:^(BOOL finished) {
         
-        [self setupTabbleView];
+        [self setupSearchTabbleView];
         
     }];
 }
 
+///加载头部区选择的tabbleview
+-(void)setupTopTableView
+{
+    if (!isOpened) {
+        //1.加载discitTabbleView
+        _districtListTableView=[[UITableView alloc]initWithFrame:CGRectMake(self.navigationItem.titleView.frame.origin.x-50.0f, self.navigationItem.titleView.frame.origin.y+45.0f, self.navigationItem.titleView.frame.size.width+100.0f, 5*44)];
+        _districtListTableView.delegate=self;
+        _districtListTableView.dataSource=self;
+        [_districtListTableView setTag: DistrictListTable];
+        [self.view addSubview:_districtListTableView];
+    }
+    else
+        [_districtListTableView removeFromSuperview];
+    
+        
+    }
+
 ///加载返回的搜索tabbleview
--(void)setupTabbleView
+-(void)setupSearchTabbleView
 {
     
     CGRect rect=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 66.0f, SIZE_DEFAULT_MAX_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44 * 5);
-    UITableView *tabbleView=[[UITableView alloc]initWithFrame:rect];
-    tabbleView.delegate=self;
-    tabbleView.dataSource=self;
-    [self.view addSubview:tabbleView];
+    _searchListTableView=[[UITableView alloc]initWithFrame:rect];
+    _searchListTableView.delegate=self;
+    _searchListTableView.dataSource=self;
+    [_searchListTableView setTag:SearchListTable];
+    [self.view addSubview:_searchListTableView];
     
 }
 
 #pragma mark --UItabbleViewDelegate方法
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    NSInteger count = 1;
+    
+    switch (tableView.tag){
+            
+        case DistrictListTable:
+            
+            break;
+            
+        case SearchListTable:
+            
+            count = 1;
+            
+            break;
+        default:
+            break;
+            
+    }
+    
+    return count;
+    
+}
+
 ///返回行数
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    return 5;
-    //return self.searchDataSource.count;
+    NSInteger count = 5;
+    
+    switch (tableView.tag){
+            
+        case DistrictListTable:
+            
+            //count = [self.districtList count];
+            
+            break;
+            
+        case SearchListTable:
+            
+            //count = [self.searchList count];
+            
+            break;
+        default:
+            break;
+            
+    }
+    
+    return count;
+
     
 }
 
 /// 返回行高
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 44.0f;
+    CGFloat height=0;
+    switch (tableView.tag) {
+        case DistrictListTable:
+        {
+            height=30;
+        }
+            break;
+            
+        case SearchListTable:
+        {
+            height=44;
+        }
+            
+        default:
+            break;
+    }
+    
+    return height;
     
 }
 
 ///返回的每行
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    static NSString *Indentifier=@"cellIndentifier";
-    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:Indentifier];
-    
-    if (cell==nil) {
+    switch (tableView.tag) {
+        case DistrictListTable:
+        {
+            static NSString *Indentifier=@"cellIndentifier";
+            UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:Indentifier];
+            
+            if (cell==nil) {
+                
+                cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
         
-        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
-        cell.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
-        cell.textLabel.text=[NSString stringWithFormat:@"城建大厦"];
+                cell.textLabel.text=[NSString stringWithFormat:@"天河"];
+            }
+            
+            return cell;
+            
+        }
+            break;
+            
+        case SearchListTable:
+        {
+            static NSString *Indentifier=@"cellIndentifier";
+            UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:Indentifier];
+            
+            if (cell==nil) {
+                
+                cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
+                cell.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
+                cell.textLabel.text=[NSString stringWithFormat:@"城建大厦"];
+            }
+            
+            return cell;
+        }
+            break;
+            
+        default:
+            return  nil;
     }
-    
-    return cell;
-    
-}
+    }
 
 ///点击每一行事件
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    [self touchesBegan:nil withEvent:nil];
-    QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc]init];
-    [self.navigationController pushViewController:VC animated:YES];
+    switch (tableView.tag) {
+        case DistrictListTable:
+        {
+            _districtButton.titleLabel.text=@"越秀";
+            [_districtListTableView removeFromSuperview];
+            //[self touchesBegan:nil withEvent:nil];
+        }
+            break;
+            
+        case SearchListTable:
+        {
+            QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc]init];
+            [self.navigationController pushViewController:VC animated:YES];
+            //[self touchesBegan:nil withEvent:nil];
+        }
+        default:
+            break;
+    }
+    
     
 }
 
