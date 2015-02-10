@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSPFoodInfoListTableViewCell.h"
+#import "QSPShoppingCarView.h"
 
-@interface QSPointMealViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface QSPointMealViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,QSPFoodInfoListTableViewCellDelegate,QSPShoppingCarViewDelegate>
 
 @end

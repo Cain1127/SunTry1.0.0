@@ -10,11 +10,10 @@
 #import "DeviceSizeHeader.h"
 #import "QSPShakeFoodView.h"
 #import "QSPFoodTypeTableViewCell.h"
-#import "QSPFoodInfoListTableViewCell.h"
 #import "QSAppDelegate.h"
-#import "QSPShoppingCarView.h"
 #import "ImageHeader.h"
 #import "QSBlockButton.h"
+#import "QSPFoodPackageView.h"
 
 
 #define FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR  [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.]
@@ -38,6 +37,7 @@ enum tableViewType{
 @property(nonatomic,strong) NSArray     *foodTypeList;
 @property(nonatomic,strong) UITableView *foodInfoListTableView;
 @property(nonatomic,strong) NSArray     *foodInfoList;
+@property(nonatomic,strong) QSPShoppingCarView *shoppingCarView;
 
 @end
 
@@ -65,15 +65,15 @@ enum tableViewType{
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    QSPShoppingCarView *shoppingCarView = [QSPShoppingCarView getshoppingCarView];
-    [shoppingCarView setFrame:CGRectMake(0, SIZE_DEVICE_HEIGHT-shoppingCarView.frame.size.height-20-44, shoppingCarView.frame.size.width, shoppingCarView.frame.size.height)];
-    
-    [shoppingCarView updateShoppingCar];
+    self.shoppingCarView = [QSPShoppingCarView getShoppingCarView];
+    [_shoppingCarView setFrame:CGRectMake(0, SIZE_DEVICE_HEIGHT-_shoppingCarView.frame.size.height-20-44, _shoppingCarView.frame.size.width, _shoppingCarView.frame.size.height)];
+    [_shoppingCarView setDelegate:self];
+    [_shoppingCarView updateShoppingCar];
     
     self.foodTypeList = [NSArray arrayWithObjects:@"",@"",@"",@"",@"",@"", nil];
     self.foodInfoList = [NSArray arrayWithObjects:@"",@"",@"",@"",@"",@"",@"",@"",@"",@"", nil];
     
-    self.foodTypeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, FOOD_TYPE_TABLEVIEW_WIDTH, SIZE_DEVICE_HEIGHT-44-20-shoppingCarView.frame.size.height)];
+    self.foodTypeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, FOOD_TYPE_TABLEVIEW_WIDTH, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height)];
     [self.foodTypeTableView setDelegate:self];
     [self.foodTypeTableView setDataSource:self];
     [self.foodTypeTableView setBounces:YES];
@@ -84,7 +84,7 @@ enum tableViewType{
     [self.foodTypeTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.foodTypeTableView];
     
-    self.foodInfoListTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.foodTypeTableView.frame.origin.x+self.foodTypeTableView.frame.size.width, 0, SIZE_DEVICE_WIDTH-self.foodTypeTableView.frame.size.width, SIZE_DEVICE_HEIGHT-44-20-shoppingCarView.frame.size.height)];
+    self.foodInfoListTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.foodTypeTableView.frame.origin.x+self.foodTypeTableView.frame.size.width, 0, SIZE_DEVICE_WIDTH-self.foodTypeTableView.frame.size.width, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height)];
     [self.foodInfoListTableView setDelegate:self];
     [self.foodInfoListTableView setDataSource:self];
     [self.foodInfoListTableView setBounces:YES];
@@ -95,7 +95,7 @@ enum tableViewType{
     [self.foodInfoListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.foodInfoListTableView];
     
-    [self.view addSubview:shoppingCarView];
+    [self.view addSubview:_shoppingCarView];
     
 }
 
@@ -312,9 +312,11 @@ enum tableViewType{
                 if (cell == nil) {
                     
                     cell = [[QSPFoodInfoListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:foodInfoListTableViewIdentifier];
+                    [cell setDelegate:self];
                     
                 }
-                [cell upFoodData:nil];
+                
+                [cell upFoodData:[NSString stringWithFormat:@"番茄鸡扒%ld",indexPath.row]];
                 
                 return cell;
                 
@@ -333,13 +335,21 @@ enum tableViewType{
     switch (tableView.tag){
             
         case FoodTypeTable:
-            
-            
+            {
+                NSInteger selectRow = indexPath.row;
+                if (selectRow<[self.foodInfoListTableView numberOfSections]) {
+                    [self.foodInfoListTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:selectRow] animated:YES scrollPosition:UITableViewScrollPositionTop];
+                }
+            }
             break;
             
         case FoodInfoListTable:
-            
-            
+            {
+                QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
+                [self.navigationController.view addSubview:packageView];
+                [packageView showPackageView];
+                
+            }
             break;
         default:
             break;
@@ -384,6 +394,25 @@ enum tableViewType{
     }
     
 }
+
+- (void)changedCount:(NSInteger)count withFoodData:(id)foodData
+{
+    
+    NSLog(@"changedCount:%ld withFoodData:%@",count,foodData);
+    
+    if (_shoppingCarView) {
+        [_shoppingCarView changeGoods:foodData withCount:count];
+    }
+    
+}
+
+- (void)orderWithData:(id)foodData
+{
+    
+    NSLog(@"orderWithData:%@",foodData);
+    
+}
+
 /*
 #pragma mark - Navigation
 

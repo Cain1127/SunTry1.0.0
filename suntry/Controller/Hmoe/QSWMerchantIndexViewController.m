@@ -32,6 +32,9 @@
     [super viewDidLoad];
      self.title=@"体育西路";
     
+    [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
+    [self becomeFirstResponder];
+    
     ///加载头部view
     [self setupTopView];
     
@@ -176,6 +179,18 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    
+}
+
+
+-(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    
+    NSLog(@"触发摇一摇");
+    QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
+    [self.tabBarController.view addSubview:shakeFoodView];
+    [shakeFoodView upFoodData:nil];
+    [shakeFoodView showShakeFoodView];
     
 }
 

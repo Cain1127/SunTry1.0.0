@@ -13,7 +13,6 @@
 #import "UIImageView+CacheImage.h"
 #import "NSString+Calculation.h"
 #import "ColorHeader.h"
-#import "QSPFoodCountControlView.h"
 
 #define TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE        14.
 #define TABLEVIEW_FOOD_NAME_STRING_COLOR            COLOR_HEXCOLOR(0x94414D)
@@ -30,10 +29,13 @@
 @property(nonatomic,strong) QSLabel     *inStockCountLabel;
 @property(nonatomic,strong) UIImageView *specialMarkImgView;
 @property(nonatomic,strong) QSPFoodCountControlView *foodCountControlView;
+@property(nonatomic,strong) id          foodData;
 
 @end
 
 @implementation QSPFoodInfoListTableViewCell
+
+@synthesize delegate;
 
 - (void)awakeFromNib {
     // Initialization code
@@ -92,6 +94,7 @@
         //增加减少菜品数量控件
         self.foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
         [self.foodCountControlView setMarginTopRight:CGPointMake(SIZE_DEVICE_WIDTH-FOOD_TYPE_TABLEVIEW_WIDTH-10, self.priceLabel.frame.origin.y-8)];
+        [self.foodCountControlView setDelegate:self];
         [self.contentView addSubview:self.foodCountControlView];
         
         UIView *lineButtomView = [[UIView alloc] initWithFrame:CGRectMake(11, FOOD_INFOLIST_TABLEVIEW_CELL_HEIGHT-1, SIZE_DEVICE_WIDTH-FOOD_TYPE_TABLEVIEW_WIDTH-22, 1)];
@@ -107,6 +110,8 @@
 
 - (void)upFoodData:(id)data
 {
+    
+    self.foodData = data;
     
     [self.contentImgView loadImageWithURL:[NSURL URLWithString:@"http://admin.9dxz.com/files/jpg(18).jpeg"] placeholderImage:nil];
     
@@ -130,6 +135,16 @@
     [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
     [self.priceLabel setText:priceStr];
     
+}
+
+- (void)changedCount:(NSInteger)count
+{
+    
+    if (delegate) {
+        
+        [delegate changedCount:count withFoodData:_foodData];
+        
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

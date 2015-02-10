@@ -8,9 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol QSPShoppingCarViewDelegate<NSObject>
+
+- (void)orderWithData:(id)foodData;
+
+@end
+
 @interface QSPShoppingCarView : UIView
 
-+ (instancetype)getshoppingCarView;
+@property(nonatomic,assign) id<QSPShoppingCarViewDelegate> delegate;
+
++ (instancetype)getShoppingCarView;
 
 - (void)addGood:(id)goodData;
 
@@ -21,5 +29,7 @@
 - (void)clearShoopingCar;
 
 - (void)updateShoppingCar;
+
+- (void)changeGoods:(id)goodData withCount:(NSInteger)count;
 
 @end

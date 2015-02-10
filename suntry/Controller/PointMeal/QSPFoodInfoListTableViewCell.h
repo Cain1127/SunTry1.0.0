@@ -7,8 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSPFoodCountControlView.h"
 
-@interface QSPFoodInfoListTableViewCell : UITableViewCell
+@protocol QSPFoodInfoListTableViewCellDelegate<NSObject>
+
+/**
+ *  返回选择的菜品数据以及数量
+ *
+ *  @param count    数量
+ *  @param foodData 菜品数据
+ */
+- (void)changedCount:(NSInteger)count withFoodData:(id)foodData;
+
+@end
+
+@interface QSPFoodInfoListTableViewCell : UITableViewCell<SPFoodCountControlViewDelegate>
+
+@property(nonatomic,assign) id<QSPFoodInfoListTableViewCellDelegate> delegate;
 
 - (void)upFoodData:(id)data;
 

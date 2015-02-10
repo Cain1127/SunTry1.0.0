@@ -26,6 +26,8 @@
 
 @implementation QSPFoodCountControlView
 
+@synthesize delegate;
+
 - (instancetype)initControlView
 {
     
@@ -39,7 +41,15 @@
         addBtStyleModel.imagesNormal = @"food_count_add_normal_bt";
         addBtStyleModel.imagesHighted = @"food_count_add_down_bt";
         self.addBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.frame.size.width-32, 0, 32, 32) andButtonStyle:addBtStyleModel andCallBack:^(UIButton *button) {
+            
             [self setCount:++self.countInt];
+            
+            if (delegate) {
+                
+                [delegate changedCount:_countInt];
+                
+            }
+            
         }];
         [self addSubview:self.addBt];
         
@@ -59,6 +69,12 @@
         self.reduceBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.countLabel.frame.origin.x-self.countLabel.frame.size.width-6, 0, 32, 32) andButtonStyle:reduceBtStyleModel andCallBack:^(UIButton *button) {
             
             [self setCount:--self.countInt];
+            
+            if (delegate) {
+                
+                [delegate changedCount:_countInt];
+                
+            }
             
         }];
         

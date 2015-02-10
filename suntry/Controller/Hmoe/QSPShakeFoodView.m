@@ -93,6 +93,7 @@
         closeStyleModel.imagesHighted = @"close_button_down_icon";
         UIButton *closeBt = [UIButton createBlockButtonWithFrame:CGRectMake(contentBackgroundView.frame.size.width-32-8, 8, 32, 32) andButtonStyle:closeStyleModel andCallBack:^(UIButton *button) {
             [self hideShakeFoodView];
+            [self removeFromSuperview];
         }];
         [contentBackgroundView addSubview:closeBt];
         

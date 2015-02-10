@@ -10,6 +10,7 @@
 #import "DeviceSizeHeader.h"
 #import "QSLabel.h"
 #import "NSString+Calculation.h"
+#import "QSBlockButton.h"
 
 #define SHOPPING_CAR_VIEW_HEIGHT                        49.
 #define SHOPPING_CAR_VIEW_LEFTVIEW_BACKGROUND_COLOR    [UIColor colorWithRed:192/255. green:84/255. blue:100/255. alpha:1]
@@ -28,13 +29,16 @@
 @property (nonatomic, strong) NSMutableArray    *goodListInShoppingCar;
 @property (nonatomic, strong) UILabel           *countLabel;
 @property (nonatomic, strong) UIView            *rightView;
+@property (nonatomic, strong) UIButton          *rightButton;
 
 @end
 
 
 @implementation QSPShoppingCarView
 
-+ (instancetype)getshoppingCarView
+@synthesize delegate;
+
++ (instancetype)getShoppingCarView
 {
     
     static QSPShoppingCarView *shoppingCarView;
@@ -95,6 +99,15 @@
         [self.rightView addSubview:self.rightInfoLabel];
         
         [self.rightInfoLabel setText:@"￥24起配送"];
+        
+        self.rightButton = [UIButton createBlockButtonWithFrame:CGRectMake((_rightInfoLabel.frame.size.width-80)/2, (_rightInfoLabel.frame.size.height-44)/2, 80, 44) andButtonStyle:nil andCallBack:^(UIButton *button) {
+            if (delegate) {
+                [delegate orderWithData:_goodListInShoppingCar];
+            }
+        }];
+        [self.rightInfoLabel setUserInteractionEnabled:YES];
+        [self.rightInfoLabel addSubview:_rightButton];
+        [_rightButton setHidden:YES];
     }
     
     return self;
@@ -104,13 +117,22 @@
 - (void)updateShoppingCar
 {
     
-    self.goodListInShoppingCar = [NSArray arrayWithObjects:@"",@"",@"",@"",@"", nil];
-    
+    [_rightButton setHidden:YES];
     NSInteger goodCount = [self.goodListInShoppingCar count];
     
     if (goodCount>0) {
         
-        NSString *countStr = [NSString stringWithFormat:@"%ld",(long)goodCount];
+        NSInteger totalCount = 0;
+        for (int i=0; i<[_goodListInShoppingCar count]; i++) {
+            
+            NSDictionary *tempDic = _goodListInShoppingCar[i];
+            if (tempDic) {
+                NSInteger perCount = [[tempDic objectForKey:@"count"] integerValue];
+                totalCount += perCount;
+            }
+        }
+        
+        NSString *countStr = [NSString stringWithFormat:@"%ld",(long)totalCount];
         //计算价格Label宽度
         CGFloat countStrWidth = [countStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHOPPING_CAR_VIEW_COUNT_TEXT_FONT_SIZE];
         if (countStrWidth < 16) {
@@ -121,7 +143,7 @@
         [self.countLabel setFrame:CGRectMake(self.countLabel.frame.origin.x, self.countLabel.frame.origin.y, countStrWidth, self.countLabel.frame.size.height)];
         [self.countLabel setHidden:NO];
         
-        CGFloat currentPrice = 12.8965;
+        CGFloat currentPrice = totalCount * 8.88;
         
         [self.leftInfoLabel setText:[NSString stringWithFormat:@"共￥%.2f",currentPrice]];
         
@@ -144,14 +166,14 @@
             
             [self.rightInfoLabel setText:@"选好了"];
             [self.rightView setBackgroundColor:SHOPPING_CAR_VIEW_RIGHTVIEW_FINAL_BACKGROUND_COLOR];
-            
+            [_rightButton setHidden:NO];
         }
         
     }else{
         
         [self.countLabel setHidden:YES];
         [self.leftInfoLabel setText:@"你的购物车是空的"];
-        [self.rightInfoLabel setText:@"￥24起配送"];
+        [self.rightInfoLabel setText:@"￥20起配送"];
         
     }
     
@@ -182,6 +204,45 @@
 {
     
     [self.goodListInShoppingCar removeAllObjects];
+    
+}
+
+- (void)changeGoods:(id)goodData withCount:(NSInteger)count
+{
+    
+    if (!_goodListInShoppingCar) {
+        self.goodListInShoppingCar = [NSMutableArray arrayWithCapacity:0];
+    }
+    
+    if ([_goodListInShoppingCar count] == 0) {
+        
+        //FIXME:添加进空购物车需修复，以下暂做测试
+        NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:goodData,@"foodName",[NSNumber numberWithInt:(int)count],@"count",nil];
+        [_goodListInShoppingCar addObject:itemDic];
+        
+    }else{
+        
+        //FIXME:添加进购物车需修复，以下暂做测试
+        BOOL hadGood = NO;
+        for (int i=0; i<[_goodListInShoppingCar count]; i++) {
+            NSMutableDictionary *tempDic = _goodListInShoppingCar[i];
+            if (tempDic) {
+                //FIXME:这个判断是个坑，以实际数据关键Key为准。
+                if ([goodData isEqualToString:[tempDic objectForKey:@"foodName"]]) {
+                    hadGood = YES;
+                    [tempDic setObject:[NSNumber numberWithInt:(int)(count)] forKey:@"count"];
+                }
+            }
+        }
+        
+        if (NO==hadGood) {
+            NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:goodData,@"foodName",[NSNumber numberWithInt:(int)count],@"count",nil];
+            [_goodListInShoppingCar addObject:itemDic];
+        }
+        
+    }
+    
+    [self updateShoppingCar];
     
 }
 

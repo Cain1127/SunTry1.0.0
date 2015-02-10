@@ -8,7 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SPFoodCountControlViewDelegate<NSObject>
+/**
+ *  返回改变后当前的数量
+ *
+ *  @param count 数量
+ */
+- (void)changedCount:(NSInteger)count;
+
+@end
+
 @interface QSPFoodCountControlView : UIView
+
+@property(nonatomic,assign) id<SPFoodCountControlViewDelegate> delegate;
 
 - (instancetype)initControlView;//初始化增加减少菜品数量控件
 
