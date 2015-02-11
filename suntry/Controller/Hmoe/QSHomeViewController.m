@@ -78,7 +78,7 @@ typedef enum {
         self.districtList = [[NSMutableArray alloc] initWithArray:districtData.districtList];
         
         NSLog(@"================区信息个数================");
-        NSLog(@"%d",self.districtList.count);
+        NSLog(@"%ld",self.districtList.count);
         NSLog(@"================区信息个数================");
         
     }
@@ -102,7 +102,7 @@ typedef enum {
         self.searchList = [[NSMutableArray alloc] initWithArray:selectData.selectList];
         
         NSLog(@"===============天河区模糊搜索数据数量================");
-        NSLog(@"%d", self.searchList.count);
+        NSLog(@"%ld", self.searchList.count);
          NSLog(@"===============天河区模糊搜索数据数量================");
 
     }
@@ -355,7 +355,7 @@ typedef enum {
                 cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
                 
                 cell.textLabel.textAlignment=NSTextAlignmentCenter;
-            
+                cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 
             }
             
@@ -375,12 +375,11 @@ typedef enum {
                 
                 cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
                 cell.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
+                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 
-                QSSelectDataModel *tempModel = self.searchList[indexPath.row];
-                
-                cell.textLabel.text=tempModel.streetName;
             }
-            
+            QSSelectDataModel *tempModel = self.searchList[indexPath.row];
+            cell.textLabel.text=tempModel.streetName;
             return cell;
         }
             break;
@@ -406,7 +405,7 @@ typedef enum {
             
         case SearchListTable:
         {
-            QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc]init];
+            QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
             [self.navigationController pushViewController:VC animated:YES];
             //[self touchesBegan:nil withEvent:nil];
         }

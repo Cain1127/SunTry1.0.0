@@ -13,7 +13,7 @@
 #import "QSAppDelegate.h"
 #import "ImageHeader.h"
 #import "QSBlockButton.h"
-#import "QSPFoodPackageView.h"
+//#import "QSPFoodPackageView.h"
 
 
 #define FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR  [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.]
@@ -345,9 +345,9 @@ enum tableViewType{
             
         case FoodInfoListTable:
             {
-                QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
-                [self.navigationController.view addSubview:packageView];
-                [packageView showPackageView];
+//                QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
+//                [self.navigationController.view addSubview:packageView];
+//                [packageView showPackageView];
                 
             }
             break;

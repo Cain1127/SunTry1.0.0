@@ -580,9 +580,19 @@
             
             break;
             
+            ///街道查询的信息
           case rRequestTypeSelect:
             
             return rRequestHttpRequestTypePost;
+            
+            break;
+            
+            ///每日特价菜品的信息
+          case rRequestTypeAspecial:
+            
+            return rRequestHttpRequestTypePost;
+            
+            break;
             
             ///默认返回Post
         default:
