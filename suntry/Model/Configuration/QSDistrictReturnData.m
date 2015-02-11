@@ -19,13 +19,29 @@
     //mapping字典
     [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"msg" toKeyPath:@"districtList" withMapping:[QSDistrictDataModel objectMapping]]];
     
-    [[NSUserDefaults standardUserDefaults] arrayForKey:@"msg"];
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
     
     return shared_mapping;
     
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+
+    if (self = [super initWithCoder:aDecoder]) {
+        
+        self.districtList = [aDecoder decodeObjectForKey:@"districtList"];
+        
+    }
+    
+    return self;
+
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+
+    [aCoder encodeObject:self.districtList forKey:@"districtList"];
+
+}
 
 @end

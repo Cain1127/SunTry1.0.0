@@ -13,6 +13,11 @@
 #import "QSMapManager.h"
 #import "QSWMerchantIndexViewController.h"
 #import "QSBlockButton.h"
+#import "QSRequestManager.h"
+#import "QSRequestTaskDataModel.h"
+#import "QSSelectDataModel.h"
+#import "QSSelectReturnData.h"
+#import "QSDistrictReturnData.h"
 
 typedef enum {
     DistrictListTable= 1,
@@ -23,9 +28,11 @@ typedef enum {
 {
     BOOL isOpened;
 }
+
 @property(nonatomic,strong) UITableView *districtListTableView;//区选择view
-@property(nonatomic,strong) NSArray     *districtList;//区选择数据列表
+@property(nonatomic,strong) NSArray   *districtList;//区选择数据列表
 @property(nonatomic,strong) UIButton *districtButton;//区选择按钮
+@property(nonatomic,strong) NSString *districtName;//区名
 
 @property (nonatomic,copy)  NSString *inputContent;//!<输入框内容
 @property (nonatomic,strong)UITextField *locationTextField;//!<定位搜索
@@ -33,6 +40,7 @@ typedef enum {
 
 @property(nonatomic,strong) UITableView *searchListTableView;//搜索返回列表view
 @property(nonatomic,strong) NSArray     *searchList;//搜索返回数据
+@property(nonatomic,assign) int streetID;//街道ID
 @end
 
 @implementation QSHomeViewController
@@ -43,28 +51,70 @@ typedef enum {
 {
     if (_inputContent==nil) {
         
-        NSString *dict=[[NSString alloc]init];
+        NSString *dict=[[NSString alloc] init];
         
         _inputContent=dict;
+        
     }
     
     return _inputContent;
     
 }
 
-///获取接口数据
--(NSArray *)searchList
+///获取区的接口数据
+-(NSArray *)districtList
 {
-    if (_searchList==nil) {
-        //NSArray *dictArry=[NSArray arrayWithObject:<#(id)#>];
+    if (_districtList==nil) {
+        
+        ///数据地址
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/districtData"];
+        
+        ///首先转成data
+        NSData *saveData = [NSData dataWithContentsOfFile:path];
+        
+        ///encode数据
+        QSDistrictReturnData *districtData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
+        self.districtList = [[NSMutableArray alloc] initWithArray:districtData.districtList];
+        
+        NSLog(@"================区信息个数================");
+        NSLog(@"%d",self.districtList.count);
+        NSLog(@"================区信息个数================");
+        
     }
     
-    return _searchList;
+    return _districtList;
 }
 
+-(NSArray *)searchList
+{
+    
+    if (_searchList==nil) {
+        
+        ///数据地址
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/selectData"];
+        ///首先转成data
+        NSData *saveData = [NSData dataWithContentsOfFile:path];
+        
+        ///encode数据
+        QSSelectReturnData *selectData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
+        self.searchList = [[NSMutableArray alloc] initWithArray:selectData.selectList];
+        
+        NSLog(@"===============天河区模糊搜索数据数量================");
+        NSLog(@"%d", self.searchList.count);
+         NSLog(@"===============天河区模糊搜索数据数量================");
+
+    }
+    return _searchList;
+
+}
+
+#pragma mark --加载控件
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+ 
      isOpened=NO;
     
     ///0.添加导航栏主题view
@@ -75,11 +125,12 @@ typedef enum {
     [navTitle setTextAlignment:NSTextAlignmentRight];
     [navTitle setText:@"天河区"];
     
-    UIImageView *titleImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_arrow_down"] highlightedImage:[UIImage imageNamed:@"home_arrow_up"]];
+    UIImageView *titleImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_arrow_down"] ];
     
     _districtButton=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 110.0f, 30.0f)];
     [_districtButton addSubview:navTitle];
     [_districtButton addSubview:titleImageView];
+
     self.navigationItem.titleView = _districtButton;
     [_districtButton addTarget:self action:@selector(setupTopTableView) forControlEvents:UIControlEventTouchUpInside];
     
@@ -151,7 +202,7 @@ typedef enum {
     
 }
 
-///点击按钮搜索事件
+#pragma mark --按钮点击事件
 -(void)locationSearch
 {
     [self touchesBegan:nil withEvent:nil];
@@ -170,17 +221,28 @@ typedef enum {
 ///加载头部区选择的tabbleview
 -(void)setupTopTableView
 {
-    if (!isOpened) {
+    // 1.(状态取反)
+    isOpened=!isOpened;
+    
+    if (isOpened) {
+        
+        self.districtButton.imageView.transform = CGAffineTransformMakeRotation(M_PI_2);
         //1.加载discitTabbleView
-        _districtListTableView=[[UITableView alloc]initWithFrame:CGRectMake(self.navigationItem.titleView.frame.origin.x-50.0f, self.navigationItem.titleView.frame.origin.y+45.0f, self.navigationItem.titleView.frame.size.width+100.0f, 5*44)];
+        _districtListTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, _districtButton.frame.origin.y, SIZE_DEVICE_WIDTH, [_districtList count]*35.0f)];
         _districtListTableView.delegate=self;
         _districtListTableView.dataSource=self;
         [_districtListTableView setTag: DistrictListTable];
+        
         [self.view addSubview:_districtListTableView];
+        
+        ///刷新数据
+        [self.districtListTableView reloadData];
     }
     else
+      {
+         self.districtButton.imageView.transform = CGAffineTransformMakeRotation(0);
         [_districtListTableView removeFromSuperview];
-    
+       }
         
     }
 
@@ -188,16 +250,19 @@ typedef enum {
 -(void)setupSearchTabbleView
 {
     
-    CGRect rect=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 66.0f, SIZE_DEFAULT_MAX_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44 * 5);
+    CGRect rect=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 66.0f, SIZE_DEFAULT_MAX_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-64.0f-49.0f-66.0f);
     _searchListTableView=[[UITableView alloc]initWithFrame:rect];
     _searchListTableView.delegate=self;
     _searchListTableView.dataSource=self;
     [_searchListTableView setTag:SearchListTable];
     [self.view addSubview:_searchListTableView];
     
+    ///刷新数据
+    [self.searchListTableView reloadData];
+    
 }
 
-#pragma mark --UItabbleViewDelegate方法
+#pragma mark --UItabbleViewDelegate代理方法
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
@@ -227,19 +292,19 @@ typedef enum {
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    NSInteger count = 5;
+    NSInteger count = 0;
     
     switch (tableView.tag){
             
         case DistrictListTable:
             
-            //count = [self.districtList count];
+            count = [self.districtList count];
             
             break;
             
         case SearchListTable:
-            
-            //count = [self.searchList count];
+          
+            count = [self.searchList count];
             
             break;
         default:
@@ -259,7 +324,7 @@ typedef enum {
     switch (tableView.tag) {
         case DistrictListTable:
         {
-            height=30;
+            height=35;
         }
             break;
             
@@ -288,10 +353,14 @@ typedef enum {
             if (cell==nil) {
                 
                 cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
-        
-                cell.textLabel.text=[NSString stringWithFormat:@"天河"];
+                
+                cell.textLabel.textAlignment=NSTextAlignmentCenter;
+            
+                
             }
             
+            QSDistrictDataModel *tempModel = self.districtList[indexPath.row];
+            cell.textLabel.text = tempModel.val;
             return cell;
             
         }
@@ -306,7 +375,10 @@ typedef enum {
                 
                 cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
                 cell.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
-                cell.textLabel.text=[NSString stringWithFormat:@"城建大厦"];
+                
+                QSSelectDataModel *tempModel = self.searchList[indexPath.row];
+                
+                cell.textLabel.text=tempModel.streetName;
             }
             
             return cell;
@@ -325,7 +397,8 @@ typedef enum {
     switch (tableView.tag) {
         case DistrictListTable:
         {
-            _districtButton.titleLabel.text=@"越秀";
+            
+            _districtButton.titleLabel.text= [NSString stringWithFormat:@"%d",(int)indexPath.row];
             [_districtListTableView removeFromSuperview];
             //[self touchesBegan:nil withEvent:nil];
         }
@@ -340,7 +413,6 @@ typedef enum {
         default:
             break;
     }
-    
     
 }
 

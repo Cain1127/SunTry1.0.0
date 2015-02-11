@@ -580,6 +580,10 @@
             
             break;
             
+          case rRequestTypeSelect:
+            
+            return rRequestHttpRequestTypePost;
+            
             ///默认返回Post
         default:
             
