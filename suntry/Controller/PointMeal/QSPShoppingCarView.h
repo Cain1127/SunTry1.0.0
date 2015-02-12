@@ -14,11 +14,27 @@
 
 @end
 
+/**
+    两种样式：
+    ProcessTypeOnSubmitOrder： 在下单界面时
+    ProcessTypeOnSelectedFood：在选择菜品时
+ */
+typedef enum
+{
+    
+    ProcessTypeOnSubmitOrder = 1,
+    ProcessTypeOnSelectedFood
+    
+}ProcessType;
+
 @interface QSPShoppingCarView : UIView
 
 @property(nonatomic,assign) id<QSPShoppingCarViewDelegate> delegate;
 
-+ (instancetype)getShoppingCarView;
+//+ (instancetype)getShoppingCarView;
+- (instancetype)initShakeFoodView;
+
+- (void)setProcessType:(ProcessType)type;
 
 - (void)addGood:(id)goodData;
 

@@ -28,4 +28,6 @@
 
 - (NSInteger)getCount;
 
+- (void)setCount:(NSInteger)count;
+
 @end

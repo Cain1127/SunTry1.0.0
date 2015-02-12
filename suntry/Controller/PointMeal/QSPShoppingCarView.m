@@ -21,6 +21,8 @@
 
 #define SHOPPING_CAR_VIEW_RIGHTVIEW_FINAL_BACKGROUND_COLOR   [UIColor colorWithRed:189/255. green:180/255. blue:155/255. alpha:1]
 
+#define SHOPPING_CAR_VIEW_SHIPPING_PRICE                20.
+
 @interface QSPShoppingCarView ()
 
 @property (nonatomic, strong) UIImageView       *shoppingCarIconView;
@@ -30,6 +32,7 @@
 @property (nonatomic, strong) UILabel           *countLabel;
 @property (nonatomic, strong) UIView            *rightView;
 @property (nonatomic, strong) UIButton          *rightButton;
+@property (nonatomic, assign) ProcessType       processType;
 
 @end
 
@@ -38,26 +41,31 @@
 
 @synthesize delegate;
 
-+ (instancetype)getShoppingCarView
+//+ (instancetype)getShoppingCarView
+//{
+//    
+//    static QSPShoppingCarView *shoppingCarView;
+//    
+//    if (!shoppingCarView) {
+//        
+//        shoppingCarView = [[QSPShoppingCarView alloc] initShakeFoodView];
+//        
+//    }
+//    
+//    return shoppingCarView;
+//    
+//}
+
+- (void)setProcessType:(ProcessType)type
 {
-    
-    static QSPShoppingCarView *shoppingCarView;
-    
-    if (!shoppingCarView) {
-        
-        shoppingCarView = [[QSPShoppingCarView alloc] initShakeFoodView];
-        
-    }
-    
-    return shoppingCarView;
-    
+    _processType = type;
 }
 
 - (instancetype)initShakeFoodView
 {
     
     if (self = [super init]) {
-        
+
         self.goodListInShoppingCar = [NSMutableArray arrayWithCapacity:0];
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SHOPPING_CAR_VIEW_HEIGHT)];
         [self setBackgroundColor:[UIColor whiteColor]];
@@ -117,12 +125,17 @@
 - (void)updateShoppingCar
 {
     
+    [_shoppingCarIconView setHidden:NO];
     [_rightButton setHidden:YES];
+    [_countLabel setHidden:NO];
     NSInteger goodCount = [self.goodListInShoppingCar count];
+    
+    CGFloat currentPrice = 0;
+    NSInteger totalCount = 0;
     
     if (goodCount>0) {
         
-        NSInteger totalCount = 0;
+        ;
         for (int i=0; i<[_goodListInShoppingCar count]; i++) {
             
             NSDictionary *tempDic = _goodListInShoppingCar[i];
@@ -143,21 +156,21 @@
         [self.countLabel setFrame:CGRectMake(self.countLabel.frame.origin.x, self.countLabel.frame.origin.y, countStrWidth, self.countLabel.frame.size.height)];
         [self.countLabel setHidden:NO];
         
-        CGFloat currentPrice = totalCount * 8.88;
+        currentPrice = totalCount * 8.88;
+        
+        [self.leftInfoLabel setFrame:CGRectMake(_shoppingCarIconView.frame.origin.x+_shoppingCarIconView.frame.size.width, (self.frame.size.height-24)/2, (self.frame.size.width - _rightView.frame.size.width)-(_shoppingCarIconView.frame.origin.x+_shoppingCarIconView.frame.size.width), 24)];
         
         [self.leftInfoLabel setText:[NSString stringWithFormat:@"共￥%.2f",currentPrice]];
         
-        CGFloat shippingPrice = 20.;
-        
-        if (shippingPrice-currentPrice>0) {
+        if (SHOPPING_CAR_VIEW_SHIPPING_PRICE-currentPrice>0) {
             
             if (currentPrice==0) {
                 
-                [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.f起配送",shippingPrice]];
+                [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.f起配送",SHOPPING_CAR_VIEW_SHIPPING_PRICE]];
                 
             }else{
                 
-                [self.rightInfoLabel setText:[NSString stringWithFormat:@"差￥%.2f配送",shippingPrice-currentPrice]];
+                [self.rightInfoLabel setText:[NSString stringWithFormat:@"差￥%.2f配送", SHOPPING_CAR_VIEW_SHIPPING_PRICE-currentPrice]];
                 
             }
             [self.rightView setBackgroundColor:SHOPPING_CAR_VIEW_RIGHTVIEW_BACKGROUND_COLOR];
@@ -175,6 +188,37 @@
         [self.leftInfoLabel setText:@"你的购物车是空的"];
         [self.rightInfoLabel setText:@"￥20起配送"];
         
+    }
+    
+    if (ProcessTypeOnSubmitOrder == _processType) {
+        
+        [self.shoppingCarIconView setHidden:YES];
+        
+        [self.leftInfoLabel setFrame:CGRectMake(_shoppingCarIconView.frame.origin.x, (self.frame.size.height-24)/2, (self.frame.size.width - _rightView.frame.size.width), 24)];
+        [self.leftInfoLabel setText:[NSString stringWithFormat:@"%ld份菜品,共￥%.2f",totalCount,currentPrice]];
+        
+        [_countLabel setHidden:YES];
+        
+        if (SHOPPING_CAR_VIEW_SHIPPING_PRICE-currentPrice>0) {
+            
+            if (currentPrice==0) {
+                
+                [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.f起配送",SHOPPING_CAR_VIEW_SHIPPING_PRICE]];
+                
+            }else{
+                
+                [self.rightInfoLabel setText:[NSString stringWithFormat:@"差￥%.2f配送", SHOPPING_CAR_VIEW_SHIPPING_PRICE-currentPrice]];
+                
+            }
+            [self.rightView setBackgroundColor:SHOPPING_CAR_VIEW_RIGHTVIEW_BACKGROUND_COLOR];
+            
+        }else{
+            
+            [self.rightInfoLabel setText:@"确定下单"];
+            [self.rightView setBackgroundColor:SHOPPING_CAR_VIEW_RIGHTVIEW_FINAL_BACKGROUND_COLOR];
+            [_rightButton setHidden:NO];
+            
+        }
     }
     
 }

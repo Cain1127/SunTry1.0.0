@@ -16,7 +16,7 @@
 
 - (void)hideShakeFoodView;
 
-- (void)upFoodData:(id)data;
+- (void)updateFoodData:(id)data;
 
 - (id)getFoodData;
 

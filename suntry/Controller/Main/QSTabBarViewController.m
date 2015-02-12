@@ -37,7 +37,8 @@
     
     ///2.点餐
     QSPointMealViewController *pointmeal=[[QSPointMealViewController alloc]init];
-    [self setupChildViewController:pointmeal title:@"美食餐" imageName:@"tab_pointmeal_normal" selectedImageName:@"tab_pointmeal_selected"];
+    [self setupChildViewController:pointmeal title:@"美食餐单" imageName:@"tab_pointmeal_normal" selectedImageName:@"tab_pointmeal_selected"];
+    [pointmeal setHidesBottomBarWhenPushed:YES];
     
     ///3.定餐
     QSOrderListViewController *order=[[QSOrderListViewController alloc]init];

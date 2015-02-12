@@ -140,7 +140,7 @@
     
 }
 
-- (void)upFoodData:(id)data
+- (void)updateFoodData:(id)data
 {
     
     //菜类型元素

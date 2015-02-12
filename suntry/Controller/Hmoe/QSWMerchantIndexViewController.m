@@ -154,7 +154,7 @@
     
     QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
     [self.tabBarController.view addSubview:shakeFoodView];
-    [shakeFoodView upFoodData:nil];
+    [shakeFoodView updateFoodData:nil];
     [shakeFoodView showShakeFoodView];
     
 }
@@ -189,7 +189,7 @@
     NSLog(@"触发摇一摇");
     QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
     [self.tabBarController.view addSubview:shakeFoodView];
-    [shakeFoodView upFoodData:nil];
+    [shakeFoodView updateFoodData:nil];
     [shakeFoodView showShakeFoodView];
     
 }

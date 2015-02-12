@@ -32,7 +32,7 @@
  *
  *  @param data 套餐的数据
  */
-- (void)upFoodData:(id)data;
+- (void)updateFoodData:(id)data;
 
 
 /**

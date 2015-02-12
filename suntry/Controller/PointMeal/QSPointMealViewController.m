@@ -14,7 +14,7 @@
 #import "ImageHeader.h"
 #import "QSBlockButton.h"
 #import "QSPFoodPackageView.h"
-
+#import "QSPOrderViewController.h"
 
 #define FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR  [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.]
 #define FOOD_INFOLIST_TABLEVIEW_BACKGROUND_COLOR  [UIColor whiteColor]
@@ -26,7 +26,7 @@
 #define FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_COLOR     FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR
 
 
-enum tableViewType{
+enum TableViewType{
     FoodTypeTable = 1,
     FoodInfoListTable
 };
@@ -39,6 +39,7 @@ enum tableViewType{
 @property(nonatomic,strong) NSArray     *foodInfoList;
 @property(nonatomic,strong) QSPShoppingCarView *shoppingCarView;
 
+
 @end
 
 @implementation QSPointMealViewController
@@ -47,6 +48,7 @@ enum tableViewType{
     
     [super loadView];
     
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
     [navTitle setTextColor:[UIColor whiteColor]];
@@ -65,8 +67,9 @@ enum tableViewType{
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    self.shoppingCarView = [QSPShoppingCarView getShoppingCarView];
+    self.shoppingCarView = [[QSPShoppingCarView alloc] initShakeFoodView];
     [_shoppingCarView setFrame:CGRectMake(0, SIZE_DEVICE_HEIGHT-_shoppingCarView.frame.size.height-20-44, _shoppingCarView.frame.size.width, _shoppingCarView.frame.size.height)];
+    [_shoppingCarView setProcessType:ProcessTypeOnSelectedFood];
     [_shoppingCarView setDelegate:self];
     [_shoppingCarView updateShoppingCar];
     
@@ -104,53 +107,8 @@ enum tableViewType{
     // Do any additional setup after loading the view.
     
     [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
-    
-}
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    
-    [super viewDidAppear:animated];
-    
-    for (UIView *v in [self.tabBarController.view subviews]) {
-        if ([v isKindOfClass:[UITabBar class]]) {
-            
-            CGRect frame = v.frame;
-            frame.origin.y += 49.0f;
-            v.frame = frame;
-            
-        } else {
-            
-            CGRect frame = v.frame;
-            frame.size.height += 49.0f;
-            v.frame = frame;
-        }
-    }
-    
 }
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    
-    [super viewDidDisappear:animated];
-    
-    for (UIView *v in [self.tabBarController.view subviews]) {
-        if ([v isKindOfClass:[UITabBar class]]) {
-            
-            CGRect frame = v.frame;
-            frame.origin.y -= 49.0f;
-            v.frame = frame;
-            
-        } else {
-            
-            CGRect frame = v.frame;
-            frame.size.height -= 49.0f;
-            v.frame = frame;
-        }
-    }
-    
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -316,7 +274,19 @@ enum tableViewType{
                     
                 }
                 
-                [cell upFoodData:[NSString stringWithFormat:@"番茄鸡扒%ld",indexPath.row]];
+                [cell updateFoodData:[NSString stringWithFormat:@"番茄鸡扒%ld%ld",indexPath.section,indexPath.row]];
+                [cell setSlelectedCount:0];
+                NSArray *selectedArray = [_shoppingCarView getGoods];
+                if (selectedArray&&[selectedArray count]>0) {
+                    for (int i=0; i<[selectedArray count]; i++) {
+                        NSDictionary *item = selectedArray[i];
+                        NSNumber *counNum = [item objectForKey:@"count"];
+                        if ([[cell getFoodData] isEqualToString:[item objectForKey:@"foodName"]]) {
+                            [cell setSlelectedCount:[counNum integerValue]];
+                            break;
+                        }
+                    }
+                }
                 
                 return cell;
                 
@@ -410,6 +380,10 @@ enum tableViewType{
 {
     
     NSLog(@"orderWithData:%@",foodData);
+
+    QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
+    [orderVc setFoodSelectedList:[NSMutableArray arrayWithArray:foodData]];
+    [self.navigationController pushViewController:orderVc animated:YES];
     
 }
 

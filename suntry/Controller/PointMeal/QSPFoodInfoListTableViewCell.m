@@ -108,7 +108,7 @@
     
 }
 
-- (void)upFoodData:(id)data
+- (void)updateFoodData:(id)data
 {
     
     self.foodData = data;
@@ -116,24 +116,43 @@
     [self.contentImgView loadImageWithURL:[NSURL URLWithString:@"http://admin.9dxz.com/files/jpg(18).jpeg"] placeholderImage:nil];
     
     //菜名元素
-    NSString* foodNameStr = @"支竹焖烧肉";
+    NSString* foodNameStr = data;//@"支竹焖烧肉";
     CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:self.foodNameLabel.frame.size.height andFontSize:TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
     [self.foodNameLabel setFrame:CGRectMake(self.foodNameLabel.frame.origin.x, self.foodNameLabel.frame.origin.y, foodNameWidth, self.foodNameLabel.frame.size.height)];
     [self.foodNameLabel setText:foodNameStr];
     
     [self.specialMarkImgView setFrame:CGRectMake(self.foodNameLabel.frame.origin.x+self.foodNameLabel.frame.size.width+2, self.foodNameLabel.frame.origin.y+1, self.specialMarkImgView.frame.size.width, self.specialMarkImgView.frame.size.height)];
 //    [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_special_mark"]];
-    [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_time_mark"]];
+//    [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_time_mark"]];
+    NSInteger randIdx = random();
+    [self.specialMarkImgView setImage:nil];
+    if (randIdx%3==0) {
+        [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_special_mark"]];
+    }else if (randIdx%3==1) {
+        [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_time_mark"]];
+    }
     
     //库存
     NSString* inStockCountStr = [NSString stringWithFormat:@"库存：%d份",1023];
     [self.inStockCountLabel setText:inStockCountStr];
     
     //当前售卖价格
-    NSString* priceStr = @"108.8";
+    NSString* priceStr = @"18.8";
     CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]+4;
     [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
     [self.priceLabel setText:priceStr];
+    
+}
+
+- (id)getFoodData
+{
+    return self.foodData;
+}
+
+- (void)setSlelectedCount:(NSInteger)count
+{
+    
+    [self.foodCountControlView setCount:count];
     
 }
 

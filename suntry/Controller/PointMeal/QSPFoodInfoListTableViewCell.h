@@ -25,6 +25,10 @@
 
 @property(nonatomic,assign) id<QSPFoodInfoListTableViewCellDelegate> delegate;
 
-- (void)upFoodData:(id)data;
+- (void)updateFoodData:(id)data;
+
+- (id)getFoodData;
+
+- (void)setSlelectedCount:(NSInteger)count;
 
 @end

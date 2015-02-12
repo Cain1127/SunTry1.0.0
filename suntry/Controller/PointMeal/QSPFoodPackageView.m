@@ -144,7 +144,7 @@
     
 }
 
-- (void)upFoodData:(id)data
+- (void)updateFoodData:(id)data
 {
     //TODO: 设置套餐数据
 }
