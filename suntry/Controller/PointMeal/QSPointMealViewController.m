@@ -14,7 +14,7 @@
 #import "ImageHeader.h"
 #import "QSBlockButton.h"
 #import "QSPFoodPackageView.h"
-#import "QSPOrderViewController.h"
+//#import "QSPOrderViewController.h"
 
 #define FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR  [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.]
 #define FOOD_INFOLIST_TABLEVIEW_BACKGROUND_COLOR  [UIColor whiteColor]
@@ -381,9 +381,9 @@ enum TableViewType{
     
     NSLog(@"orderWithData:%@",foodData);
 
-    QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
-    [orderVc setFoodSelectedList:[NSMutableArray arrayWithArray:foodData]];
-    [self.navigationController pushViewController:orderVc animated:YES];
+    //QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
+//    [orderVc setFoodSelectedList:[NSMutableArray arrayWithArray:foodData]];
+//    [self.navigationController pushViewController:orderVc animated:YES];
     
 }
 

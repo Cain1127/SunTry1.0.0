@@ -11,8 +11,8 @@
 
 @interface QSSelectDataModel : QSBaseModel
 
-@property (nonatomic,copy) NSString *streetID;//!<区的ID
-@property (nonatomic,copy) NSString *streetName;       //!<区的显示名字
-@property (nonatomic,copy) NSString *isSend;  //!<是否可配送
+@property (nonatomic,copy) NSString *streetID;      //!<区的ID
+@property (nonatomic,copy) NSString *streetName;    //!<区的显示名字
+@property (nonatomic,copy) NSString *isSend;        //!<是否可配送
 
 @end
