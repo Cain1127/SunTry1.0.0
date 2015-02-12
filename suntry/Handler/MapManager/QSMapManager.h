@@ -40,6 +40,8 @@
 ///用户地理位置定位的回调
 @property (nonatomic,copy) void(^userPlacenameCallBack)(BOOL isLocalSuccess,NSString *placename);
 
+
+
 ///用户经纬度位置定位的回调
 -(void)startUserLocation:(void(^)(BOOL isLocalSuccess,double longitude,double latitude))callBack;
 

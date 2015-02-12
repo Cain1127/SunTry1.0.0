@@ -270,6 +270,7 @@
             
             ///结束刷新动画
             
+            
             ///reload数据
             [self.collectionView reloadData];
             

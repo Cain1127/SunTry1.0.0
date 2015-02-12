@@ -8,6 +8,6 @@
 
 #import "QSWSettingViewController.h"
 
-@interface QSWMyStoredCardViewController : QSWSettingViewController
+@interface QSWMyStoredCardViewController : UIViewController
 
 @end

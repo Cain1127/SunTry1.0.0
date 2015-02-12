@@ -29,6 +29,8 @@
     
     [self.window makeKeyAndVisible];
     
+    ///定位请求信息
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     ///获取用户地理位置
     QSMapManager *manager=[[QSMapManager alloc]init];
     
@@ -48,8 +50,10 @@
             NSLog(@"%@",placename);
         }
     }];
+    });
     
-    ///请求信息
+    
+    ///区请求信息
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
         ///获取配置信息标记

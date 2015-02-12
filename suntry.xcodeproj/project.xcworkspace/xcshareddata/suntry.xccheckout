@@ -10,29 +10,29 @@
 	<string>suntry</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>F920A397-C5AF-42F1-B688-76806F3894D9</key>
+		<key>C4836F6403FD0646B61EBF963B27C442C4D82CDD</key>
 		<string>https://github.com/Cain1127/SunTry1.0.0.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>suntry/suntry.xcodeproj/project.xcworkspace</string>
+	<string>suntry.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>F920A397-C5AF-42F1-B688-76806F3894D9</key>
-		<string>../../..</string>
+		<key>C4836F6403FD0646B61EBF963B27C442C4D82CDD</key>
+		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/Cain1127/SunTry1.0.0.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>F920A397-C5AF-42F1-B688-76806F3894D9</string>
+	<string>C4836F6403FD0646B61EBF963B27C442C4D82CDD</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>F920A397-C5AF-42F1-B688-76806F3894D9</string>
+			<string>C4836F6403FD0646B61EBF963B27C442C4D82CDD</string>
 			<key>IDESourceControlWCCName</key>
 			<string>SunTry1.0.0</string>
 		</dict>
