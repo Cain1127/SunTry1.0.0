@@ -14,6 +14,8 @@
 #import "ColorHeader.h"
 #import "QSBlockButton.h"
 #import "UIImageView+CacheImage.h"
+#import "QSGoodsDataModel.h"
+#import "ImageHeader.h"
 
 #define SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE        20.
 #define SHAKEVIEW_FOOD_NAME_STYLE_COLOR             COLOR_HEXCOLOR(0x94414D)
@@ -31,6 +33,7 @@
 @property(nonatomic,strong) QSLabel     *foodTypeLabel;
 @property(nonatomic,strong) QSLabel     *foodNameLabel;
 @property(nonatomic,strong) UIImageView *contentImgView;
+@property(nonatomic,strong) UIImageView *pricemarkIconView;
 @property(nonatomic,strong) QSLabel     *priceLabel;
 @property(nonatomic,strong) QSLabel     *oldPriceLabel;
 @property(nonatomic,strong) QSLabel     *inStockCountLabel;
@@ -103,14 +106,14 @@
         [contentBackgroundView addSubview:self.contentImgView];
         
         //价格图标
-        UIImageView *pricemarkIconView = [[UIImageView alloc] initWithFrame:CGRectMake(6.0, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height, 40, 40)];
-        [pricemarkIconView setImage:[UIImage imageNamed:@"home_pricemark"]];
-        [contentBackgroundView addSubview:pricemarkIconView];
+        self.pricemarkIconView = [[UIImageView alloc] initWithFrame:CGRectMake(6.0, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height, 40, 40)];
+        [_pricemarkIconView setImage:[UIImage imageNamed:@"home_pricemark"]];
+        [contentBackgroundView addSubview:_pricemarkIconView];
         
         //当前售卖价格
         NSString* priceStr = @"";
         CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_PRICE_ONSALE_FONT_SIZE]+4;
-        self.priceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(pricemarkIconView.frame.origin.x+pricemarkIconView.frame.size.width-4, pricemarkIconView.frame.origin.y+12, priceStrWidth, 14)];
+        self.priceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(_pricemarkIconView.frame.origin.x+_pricemarkIconView.frame.size.width-4, _pricemarkIconView.frame.origin.y+12, priceStrWidth, 14)];
         [self.priceLabel setTextColor:SHAKEVIEW_FOOD_PRICE_ONSALE_STRING_COLOR];
         [self.priceLabel setFont:[UIFont systemFontOfSize:SHAKEVIEW_FOOD_PRICE_ONSALE_FONT_SIZE]];
         [self.priceLabel setText:priceStr];
@@ -127,7 +130,7 @@
         [contentBackgroundView addSubview:self.foodCountControlView];
         
         //库存
-        self.inStockCountLabel = [[QSLabel alloc] initWithFrame:CGRectMake(13.0, pricemarkIconView.frame.origin.y+pricemarkIconView.frame.size.height-3, contentBackgroundView.frame.size.width-30, 16)];
+        self.inStockCountLabel = [[QSLabel alloc] initWithFrame:CGRectMake(13.0, _pricemarkIconView.frame.origin.y+_pricemarkIconView.frame.size.height-3, contentBackgroundView.frame.size.width-30, 16)];
         [self.inStockCountLabel setFont:[UIFont systemFontOfSize:SHAKEVIEW_FOOD_INSTOCK_FONT_SIZE]];
         [self.inStockCountLabel setTextColor:SHAKEVIEW_FOOD_INSTOCK_STRING_COLOR];
         [contentBackgroundView addSubview:self.inStockCountLabel];
@@ -136,35 +139,46 @@
         [contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
     }
     
+    [_pricemarkIconView setHidden:YES];
+    [_foodCountControlView setHidden:YES];
+    
     return self;
     
 }
 
 - (void)updateFoodData:(id)data
 {
+    if (![data isKindOfClass:[QSGoodsDataModel class]]) {
+        NSLog(@"随机菜品数据格式错误！");
+        return;
+    }
+    [_contentImgView setImage:nil];
+    QSGoodsDataModel *goodsItem = data;
     
-    //菜类型元素
-    NSString* foodTypeStr = @"特价菜品";
+    //菜类型
+    NSString* foodTypeStr = goodsItem.goodsTypeName;
     CGFloat foodTypeWidth = [foodTypeStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
     [self.foodTypeLabel setFrame:CGRectMake(self.foodTypeLabel.frame.origin.x, self.foodTypeLabel.frame.origin.y, foodTypeWidth, self.foodTypeLabel.frame.size.height)];
     [self.foodTypeLabel setText:foodTypeStr];
     
-    //菜名元素
-    NSString* foodNameStr = @"-支竹焖烧肉";
+    //菜名
+    NSString* foodNameStr = goodsItem.goodsName;
     CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
     [self.foodNameLabel setFrame:CGRectMake(self.foodTypeLabel.frame.origin.x+self.foodTypeLabel.frame.size.width, self.foodTypeLabel.frame.origin.y, foodNameWidth, self.foodNameLabel.frame.size.height)];
     [self.foodNameLabel setText:foodNameStr];
     
     //菜展示图
-    [self.contentImgView loadImageWithURL:[NSURL URLWithString:@"http://admin.9dxz.com/files/jpg(18).jpeg"] placeholderImage:nil];
+    [self.contentImgView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,goodsItem.goodsImageUrl]] placeholderImage:nil];
+    
+    [_pricemarkIconView setHidden:NO];
     //当前售卖价格
-    NSString* priceStr = @"98.8";
+    NSString* priceStr = [goodsItem.goodsSpecialPrice isEqualToString:@"-1"]?goodsItem.goodsPrice:goodsItem.goodsSpecialPrice;
     CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_PRICE_ONSALE_FONT_SIZE]+4;
     [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
     [self.priceLabel setText:priceStr];
     
     //原价格
-    NSString* oldPriceStr = @"原价:￥18";
+    NSString* oldPriceStr = [NSString stringWithFormat:@"原价:￥%@",goodsItem.goodsPrice];
     NSDictionary *subStrAttribute = @{
                                       NSForegroundColorAttributeName :SHAKEVIEW_FOOD_PRICE_OLD_STRING_COLOR,
                                       NSStrikethroughStyleAttributeName : @2
@@ -174,8 +188,13 @@
     [self.oldPriceLabel setAttributedText:attributedText];
     [self.oldPriceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x+self.priceLabel.frame.size.width, self.priceLabel.frame.origin.y, oldPriceWidth, 14)];
     //库存
-    NSString* inStockCountStr = [NSString stringWithFormat:@"现有库存：%d份",99];
+    NSString* inStockCountStr = [NSString stringWithFormat:@"现有库存：%@份",goodsItem.goodsInstockNum];
     [self.inStockCountLabel setText:inStockCountStr];
+    
+    //库存少于0时隐藏添加减少控件
+    if (0>=[goodsItem.goodsInstockNum integerValue]) {
+        [_foodCountControlView setHidden:NO];
+    }
     
 }
 

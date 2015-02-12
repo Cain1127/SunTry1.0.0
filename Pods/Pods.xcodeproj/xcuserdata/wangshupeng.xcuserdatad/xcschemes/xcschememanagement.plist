@@ -18,6 +18,11 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>Pods-MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>Pods-RKValueTransformers.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -54,6 +59,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>21D39798D9E2E6B765A01980</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>26C4C4201CB81FBDFB1815E0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6B5AA48736BB33847D5DADAF</key>
 		<dict>
 			<key>primary</key>
@@ -64,12 +79,37 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>86CCE2FECAA25B4C1B98A6E3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8CE173D1FE3258E0350197CA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AD6F71D4020A6FDFD97889B8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>AE81DCD393768318B0B9C508</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>B7F5565F3FFA7033BA90FC9B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C22117E728ADD596FE86FD8D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DCFB0A5399920DC84657D7FE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
