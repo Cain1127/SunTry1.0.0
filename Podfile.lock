@@ -34,7 +34,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.3.1)
-  - MBProgressHUD (~> 0.8)
+  - MBProgressHUD (~> 0.9)
   - RestKit/ObjectMapping (~> 0.23.3)
 
 SPEC CHECKSUMS:

@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+<<<<<<< HEAD
 	<key>SchemeUserState</key>
 	<dict>
 		<key>Pods-AFNetworking.xcscheme</key>
@@ -38,31 +39,62 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>20A7336BD81762E22A044640</key>
+=======
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>0FE05408DFE7F3680A8BC33D</key>
+>>>>>>> FETCH_HEAD
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+<<<<<<< HEAD
 		<key>6B5AA48736BB33847D5DADAF</key>
+=======
+		<key>27715EB76A1E08FAEC54BDA1</key>
+>>>>>>> FETCH_HEAD
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+<<<<<<< HEAD
 		<key>80319959D7CA107BC0529378</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>AE81DCD393768318B0B9C508</key>
+=======
+		<key>5B737B71FFBA711BFA3BC187</key>
+>>>>>>> FETCH_HEAD
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+<<<<<<< HEAD
 		<key>C22117E728ADD596FE86FD8D</key>
+=======
+		<key>5CE45D309EF51D51CD740C6D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>78B100ACFEA7D2C6ED04BCFB</key>
+>>>>>>> FETCH_HEAD
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+<<<<<<< HEAD
 		<key>F20E0F28D05D9EB8E9331EF3</key>
+=======
+		<key>EA3F3FE852E0713EEDD74ECC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EF6EA16598C9B6F8C9217A5A</key>
+>>>>>>> FETCH_HEAD
 		<dict>
 			<key>primary</key>
 			<true/>
