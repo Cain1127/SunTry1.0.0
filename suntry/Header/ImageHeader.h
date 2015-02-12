@@ -17,6 +17,10 @@
  *
  *  @since 1.0.0
  */
+
+// 图片服务器
+#define IMAGE_SERVER_URL            @"http://admin.9dxz.com/files/"
+
 ///<首页>按钮
 #define IMAGE_NAVIGATIONBAR_HOME_NORMAL @"tab_home_normal"
 #define IMAGE_NAVIGATIONBAR_HOME_HIGHLIGHTED @"tab_home_selected"

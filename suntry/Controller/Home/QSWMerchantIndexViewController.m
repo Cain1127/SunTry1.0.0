@@ -13,8 +13,8 @@
 #import "QSLabel.h"
 #import "QSPShakeFoodView.h"
 #import "QSWMerchantIndexCell.h"
-#import "QSAspecialDataModel.h"
-#import "QSAspecialReturnData.h"
+#import "QSGoodsDataModel.h"
+#import "QSGoodsListReturnData.h"
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
 #import "UIImageView+CacheImage.h"
@@ -164,13 +164,13 @@
     }
     
     ///获取模型
-    QSAspecialDataModel *tempModel = self.specialDataSource[indexPath.row];
+    QSGoodsDataModel *tempModel = self.specialDataSource[indexPath.row];
    
     cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
     cell.foodNameLabel.text= tempModel.goodsName;
     cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
-    [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://admin.9dxz.com/files/%@",tempModel.goodsImage]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
-    cell.priceLabel.text= tempModel.specialPrice;
+    [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://admin.9dxz.com/files/%@",tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
+    cell.priceLabel.text= tempModel.goodsSpecialPrice;
     return cell;
     
 }
@@ -180,8 +180,12 @@
 //UICollectionView被选中时调用的方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-   
     
+    QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row];
+    QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
+    [self.tabBarController.view addSubview:shakeFoodView];
+    [shakeFoodView updateFoodData:goodsItem];
+    [shakeFoodView showShakeFoodView];
     
 }
 
@@ -197,10 +201,7 @@
 - (IBAction)sharkButtonClick:(id)sender
 {
     
-    QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
-    [self.tabBarController.view addSubview:shakeFoodView];
-    [shakeFoodView updateFoodData:nil];
-    [shakeFoodView showShakeFoodView];
+    [self getRandomGoods];
     
 }
 
@@ -233,10 +234,8 @@
 {
     
     NSLog(@"触发摇一摇");
-    QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
-    [self.tabBarController.view addSubview:shakeFoodView];
-    [shakeFoodView updateFoodData:nil];
-    [shakeFoodView showShakeFoodView];
+    //FIXME: 需要完善逻辑，预防网络慢时同时触发调用的问题。
+    [self getRandomGoods];
     
 }
 
@@ -258,15 +257,17 @@
         if (rRequestResultTypeSuccess == resultStatus) {
             
             ///模型转换
-            QSAspecialReturnData *tempModel = resultData;
+            QSGoodsListReturnData *tempModel = resultData;
+            NSArray *array = tempModel.goodsListAllData.goodsList;
             
+            NSLog(@"QSAspecialReturnData : %@",tempModel);
             ///设置页码：当前页码/最大页码
             
             ///清空的数据源
             [self.specialDataSource removeAllObjects];
             
             ///保存数据源
-            [self.specialDataSource addObjectsFromArray:tempModel.aspecialHeaderData.specialList];
+            [self.specialDataSource addObjectsFromArray:array];
             
             ///结束刷新动画
             
@@ -280,6 +281,48 @@
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================今日特价搜索信息请求失败================");
             
+        }
+        
+    }];
+    
+}
+
+#pragma mark--随机菜品网络信息请求
+- (void)getRandomGoods
+{
+    //随机菜品信息请求参数
+    NSDictionary *dict = @{@"num" : @"1"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeRandom andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///模型转换
+            QSGoodsListReturnData *tempModel = resultData;
+            NSArray *array = tempModel.goodsListAllData.goodsList;
+            NSLog(@"获取随机菜品成功");
+            
+            if ([array isKindOfClass:[NSArray class]]&&[array count]>0) {
+                
+                QSGoodsDataModel *goodsItem = array[0];
+                QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
+                [self.tabBarController.view addSubview:shakeFoodView];
+                [shakeFoodView updateFoodData:goodsItem];
+                [shakeFoodView showShakeFoodView];
+                
+            }
+            
+//            for (int i=0; i<[array count];i++)
+//            {
+//                QSGoodsDataModel *goodsItem = array[i];
+//                NSLog(@"随机菜品：%d  %@",i ,goodsItem.goodsName);
+//            }
+            
+        } else {
+            
+            NSLog(@"================随机菜品信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
         }
         
     }];

@@ -70,6 +70,11 @@
     }];
     [_nodataView addSubview:submitBt];
     
+    //有数据显示
+    
+    
+    
+    
 }
 
 - (void)viewDidLoad {
