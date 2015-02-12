@@ -10,6 +10,20 @@
 
 @interface QSWMerchantIndexViewController : UIViewController
 
+/*!
+ *  @author wangshupeng, 15-02-11 17:02:17
+ *
+ *  @brief  <#Description#>
+ *
+ *  @param distictID    <#distictID description#>
+ *  @param districtName <#districtName description#>
+ *
+ *  @return <#return value description#>
+ *
+ *  @since <#version number#>
+ */
+- (instancetype)initWithID:(NSString *)distictID andDistictName:(NSString *)districtName;
+
 ///摇一摇按钮事件
 - (IBAction)sharkButtonClick:(id)sender;
 
@@ -22,6 +36,5 @@
 - (IBAction)customButtonClick:(id)sender;
 
 - (IBAction)moreButtonClick:(id)sender;
-
 
 @end

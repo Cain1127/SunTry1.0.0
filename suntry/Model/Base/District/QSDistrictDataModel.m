@@ -20,31 +20,33 @@
     //mapping字典
     NSDictionary *mappingDict = @{@"id" : @"districtID", @"name" : @"val"};
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
-    
-    [shared_mapping addAttributeMappingsFromArray:@[@"id_"]];
-    
-    
-    // 1.利用NSUserDefaults,就能直接访问软件的偏好设置(Library/Preferences)
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    // 2.存储数据
-    [defaults setObject:mappingDict forKey:@"Dictinfo"];
-
-    
-    // 3.立刻同步
-    [defaults synchronize];
-    
-    NSString *districtID = [defaults objectForKey:@"id"];
-    NSString *val = [defaults objectForKey:@"name"];
-    NSLog(@"%@ -- %@", districtID,val);
-    
-    [defaults objectForKey:@"Dictinfo"];
-    
+        
     return shared_mapping;
     
     
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    
+    if (self = [super init]) {
+        
+        self.districtID = [aDecoder decodeObjectForKey:@"district"];
+        self.val = [aDecoder decodeObjectForKey:@"val"];
+        
+    }
+    
+    return self;
+    
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    
+    [aCoder encodeObject:self.districtID forKey:@"district"];
+    [aCoder encodeObject:self.val forKey:@"val"];
+    
+}
 
 - (IBAction)save {
     // 1.利用NSUserDefaults,就能直接访问软件的偏好设置(Library/Preferences)

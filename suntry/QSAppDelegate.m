@@ -12,6 +12,8 @@
 #import "QSRequestManager.h"
 #import "QSDistrictReturnData.h"
 #import "QSDistrictDataModel.h"
+#import "QSSelectDataModel.h"
+#import "QSSelectReturnData.h"
 
 @implementation QSAppDelegate
 
@@ -47,11 +49,25 @@
         }
     }];
     
-    ///请求区信息
+    ///请求信息
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
-        [self downloadDistrictInfo];
+        ///获取配置信息标记
+        NSString *isSave = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_loading_district"];
         
+        //所有区信息
+        if (!(1 == [isSave intValue])) {
+            
+            [self downloadDistrictInfo];
+            
+        }
+        
+         NSString *isSaveSelect = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_loading_select"];
+        if (!(1 == [isSaveSelect intValue])) {
+            //天河区搜索信息
+            [self downloadSelectInfo];
+        }
+    
     });
     
     return YES;
@@ -70,15 +86,36 @@
             ///模型转换
             QSDistrictReturnData *tempModel = resultData;
             
-            for (int i = 0; i < [tempModel.districtList count]; i++) {
+            ///保存数据
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/districtData"];
+            
+            ///首先转成data
+            NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:tempModel];
+            BOOL isSave = [saveData writeToFile:path atomically:YES];
+            
+            if (isSave) {
                 
-                QSDistrictDataModel *districtModel = tempModel.districtList[i];
-                NSLog(@"================区信息================");
-                NSLog(@"ID : %@     显示名 : %@",districtModel.districtID,districtModel.val);
-                NSLog(@"================区信息================");
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"is_loading_district"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 
+            } else {
+            
+                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_loading_district"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            
             }
             
+                        for (int i = 0; i < [tempModel.districtList count]; i++) {
+            
+                            QSDistrictDataModel *districtModel = tempModel.districtList[i];
+            
+            
+                            NSLog(@"================区信息================");
+                            NSLog(@"ID : %@     显示名 : %@",districtModel.districtID,districtModel.val);
+                            NSLog(@"================区信息================");
+                            
+                        }
             
         } else {
             
@@ -91,6 +128,66 @@
     }];
     
 }
+
+///街道查询信息请求
+- (void)downloadSelectInfo
+{
+    //街道搜索信息请求参数
+    NSDictionary *dict = @{@"id" : @"3", @"key" : @"",@"status":@"0"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeSelect andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///模型转换
+            QSSelectReturnData *tempModel = resultData;
+            
+            ///保存数据
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/selectData"];
+            
+            ///首先转成data
+            NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:tempModel];
+            BOOL isSave = [saveData writeToFile:path atomically:YES];
+            
+            if (isSave) {
+                
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"is_loading_select"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                NSLog(@"========天河区数据保存成功=======");
+                
+            } else {
+                
+                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_loading_select"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                  NSLog(@"========天河区数据保存失败=======");
+            }
+            
+
+            for (int i = 0; i < [tempModel.selectList count]; i++) {
+                
+                QSSelectDataModel *selectModel = tempModel.selectList[i];
+                
+                
+                NSLog(@"================区信息================");
+                NSLog(@"街道ID : %@     街道名 : %@   是否可配送 : %@",selectModel.streetID,selectModel.streetName,selectModel.isSend);
+                NSLog(@"================区信息================");
+                
+            }
+            
+            
+        } else {
+            
+            NSLog(@"================街道搜索信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================街道搜索信息请求失败================");
+            
+        }
+        
+    }];
+    
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

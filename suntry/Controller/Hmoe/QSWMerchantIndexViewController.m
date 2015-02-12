@@ -13,6 +13,10 @@
 #import "QSLabel.h"
 #import "QSPShakeFoodView.h"
 #import "QSWMerchantIndexCell.h"
+#import "QSAspecialDataModel.h"
+#import "QSAspecialReturnData.h"
+#import "QSRequestManager.h"
+#import "QSRequestTaskDataModel.h"
 
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -24,13 +28,35 @@
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UILabel *specialsLabel;
 @property (strong, nonatomic)UICollectionView *collectionView;
+
+@property (strong,nonatomic)NSString *distictID;
+@property (strong,nonatomic)NSString *distictName;
+
 @end
 
 @implementation QSWMerchantIndexViewController
 
+#pragma mark - 初始化
+
+- (instancetype)initWithID:(NSString *)distictID andDistictName:(NSString *)districtName
+{
+
+    if (self = [super init]) {
+        
+        self.distictID=distictID;
+        self.distictName=districtName;
+        
+    }
+    
+    return self;
+
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.title=@"体育西路";
+     self.title=self.distictName;
+    
+    [self downloadAspecialInfo];
     
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
     [self becomeFirstResponder];
@@ -193,5 +219,45 @@
     [shakeFoodView showShakeFoodView];
     
 }
+
+#pragma mark--每日特价网络信息请求
+///街道查询信息请求
+- (void)downloadAspecialInfo
+{
+    //街道搜索信息请求参数
+    NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeAspecial andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///模型转换
+            QSAspecialReturnData *tempModel = resultData;
+            
+            NSLog(@"%ld",[tempModel.aspecialHeaderData.specialList count]);
+            
+            for (int i = 0; i < [tempModel.aspecialHeaderData.specialList count]; i++) {
+                
+                QSAspecialDataModel *dataModel = tempModel.aspecialHeaderData.specialList[i];
+                
+                NSLog(@"================今日信息================");
+                NSLog(@"特价菜品图片 : %@     名字 : %@   价钱 : %@",dataModel.goodsImage,dataModel.goodsName,dataModel.goodsPrice);
+                NSLog(@"================今日信息================");
+                
+            }
+            
+            
+        } else {
+            
+            NSLog(@"================今日特价搜索信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================今日特价搜索信息请求失败================");
+            
+        }
+        
+    }];
+    
+}
+
 
 @end

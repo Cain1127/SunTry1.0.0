@@ -315,9 +315,9 @@ enum TableViewType{
             
         case FoodInfoListTable:
             {
-                QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
-                [self.navigationController.view addSubview:packageView];
-                [packageView showPackageView];
+//                QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
+//                [self.navigationController.view addSubview:packageView];
+//                [packageView showPackageView];
                 
             }
             break;

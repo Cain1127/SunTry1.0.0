@@ -10,6 +10,6 @@
 #import "Restkit.h"
 #import "QSDataMappingManager.h"
 
-@interface QSBaseModel : NSObject <QSDataMappingProtocol>
+@interface QSBaseModel : NSObject <QSDataMappingProtocol,NSCoding>
 
 @end
