@@ -13,14 +13,14 @@
 /*!
  *  @author wangshupeng, 15-02-11 17:02:17
  *
- *  @brief  <#Description#>
+ *  @brief  初始化地区ID与地区名称信息
  *
- *  @param distictID    <#distictID description#>
- *  @param districtName <#districtName description#>
+ *  @param distictID    地区ID
+ *  @param districtName 地区名称
  *
- *  @return <#return value description#>
+ *  @return 处始化值
  *
- *  @since <#version number#>
+ *  @since 1.0.0
  */
 - (instancetype)initWithID:(NSString *)distictID andDistictName:(NSString *)districtName;
 
@@ -33,8 +33,10 @@
 ///车车去哪儿按钮事件
 - (IBAction)carButtonClick:(id)sender;
 
+///客服按钮事件
 - (IBAction)customButtonClick:(id)sender;
 
+///更多按钮事件
 - (IBAction)moreButtonClick:(id)sender;
 
 @end

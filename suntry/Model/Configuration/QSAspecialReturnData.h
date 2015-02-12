@@ -12,9 +12,9 @@
 /*!
  *  @author wangshupeng, 15-02-11 18:02:10
  *
- *  @brief  <#Description#>
+ *  @brief  每日特价对象数据解析
  *
- *  @since <#version number#>
+ *  @since 1.0.0
  */
 @class QSAspecialHeaderData;
 @interface QSAspecialReturnData : QSHeaderDataModel

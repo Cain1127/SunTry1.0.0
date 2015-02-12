@@ -8,6 +8,7 @@
 
 #import "QSWMerchantIndexCell.h"
 #import "DeviceSizeHeader.h"
+#import "ColorHeader.h"
 
 @implementation QSWMerchantIndexCell
 
@@ -24,14 +25,15 @@
         
         _foodNameLabel=[[UILabel alloc]init];
         _foodNameLabel.frame=CGRectMake(0, viewH-20.0f, 100.0f, 20.0f);
+        [_foodNameLabel setFont:[UIFont systemFontOfSize:14.0f]];
         
         _priceMarkImageView=[[UIImageView alloc]init];
-        _priceMarkImageView.frame=CGRectMake(viewW-30.0f-5.0f-20.0f, viewH-20.0f, 20.0f, 20.0f);
+        _priceMarkImageView.frame=CGRectMake(viewW-40.0f-20.0f, viewH-20.0f, 20.0f, 20.0f);
         
         _priceLabel=[[UILabel alloc]init];
-        _priceLabel.frame=CGRectMake(viewW-30.0f, viewH-20.f, 30.0f, 30.0f);
-        
-   
+        _priceLabel.frame=CGRectMake(viewW-40.0f, viewH-20.f, 40.0f, 20.0f);
+        [_priceLabel setFont:[UIFont systemFontOfSize:14.0f]];
+        _priceLabel.textColor=COLOR_CHARACTERS_RED;
         
         [self.contentView addSubview:_foodImageView];
         [self.contentView addSubview:_foodNameLabel];

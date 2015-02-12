@@ -354,11 +354,10 @@ typedef enum {
                 
                 cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
                 
-                cell.textLabel.textAlignment=NSTextAlignmentCenter;
-                cell.selectionStyle=UITableViewCellSelectionStyleNone;
-                
             }
             
+            cell.textLabel.textAlignment=NSTextAlignmentCenter;
+            cell.selectionStyle=UITableViewCellSelectionStyleNone;
             QSDistrictDataModel *tempModel = self.districtList[indexPath.row];
             cell.textLabel.text = tempModel.val;
             return cell;
@@ -374,10 +373,10 @@ typedef enum {
             if (cell==nil) {
                 
                 cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
-                cell.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
-                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 
             }
+            cell.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
+            cell.selectionStyle=UITableViewCellSelectionStyleNone;
             QSSelectDataModel *tempModel = self.searchList[indexPath.row];
             cell.textLabel.text=tempModel.streetName;
             return cell;
@@ -405,9 +404,11 @@ typedef enum {
             
         case SearchListTable:
         {
+            
             QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
             [self.navigationController pushViewController:VC animated:YES];
             //[self touchesBegan:nil withEvent:nil];
+            
         }
         default:
             break;

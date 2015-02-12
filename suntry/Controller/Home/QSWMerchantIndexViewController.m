@@ -17,20 +17,24 @@
 #import "QSAspecialReturnData.h"
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
+#import "UIImageView+CacheImage.h"
+#import "FontHeader.h"
 
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;
-@property (weak, nonatomic) IBOutlet UIButton *sharkButton;
-@property (weak, nonatomic) IBOutlet UIButton *packageButton;
-@property (weak, nonatomic) IBOutlet UIButton *carButton;
-@property (weak, nonatomic) IBOutlet UIButton *customButton;
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;
-@property (weak, nonatomic) IBOutlet UILabel *specialsLabel;
-@property (strong, nonatomic)UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;    //!<菜品图片
+@property (weak, nonatomic) IBOutlet UIButton *sharkButton; //!<摇一摇按钮
+@property (weak, nonatomic) IBOutlet UIButton *packageButton;   //!<美味套餐按钮
+@property (weak, nonatomic) IBOutlet UIButton *carButton;   //!<车车在哪儿按钮
+@property (weak, nonatomic) IBOutlet UIButton *customButton;    //!<客服按钮
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;  //!<更多按钮
+@property (weak, nonatomic) IBOutlet UILabel *specialsLabel;    //!<第日优惠菜品优惠价label
+@property (strong, nonatomic)UICollectionView *collectionView; //!<每日优惠菜品窗体
 
-@property (strong,nonatomic)NSString *distictID;
-@property (strong,nonatomic)NSString *distictName;
+@property (strong,nonatomic)NSString *distictID;    //!<地区ID
+@property (strong,nonatomic)NSString *distictName;  //!<地区名称
+
+@property (nonatomic,retain) NSMutableArray *specialDataSource;//!<优惠信息数据源
 
 @end
 
@@ -46,12 +50,16 @@
         self.distictID=distictID;
         self.distictName=districtName;
         
+        ///初始化数据源数组
+        self.specialDataSource = [[NSMutableArray alloc] init];
+        
     }
     
     return self;
 
 }
 
+#pragma mark--控件加载
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.title=self.distictName;
@@ -88,6 +96,7 @@
      _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT*4+3*buttonW, buttonY, buttonW, buttonH);
     
     _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 20.0f);
+    [_specialsLabel setFont:[UIFont systemFontOfSize:20.0f]];
     
     _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT-30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 20.0f);
     
@@ -108,7 +117,7 @@
     flowLayout.itemSize = itemSize;
     flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
     
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.moreButton.frame.origin.y+20+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-self.moreButton.frame.origin.y-30-49.0f) collectionViewLayout:flowLayout];
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.moreButton.frame.origin.y+20.0f+5.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-self.moreButton.frame.origin.y-20-49.0f-64.0f) collectionViewLayout:flowLayout];
     self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     
@@ -120,20 +129,25 @@
     [self.collectionView registerClass:[QSWMerchantIndexCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
     [self.view addSubview:self.collectionView];
+    
 }
 
-#pragma mark -- UICollectionViewDataSource
+#pragma mark -- UICollectionViewDataSource数据源方法
 
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 10;
+    
+    return [self.specialDataSource count];
+    
 }
 
 //定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    
     return 1;
+    
 }
 
 //每个UICollectionView展示的内容
@@ -148,33 +162,38 @@
         cell=[[QSWMerchantIndexCell alloc]init];
     
     }
+    
+    ///获取模型
+    QSAspecialDataModel *tempModel = self.specialDataSource[indexPath.row];
    
     cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
-    cell.foodNameLabel.text=@"都城辣子鸡";
+    cell.foodNameLabel.text= tempModel.goodsName;
     cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
-    cell.priceLabel.text=@"188";
+    [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://admin.9dxz.com/files/%@",tempModel.goodsImage]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
+    cell.priceLabel.text= tempModel.specialPrice;
     return cell;
+    
 }
 
-#pragma mark --UICollectionViewDelegate
+#pragma mark --UICollectionViewDelegate代理方法
 
 //UICollectionView被选中时调用的方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-   // UICollectionViewCell * cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    //临时改变个颜色，看好，只是临时改变的。如果要永久改变，可以先改数据源，然后在cellForItemAtIndexPath中控制。
-    //cell.backgroundColor = [UIColor greenColor];
-    NSLog(@"item======%d",indexPath.item);
-    NSLog(@"row=======%d",indexPath.row);
-    NSLog(@"section===%d",indexPath.section);
+   
+    
+    
 }
 
 //返回这个UICollectionView是否可以被选择
 -(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     return YES;
+    
 }
 
+#pragma mark --按钮点击事件
 - (IBAction)sharkButtonClick:(id)sender
 {
     
@@ -196,18 +215,19 @@
     
     QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init];
     [self.navigationController pushViewController:VC animated:YES];
-}
-
-- (IBAction)customButtonClick:(id)sender {
-}
-- (IBAction)moreButtonClick:(id)sender {
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
     
 }
 
+- (IBAction)customButtonClick:(id)sender {
+    
+    
+    
+}
+- (IBAction)moreButtonClick:(id)sender {
+    
+     [self.tabBarController setSelectedIndex:1];
+    
+}
 
 -(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
@@ -220,6 +240,11 @@
     
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    
+}
+
 #pragma mark--每日特价网络信息请求
 ///街道查询信息请求
 - (void)downloadAspecialInfo
@@ -228,24 +253,25 @@
     NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4"};
     
     [QSRequestManager requestDataWithType:rRequestTypeAspecial andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
             ///模型转换
             QSAspecialReturnData *tempModel = resultData;
             
-            NSLog(@"%ld",[tempModel.aspecialHeaderData.specialList count]);
+            ///设置页码：当前页码/最大页码
             
-            for (int i = 0; i < [tempModel.aspecialHeaderData.specialList count]; i++) {
-                
-                QSAspecialDataModel *dataModel = tempModel.aspecialHeaderData.specialList[i];
-                
-                NSLog(@"================今日信息================");
-                NSLog(@"特价菜品图片 : %@     名字 : %@   价钱 : %@",dataModel.goodsImage,dataModel.goodsName,dataModel.goodsPrice);
-                NSLog(@"================今日信息================");
-                
-            }
+            ///清空的数据源
+            [self.specialDataSource removeAllObjects];
             
+            ///保存数据源
+            [self.specialDataSource addObjectsFromArray:tempModel.aspecialHeaderData.specialList];
+            
+            ///结束刷新动画
+            
+            ///reload数据
+            [self.collectionView reloadData];
             
         } else {
             
@@ -258,6 +284,5 @@
     }];
     
 }
-
 
 @end
