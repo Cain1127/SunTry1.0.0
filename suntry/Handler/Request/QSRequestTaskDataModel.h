@@ -35,7 +35,12 @@ typedef enum
     rRequestTypeAspecial =1001, //!<每日特价菜品
     rRequestTypeRandom      =1036,   //!<随机菜品
     rRequestTypeAllGoods    =1050,   //!<所有菜品
-    rRequestTypeMaxLimited      //!<最大值限制
+    
+    rRequestTypeUserSendAddressList = 1100, //!<当前用户的送餐地址列表
+    rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址
+    
+    rRequestTypeMaxLimited = 99999          //!<最大值限制
+    
     
 }REQUEST_TYPE;
 

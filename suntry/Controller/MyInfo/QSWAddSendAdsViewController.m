@@ -13,6 +13,8 @@
 #import "QSWSettingArrowItem.h"
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
+#import "QSRequestManager.h"
+
 @interface QSWAddSendAdsViewController ()<UITextFieldDelegate>
 
 @end
@@ -37,8 +39,7 @@
 
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"请填写联系人姓名"];
     
     group.items = @[item];
 
@@ -49,9 +50,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"您的性别"];
     group.items = @[item];
     
 }
@@ -61,8 +60,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"送餐地址请尽量填写详细"];
     
     group.items = @[item];
     
@@ -73,7 +71,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"请输入公司全称"];
     
     
     group.items = @[item];
@@ -85,8 +83,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"配送人员联系您的电话"];
     
     group.items = @[item];
     
@@ -116,6 +113,7 @@
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 -(void)gotoNextVC
@@ -132,8 +130,6 @@
     
     if (textField.tag == 200) {
         
-        
-        
         return YES;
         
     }
@@ -142,7 +138,6 @@
         
         
     }
-    
     
     return NO;
     

@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationUsageDescription</key>
-	<string>地图服务有特殊。。。1折</string>
-	<key>NSLocationWhenInUseDescription</key>
-	<string>确认开启地图导航服务吗</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -30,6 +24,12 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<true/>
+	<key>NSLocationUsageDescription</key>
+	<string>地图服务有特殊。。。1折</string>
+	<key>NSLocationWhenInUseDescription</key>
+	<string>确认开启地图导航服务吗</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

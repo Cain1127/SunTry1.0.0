@@ -26,32 +26,39 @@
     
     QSTabBarViewController *main=[[QSTabBarViewController alloc]init];
     [self.window setRootViewController:main];
-    
     [self.window makeKeyAndVisible];
     
     ///定位请求信息
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-    ///获取用户地理位置
-    QSMapManager *manager=[[QSMapManager alloc]init];
-    
-    ///定位用户经纬度回调
-    [manager startUserLocation:^(BOOL isLocalSuccess, double longitude, double latitude) {
         
-        if (isLocalSuccess) {
-            NSLog(@"==============用户经纬度回调成功================");
-            NSLog(@"%f,%f",latitude,longitude);
-        }
-    }];
-    
-    ///反地理编码回调用户地理位置
-    [manager getUserLocation:^(BOOL isLocalSuccess, NSString *placename) {
-        if (isLocalSuccess) {
-            NSLog(@"=============用户地标回调成功====================");
-            NSLog(@"%@",placename);
-        }
-    }];
+        ///获取用户地理位置
+        QSMapManager *manager=[[QSMapManager alloc]init];
+        
+        ///定位用户经纬度回调
+        [manager startUserLocation:^(BOOL isLocalSuccess, double longitude, double latitude) {
+            
+            if (isLocalSuccess) {
+                
+                NSLog(@"==============用户经纬度回调成功================");
+                NSLog(@"%f,%f",latitude,longitude);
+                
+            }
+            
+        }];
+        
+        ///反地理编码回调用户地理位置
+        [manager getUserLocation:^(BOOL isLocalSuccess, NSString *placename) {
+            
+            if (isLocalSuccess) {
+                
+                NSLog(@"=============用户地标回调成功====================");
+                NSLog(@"%@",placename);
+                
+            }
+            
+        }];
+        
     });
-    
     
     ///区请求信息
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -66,12 +73,12 @@
             
         }
         
-         NSString *isSaveSelect = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_loading_select"];
+        NSString *isSaveSelect = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_loading_select"];
         if (!(1 == [isSaveSelect intValue])) {
             //天河区搜索信息
             [self downloadSelectInfo];
         }
-    
+        
     });
     
     return YES;
@@ -104,22 +111,22 @@
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
             } else {
-            
+                
                 [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_loading_district"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-            
+                
             }
             
-                        for (int i = 0; i < [tempModel.districtList count]; i++) {
-            
-                            QSDistrictDataModel *districtModel = tempModel.districtList[i];
-            
-            
-                            NSLog(@"================区信息================");
-                            NSLog(@"ID : %@     显示名 : %@",districtModel.districtID,districtModel.val);
-                            NSLog(@"================区信息================");
-                            
-                        }
+            for (int i = 0; i < [tempModel.districtList count]; i++) {
+                
+                QSDistrictDataModel *districtModel = tempModel.districtList[i];
+                
+                
+                NSLog(@"================区信息================");
+                NSLog(@"ID : %@     显示名 : %@",districtModel.districtID,districtModel.val);
+                NSLog(@"================区信息================");
+                
+            }
             
         } else {
             
@@ -136,7 +143,8 @@
 ///街道查询信息请求
 - (void)downloadSelectInfo
 {
-    //街道搜索信息请求参数
+    
+    ///街道搜索信息请求参数
     NSDictionary *dict = @{@"id" : @"3", @"key" : @"",@"status":@"0"};
     
     [QSRequestManager requestDataWithType:rRequestTypeSelect andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
@@ -164,10 +172,10 @@
                 
                 [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_loading_select"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-                  NSLog(@"========天河区数据保存失败=======");
+                NSLog(@"========天河区数据保存失败=======");
             }
             
-
+            
             for (int i = 0; i < [tempModel.selectList count]; i++) {
                 
                 QSSelectDataModel *selectModel = tempModel.selectList[i];
@@ -191,7 +199,6 @@
     }];
     
 }
-
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

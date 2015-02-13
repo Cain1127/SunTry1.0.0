@@ -8,6 +8,19 @@
 		<string>QSGoodsStapleFoodReturnData</string>
 		<key>url</key>
 		<string>goods/AppGoodsList</string>
+	<key>1101</key>
+	<dict>
+		<key>url</key>
+		<string>user/AddAddress</string>
+		<key>class</key>
+		<string>QSHeaderDataModel</string>
+	</dict>
+	<key>1100</key>
+	<dict>
+		<key>url</key>
+		<string>user/AddressList</string>
+		<key>class</key>
+		<string>QSUserAddressListReturnData</string>
 	</dict>
 	<key>1036</key>
 	<dict>

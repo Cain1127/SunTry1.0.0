@@ -34,7 +34,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
+       QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"您当前的登录密码"];
     
     
     group.items = @[item];
@@ -46,7 +46,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
+        QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"新的登录密码"];
     
     
     group.items = @[item];
@@ -58,7 +58,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
+       QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"再次确认您的登录密码"];
     
     
     group.items = @[item];

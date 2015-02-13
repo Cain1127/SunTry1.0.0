@@ -7,11 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+
+/**
+ *  @author yangshengmeng, 15-02-13 09:02:35
+ *
+ *  @brief  所有ViewController的底viewController
+ *
+ *  @since  1.0.0
+ */
 @class QSWSettingGroup;
-
-
 @interface QSWSettingViewController : UITableViewController
-@property (strong, nonatomic) NSMutableArray *groups;
 
+@property (strong, nonatomic) NSMutableArray *groups;//!<数据源
+
+///UITableView的组
 - (QSWSettingGroup *)addGroup;
+
 @end
