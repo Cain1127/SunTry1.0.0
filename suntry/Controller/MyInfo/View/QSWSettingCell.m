@@ -14,6 +14,7 @@
 #import "QSWSettingButtonItem.h"
 #import "CommonHeader.h"
 #import "DeviceSizeHeader.h"
+#import "QSPickerViewItem.h"
 
 @interface QSWSettingCell()<UITextFieldDelegate>
 
@@ -24,6 +25,8 @@
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic,strong) UITextField *textFieldView;
 @property (nonatomic,strong) UILabel *labelView;
+
+@property (nonatomic,strong) UIView *titleArrowView;//!<有标题的带前头view
 
 @end
 
@@ -53,6 +56,33 @@
     }
     
     return _buttonView;
+    
+}
+
+- (UIView *)titleArrowView
+{
+    
+    if (_titleArrowView == nil) {
+        
+        ///图片view
+        UIImageView *arrowView = self.arrowView;
+        
+        ///初始化
+        _titleArrowView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, arrowView.frame.size.width + 60.0f, 44.0f)];
+        
+        ///添加标题
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 57.0f, _titleArrowView.frame.size.height)];
+        titleLabel.textAlignment = NSTextAlignmentRight;
+        titleLabel.font = [UIFont systemFontOfSize:16.0f];
+        [_titleArrowView addSubview:titleLabel];
+        
+        ///添加控件
+        arrowView.frame = CGRectMake(titleLabel.frame.size.width + 3.0f, (_titleArrowView.frame.size.height - arrowView.frame.size.height) / 2.0f, arrowView.frame.size.width, arrowView.frame.size.height);
+        [_titleArrowView addSubview:arrowView];
+        
+    }
+    
+    return _titleArrowView;
     
 }
 
@@ -234,49 +264,44 @@
  */
 - (void)setupCellView
 {
+    
     ///原生cell
     if ([self.item isKindOfClass:[QSWSettingArrowItem class]]) {
         
         // 右边是箭头
         self.accessoryView=self.arrowView;
         
-    }
-    
-    ///自定义textField样式cell
-    else if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
+    } else if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
         
+        if ([self.item isKindOfClass:[QSPickerViewItem class]]) {
+            
+            ///设置右标题
+            UILabel *rightTitleLabel = (UILabel *)[self.titleArrowView subviews][0];
+            rightTitleLabel.text = ((QSPickerViewItem *)self.item).rightTitle;
+            
+            ///添加到输入框的右侧
+            self.textFieldView.rightViewMode = UITextFieldViewModeAlways;
+            self.textFieldView.rightView = self.titleArrowView;
+            
+        }
+        
+        ///自定义textField样式cell
         [self.contentView addSubview:self.textFieldView];
         self.selectionStyle=UITableViewCellSelectionStyleNone;
         
-        
-    }
-    
-    else if ([self.item isKindOfClass:[QSWLabelItem class]]) {
+    } else if ([self.item isKindOfClass:[QSWLabelItem class]]) {
         
         // 右边是标签
         self.accessoryView = self.labelView;
         self.selectionStyle = UITableViewCellSelectionStyleDefault;
         
-    }
-    
-    else if ([self.item isKindOfClass:[QSWSettingButtonItem class]]) {
+    } else if ([self.item isKindOfClass:[QSWSettingButtonItem class]]) {
         
         // 右边是按钮
         self.accessoryView = self.buttonView;
-        //self.selectionStyle = UITableViewCellSelectionStyleDefault;
+        
     }
     
-    
-    
-    //     else {
-    //
-    //        // 右边没有东西
-    //        self.accessoryView=nil;
-    //
-    //    }
-    
 }
-
-
 
 @end

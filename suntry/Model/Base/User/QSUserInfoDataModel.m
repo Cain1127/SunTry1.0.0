@@ -10,6 +10,34 @@
 
 @implementation QSUserInfoDataModel
 
++ (instancetype)userDataModel
+{
+
+    ///读取本地信息
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_info"];
+    
+    ///把地址信息coding在本地
+    NSData *tempData = [NSData dataWithContentsOfFile:path];
+    QSUserInfoDataModel *userInfo = [NSKeyedUnarchiver unarchiveObjectWithData:tempData];
+    
+    return userInfo;
+
+}
+
+- (void)saveUserData
+{
+
+    ///把用信息coding在本地
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_info"];
+    
+    ///把地址信息coding在本地
+    NSData *tempData = [NSKeyedArchiver archivedDataWithRootObject:self];
+    [tempData writeToFile:path atomically:YES];
+
+}
+
 + (RKObjectMapping *)objectMapping
 {
     

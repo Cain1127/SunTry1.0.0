@@ -154,13 +154,8 @@
             ///同步数据
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            ///把用信息coding在本地
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_info"];
-            
-            ///把地址信息coding在本地
-            NSData *tempData = [NSKeyedArchiver archivedDataWithRootObject:tempModel.userInfo];
-            [tempData writeToFile:path atomically:YES];
+            ///保存数据
+            [tempModel.userInfo saveUserData];
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 

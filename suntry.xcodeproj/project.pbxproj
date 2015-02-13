@@ -19,6 +19,10 @@
 		1836741A1A7F8FA800BCCF39 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 183674021A7F8FA800BCCF39 /* UIKit.framework */; };
 		183674221A7F8FA800BCCF39 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 183674201A7F8FA800BCCF39 /* InfoPlist.strings */; };
 		183674241A7F8FA800BCCF39 /* suntryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 183674231A7F8FA800BCCF39 /* suntryTests.m */; };
+		1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3A61A8DEF9000EABC7D /* QSPickerViewItem.m */; };
+		1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3AA1A8DFB2000EABC7D /* QSDatePickerViewController.m */; };
+		1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */; };
+		1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -135,6 +139,13 @@
 		1836741F1A7F8FA800BCCF39 /* suntryTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "suntryTests-Info.plist"; sourceTree = "<group>"; };
 		183674211A7F8FA800BCCF39 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		183674231A7F8FA800BCCF39 /* suntryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = suntryTests.m; sourceTree = "<group>"; };
+		1859F3A51A8DEF9000EABC7D /* QSPickerViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPickerViewItem.h; sourceTree = "<group>"; };
+		1859F3A61A8DEF9000EABC7D /* QSPickerViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPickerViewItem.m; sourceTree = "<group>"; };
+		1859F3A91A8DFB2000EABC7D /* QSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSDatePickerViewController.h; sourceTree = "<group>"; };
+		1859F3AA1A8DFB2000EABC7D /* QSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSDatePickerViewController.m; sourceTree = "<group>"; };
+		1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QSDatePickerViewController.xib; sourceTree = "<group>"; };
+		1859F3AF1A8DFE1B00EABC7D /* QSUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSUserManager.h; path = User/QSUserManager.h; sourceTree = "<group>"; };
+		1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSUserManager.m; path = User/QSUserManager.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -424,6 +435,25 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		1859F3A81A8DFB2000EABC7D /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				1859F3A91A8DFB2000EABC7D /* QSDatePickerViewController.h */,
+				1859F3AA1A8DFB2000EABC7D /* QSDatePickerViewController.m */,
+				1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
+		1859F3AE1A8DFDFF00EABC7D /* User */ = {
+			isa = PBXGroup;
+			children = (
+				1859F3AF1A8DFE1B00EABC7D /* QSUserManager.h */,
+				1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
 		33C6DF1C30579CFE5CB10286 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,6 +544,7 @@
 		CE53414C1A7FA527002BA188 /* Handler */ = {
 			isa = PBXGroup;
 			children = (
+				1859F3AE1A8DFDFF00EABC7D /* User */,
 				CE53414D1A7FA527002BA188 /* Controller */,
 				CE53414E1A7FA527002BA188 /* DataMapping */,
 				CE5341511A7FA527002BA188 /* MapManager */,
@@ -607,6 +638,7 @@
 		CE53416F1A7FBB4E002BA188 /* QSTool */ = {
 			isa = PBXGroup;
 			children = (
+				1859F3A81A8DFB2000EABC7D /* Picker */,
 				CE5341A61A7FC268002BA188 /* TextField */,
 				CE5341831A7FBD4C002BA188 /* Label */,
 				CE5341771A7FBCAC002BA188 /* ImageView */,
@@ -744,6 +776,8 @@
 				CEB630C11A865BAF00F64DEE /* QSWLabelItem.m */,
 				CE571EF01A84AFB200609788 /* QSWSettingItem.h */,
 				CE571EF11A84AFB200609788 /* QSWSettingItem.m */,
+				1859F3A51A8DEF9000EABC7D /* QSPickerViewItem.h */,
+				1859F3A61A8DEF9000EABC7D /* QSPickerViewItem.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1104,6 +1138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				183674091A7F8FA800BCCF39 /* InfoPlist.strings in Resources */,
+				1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */,
 				CE53415E1A7FA527002BA188 /* RequestInfo.plist in Resources */,
 				CEEAC3E11A8DA7DF009AC6AA /* MJRefresh.bundle in Resources */,
 				CE7946C11A8B705600C0113B /* QSWMerchantIndexViewController.xib in Resources */,
@@ -1180,9 +1215,11 @@
 				CEEAC3B61A8CA517009AC6AA /* QSPFoodPackageItemView.m in Sources */,
 				CEEAC38F1A8CA4EF009AC6AA /* QSSelectDataModel.m in Sources */,
 				CEEAC3B91A8CA517009AC6AA /* QSPointMealViewController.m in Sources */,
+				1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */,
 				CEB630BF1A85C21700F64DEE /* QSWAddSendAdsViewController.m in Sources */,
 				CEEAC3E51A8DA7DF009AC6AA /* MJRefreshHeaderView.m in Sources */,
 				CEEAC3951A8CA4EF009AC6AA /* QSGoodsListReturnData.m in Sources */,
+				1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */,
 				CE5341811A7FBCAC002BA188 /* UIImageView+CacheImage.m in Sources */,
 				1836740F1A7F8FA800BCCF39 /* QSAppDelegate.m in Sources */,
 				CEEAC3911A8CA4EF009AC6AA /* QSGoodsDataModel.m in Sources */,
@@ -1199,6 +1236,7 @@
 				CE7946BE1A8B705600C0113B /* QSPShakeFoodView.m in Sources */,
 				CEB630CB1A88643A00F64DEE /* QSWSettingButtonItem.m in Sources */,
 				CEEAC3B51A8CA517009AC6AA /* QSPFoodPackageItemGridView.m in Sources */,
+				1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */,
 				CE53415C1A7FA527002BA188 /* QSRequestManager.m in Sources */,
 				CEEAC3E71A8DA7DF009AC6AA /* UIScrollView+MJRefresh.m in Sources */,
 				CEEAC3E61A8DA7DF009AC6AA /* UIScrollView+MJExtension.m in Sources */,

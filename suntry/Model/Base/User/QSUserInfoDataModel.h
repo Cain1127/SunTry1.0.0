@@ -10,6 +10,10 @@
 
 @interface QSUserInfoDataModel : QSBaseModel
 
++ (instancetype)userDataModel;
+
+- (void)saveUserData;
+
 @property (nonatomic,copy) NSString *userID;        //!<用户名
 @property (nonatomic,copy) NSString *loginName;     //!<登录名
 @property (nonatomic,copy) NSString *realName;      //!<真名

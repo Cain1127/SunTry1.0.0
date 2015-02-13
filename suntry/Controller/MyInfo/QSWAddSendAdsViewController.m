@@ -15,8 +15,23 @@
 #import "DeviceSizeHeader.h"
 #import "QSRequestManager.h"
 #import "ColorHeader.h"
+#import "QSPickerViewItem.h"
+#import "QSDatePickerViewController.h"
+#import "QSUserInfoDataModel.h"
+
+#import "ASDepthModalViewController.h"
 
 @interface QSWAddSendAdsViewController ()<UITextFieldDelegate>
+
+@property (nonatomic,retain) QSWTextFieldItem *userNameItem;//!<用户名输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *genderItem;  //!<性别选择框模型
+@property (nonatomic,retain) QSWTextFieldItem *addressItem; //!<送餐地址输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *companyItem; //!<所在公司输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *phoneItem;   //!<联系电话输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *isMasterItem;//!<是否默认配送选择框模型
+
+@property (nonatomic,retain) QSUserInfoDataModel *userInfo;
+@property (nonatomic,strong) QSDatePickerViewController *pickerVC;//!<选择器
 
 @end
 
@@ -25,12 +40,20 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    ///设置标题
     self.title=@"新增送餐地址";
+    
+    ///获取用户数据
+    self.userInfo = [QSUserInfoDataModel userDataModel];
+    
+    ///每个功能cell
     [self setupGroup0];
     [self setupGroup1];
     [self setupGroup2];
     [self setupGroup3];
     [self setupGroup4];
+    [self setupGroup5];
     [self setupFooter];
     
 }
@@ -39,20 +62,44 @@
 {
 
     QSWSettingGroup *group = [self addGroup];
+    self.userNameItem = [QSWTextFieldItem itemWithTitle: @"请填写联系人姓名" andDelegate:self];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"请填写联系人姓名"];
+    if ((self.userInfo && self.userInfo.realName)) {
+        
+        self.userNameItem.subtitle = self.userInfo.realName;
+        
+    }
     
-    group.items = @[item];
+    group.items = @[self.userNameItem];
 
 }
 
 -(void)setupGroup1
 {
     
-    QSWSettingGroup *group = [self addGroup];
+    ///性别默认信息
+    NSString *genderTitle = @"男";
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"您的性别"];
-    group.items = @[item];
+    if (self.userInfo && self.userInfo.gender) {
+        
+        if ([self.userInfo.gender intValue] == 1) {
+            
+            genderTitle = @"男";
+            
+        }
+        
+        if ([self.userInfo.gender intValue] == 0) {
+            
+            genderTitle = @"女";
+            
+        }
+        
+    }
+    
+    QSWSettingGroup *group = [self addGroup];
+    self.genderItem = [QSPickerViewItem itemWithTitle:@"您的性别" andDelegate:self];
+    [self.genderItem setValue:genderTitle forKey:@"rightTitle"];
+    group.items = @[self.genderItem];
     
 }
 
@@ -60,10 +107,16 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
+    self.addressItem = [QSWTextFieldItem itemWithTitle:@"送餐地址请尽量填写详细" andDelegate:self];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"送餐地址请尽量填写详细"];
+    ///获取系统的地址
+    if (self.userInfo && self.userInfo.address) {
+        
+        self.addressItem.subtitle = self.userInfo.address;
+        
+    }
     
-    group.items = @[item];
+    group.items = @[self.addressItem];
     
 }
 
@@ -71,11 +124,16 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
+    self.companyItem = [QSWTextFieldItem itemWithTitle:@"请输入公司全称" andDelegate:self];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"请输入公司全称"];
+    ///判断原来是否有数据
+    if (self.userInfo && self.userInfo.company) {
+        
+        self.companyItem.subtitle = self.userInfo.company;
+        
+    }
     
-    
-    group.items = @[item];
+    group.items = @[self.companyItem];
     
 }
 
@@ -83,15 +141,32 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
+    self.phoneItem = [QSWTextFieldItem itemWithTitle:@"配送人员联系您的电话" andDelegate:self];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"配送人员联系您的电话"];
+    ///获取本地用户电话
+    if (self.userInfo && self.userInfo.phone) {
+        
+        self.phoneItem.subtitle = self.userInfo.phone;
+        
+    }
     
-    group.items = @[item];
+    group.items = @[self.phoneItem];
+    
+}
+
+-(void)setupGroup5
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    self.isMasterItem = [QSPickerViewItem itemWithTitle:@"设为默认配送地址" andDelegate:self];
+    [self.isMasterItem setValue:@"否" forKey:@"rightTitle"];
+    group.items = @[self.isMasterItem];
     
 }
 
 - (void)setupFooter
 {
+    
     // 按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
@@ -105,6 +180,7 @@
     [footterButton setTitle:@"添加" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    footterButton.layer.cornerRadius = 6.0f;
     
     // footer
     UIView *footer = [[UIView alloc] init];
@@ -116,9 +192,12 @@
     
 }
 
+#pragma mark - 确认添加地址
+///确认添加地址
 -(void)gotoNextVC
 {
 
+    
 
 }
 
@@ -128,18 +207,76 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     
-    if (textField.tag == 200) {
+    ///如果是性别选择框，则弹出选择框
+    if (textField == self.genderItem.property) {
         
-        return YES;
+        [((UITextField *)self.userNameItem.property) resignFirstResponder];
+        [((UITextField *)self.addressItem.property) resignFirstResponder];
+        [((UITextField *)self.companyItem.property) resignFirstResponder];
+        [((UITextField *)self.phoneItem.property) resignFirstResponder];
+        
+        ///设置选择的VC
+        self.pickerVC = [[QSDatePickerViewController alloc] init];
+        self.pickerVC.pickerType = kPickerType_Item;
+        self.pickerVC.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女",@"男"]];
+        self.pickerVC.onCancelButtonHandler = ^{
+            
+            [ASDepthModalViewController dismiss];
+            
+        };
+        self.pickerVC.onItemConfirmButtonHandler = ^(NSInteger index, NSString *item){
+            
+            ///更换标题
+            UILabel *titleLabel = [textField.rightView subviews][0];
+            titleLabel.text = item;
+            
+            [ASDepthModalViewController dismiss];
+            
+        };
+        
+        ///用动画弹框
+        [ASDepthModalViewController presentView:self.pickerVC.view];
+        
+        return NO;
         
     }
     
-    if (textField.tag==201) {
+    
+    ///如果是默认配送地址选择框，则弹出选择框
+    if (textField == self.isMasterItem.property) {
         
+        [((UITextField *)self.userNameItem.property) resignFirstResponder];
+        [((UITextField *)self.addressItem.property) resignFirstResponder];
+        [((UITextField *)self.companyItem.property) resignFirstResponder];
+        [((UITextField *)self.phoneItem.property) resignFirstResponder];
+        
+        ///设置选择的VC
+        self.pickerVC = [[QSDatePickerViewController alloc] init];
+        self.pickerVC.pickerType = kPickerType_Item;
+        self.pickerVC.dataSource = [[NSMutableArray alloc] initWithArray:@[@"是",@"否"]];
+        self.pickerVC.onCancelButtonHandler = ^{
+        
+            [ASDepthModalViewController dismiss];
+        
+        };
+        self.pickerVC.onItemConfirmButtonHandler = ^(NSInteger index, NSString *item){
+        
+            ///更换标题
+            UILabel *titleLabel = [textField.rightView subviews][0];
+            titleLabel.text = item;
+            
+            [ASDepthModalViewController dismiss];
+        
+        };
+        
+        ///用动画弹框
+        [ASDepthModalViewController presentView:self.pickerVC.view];
+        
+        return NO;
         
     }
     
-    return NO;
+    return YES;
     
 }
 
@@ -148,7 +285,6 @@
 {
     
     [textField resignFirstResponder];
-    NSLog(@"%@",textField.text);
     return YES;
     
 }
@@ -157,15 +293,11 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     
-    UITextField *textField = (UITextField *)[self.view viewWithTag:200];
-    [textField resignFirstResponder];
+    [((UITextField *)self.userNameItem.property) resignFirstResponder];
+    [((UITextField *)self.addressItem.property) resignFirstResponder];
+    [((UITextField *)self.companyItem.property) resignFirstResponder];
+    [((UITextField *)self.phoneItem.property) resignFirstResponder];
     
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 @end
