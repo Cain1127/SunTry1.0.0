@@ -54,12 +54,13 @@
 - (void)setupFooter
 {
     // 按钮
-    UIButton *footterButton = [[UIButton alloc] init];
-    CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
-    CGFloat footterButtonY = 10;
-    CGFloat footterButtonW = self.tableView.frame.size.width - 2 * footterButtonX;
-    CGFloat footterButtonH = 44;
-    footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
+      UIButton *footterButton = [[UIButton alloc] init];
+      footterButton.translatesAutoresizingMaskIntoConstraints=NO;
+//    CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
+//    CGFloat footterButtonY = 10;
+//    CGFloat footterButtonW = self.tableView.frame.size.width - 2 * footterButtonX;
+//    CGFloat footterButtonH = 44;
+//    footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
     // 背景和文字
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
@@ -70,7 +71,7 @@
     
     // footer
     UIView *footer = [[UIView alloc] init];
-    CGFloat footerH = footterButtonH + 20.0f +5.0f+44.0f;
+    CGFloat footerH = 120.0f + 20.0f +5.0f+44.0f;
     footer.frame = CGRectMake(0, 0, 0, footerH);
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
@@ -98,20 +99,21 @@
     [activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:activateButton];
     
-    
     ///4.添加VFL约束
     ///参数
-    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activate,activateButton);
+    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activate,activateButton,footterButton);
     NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
     
     ///约束
     NSString *___hVFL_activate = @"H:|-margin-[activate]-5-[activateButton(100)]-margin-|";
-    NSString *___vVFL_activate = @"V:|-margin-[activate(44)]";
+    NSString *___hVFL_footterButton=@"H:|-margin-[footterButton]-margin-|";
+    NSString *___vVFL_all = @"V:|-margin-[activate(44)]-margin-[footterButton(44)]";
     NSString *___vVFL_activateButton=@"V:[activateButton(44)]";
     
     ///添加约束
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_activate options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
-    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activate  options:0 metrics:___sizeVFL views:___viewsVFL]];
+    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_footterButton options:0 metrics:___sizeVFL  views:___viewsVFL]];
+    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all  options:0 metrics:___sizeVFL views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activateButton options:0 metrics:___sizeVFL views:___viewsVFL]];
     
 }
@@ -120,6 +122,7 @@
 -(void)activateButtonAction
 {
 
+    
 }
 
 ///进入注册按钮事件

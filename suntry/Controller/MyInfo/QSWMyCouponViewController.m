@@ -60,7 +60,7 @@
     
     ///3.headerView
     UIView *header = [[UIView alloc] init];
-    CGFloat headerH = 44.f+2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
+    CGFloat headerH = 44.0f+2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
     header.frame = CGRectMake(0, 0, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, headerH);
     self.tableView.tableHeaderView = header;
     [header addSubview:textfield];
