@@ -34,6 +34,13 @@ enum TableViewType{
     FoodInfoListTable
 };
 
+//typedef enum {
+//    FoodType    = 0,
+//    FoodType    = 1,
+//    FoodType    = 2,
+//    FoodType         = 3,
+//} FoodType;
+
 @interface QSPointMealViewController ()
 
 @property(nonatomic,strong) UITableView *foodTypeTableView;
