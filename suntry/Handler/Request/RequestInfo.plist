@@ -8,6 +8,14 @@
 		<string>QSGoodsStapleFoodReturnData</string>
 		<key>url</key>
 		<string>goods/AppGoodsList</string>
+	</dict>
+	<key>1002</key>
+	<dict>
+		<key>url</key>
+		<string>user/login</string>
+		<key>class</key>
+		<string>QSUserLoginReturnData</string>
+	</dict>
 	<key>1101</key>
 	<dict>
 		<key>url</key>
