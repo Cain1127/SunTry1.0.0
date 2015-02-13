@@ -64,7 +64,6 @@
     
     QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"送餐地址请尽量填写详细"];
     
-    
     group.items = @[item];
     
 }
