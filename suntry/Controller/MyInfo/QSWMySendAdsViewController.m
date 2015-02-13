@@ -40,6 +40,19 @@
     ///初始化数据源
     self.dataSource = [[NSMutableArray alloc] init];
     
+    ///获取本地数据
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
+    NSData *tempData = [NSData dataWithContentsOfFile:path];
+    NSArray *tempList = [NSKeyedUnarchiver unarchiveObjectWithData:tempData];
+    if (tempList && [tempList count] > 0) {
+        
+        [self.dataSource addObjectsFromArray:tempList];
+        
+    }
+    
+    [self.tableView reloadData];
+    
     ///添加头部刷新
     [self.tableView addHeaderWithTarget:self action:@selector(getUserAddressList)];
     
@@ -181,6 +194,13 @@
             if ([tempModel.addressList count] > 0) {
                 
                 [self.dataSource addObjectsFromArray:tempModel.addressList];
+                
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
+                
+                ///把地址信息coding在本地
+                NSData *tempData = [NSKeyedArchiver archivedDataWithRootObject:tempModel.addressList];
+                [tempData writeToFile:path atomically:YES];
                 
             }
             
