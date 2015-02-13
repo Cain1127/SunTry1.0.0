@@ -45,7 +45,6 @@
     //backItem.image=[UIImage imageNamed:@"nav_back_normal"];
     backItem.title=@"";
     
-    
 }
 
 -(void)setupGroup0
@@ -85,6 +84,7 @@
     
     QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_loginpsw_normal" title:@"登录密码" destVcClass:[QSWLoginPswViewController class]];
     group.items = @[item];
+    
 }
 
 -(void)setupGroup4

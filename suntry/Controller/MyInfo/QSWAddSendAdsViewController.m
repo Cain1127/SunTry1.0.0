@@ -39,7 +39,6 @@
     
     QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
     
-    
     group.items = @[item];
 
 }
@@ -87,7 +86,6 @@
     
     QSWTextFieldItem *item = [QSWTextFieldItem itemWithPlaceHolder:@"请填写联系人姓名"];
     
-    
     group.items = @[item];
     
 }
@@ -116,6 +114,7 @@
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 -(void)gotoNextVC
@@ -132,8 +131,6 @@
     
     if (textField.tag == 200) {
         
-        
-        
         return YES;
         
     }
@@ -142,7 +139,6 @@
         
         
     }
-    
     
     return NO;
     
