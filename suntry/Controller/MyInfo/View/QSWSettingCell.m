@@ -148,6 +148,35 @@
     
     // 2.设置右边的控件
     [self setupCellView];
+    
+    ///判断是否需要加底框
+    if ([item isKindOfClass:[QSWTextFieldItem class]]) {
+        
+        return;
+        
+    }
+    
+    ///获取cell高度
+    CGFloat height = 44.0f;
+    
+    ///如果是优惠郑列表的cell时，高度为60.0f
+    if (item.subtitle) {
+        
+        height = 60.0f;
+        
+    }
+    
+    ///加边框
+    UIView *lineRootView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEFAULT_MAX_WIDTH, height)];
+    lineRootView.backgroundColor = [UIColor clearColor];
+    lineRootView.layer.borderColor = [[UIColor colorWithRed:194.0f / 255.0f green:181.0f / 255.0f blue:156.0f / 255.0f alpha:1.0f] CGColor];
+    lineRootView.layer.borderWidth = 0.5f;
+    lineRootView.layer.cornerRadius = 6.0f;
+    
+    ///加载到content上
+    [self.contentView addSubview:lineRootView];
+    [self.contentView sendSubviewToBack:lineRootView];
+    
 }
 
 /**
