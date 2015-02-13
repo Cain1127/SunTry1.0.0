@@ -164,6 +164,9 @@
     //菜名
     NSString* foodNameStr = goodsItem.goodsName;
     CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
+    
+    foodNameWidth = _foodTypeLabel.superview.frame.size.width - self.foodTypeLabel.frame.origin.x-self.foodTypeLabel.frame.size.width - 32;
+    
     [self.foodNameLabel setFrame:CGRectMake(self.foodTypeLabel.frame.origin.x+self.foodTypeLabel.frame.size.width, self.foodTypeLabel.frame.origin.y, foodNameWidth, self.foodNameLabel.frame.size.height)];
     [self.foodNameLabel setText:foodNameStr];
     
@@ -172,7 +175,7 @@
     
     [_pricemarkIconView setHidden:NO];
     //当前售卖价格
-    NSString* priceStr = [goodsItem.goodsSpecialPrice isEqualToString:@"-1"]?goodsItem.goodsPrice:goodsItem.goodsSpecialPrice;
+    NSString* priceStr = [goodsItem getOnsalePrice];
     CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_PRICE_ONSALE_FONT_SIZE]+4;
     [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
     [self.priceLabel setText:priceStr];

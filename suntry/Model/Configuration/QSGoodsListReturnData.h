@@ -9,7 +9,7 @@
 #import "QSHeaderDataModel.h"
 #import "QSMSGModel.h"
 
-@interface QSGoodsListAllData : QSMSGModel
+@interface QSGoodsListData : QSMSGModel
 
 @property (nonatomic,retain) NSArray *goodsList;//!<菜品数组
 
@@ -17,6 +17,6 @@
 
 @interface QSGoodsListReturnData : QSHeaderDataModel
 
-@property (nonatomic,retain) QSGoodsListAllData *goodsListAllData;//!<msg头信息;
+@property (nonatomic,retain) QSGoodsListData *goodsListData;//!<msg头信息;
 
 @end

@@ -22,4 +22,9 @@
 @property (nonatomic,copy) NSString *beginTime;         //!<开始时间
 @property (nonatomic,copy) NSString *overTime;          //!<结束时间
 
+@property (nonatomic,strong) NSArray  *stapleFoodData;  //!<主食
+@property (nonatomic,strong) NSArray  *ingredientFood;  //!<配菜
+
+- (NSString*)getOnsalePrice;
+
 @end

@@ -2,99 +2,77 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<<<<<<< HEAD
 	<key>SchemeUserState</key>
 	<dict>
 		<key>Pods-AFNetworking.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<key>Pods-ISO8601DateFormatterValueTransformer.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-		<key>Pods-RKValueTransformers.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>Pods-RestKit.xcscheme</key>
+		<key>Pods-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-		<key>Pods-TransitionKit.xcscheme</key>
+		<key>Pods-RKValueTransformers.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
+		<key>Pods-RestKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>Pods-TransitionKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>20A7336BD81762E22A044640</key>
-=======
-	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>0FE05408DFE7F3680A8BC33D</key>
->>>>>>> FETCH_HEAD
+		<key>1105E6E1811D6B9DF0CB11C6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
-		<key>6B5AA48736BB33847D5DADAF</key>
-=======
-		<key>27715EB76A1E08FAEC54BDA1</key>
->>>>>>> FETCH_HEAD
+		<key>270028CB0D3A5DEE514AB7B5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
-		<key>80319959D7CA107BC0529378</key>
+		<key>57E499BB27A33052BE27A7E0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AE81DCD393768318B0B9C508</key>
-=======
-		<key>5B737B71FFBA711BFA3BC187</key>
->>>>>>> FETCH_HEAD
+		<key>86F19244F5A60D9AD92A2FDA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
-		<key>C22117E728ADD596FE86FD8D</key>
-=======
-		<key>5CE45D309EF51D51CD740C6D</key>
+		<key>9D3ECFE79850FF0BFB1A51B0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>78B100ACFEA7D2C6ED04BCFB</key>
->>>>>>> FETCH_HEAD
+		<key>A1D1F7B86FD4204EC436BC5C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-<<<<<<< HEAD
-		<key>F20E0F28D05D9EB8E9331EF3</key>
-=======
-		<key>EA3F3FE852E0713EEDD74ECC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EF6EA16598C9B6F8C9217A5A</key>
->>>>>>> FETCH_HEAD
+		<key>DD71F5085386E1EFA40C5C2F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -11,6 +11,7 @@
 #import "QSLabel.h"
 #import "NSString+Calculation.h"
 #import "QSBlockButton.h"
+#import "QSGoodsDataModel.h"
 
 #define SHOPPING_CAR_VIEW_HEIGHT                        49.
 #define SHOPPING_CAR_VIEW_LEFTVIEW_BACKGROUND_COLOR    [UIColor colorWithRed:192/255. green:84/255. blue:100/255. alpha:1]
@@ -135,13 +136,21 @@
     
     if (goodCount>0) {
         
-        ;
         for (int i=0; i<[_goodListInShoppingCar count]; i++) {
             
             NSDictionary *tempDic = _goodListInShoppingCar[i];
             if (tempDic) {
+                //计算数量
                 NSInteger perCount = [[tempDic objectForKey:@"count"] integerValue];
                 totalCount += perCount;
+                //计算总额
+                id foodData = [tempDic objectForKey:@"goods"];
+                if (foodData&&[foodData isKindOfClass:[QSGoodsDataModel class]]) {
+                    QSGoodsDataModel *tempData = (QSGoodsDataModel*)foodData;
+                    NSString *perPrice = [tempData getOnsalePrice];
+                    currentPrice += (perPrice.floatValue * perCount);
+                }
+                
             }
         }
         
@@ -155,8 +164,6 @@
         [self.countLabel setText:countStr];
         [self.countLabel setFrame:CGRectMake(self.countLabel.frame.origin.x, self.countLabel.frame.origin.y, countStrWidth, self.countLabel.frame.size.height)];
         [self.countLabel setHidden:NO];
-        
-        currentPrice = totalCount * 8.88;
         
         [self.leftInfoLabel setFrame:CGRectMake(_shoppingCarIconView.frame.origin.x+_shoppingCarIconView.frame.size.width, (self.frame.size.height-24)/2, (self.frame.size.width - _rightView.frame.size.width)-(_shoppingCarIconView.frame.origin.x+_shoppingCarIconView.frame.size.width), 24)];
         
@@ -186,7 +193,7 @@
         
         [self.countLabel setHidden:YES];
         [self.leftInfoLabel setText:@"你的购物车是空的"];
-        [self.rightInfoLabel setText:@"￥20起配送"];
+        [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.f起配送",SHOPPING_CAR_VIEW_SHIPPING_PRICE]];
         
     }
     
@@ -195,7 +202,7 @@
         [self.shoppingCarIconView setHidden:YES];
         
         [self.leftInfoLabel setFrame:CGRectMake(_shoppingCarIconView.frame.origin.x, (self.frame.size.height-24)/2, (self.frame.size.width - _rightView.frame.size.width), 24)];
-        [self.leftInfoLabel setText:[NSString stringWithFormat:@"%ld份菜品,共￥%.2f",totalCount,currentPrice]];
+        [self.leftInfoLabel setText:[NSString stringWithFormat:@"%ld份菜品,共￥%.2f",(long)totalCount,currentPrice]];
         
         [_countLabel setHidden:YES];
         
@@ -223,20 +230,6 @@
     
 }
 
-- (void)addGood:(id)goodData
-{
-    
-    [self.goodListInShoppingCar addObject:goodData];
-    
-}
-
-- (void)removeGood:(id)goodData
-{
-    
-    [self.goodListInShoppingCar removeObject:goodData];
-    
-}
-
 - (NSArray*)getGoods
 {
     
@@ -258,29 +251,38 @@
         self.goodListInShoppingCar = [NSMutableArray arrayWithCapacity:0];
     }
     
+    if (!goodData||![goodData isKindOfClass:[QSGoodsDataModel class]]) {
+        NSLog(@"购物车接受菜品数据格式出错！");
+        return;
+    }
+    
     if ([_goodListInShoppingCar count] == 0) {
         
-        //FIXME:添加进空购物车需修复，以下暂做测试
-        NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:goodData,@"foodName",[NSNumber numberWithInt:(int)count],@"count",nil];
+        NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:goodData,@"goods",[NSNumber numberWithInt:(int)count],@"count",nil];
         [_goodListInShoppingCar addObject:itemDic];
         
     }else{
         
-        //FIXME:添加进购物车需修复，以下暂做测试
         BOOL hadGood = NO;
         for (int i=0; i<[_goodListInShoppingCar count]; i++) {
             NSMutableDictionary *tempDic = _goodListInShoppingCar[i];
-            if (tempDic) {
-                //FIXME:这个判断是个坑，以实际数据关键Key为准。
-                if ([goodData isEqualToString:[tempDic objectForKey:@"foodName"]]) {
-                    hadGood = YES;
-                    [tempDic setObject:[NSNumber numberWithInt:(int)(count)] forKey:@"count"];
+            if (tempDic&&[tempDic isKindOfClass:[NSDictionary class]]) {
+                
+                QSGoodsDataModel *food = [tempDic objectForKey:@"goods"];
+                if (food&&[food isKindOfClass:[QSGoodsDataModel class]]&&goodData&&[goodData isKindOfClass:[QSGoodsDataModel class]]) {
+                    
+                    if ([food.goodsName isEqualToString:((QSGoodsDataModel*)goodData).goodsName]) {
+                        
+                        hadGood = YES;
+                        [tempDic setObject:[NSNumber numberWithInt:(int)(count)] forKey:@"count"];
+                         
+                    }
                 }
             }
         }
         
         if (NO==hadGood) {
-            NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:goodData,@"foodName",[NSNumber numberWithInt:(int)count],@"count",nil];
+            NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:(QSGoodsDataModel*)goodData,@"goods",[NSNumber numberWithInt:(int)count],@"count",nil];
             [_goodListInShoppingCar addObject:itemDic];
         }
         

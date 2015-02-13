@@ -29,19 +29,20 @@ typedef enum
 typedef enum
 {
     
-    rRequestTypeDefault = 998,              //!<默认无效请求
-    rRequestTypeDistrict = 999,             //!<地区选择
-    rRequestTypeSelect =1000,               //!<选择查询
-    rRequestTypeAspecial =1001,             //!<每日特价菜品
+    rRequestTypeDefault = 998,  //!<默认无效请求
+    rRequestTypeDistrict = 999, //!<地区选择
+    rRequestTypeSelect =1000,  //!<选择查询
+    rRequestTypeAspecial =1001, //!<每日特价菜品
+    rRequestTypeRandom      =1036,   //!<随机菜品
+    rRequestTypeAllGoods    =1050,   //!<所有菜品
     
     rRequestTypeLogin = 1002,               //!<登录
     
     rRequestTypeUserSendAddressList = 1100, //!<当前用户的送餐地址列表
     rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址
     
-    rRequestTypeRandom =1036,               //!<随机菜品
-    
     rRequestTypeMaxLimited = 99999          //!<最大值限制
+    
     
 }REQUEST_TYPE;
 

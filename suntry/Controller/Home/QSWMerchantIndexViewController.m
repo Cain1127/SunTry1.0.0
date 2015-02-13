@@ -256,14 +256,14 @@
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            ///模型转换
+            //模型转换
             QSGoodsListReturnData *tempModel = resultData;
-            NSArray *array = tempModel.goodsListAllData.goodsList;
+            NSArray *array = tempModel.goodsListData.goodsList;
             
             NSLog(@"QSAspecialReturnData : %@",tempModel);
-            ///设置页码：当前页码/最大页码
+            //设置页码：当前页码/最大页码
             
-            ///清空的数据源
+            //清空的数据源
             [self.specialDataSource removeAllObjects];
             
             ///保存数据源
@@ -300,7 +300,7 @@
             
             ///模型转换
             QSGoodsListReturnData *tempModel = resultData;
-            NSArray *array = tempModel.goodsListAllData.goodsList;
+            NSArray *array = tempModel.goodsListData.goodsList;
             NSLog(@"获取随机菜品成功");
             
             if ([array isKindOfClass:[NSArray class]]&&[array count]>0) {

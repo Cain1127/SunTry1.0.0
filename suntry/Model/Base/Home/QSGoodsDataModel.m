@@ -37,4 +37,13 @@
     
 }
 
+- (NSString*)getOnsalePrice
+{
+    
+    NSString* price = [_goodsSpecialPrice isEqualToString:@"-1"] ? _goodsPrice:_goodsSpecialPrice;
+    
+    return price;
+    
+}
+
 @end

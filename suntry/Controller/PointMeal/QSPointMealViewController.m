@@ -13,8 +13,11 @@
 #import "QSAppDelegate.h"
 #import "ImageHeader.h"
 #import "QSBlockButton.h"
-//#import "QSPFoodPackageView.h"
-////#import "QSPOrderViewController.h"
+#import "QSPFoodPackageView.h"
+#import "QSPOrderViewController.h"
+#import "MBProgressHUD.h"
+#import "QSRequestManager.h"
+#import "QSGoodsStapleFoodReturnData.h"
 
 #define FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR  [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.]
 #define FOOD_INFOLIST_TABLEVIEW_BACKGROUND_COLOR  [UIColor whiteColor]
@@ -38,7 +41,7 @@ enum TableViewType{
 @property(nonatomic,strong) UITableView *foodInfoListTableView;
 @property(nonatomic,strong) NSArray     *foodInfoList;
 @property(nonatomic,strong) QSPShoppingCarView *shoppingCarView;
-
+@property(nonatomic,strong) QSGoodsStapleFoodHeaderData *allGoodsData;
 
 @end
 
@@ -73,8 +76,10 @@ enum TableViewType{
     [_shoppingCarView setDelegate:self];
     [_shoppingCarView updateShoppingCar];
     
-    self.foodTypeList = [NSArray arrayWithObjects:@"",@"",@"",@"",@"",@"", nil];
-    self.foodInfoList = [NSArray arrayWithObjects:@"",@"",@"",@"",@"",@"",@"",@"",@"",@"", nil];
+//    self.foodTypeList = [NSArray arrayWithObjects:@"优惠特价",@"健康餐",@"养生炖汤",@"营养套餐", nil];
+//    self.foodInfoList = [NSArray arrayWithObjects:@"",@"",@"",@"",@"",@"", nil];
+    self.foodTypeList = [NSArray array];
+    self.foodInfoList = [NSArray array];
     
     self.foodTypeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, FOOD_TYPE_TABLEVIEW_WIDTH, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height)];
     [self.foodTypeTableView setDelegate:self];
@@ -105,9 +110,23 @@ enum TableViewType{
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    if ([[self.foodTypeTableView visibleCells] count]>0) {
+        [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+    }
     
-    [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        [self getGoodsData];
+        
+    });
+    
+    
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -128,7 +147,9 @@ enum TableViewType{
             
         case FoodInfoListTable:
             
-            count = 5;
+            if (_foodTypeList&&[_foodTypeList count]>0) {
+                count = [_foodTypeList count];
+            }
             
             break;
         default:
@@ -149,13 +170,50 @@ enum TableViewType{
             
         case FoodTypeTable:
             
-            count = [self.foodTypeList count];
+            if (_foodTypeList&&[_foodTypeList count]>0) {
+                count = [_foodTypeList count];
+            }
             
             break;
             
+#if 0
         case FoodInfoListTable:
             
-            count = [self.foodInfoList count];
+            if (_allGoodsData) {
+                
+                switch (section) {
+                    case 0:
+                        if (_allGoodsData.specialList && [_allGoodsData.specialPriceGoodsList isKindOfClass:[NSArray class]])
+                        {
+                            
+                            count = [_allGoodsData.specialPriceGoodsList count];
+                            
+                        }
+                        break;
+                    case 1:
+                        if (_allGoodsData.riceGoodsList&&[_allGoodsData.riceGoodsList isKindOfClass:[NSArray class]])
+                        {
+                            count = [_allGoodsData.riceGoodsList count];
+                        }
+                        break;
+                    case 2:
+                        if (_allGoodsData.soupGoodsList&&[_allGoodsData.soupGoodsList isKindOfClass:[NSArray class]])
+                        {
+                            count = [_allGoodsData.soupGoodsList count];
+                        }
+                        break;
+                    case 3:
+                        if (_allGoodsData.menuPackageGoodsList&&[_allGoodsData.menuPackageGoodsList isKindOfClass:[NSArray class]])
+                        {
+                            count = [_allGoodsData.menuPackageGoodsList count];
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+#endif
             
             break;
         default:
@@ -232,7 +290,9 @@ enum TableViewType{
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, titleBackgroundView.frame.size.width, titleBackgroundView.frame.size.height)];
     
     [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setText:@"优惠特价"];
+    if (_foodTypeList&&[_foodTypeList count]>0&&[_foodTypeList count]>section) {
+        [titleLabel setText:_foodTypeList[section]];
+    }
     
     [titleBackgroundView addSubview:titleLabel];
     
@@ -241,6 +301,8 @@ enum TableViewType{
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+#if 0
     
     switch (tableView.tag) {
             
@@ -256,7 +318,10 @@ enum TableViewType{
                     
                 }
                 
-                [cell setFoodTypeName:@"营养套餐"];
+                [cell setFoodTypeName:@""];
+                if (_foodTypeList&&[_foodTypeList count]>indexPath.row) {
+                    [cell setFoodTypeName:_foodTypeList[indexPath.row]];
+                }
                 return cell;
                 
             }
@@ -274,16 +339,60 @@ enum TableViewType{
                     
                 }
                 
-                [cell updateFoodData:[NSString stringWithFormat:@"番茄鸡扒%ld%ld",indexPath.section,indexPath.row]];
                 [cell setSlelectedCount:0];
+                
+                NSArray *tempArray = nil;
+                
+                if (_allGoodsData) {
+                    
+                    switch (indexPath.section) {
+                        case 0:
+                            if (_allGoodsData.specialPriceGoodsList&&[_allGoodsData.specialPriceGoodsList isKindOfClass:[NSArray class]]&&[_allGoodsData.specialPriceGoodsList count]>indexPath.row)
+                            {
+                                tempArray = _allGoodsData.specialPriceGoodsList;
+                            }
+                            break;
+                        case 1:
+                            if (_allGoodsData.riceGoodsList&&[_allGoodsData.riceGoodsList isKindOfClass:[NSArray class]]&&[_allGoodsData.riceGoodsList count]>indexPath.row)
+                            {
+                                tempArray = _allGoodsData.riceGoodsList;
+                            }
+                            break;
+                        case 2:
+                            if (_allGoodsData.soupGoodsList&&[_allGoodsData.soupGoodsList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupGoodsList count]>indexPath.row)
+                            {
+                                tempArray = _allGoodsData.soupGoodsList;
+                            }
+                            break;
+                        case 3:
+                            if (_allGoodsData.menuPackageGoodsList&&[_allGoodsData.menuPackageGoodsList isKindOfClass:[NSArray class]]&&[_allGoodsData.menuPackageGoodsList count]>indexPath.row)
+                            {
+                                tempArray = _allGoodsData.menuPackageGoodsList;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                
+                if (tempArray){
+                    [cell updateFoodData:tempArray[indexPath.row]];
+                }
+
                 NSArray *selectedArray = [_shoppingCarView getGoods];
                 if (selectedArray&&[selectedArray count]>0) {
                     for (int i=0; i<[selectedArray count]; i++) {
                         NSDictionary *item = selectedArray[i];
                         NSNumber *counNum = [item objectForKey:@"count"];
-                        if ([[cell getFoodData] isEqualToString:[item objectForKey:@"foodName"]]) {
-                            [cell setSlelectedCount:[counNum integerValue]];
-                            break;
+                        QSGoodsDataModel *goodData = [cell getFoodData];
+                        QSGoodsDataModel *food = [item objectForKey:@"goods"];
+                        if (food&&[food isKindOfClass:[QSGoodsDataModel class]]&&goodData&&[goodData isKindOfClass:[QSGoodsDataModel class]]) {
+                            
+                            if ([food.goodsName isEqualToString:((QSGoodsDataModel*)goodData).goodsName]) {
+                                
+                                [cell setSlelectedCount:[counNum integerValue]];
+                                
+                            }
                         }
                     }
                 }
@@ -294,9 +403,14 @@ enum TableViewType{
             break;
             
         default:
+            
             return nil;
             
     }
+#endif
+    
+    return nil;
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -315,9 +429,64 @@ enum TableViewType{
             
         case FoodInfoListTable:
             {
-//                QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
-//                [self.navigationController.view addSubview:packageView];
-//                [packageView showPackageView];
+                NSArray *tempArray = nil;
+                
+                if (_allGoodsData) {
+                    
+#if 0
+                    switch (indexPath.section) {
+                        case 0:
+                            if (_allGoodsData.specialPriceGoodsList&&[_allGoodsData.specialPriceGoodsList isKindOfClass:[NSArray class]]&&[_allGoodsData.specialPriceGoodsList count]>indexPath.row)
+                            {
+                                tempArray = _allGoodsData.specialPriceGoodsList;
+                            }
+                            break;
+                        case 1:
+                            if (_allGoodsData.riceGoodsList&&[_allGoodsData.riceGoodsList isKindOfClass:[NSArray class]]&&[_allGoodsData.riceGoodsList count]>indexPath.row)
+                            {
+                                tempArray = _allGoodsData.riceGoodsList;
+                            }
+                            break;
+                        case 2:
+                            if (_allGoodsData.soupGoodsList&&[_allGoodsData.soupGoodsList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupGoodsList count]>indexPath.row)
+                            {
+                                tempArray = _allGoodsData.soupGoodsList;
+                            }
+                            break;
+                        case 3:
+                            if (_allGoodsData.menuPackageGoodsList&&[_allGoodsData.menuPackageGoodsList isKindOfClass:[NSArray class]]&&[_allGoodsData.menuPackageGoodsList count]>indexPath.row)
+                            {
+                                tempArray = _allGoodsData.menuPackageGoodsList;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+#endif
+                    
+                }
+                
+                if (tempArray){
+                    QSGoodsDataModel *itemData = tempArray[indexPath.row];
+                    if (itemData&&[itemData isKindOfClass:[QSGoodsDataModel class]]) {
+                        if ([itemData.goodsTypeID integerValue] == 1) {
+                            
+                            QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
+                            [self.tabBarController.view addSubview:shakeFoodView];
+                            [shakeFoodView updateFoodData:itemData];
+                            [shakeFoodView showShakeFoodView];
+                            
+                        }else if ([itemData.goodsTypeID integerValue] == 5) {
+                            
+                            QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
+                            [self.navigationController.view addSubview:packageView];
+                            [packageView showPackageView];
+                            
+                        }
+                        
+                    }
+
+                }
                 
             }
             break;
@@ -357,9 +526,12 @@ enum TableViewType{
                 currentSectionIdx = second.section;
                 
             }
+            
+            if (scrollView&&[scrollView isKindOfClass:[UITableView class]]) {
+                [(UITableView*)scrollView selectRowAtIndexPath:[NSIndexPath indexPathForRow:currentSectionIdx inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+            }
+
         }
-        
-        [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:currentSectionIdx inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
         
     }
     
@@ -368,7 +540,7 @@ enum TableViewType{
 - (void)changedCount:(NSInteger)count withFoodData:(id)foodData
 {
     
-    NSLog(@"changedCount:%ld withFoodData:%@",count,foodData);
+    NSLog(@"changedCount:%ld withFoodData:%@",(long)count,foodData);
     
     if (_shoppingCarView) {
         [_shoppingCarView changeGoods:foodData withCount:count];
@@ -381,11 +553,41 @@ enum TableViewType{
     
     NSLog(@"orderWithData:%@",foodData);
 
-    //QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
-//    [orderVc setFoodSelectedList:[NSMutableArray arrayWithArray:foodData]];
-//    [self.navigationController pushViewController:orderVc animated:YES];
+    QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
+    [orderVc setFoodSelectedList:[NSMutableArray arrayWithArray:foodData]];
+    [self.navigationController pushViewController:orderVc animated:YES];
     
 }
+
+- (void)getGoodsData
+{
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    [QSRequestManager requestDataWithType:rRequestTypeAllGoods andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///模型转换 
+            QSGoodsStapleFoodReturnData *tempModel = resultData;
+            
+            self.allGoodsData = tempModel.headerMSG;
+            
+            NSLog(@"allGoodsData : %@",_allGoodsData);
+            
+            
+        } else {
+            
+            NSLog(@"================所有菜品数据请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+    
+}
+
 
 /*
 #pragma mark - Navigation

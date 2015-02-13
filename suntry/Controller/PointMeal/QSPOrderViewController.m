@@ -16,6 +16,8 @@
 #import "QSWMySendAdsViewController.h"
 #import "QSPOrderSubmitedStateViewController.h"
 #import "QSPOrderRemarkViewController.h"
+#import "QSWMyCouponViewController.h"
+#import "QSGoodsDataModel.h"
 
 #define ORDERVIEWCONTROLLER_SHIP_BT_BG_COLOR    [UIColor colorWithRed:0.709 green:0.653 blue:0.543 alpha:1.000]
 #define ORDERVIEWCONTROLLER_TITLE_FONT_SIZE     17.
@@ -50,7 +52,7 @@
 
 @implementation QSPOrderViewController
 
-@synthesize foodSelectedList;
+//@synthesize foodSelectedList;
 
 - (void)loadView{
     
@@ -290,7 +292,6 @@
 
 - (void)updateHadOrderCount
 {
-    
     NSInteger selectedTotalCount = 0;
     if (self.foodSelectedList&&[self.foodSelectedList isKindOfClass:[NSArray class]])
     {
@@ -300,13 +301,15 @@
             NSDictionary *dic = array[i];
             NSNumber *count = [dic objectForKey:@"count"];
             if (count) {
+                
                 selectedTotalCount += count.integerValue;
                 
-                NSString *foodName = [dic objectForKey:@"foodName"];
-                if (_shoppingCarView) {
-                    [_shoppingCarView changeGoods:foodName withCount:count.longLongValue];
+                QSGoodsDataModel *food = [dic objectForKey:@"goods"];
+                if (food&&[food isKindOfClass:[QSGoodsDataModel class]]) {
+                    
+                    [_shoppingCarView changeGoods:food withCount:count.longValue];
+                    
                 }
-                
             }
         }
     }
@@ -346,11 +349,11 @@
         NSArray *array = self.foodSelectedList;
         for (int i=0; i<[array count]; i++) {
             NSDictionary *dic = array[i];
-            NSString *foodName = [dic objectForKey:@"foodName"];
-            if (foodName) {
+            id foodData = [dic objectForKey:@"goods"];
+            if (foodData&&[foodData isKindOfClass:[QSGoodsDataModel class]]) {
                 NSNumber *count = [dic objectForKey:@"count"];
                 
-                QSPOrderViewHadOrderCell *cell = [[QSPOrderViewHadOrderCell alloc] initOrderItemViewWithData:foodName withCount:count.integerValue];
+                QSPOrderViewHadOrderCell *cell = [[QSPOrderViewHadOrderCell alloc] initOrderItemViewWithData:(QSGoodsDataModel*)foodData withCount:count.integerValue];
                 [cell setFrame:CGRectMake(0, _hadOrderTotalTip.frame.origin.y+_hadOrderTotalTip.frame.size.height+12 + i *cell.frame.size.height, cell.frame.size.width, cell.frame.size.height)];
                 [cell setDelegate:self];
                 [_hadOrderFrameView addSubview:cell];
@@ -400,6 +403,10 @@
         [specialOfferBtStyle setBgColor:[UIColor clearColor]];
         UIButton *specialOfferBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, _specialOfferTotalTip.frame.origin.y+_specialOfferTotalTip.frame.size.height+12 + i * 45, SIZE_DEVICE_WIDTH-24, 45) andButtonStyle:specialOfferBtStyle andCallBack:^(UIButton *button) {
             NSLog(@"specialOfferBt");
+            
+            QSWMyCouponViewController *myCouponVc = [[QSWMyCouponViewController alloc] init];
+            [self.navigationController pushViewController:myCouponVc animated:YES];
+            
         }];
         UIImageView *arrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
         [arrowMarkView setFrame:CGRectMake(specialOfferBt.frame.size.width-arrowMarkView.frame.size.width-6, (specialOfferBt.frame.size.height-arrowMarkView.frame.size.height)/2, arrowMarkView.frame.size.width, arrowMarkView.frame.size.height)];
@@ -444,21 +451,26 @@
 {
     
     NSLog(@"changedCount:%ld withFoodData:%@",(long)count,foodData);
-    
-    //FIXME:添加进购物车需修复，以下暂做测试
+
     BOOL hadGood = NO;
     for (int i=0; i<[self.foodSelectedList count]; i++) {
         NSMutableDictionary *tempDic = self.foodSelectedList[i];
         if (tempDic) {
-            //FIXME:这个判断是个坑，以实际数据关键Key为准。
-            if ([foodData isEqualToString:[tempDic objectForKey:@"foodName"]]) {
-                hadGood = YES;
-                [tempDic setObject:[NSNumber numberWithInt:(int)(count)] forKey:@"count"];
+            
+            QSGoodsDataModel *food = [tempDic objectForKey:@"goods"];
+            if (food&&[food isKindOfClass:[QSGoodsDataModel class]]&&foodData&&[foodData isKindOfClass:[QSGoodsDataModel class]]) {
+                
+                if ([food.goodsName isEqualToString:((QSGoodsDataModel*)foodData).goodsName]) {
+                    
+                    hadGood = YES;
+                    [tempDic setObject:[NSNumber numberWithInt:(int)(count)] forKey:@"count"];
+                    
+                }
             }
         }
     }
     if (NO==hadGood) {
-        NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:foodData,@"foodName",[NSNumber numberWithInt:(int)count],@"count",nil];
+        NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:foodData,@"goods",[NSNumber numberWithInt:(int)count],@"count",nil];
         [self.foodSelectedList addObject:itemDic];
     }
     

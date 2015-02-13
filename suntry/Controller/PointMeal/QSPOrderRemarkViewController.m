@@ -59,9 +59,10 @@
     [self.contentTextView.layer setCornerRadius:5.];
     [self.view addSubview:self.contentTextView];
     
-    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, SIZE_DEVICE_WIDTH-32, 18)];
+    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, SIZE_DEVICE_WIDTH-32, 32)];
     [self.placeholderLabel setBackgroundColor:[UIColor clearColor]];
     [self.placeholderLabel setText:@"给我们留言，可输入口味，时间，要求等"];
+    [self.placeholderLabel setNumberOfLines:2];
     [self.placeholderLabel setFont:[UIFont systemFontOfSize:ORDER_REMARK_VIEW_CONTROLLER_TEXT_FONT_SIZE]];
     [self.placeholderLabel setTextColor:ORDER_REMARK_VIEW_CONTROLLER_PLACEHOLDER_TEXT_COLOR];
     [self.contentTextView addSubview:self.placeholderLabel];

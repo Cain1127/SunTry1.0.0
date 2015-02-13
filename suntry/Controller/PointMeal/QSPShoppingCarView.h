@@ -36,10 +36,6 @@ typedef enum
 
 - (void)setProcessType:(ProcessType)type;
 
-- (void)addGood:(id)goodData;
-
-- (void)removeGood:(id)goodData;
-
 - (NSArray*)getGoods;
 
 - (void)clearShoopingCar;

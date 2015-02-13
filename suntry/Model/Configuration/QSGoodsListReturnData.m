@@ -9,8 +9,23 @@
 #import "QSGoodsListReturnData.h"
 #import "QSGoodsDataModel.h"
 
+@implementation QSGoodsListReturnData
 
-@implementation QSGoodsListAllData
++ (RKObjectMapping *)objectMapping
+{
+    
+    RKObjectMapping *shared_mapping = [super objectMapping];
+    
+    ///mapping字典
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"msg" toKeyPath:@"goodsListData" withMapping:[QSGoodsListData objectMapping]]];
+    
+    return shared_mapping;
+    
+}
+
+@end
+
+@implementation QSGoodsListData
 
 + (RKObjectMapping *)objectMapping
 {
@@ -27,18 +42,3 @@
 @end
 
 
-@implementation QSGoodsListReturnData
-
-+ (RKObjectMapping *)objectMapping
-{
-    
-    RKObjectMapping *shared_mapping = [super objectMapping];
-    
-    ///mapping字典
-    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"msg" toKeyPath:@"goodsListAllData" withMapping:[QSGoodsListAllData objectMapping]]];
-    
-    return shared_mapping;
-    
-}
-
-@end
