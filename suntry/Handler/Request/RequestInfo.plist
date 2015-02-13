@@ -12,7 +12,7 @@
 	<key>1100</key>
 	<dict>
 		<key>url</key>
-		<string></string>
+		<string>user/AddressList</string>
 		<key>class</key>
 		<string></string>
 	</dict>

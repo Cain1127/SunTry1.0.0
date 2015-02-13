@@ -13,6 +13,8 @@
 #import "QSWSettingArrowItem.h"
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
+#import "QSRequestManager.h"
+
 @interface QSWAddSendAdsViewController ()<UITextFieldDelegate>
 
 @end
