@@ -23,21 +23,20 @@
 @implementation QSWLoginViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     self.title=@"登录";
     [self setupGroup0];
     [self setupGroup1];
     [self setupFooter];
+    
 }
 
 -(void)setupGroup0
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
     QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的手机号码"];
-    
-    
     group.items = @[item];
     
 }
@@ -46,10 +45,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
     QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的登录密码"];
-    
-    
     group.items = @[item];
     
 }
@@ -95,12 +91,11 @@
     
 }
 
-///进入登录界面
+///点击登录
 -(void)gotoLoginVC
 {
     
-    QSMyinfoViewController *myinfo=[[QSMyinfoViewController alloc] init];
-    [self.navigationController pushViewController:myinfo animated:YES];
+    
     
 }
 
@@ -110,7 +105,7 @@
     
     QSWForgetPswController *VC=[[QSWForgetPswController alloc] init];
     [self.navigationController pushViewController:VC animated:YES];
-
+    
 }
 
 ///进入注册帐号界面
@@ -120,20 +115,5 @@
     QSWRegisterViewController *VC=[[QSWRegisterViewController alloc] init];
     [self.navigationController pushViewController:VC animated:YES];
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
