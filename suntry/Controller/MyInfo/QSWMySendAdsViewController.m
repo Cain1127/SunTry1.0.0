@@ -195,7 +195,7 @@
 ///请求用户的送餐地址列表
 - (void)getUserAddressList
 {
-
+    
     [QSRequestManager requestDataWithType:rRequestTypeUserSendAddressList andParams:@{@"status" : @"0"} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///清空数据

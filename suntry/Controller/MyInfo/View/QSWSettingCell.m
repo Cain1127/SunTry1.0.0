@@ -14,6 +14,7 @@
 #import "QSWSettingButtonItem.h"
 #import "CommonHeader.h"
 #import "DeviceSizeHeader.h"
+#import "QSPickerViewItem.h"
 
 @interface QSWSettingCell()<UITextFieldDelegate>
 
@@ -24,6 +25,8 @@
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic,strong) UITextField *textFieldView;
 @property (nonatomic,strong) UILabel *labelView;
+
+@property (nonatomic,strong) UIView *titleArrowView;//!<有标题的带前头view
 
 @end
 
@@ -56,6 +59,33 @@
     
 }
 
+- (UIView *)titleArrowView
+{
+    
+    if (_titleArrowView == nil) {
+        
+        ///图片view
+        UIImageView *arrowView = self.arrowView;
+        
+        ///初始化
+        _titleArrowView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, arrowView.frame.size.width + 60.0f, 44.0f)];
+        
+        ///添加标题
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 57.0f, _titleArrowView.frame.size.height)];
+        titleLabel.textAlignment = NSTextAlignmentRight;
+        titleLabel.font = [UIFont systemFontOfSize:16.0f];
+        [_titleArrowView addSubview:titleLabel];
+        
+        ///添加控件
+        arrowView.frame = CGRectMake(titleLabel.frame.size.width + 3.0f, (_titleArrowView.frame.size.height - arrowView.frame.size.height) / 2.0f, arrowView.frame.size.width, arrowView.frame.size.height);
+        [_titleArrowView addSubview:arrowView];
+        
+    }
+    
+    return _titleArrowView;
+    
+}
+
 -(UILabel *)labelView
 {
 
@@ -72,16 +102,17 @@
 {
 
     if (_textFieldView==nil) {
+        
         ///1.添加textfield输入框控件
         _textFieldView=[[UITextField alloc]initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.frame.size.height)];
 
         _textFieldView.translatesAutoresizingMaskIntoConstraints=NO;
         _textFieldView.returnKeyType=UIReturnKeyDone;
         _textFieldView.clearButtonMode=UITextFieldViewModeUnlessEditing;
-        _textFieldView.delegate=self;
+        _textFieldView.delegate = ((QSWTextFieldItem *)self.item).delegate;
         _textFieldView.tag = 200;
         _textFieldView.borderStyle = UITextBorderStyleRoundedRect;
-        _textFieldView.delegate=self;
+        
     }
     return _textFieldView;
     
@@ -130,8 +161,10 @@
 - (void)setFrame:(CGRect)frame
 {
     if (iOS7) {
+        
         frame.origin.x = 5;
         frame.size.width -= 10;
+        
     }
     [super setFrame:frame];
 }
@@ -145,6 +178,35 @@
     
     // 2.设置右边的控件
     [self setupCellView];
+    
+    ///判断是否需要加底框
+    if ([item isKindOfClass:[QSWTextFieldItem class]]) {
+        
+        return;
+        
+    }
+    
+    ///获取cell高度
+    CGFloat height = 44.0f;
+    
+    ///如果是优惠郑列表的cell时，高度为60.0f
+    if (item.subtitle) {
+        
+        height = 60.0f;
+        
+    }
+    
+    ///加边框
+    UIView *lineRootView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEFAULT_MAX_WIDTH, height)];
+    lineRootView.backgroundColor = [UIColor clearColor];
+    lineRootView.layer.borderColor = [[UIColor colorWithRed:194.0f / 255.0f green:181.0f / 255.0f blue:156.0f / 255.0f alpha:1.0f] CGColor];
+    lineRootView.layer.borderWidth = 0.5f;
+    lineRootView.layer.cornerRadius = 6.0f;
+    
+    ///加载到content上
+    [self.contentView addSubview:lineRootView];
+    [self.contentView sendSubviewToBack:lineRootView];
+    
 }
 
 /**
@@ -166,6 +228,7 @@
         if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
             
             self.textFieldView.placeholder = self.item.title;
+            self.item.property = self.textFieldView;
             
         }
     
@@ -179,6 +242,7 @@
         if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
             
             self.textFieldView.text = self.item.subtitle;
+            self.item.property = self.textFieldView;
             
         }
         
@@ -200,49 +264,44 @@
  */
 - (void)setupCellView
 {
+    
     ///原生cell
     if ([self.item isKindOfClass:[QSWSettingArrowItem class]]) {
         
         // 右边是箭头
         self.accessoryView=self.arrowView;
         
-    }
-    
-    ///自定义textField样式cell
-    else if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
+    } else if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
         
+        if ([self.item isKindOfClass:[QSPickerViewItem class]]) {
+            
+            ///设置右标题
+            UILabel *rightTitleLabel = (UILabel *)[self.titleArrowView subviews][0];
+            rightTitleLabel.text = ((QSPickerViewItem *)self.item).rightTitle;
+            
+            ///添加到输入框的右侧
+            self.textFieldView.rightViewMode = UITextFieldViewModeAlways;
+            self.textFieldView.rightView = self.titleArrowView;
+            
+        }
+        
+        ///自定义textField样式cell
         [self.contentView addSubview:self.textFieldView];
         self.selectionStyle=UITableViewCellSelectionStyleNone;
         
-        
-    }
-    
-    else if ([self.item isKindOfClass:[QSWLabelItem class]]) {
+    } else if ([self.item isKindOfClass:[QSWLabelItem class]]) {
         
         // 右边是标签
         self.accessoryView = self.labelView;
         self.selectionStyle = UITableViewCellSelectionStyleDefault;
         
-    }
-    
-    else if ([self.item isKindOfClass:[QSWSettingButtonItem class]]) {
+    } else if ([self.item isKindOfClass:[QSWSettingButtonItem class]]) {
         
         // 右边是按钮
         self.accessoryView = self.buttonView;
-        //self.selectionStyle = UITableViewCellSelectionStyleDefault;
+        
     }
     
-    
-    
-    //     else {
-    //
-    //        // 右边没有东西
-    //        self.accessoryView=nil;
-    //
-    //    }
-    
 }
-
-
 
 @end

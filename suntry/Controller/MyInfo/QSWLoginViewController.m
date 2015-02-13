@@ -16,8 +16,18 @@
 #import "QSWForgetPswController.h"
 #import "QSWRegisterViewController.h"
 #import "ColorHeader.h"
+#import "MBProgressHUD.h"
 
-@interface QSWLoginViewController ()
+#import "QSUserLoginReturnData.h"
+
+#import "QSRequestManager.h"
+
+@interface QSWLoginViewController () <UITextFieldDelegate>
+
+@property (nonatomic,retain) QSWSettingItem *userNameItem;  //!<用户账号
+@property (nonatomic,retain) QSWSettingItem *passWordItem;  //!<密码
+
+@property (nonatomic,retain) MBProgressHUD *hud;        //!<HUD
 
 @end
 
@@ -37,8 +47,8 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的手机号码"];
-    group.items = @[item];
+    self.userNameItem = [QSWTextFieldItem itemWithTitle:@"输入您的手机号码" andDelegate:self];
+    group.items = @[self.userNameItem];
     
 }
 
@@ -46,14 +56,15 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的登录密码"];
-    group.items = @[item];
+    self.passWordItem = [QSWTextFieldItem itemWithTitle:@"输入您的登录密码" andDelegate:self];
+    group.items = @[self.passWordItem];
     
 }
 
 
 - (void)setupFooter
 {
+    
     /// 按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
@@ -89,14 +100,84 @@
     [registerPsw addTarget:self action:@selector(registerPswAction) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:registerPsw];
     
-    
 }
 
 ///点击登录
 -(void)gotoLoginVC
 {
     
+    ///判断数据
+    NSString *userName = ((UITextField *)self.userNameItem.property).text;
+    NSString *pwd = ((UITextField *)self.passWordItem.property).text;
     
+    ///回收键盘
+    [((UITextField *)self.userNameItem.property) resignFirstResponder];
+    [((UITextField *)self.passWordItem.property) resignFirstResponder];
+    
+    if ((nil == userName) || (0 >= [userName length])) {
+        
+        return;
+        
+    }
+    
+    if ((nil == pwd) || (0 >= [pwd length])) {
+        
+        return;
+        
+    }
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    ///封装登录参数
+    NSDictionary *params = @{@"account" : userName,@"psw" : pwd,@"type" : @"1"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeLogin andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否登录成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            self.hud.labelText = @"登录成功";
+            [self.hud hide:YES afterDelay:1.5f];
+            
+            ///转换模型
+            QSUserLoginReturnData *tempModel = resultData;
+            
+            ///保存到本地
+            [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"user_count"];
+            [[NSUserDefaults standardUserDefaults] setObject:pwd forKey:@"pwd"];
+            [[NSUserDefaults standardUserDefaults] setObject:tempModel.userInfo.userID forKey:@"user_id"];
+            
+            ///修改登录状态
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"is_login"];
+            
+            ///同步数据
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            ///保存数据
+            [tempModel.userInfo saveUserData];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                ///返回上一页
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            });
+            
+        } else {
+        
+            self.hud.labelText = @"登录失败";
+            [self.hud hide:YES afterDelay:1.0f];
+            
+            ///修改登录状态
+            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_login"];
+            
+            ///同步数据
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        }
+        
+    }];
     
 }
 
@@ -115,6 +196,21 @@
     
     QSWRegisterViewController *VC=[[QSWRegisterViewController alloc] init];
     [self.navigationController pushViewController:VC animated:YES];
+    
+}
+
+#pragma mark - 点击done按钮
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+
+    ///进行登录事件
+    [self gotoLoginVC];
+    
+    ///回收键盘
+    [textField resignFirstResponder];
+    
+    return YES;
+
 }
 
 @end

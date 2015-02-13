@@ -10,6 +10,34 @@
 
 @implementation QSUserInfoDataModel
 
++ (instancetype)userDataModel
+{
+
+    ///读取本地信息
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_info"];
+    
+    ///把地址信息coding在本地
+    NSData *tempData = [NSData dataWithContentsOfFile:path];
+    QSUserInfoDataModel *userInfo = [NSKeyedUnarchiver unarchiveObjectWithData:tempData];
+    
+    return userInfo;
+
+}
+
+- (void)saveUserData
+{
+
+    ///把用信息coding在本地
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_info"];
+    
+    ///把地址信息coding在本地
+    NSData *tempData = [NSKeyedArchiver archivedDataWithRootObject:self];
+    [tempData writeToFile:path atomically:YES];
+
+}
+
 + (RKObjectMapping *)objectMapping
 {
     
@@ -54,6 +82,8 @@
         self.company = [aDecoder decodeObjectForKey:@"company"];
         self.pay = [aDecoder decodeObjectForKey:@"pay"];
         self.pay_salt = [aDecoder decodeObjectForKey:@"pay_salt"];
+        self.addressID = [aDecoder decodeObjectForKey:@"addressID"];
+        self.address = [aDecoder decodeObjectForKey:@"address"];
         
     }
     
@@ -76,6 +106,8 @@
     [aCoder encodeObject:self.company forKey:@"company"];
     [aCoder encodeObject:self.pay forKey:@"pay"];
     [aCoder encodeObject:self.pay_salt forKey:@"pay_salt"];
+    [aCoder encodeObject:self.addressID forKey:@"addressID"];
+    [aCoder encodeObject:self.address forKey:@"address"];
     
 }
 

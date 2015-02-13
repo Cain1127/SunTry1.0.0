@@ -14,6 +14,7 @@ typedef void(^QSWSettingItemOperation)();
 @property (nonatomic, copy) NSString *icon;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *subtitle;
+@property (nonatomic, retain) id property;//!<指向属性
 
 @property (nonatomic, copy) QSWSettingItemOperation operation;
 
