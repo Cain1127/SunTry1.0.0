@@ -77,6 +77,11 @@
         ///取消选择状态
         normalCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        ///添加分隔线
+        UILabel *sepLine = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 59.5f, SIZE_DEFAULT_MAX_WIDTH, 0.5f)];
+        sepLine.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
+        [normalCell.contentView addSubview:sepLine];
+        
         return normalCell;
         
     }
@@ -88,6 +93,11 @@
     
     ///取消选择状态
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    ///添加分隔线
+    UILabel *sepLine = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 59.5f, SIZE_DEFAULT_MAX_WIDTH, 0.5f)];
+    sepLine.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
+    [cell.contentView addSubview:sepLine];
     
     return cell;
 
@@ -135,6 +145,20 @@
 
     return 60.0f;
     
+}
+
+#pragma mark - 返回有多少个cell
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+
+    if ([self.dataSource count] > 0) {
+        
+        return [self.dataSource count];
+        
+    }
+    
+    return 1;
+
 }
 
 #pragma mark - 请求用户的送餐地址列表

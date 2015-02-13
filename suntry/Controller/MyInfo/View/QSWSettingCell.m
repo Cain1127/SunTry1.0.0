@@ -121,9 +121,10 @@
         self.detailTextLabel.textColor = [UIColor brownColor];
         self.detailTextLabel.font = [UIFont boldSystemFontOfSize:18.0f];
         
-        
     }
+    
     return self;
+    
 }
 
 - (void)setFrame:(CGRect)frame
