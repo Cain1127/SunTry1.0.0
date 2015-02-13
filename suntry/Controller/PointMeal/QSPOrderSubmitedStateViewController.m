@@ -105,7 +105,7 @@
     if (!paymentSate) {
         
         [stateLabel setText:@"订单支付失败！"];
-        [succeView setImage:[UIImage imageNamed:@"失败图片"]];
+        [succeView setImage:[UIImage imageNamed:@"order_submit_failed_logo"]];
         [infoLabel setText:@"订单支付失败，您可以在订单查询->订单详情中继续支付您的订单。"];
         [goonOrderBt setTitle:@"重新点餐" forState:UIControlStateNormal];
         

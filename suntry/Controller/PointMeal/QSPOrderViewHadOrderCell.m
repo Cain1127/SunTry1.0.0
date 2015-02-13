@@ -10,6 +10,7 @@
 #import "DeviceSizeHeader.h"
 #import "QSLabel.h"
 #import "NSString+Calculation.h"
+#import "QSGoodsDataModel.h"
 
 #define ORDER_VIEW_HADORDER_CELL_HEIGHT         45.
 #define ORDER_VIEW_HADORDER_CELL_LINE_COLOR              [UIColor colorWithRed:206/255. green:208/255. blue:210/255. alpha:1]
@@ -18,7 +19,7 @@
 
 @interface QSPOrderViewHadOrderCell ()
 
-@property(nonatomic,strong) id          foodData;
+@property(nonatomic,strong) QSGoodsDataModel        *foodData;
 
 @end
 
@@ -28,11 +29,17 @@
 
 - (instancetype)initOrderItemViewWithData:(id)foodData withCount:(NSInteger)count
 {
-    
-    self.foodData = foodData;
+
     if (self = [super init]) {
         
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, ORDER_VIEW_HADORDER_CELL_HEIGHT)];
+        
+        if (!foodData||![foodData isKindOfClass:[QSGoodsDataModel class]]) {
+            NSLog(@"下单界面已选菜品Cell获取菜品数据错误！foodData：%@",foodData);
+            return self;
+        }
+        
+        self.foodData = (QSGoodsDataModel*)foodData;
         
         //增加减少菜品数量控件
         QSPFoodCountControlView *foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
@@ -46,7 +53,7 @@
         [self addSubview:lineButtomView];
         [self setUserInteractionEnabled:YES];
         
-        NSString *priceStr = [NSString stringWithFormat:@"￥%.2f",12.888];
+        NSString *priceStr = [NSString stringWithFormat:@"￥%@",[_foodData getOnsalePrice]];
         CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDER_VIEW_HADORDER_CELL_TITLE_FONT_SIZE]+4;
         QSLabel *priceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(foodCountControlView.frame.origin.x-priceStrWidth+18, (ORDER_VIEW_HADORDER_CELL_HEIGHT-17)/2, priceStrWidth, 17)];
         [priceLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_HADORDER_CELL_TITLE_FONT_SIZE]];
@@ -56,7 +63,7 @@
         
         QSLabel *foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, priceLabel.frame.origin.y, priceLabel.frame.origin.x-12, 17)];
         [foodNameLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_HADORDER_CELL_TITLE_FONT_SIZE]];
-        [foodNameLabel setText:foodData];
+        [foodNameLabel setText:_foodData.goodsName];
         [foodNameLabel setTextColor:ORDER_VIEW_HADORDER_CELL_FOOD_NAME_TEXT_COLOR];
         [self addSubview:foodNameLabel];
         

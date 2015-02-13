@@ -13,6 +13,8 @@
 #import "UIImageView+CacheImage.h"
 #import "NSString+Calculation.h"
 #import "ColorHeader.h"
+#import "QSGoodsDataModel.h"
+#import "ImageHeader.h"
 
 #define TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE        14.
 #define TABLEVIEW_FOOD_NAME_STRING_COLOR            COLOR_HEXCOLOR(0x94414D)
@@ -23,13 +25,14 @@
 
 @interface QSPFoodInfoListTableViewCell ()
 
-@property(nonatomic,strong) UIImageView *contentImgView;
-@property(nonatomic,strong) QSLabel     *foodNameLabel;
-@property(nonatomic,strong) QSLabel     *priceLabel;
-@property(nonatomic,strong) QSLabel     *inStockCountLabel;
-@property(nonatomic,strong) UIImageView *specialMarkImgView;
+@property(nonatomic,strong) UIImageView             *contentImgView;
+@property(nonatomic,strong) QSLabel                 *foodNameLabel;
+@property(nonatomic,strong) QSLabel                 *priceLabel;
+@property(nonatomic,strong) QSLabel                 *inStockCountLabel;
+@property(nonatomic,strong) UIImageView             *specialMarkImgView;
 @property(nonatomic,strong) QSPFoodCountControlView *foodCountControlView;
-@property(nonatomic,strong) id          foodData;
+@property(nonatomic,strong) QSGoodsDataModel        *foodData;
+@property(nonatomic,strong) UIImageView             *pricemarkIconView;
 
 @end
 
@@ -77,15 +80,15 @@
         [self.contentView addSubview:self.inStockCountLabel];
         
         //价格图标
-        UIImageView *pricemarkIconView = [[UIImageView alloc] initWithFrame:CGRectMake(self.foodNameLabel.frame.origin.x-6, self.inStockCountLabel.frame.origin.y+self.inStockCountLabel.frame.size.height, 36, 36)];
-        [pricemarkIconView setImage:[UIImage imageNamed:@"home_pricemark"]];
-        [pricemarkIconView setBackgroundColor:[UIColor clearColor]];
-        [self.contentView addSubview:pricemarkIconView];
+        self.pricemarkIconView = [[UIImageView alloc] initWithFrame:CGRectMake(self.foodNameLabel.frame.origin.x-6, self.inStockCountLabel.frame.origin.y+self.inStockCountLabel.frame.size.height, 36, 36)];
+        [_pricemarkIconView setImage:[UIImage imageNamed:@"home_pricemark"]];
+        [_pricemarkIconView setBackgroundColor:[UIColor clearColor]];
+        [self.contentView addSubview:_pricemarkIconView];
         
         //当前售卖价格
         NSString* priceStr = @"";
         CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]+4;
-        self.priceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(pricemarkIconView.frame.origin.x+pricemarkIconView.frame.size.width-8, pricemarkIconView.frame.origin.y+(pricemarkIconView.frame.size.height-14)/2, priceStrWidth, 14)];
+        self.priceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(_pricemarkIconView.frame.origin.x+_pricemarkIconView.frame.size.width-8, _pricemarkIconView.frame.origin.y+(_pricemarkIconView.frame.size.height-14)/2, priceStrWidth, 14)];
         [self.priceLabel setTextColor:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_COLOR];
         [self.priceLabel setFont:[UIFont systemFontOfSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]];
         [self.priceLabel setText:priceStr];
@@ -111,19 +114,34 @@
 - (void)updateFoodData:(id)data
 {
     
+    [_contentImgView setImage:nil];
+    [self.foodNameLabel setText:@""];
+    [self.specialMarkImgView setImage:nil];
+    [self.inStockCountLabel setText:@""];
+    [self.priceLabel setText:@""];
+    [_pricemarkIconView setHidden:YES];
+    [_foodCountControlView setHidden:YES];
+    
+    if (nil==data) {
+        return;
+    }
+    if (![data isKindOfClass:[QSGoodsDataModel class]]) {
+        NSLog(@"菜品列表数据格式不对");
+        return;
+    }
     self.foodData = data;
     
-    [self.contentImgView loadImageWithURL:[NSURL URLWithString:@"http://admin.9dxz.com/files/jpg(18).jpeg"] placeholderImage:nil];
+    [self.contentImgView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,_foodData.goodsImageUrl]] placeholderImage:nil];
     
     //菜名元素
-    NSString* foodNameStr = data;//@"支竹焖烧肉";
+    NSString* foodNameStr = _foodData.goodsName;
     CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:self.foodNameLabel.frame.size.height andFontSize:TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
     [self.foodNameLabel setFrame:CGRectMake(self.foodNameLabel.frame.origin.x, self.foodNameLabel.frame.origin.y, foodNameWidth, self.foodNameLabel.frame.size.height)];
     [self.foodNameLabel setText:foodNameStr];
     
     [self.specialMarkImgView setFrame:CGRectMake(self.foodNameLabel.frame.origin.x+self.foodNameLabel.frame.size.width+2, self.foodNameLabel.frame.origin.y+1, self.specialMarkImgView.frame.size.width, self.specialMarkImgView.frame.size.height)];
-//    [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_special_mark"]];
-//    [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_time_mark"]];
+    
+    //FIXME: 限时促销，特价字段需确认！
     NSInteger randIdx = random();
     [self.specialMarkImgView setImage:nil];
     if (randIdx%3==0) {
@@ -133,14 +151,23 @@
     }
     
     //库存
-    NSString* inStockCountStr = [NSString stringWithFormat:@"库存：%d份",1023];
+    NSString* inStockCountStr = [NSString stringWithFormat:@"库存：%@份",_foodData.goodsInstockNum];
     [self.inStockCountLabel setText:inStockCountStr];
+    if ([_foodData.goodsInstockNum integerValue]>0) {
+        [_foodCountControlView setHidden:NO];
+    }
     
+    [_pricemarkIconView setHidden:NO];
     //当前售卖价格
-    NSString* priceStr = @"18.8";
+    NSString* priceStr = [_foodData getOnsalePrice];
     CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]+4;
     [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
     [self.priceLabel setText:priceStr];
+    
+    if ([_foodData.goodsTypeID integerValue]==5) {
+        //是套餐
+//        NSLog(@"套餐 %@",_foodData.stapleFoodList);
+    }
     
 }
 

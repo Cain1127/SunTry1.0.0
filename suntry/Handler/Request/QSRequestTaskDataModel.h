@@ -33,8 +33,8 @@ typedef enum
     rRequestTypeDistrict = 999, //!<地区选择
     rRequestTypeSelect =1000,  //!<选择查询
     rRequestTypeAspecial =1001, //!<每日特价菜品
-    rRequestTypeRandom =1036,   //!<随机菜品
-    
+    rRequestTypeRandom      =1036,   //!<随机菜品
+    rRequestTypeAllGoods    =1050,   //!<所有菜品
     rRequestTypeMaxLimited      //!<最大值限制
     
 }REQUEST_TYPE;
