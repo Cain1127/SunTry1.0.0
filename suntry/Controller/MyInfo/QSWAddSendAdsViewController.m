@@ -51,8 +51,6 @@
     QSWSettingGroup *group = [self addGroup];
     
     QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"您的性别"];
-    
-    
     group.items = @[item];
     
 }

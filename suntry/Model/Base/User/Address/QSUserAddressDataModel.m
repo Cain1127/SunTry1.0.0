@@ -25,7 +25,8 @@
                                   @"status" : @"status",
                                   @"is_master" : @"is_master",
                                   @"name" : @"userName",
-                                  @"sex" : @"gender"};
+                                  @"sex" : @"gender",
+                                  @"company" : @"company"};
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
     return shared_mapping;
@@ -47,6 +48,7 @@
         self.is_master = [aDecoder decodeObjectForKey:@"is_master"];
         self.userName = [aDecoder decodeObjectForKey:@"userName"];
         self.gender = [aDecoder decodeObjectForKey:@"gender"];
+        self.company = [aDecoder decodeObjectForKey:@"company"];
         
     }
     
@@ -65,6 +67,7 @@
     [aCoder encodeObject:self.is_master forKey:@"is_master"];
     [aCoder encodeObject:self.userName forKey:@"userName"];
     [aCoder encodeObject:self.gender forKey:@"gender"];
+    [aCoder encodeObject:self.company forKey:@"company"];
     
 }
 

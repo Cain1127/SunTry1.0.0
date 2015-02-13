@@ -116,6 +116,22 @@
 
 }
 
+#pragma mark - 点击某一个送餐地址
+///选择某一个送餐地址
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    if ([self.dataSource count] > 0) {
+        
+        ///模型
+        QSUserAddressDataModel *tempModel = self.dataSource[indexPath.row];
+        QSWEditSendAdsViewController *editVC = [[QSWEditSendAdsViewController alloc] initWithAddressModel:tempModel];
+        [self.navigationController pushViewController:editVC animated:YES];
+        
+    }
+
+}
+
 - (void)setupFooter
 {
     

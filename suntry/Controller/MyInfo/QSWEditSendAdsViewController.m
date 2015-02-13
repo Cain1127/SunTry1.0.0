@@ -14,14 +14,48 @@
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
 
+#import "QSUserAddressDataModel.h"
+
 @interface QSWEditSendAdsViewController ()
+
+@property (nonatomic,retain) QSUserAddressDataModel *addressModel;//!<地址数据模型
 
 @end
 
 @implementation QSWEditSendAdsViewController
 
-- (void)viewDidLoad {
+#pragma mark - 初始化
+/**
+ *  @author         yangshengmeng, 15-02-13 11:02:53
+ *
+ *  @brief          根据给定的地址模型，进入地址编辑页面
+ *
+ *  @param model    地址的数据模型
+ *
+ *  @return         返回当前创建的地址编辑页面
+ *
+ *  @since          1.0.0
+ */
+- (instancetype)initWithAddressModel:(QSUserAddressDataModel *)model
+{
+    
+    if (self = [super init]) {
+        
+        ///保存数据模型
+        self.addressModel = model;
+        
+    }
+    
+    return self;
+    
+}
+
+#pragma mark - UI搭建
+- (void)viewDidLoad
+{
+    
     [super viewDidLoad];
+    
     self.title=@"编辑送餐地址";
     [self setupGroup0];
     [self setupGroup1];
@@ -30,16 +64,15 @@
     [self setupGroup4];
     [self setupGroup5];
     [self setupFooter];
+    
 }
 
 -(void)setupGroup0
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
-       QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"李易"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"用户名"];
+    item.subtitle = self.addressModel.userName;
     group.items = @[item];
     
 }
@@ -48,10 +81,8 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
-        QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"您的性别"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"性别"];
+    item.subtitle = ([self.addressModel.gender intValue] == 1) ? @"男" : @"女";
     group.items = @[item];
     
 }
@@ -60,10 +91,8 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
-        QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"城建大厦5楼广州七升"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"送餐地址"];
+    item.subtitle = self.addressModel.address;
     group.items = @[item];
     
 }
@@ -72,10 +101,8 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"七升科技有限公司"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"公司"];
+    item.subtitle = self.addressModel.company;
     group.items = @[item];
     
 }
@@ -84,10 +111,8 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
-        QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"1380013800"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"联系电话"];
+    item.subtitle = self.addressModel.phone;
     group.items = @[item];
     
 }
@@ -96,16 +121,15 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
     QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"设为默认配送地址"];
-    
-    
+    item.subtitle = ([self.addressModel.is_master intValue] == 1) ? @"默认送餐地址" : @"设置为默认地址";
     group.items = @[item];
     
 }
 
 - (void)setupFooter
 {
+    
     //保存修改 按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
@@ -146,7 +170,7 @@
     
     [footer addSubview:footterButton1];
     [footterButton1 addTarget:self action:@selector(gotoNextVC1) forControlEvents:UIControlEventTouchUpInside];
-
+    
 }
 
 #pragma mark --按钮方法
@@ -163,22 +187,5 @@
     
     
 }
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

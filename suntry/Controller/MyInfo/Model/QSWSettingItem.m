@@ -23,10 +23,12 @@
 
 + (instancetype)itemWithIcon:(NSString *)icon title:(NSString *)title
 {
+    
     QSWSettingItem *item = [self item];
     item.icon = icon;
     item.title = title;
     return item;
+    
 }
 
 + (instancetype)itemWithTitle:(NSString *)title

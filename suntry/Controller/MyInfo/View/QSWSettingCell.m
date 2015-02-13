@@ -77,7 +77,6 @@
 
         _textFieldView.translatesAutoresizingMaskIntoConstraints=NO;
         _textFieldView.returnKeyType=UIReturnKeyDone;
-        //textfield.autocorrectionType=UITextAutocorrectionTypeNo;
         _textFieldView.clearButtonMode=UITextFieldViewModeUnlessEditing;
         _textFieldView.delegate=self;
         _textFieldView.tag = 200;
@@ -85,6 +84,7 @@
         _textFieldView.delegate=self;
     }
     return _textFieldView;
+    
 }
 
 
@@ -164,19 +164,28 @@
     if (self.item.title) {
         
         if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
-            self.textFieldView.placeholder=self.item.title;
+            
+            self.textFieldView.placeholder = self.item.title;
+            
         }
     
         self.textLabel.text = self.item.title;
        
-        
     }
     
     /// 3.副标题
     if (self.item.subtitle) {
         
+        if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
+            
+            self.textFieldView.text = self.item.subtitle;
+            
+        }
+        
         if ([self.item isKindOfClass:[QSWLabelItem class]]) {
+            
             self.labelView.text=self.item.subtitle;
+            
         }
         self.detailTextLabel.text=self.item.subtitle;
         

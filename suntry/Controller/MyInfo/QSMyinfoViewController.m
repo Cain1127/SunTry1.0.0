@@ -20,6 +20,7 @@
 #import "QSWLoginPswViewController.h"
 #import "QSWAddSendAdsViewController.h"
 #import "QSWTextFieldItem.h"
+#import "QSWLoginViewController.h"
 
 @interface QSMyinfoViewController ()
 
@@ -42,7 +43,6 @@
     
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
     self.navigationItem.backBarButtonItem=backItem;
-    //backItem.image=[UIImage imageNamed:@"nav_back_normal"];
     backItem.title=@"";
     
 }
@@ -51,7 +51,6 @@
 {
   
     QSWSettingGroup *group = [self addGroup];
-    
     QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_sendads_normal" title:@"我的送餐地址" destVcClass:[QSWMySendAdsViewController class]];
     group.items = @[item];
     
@@ -71,7 +70,6 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
     QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_storagecard_normal" title:@"我的储值卡" destVcClass:[QSWMyStoredCardViewController class]];
     group.items = @[item];
 
@@ -91,7 +89,6 @@
 {
 
     QSWSettingGroup *group = [self addGroup];
-    
     QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_setting_normal" title:@"帐号设置" destVcClass:[QSWUserSettingViewController class]];
     group.items = @[item];
 
@@ -108,19 +105,31 @@
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark - 点击某一行
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 
-/*
-#pragma mark - Navigation
+    if (indexPath.row >= 4) {
+        
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+        
+    }
+    
+    ///判断是否已经登录
+    int isLogin = [[[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"] intValue];
+    
+    if (1 == isLogin) {
+        
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+        
+    } else {
+    
+        ///弹出登录框
+        QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    
+    }
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
-*/
 
 @end

@@ -14,6 +14,9 @@
 @property (nonatomic,copy) NSString *userID;    //!<用户ID
 @property (nonatomic,copy) NSString *address;   //!<地址
 @property (nonatomic,copy) NSString *phone;     //!<手机号码
+
+@property (nonatomic,copy) NSString *company;   //!<公司名
+
 @property (nonatomic,copy) NSString *status;    //!<状态
 @property (nonatomic,copy) NSString *is_master; //!<是否默认送餐地址
 @property (nonatomic,copy) NSString *userName;  //!<用户名
