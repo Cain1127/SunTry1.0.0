@@ -21,6 +21,8 @@
 #import "QSWAddSendAdsViewController.h"
 #import "QSWTextFieldItem.h"
 #import "QSWLoginViewController.h"
+#import "DeviceSizeHeader.h"
+#import "ColorHeader.h"
 
 @interface QSMyinfoViewController ()
 
@@ -39,7 +41,7 @@
     [self setupGroup2];
     [self setupGroup3];
     [self setupGroup4];
-    [self setupGroup5];
+    [self setupFooter];
     
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
     self.navigationItem.backBarButtonItem=backItem;
@@ -94,16 +96,33 @@
 
 }
 
--(void)setupGroup5
+- (void)setupFooter
 {
+    // 按钮
+    UIButton *footterButton = [[UIButton alloc] init];
+    CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
+    CGFloat footterButtonY = 10;
+    CGFloat footterButtonW = self.tableView.frame.size.width - 2 * footterButtonX;
+    CGFloat footterButtonH = 44;
+    footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
-    QSWSettingGroup *group = [self addGroup];
+    // 背景和文字
+    footterButton.backgroundColor = [UIColor colorWithRed:247.0f / 255.0f green:243.0f / 255.0f blue:245.0f / 255.0f alpha:1.0f];
+    [footterButton setTitle:@"   香哉客户服务热线:4006780022" forState:UIControlStateNormal];
+    footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [footterButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateNormal];
+    footterButton.layer.cornerRadius = 6.0f;
     
-    QSWSettingItem *item = [QSWSettingItem item];
-    item.title=@"   香哉客户服务热线:4006780022";
-    group.items = @[item];
+    // footer
+    UIView *footer = [[UIView alloc] init];
+    CGFloat footerH = footterButtonH + 20;
+    footer.frame = CGRectMake(0, 0, 0, footerH);
+    self.tableView.tableFooterView = footer;
+    [footer addSubview:footterButton];
+//    [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
     
 }
+
 
 #pragma mark - 点击某一行
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

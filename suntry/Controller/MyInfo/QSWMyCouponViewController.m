@@ -47,7 +47,7 @@
     textfield.tag = 200;
     textfield.borderStyle = UITextBorderStyleRoundedRect;
     
-    ///2.添加搜索框按钮
+    ///2.添加按钮
     
     UIButton *addButton=[[UIButton alloc]init];
     addButton.translatesAutoresizingMaskIntoConstraints=NO;
@@ -55,7 +55,7 @@
     [addButton setTitle:@"添加" forState:UIControlStateNormal];
     addButton.backgroundColor=COLOR_CHARACTERS_RED;
     [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    //searchButton.backgroundColor=COLOR_CHARACTERS_RED;
+    addButton.layer.cornerRadius=6.0f;
     [addButton addTarget:self action:@selector(addButtonAction) forControlEvents:UIControlEventTouchUpInside];
     
     ///3.headerView

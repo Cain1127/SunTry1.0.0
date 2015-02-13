@@ -12,6 +12,7 @@
 #import "QSWSettingGroup.h"
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
+#import "ColorHeader.h"
 
 #import "QSRequestManager.h"
 
@@ -70,11 +71,11 @@
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
     // 背景和文字
-    [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
-    [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
+    footterButton.backgroundColor=COLOR_CHARACTERS_RED;
     [footterButton setTitle:@"提交" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    footterButton.layer.cornerRadius = 6.0f;
     
     // footer
     UIView *footer = [[UIView alloc] init];

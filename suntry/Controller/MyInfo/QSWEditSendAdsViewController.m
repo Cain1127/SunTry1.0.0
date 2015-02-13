@@ -13,6 +13,7 @@
 #import "QSWSettingArrowItem.h"
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
+#import "ColorHeader.h"
 
 #import "QSUserAddressDataModel.h"
 
@@ -139,11 +140,11 @@
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
     // 背景和文字
-    [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
-    [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
+    footterButton.backgroundColor=COLOR_CHARACTERS_RED;
     [footterButton setTitle:@"保存修改" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    footterButton.layer.cornerRadius = 6.0f;
     
     // footer
     UIView *footer = [[UIView alloc] init];
@@ -162,8 +163,7 @@
     footterButton1.frame = CGRectMake(footterButton1X, footterButton1Y, footterButton1W, footterButton1H);
     
     // 背景和文字
-    [footterButton1 setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
-    [footterButton1 setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
+    footterButton1.backgroundColor=[UIColor colorWithRed:247.0f / 255.0f green:243.0f / 255.0f blue:245.0f / 255.0f alpha:1.0f];
     [footterButton1 setTitle:@"删除送餐地址" forState:UIControlStateNormal];
     footterButton1.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
