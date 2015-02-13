@@ -17,7 +17,14 @@
 #import "QSWRegisterViewController.h"
 #import "ColorHeader.h"
 
+#import "QSUserLoginReturnData.h"
+
+#import "QSRequestManager.h"
+
 @interface QSWLoginViewController ()
+
+@property (nonatomic,retain) QSWSettingItem *userNameItem;//!<用户账号
+@property (nonatomic,retain) QSWSettingItem *passWordItem;//!<密码
 
 @end
 
@@ -37,8 +44,8 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的手机号码"];
-    group.items = @[item];
+    self.userNameItem = [QSWTextFieldItem itemWithTitle:@"输入您的手机号码"];
+    group.items = @[self.userNameItem];
     
 }
 
@@ -46,14 +53,15 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的登录密码"];
-    group.items = @[item];
+    self.passWordItem = [QSWTextFieldItem itemWithTitle:@"输入您的登录密码"];
+    group.items = @[self.passWordItem];
     
 }
 
 
 - (void)setupFooter
 {
+    
     /// 按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
@@ -89,14 +97,19 @@
     [registerPsw addTarget:self action:@selector(registerPswAction) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:registerPsw];
     
-    
 }
 
 ///点击登录
 -(void)gotoLoginVC
 {
     
+    ///
     
+    [QSRequestManager requestDataWithType:rRequestTypeLogin andParams:nil andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        
+        
+    }];
     
 }
 
