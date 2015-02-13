@@ -63,6 +63,7 @@
 		CEB630C21A865BAF00F64DEE /* QSWLabelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630C11A865BAF00F64DEE /* QSWLabelItem.m */; };
 		CEB630CB1A88643A00F64DEE /* QSWSettingButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630CA1A88643A00F64DEE /* QSWSettingButtonItem.m */; };
 		CEB630CE1A88A01700F64DEE /* QSWTheSuntryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB630CD1A88A01700F64DEE /* QSWTheSuntryView.m */; };
+		CECCC3261A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = CECCC3251A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.m */; };
 		CEEAC38E1A8CA4EF009AC6AA /* QSDistrictDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3781A8CA4EF009AC6AA /* QSDistrictDataModel.m */; };
 		CEEAC38F1A8CA4EF009AC6AA /* QSSelectDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC37A1A8CA4EF009AC6AA /* QSSelectDataModel.m */; };
 		CEEAC3901A8CA4EF009AC6AA /* QSHeaderDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC37D1A8CA4EF009AC6AA /* QSHeaderDataModel.m */; };
@@ -227,6 +228,8 @@
 		CEB630CA1A88643A00F64DEE /* QSWSettingButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWSettingButtonItem.m; sourceTree = "<group>"; };
 		CEB630CC1A88A01700F64DEE /* QSWTheSuntryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWTheSuntryView.h; sourceTree = "<group>"; };
 		CEB630CD1A88A01700F64DEE /* QSWTheSuntryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWTheSuntryView.m; sourceTree = "<group>"; };
+		CECCC3241A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSGoodsStapleFoodReturnData.h; sourceTree = "<group>"; };
+		CECCC3251A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSGoodsStapleFoodReturnData.m; sourceTree = "<group>"; };
 		CEEAC3771A8CA4EF009AC6AA /* QSDistrictDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSDistrictDataModel.h; sourceTree = "<group>"; };
 		CEEAC3781A8CA4EF009AC6AA /* QSDistrictDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSDistrictDataModel.m; sourceTree = "<group>"; };
 		CEEAC3791A8CA4EF009AC6AA /* QSSelectDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSSelectDataModel.h; sourceTree = "<group>"; };
@@ -829,9 +832,19 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		CECCC3231A8DDCB00079F224 /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				CECCC3241A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.h */,
+				CECCC3251A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.m */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
 		CEEAC3751A8CA4EF009AC6AA /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				CECCC3231A8DDCB00079F224 /* Order */,
 				CEEAC3E91A8DA83D009AC6AA /* User */,
 				CEEAC3761A8CA4EF009AC6AA /* District */,
 				CEEAC37B1A8CA4EF009AC6AA /* Header */,
@@ -1213,6 +1226,7 @@
 				CEEAC3BE1A8CA517009AC6AA /* QSPOrderViewHadOrderCell.m in Sources */,
 				CE571F011A84C86A00609788 /* QSWMyStoredCardViewController.m in Sources */,
 				CEEAC3BD1A8CA517009AC6AA /* QSPOrderViewController.m in Sources */,
+				CECCC3261A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.m in Sources */,
 				CEEAC3C51A8D0B34009AC6AA /* QSWLoginViewController.m in Sources */,
 				CEEAC3C81A8D0DA7009AC6AA /* QSWRegisterViewController.m in Sources */,
 				CEEAC3B81A8CA517009AC6AA /* QSPFoodTypeTableViewCell.m in Sources */,

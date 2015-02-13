@@ -130,8 +130,10 @@
 - (void)setFrame:(CGRect)frame
 {
     if (iOS7) {
+        
         frame.origin.x = 5;
         frame.size.width -= 10;
+        
     }
     [super setFrame:frame];
 }
@@ -166,6 +168,7 @@
         if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
             
             self.textFieldView.placeholder = self.item.title;
+            self.item.property = self.textFieldView;
             
         }
     
@@ -179,6 +182,7 @@
         if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
             
             self.textFieldView.text = self.item.subtitle;
+            self.item.property = self.textFieldView;
             
         }
         
