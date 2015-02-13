@@ -14,6 +14,8 @@
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
 
+#import "QSRequestManager.h"
+
 @interface QSWLoginPswViewController ()
 
 @end
@@ -21,22 +23,21 @@
 @implementation QSWLoginPswViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     self.title=@"登录密码";
     [self setupGroup0];
     [self setupGroup1];
     [self setupGroup2];
     [self setupFooter];
+    
 }
 
 -(void)setupGroup0
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
-       QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"您当前的登录密码"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"您当前的登录密码"];
     group.items = @[item];
     
 }
@@ -45,10 +46,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
-        QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"新的登录密码"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"新的登录密码"];
     group.items = @[item];
     
 }
@@ -57,10 +55,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    
-       QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"再次确认您的登录密码"];
-    
-    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"再次确认您的登录密码"];
     group.items = @[item];
     
 }
@@ -91,19 +86,16 @@
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
 }
 
+#pragma mark - 登录
 -(void)gotoNextVC
 {
     
+    [QSRequestManager requestDataWithType:rRequestTypeLogin andParams:nil andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        
+        
+    }];
     
-}
-
-
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

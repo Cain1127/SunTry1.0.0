@@ -31,7 +31,6 @@
     
     return shared_mapping;
     
-    
 }
 
 #pragma mark - encoding相关

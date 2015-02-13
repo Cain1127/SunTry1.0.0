@@ -34,6 +34,8 @@ typedef enum
     rRequestTypeSelect =1000,               //!<选择查询
     rRequestTypeAspecial =1001,             //!<每日特价菜品
     
+    rRequestTypeLogin = 1002,               //!<登录
+    
     rRequestTypeUserSendAddressList = 1100, //!<当前用户的送餐地址列表
     rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址
     
