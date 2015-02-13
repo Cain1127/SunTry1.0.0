@@ -12,6 +12,7 @@
 #import "QSLabel.h"
 #import "QSBlockButton.h"
 #import "QSPFoodPackageItemView.h"
+#import "QSGoodsDataModel.h"
 
 #define PACKAGE_VIEW_BACKGROUND_COLOR                  [UIColor colorWithWhite:0 alpha:0.6]
 #define PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE        20.
@@ -20,14 +21,17 @@
 
 @interface QSPFoodPackageView ()
 
-@property(nonatomic,strong) QSLabel     *foodNameLabel;
-@property(nonatomic,strong) UIView      *contentBackgroundView;
+@property(nonatomic,strong) QSLabel         *foodNameLabel;
+@property(nonatomic,strong) UIView          *contentBackgroundView;
+@property(nonatomic,strong) UIScrollView    *scrollView;
+@property(nonatomic,strong) UIButton        *submitBt;
 
 @end
 
 
 @implementation QSPFoodPackageView
 
+@synthesize delegate;
 
 + (instancetype)getPackageView
 {
@@ -59,12 +63,10 @@
         [self addSubview:_contentBackgroundView];
         
         //菜名元素
-        NSString* foodNameStr = @"支竹焖烧肉美味营养套餐";
-        CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
-        self.foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 16, foodNameWidth, 14)];
+        self.foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 16, _contentBackgroundView.frame.size.width-50, 22)];
         [self.foodNameLabel setTextColor:PACKAGE_VIEW_FOOD_NAME_TEXT_COLOR];
         [self.foodNameLabel setFont:[UIFont systemFontOfSize:PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE ]];
-        [self.foodNameLabel setText:foodNameStr];
+         [_foodNameLabel setBackgroundColor:[UIColor clearColor]];
         [_contentBackgroundView addSubview:self.foodNameLabel];
         
         //关闭按钮
@@ -86,25 +88,11 @@
         
         CGFloat scrollViewContentHight = 0.;
         
-        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(lineView.frame.origin.x, lineView.frame.origin.y+lineView.frame.size.height, lineView.frame.size.width, scrollViewContentHight)];
-        [scrollView setBackgroundColor:[UIColor clearColor]];
-        [_contentBackgroundView addSubview:scrollView];
+        self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(lineView.frame.origin.x, lineView.frame.origin.y+lineView.frame.size.height, lineView.frame.size.width, scrollViewContentHight)];
+        [_scrollView setBackgroundColor:[UIColor clearColor]];
+        [_contentBackgroundView addSubview:_scrollView];
         
-        CGFloat scrollViewMaxHeight = SIZE_DEVICE_HEIGHT - 150;
-        //套餐列表
-        NSArray *foodPackageList = [NSArray arrayWithObjects:@"", nil];
-        for (int i=0; i<[foodPackageList count]; i++) {
-            
-            QSPFoodPackageItemView *foodPackageView = [[QSPFoodPackageItemView alloc] initItemViewWithData:[foodPackageList objectAtIndex:i]];
-            [foodPackageView setFrame:CGRectMake(0, scrollViewContentHight, foodPackageView.frame.size.width, foodPackageView.frame.size.height)];
-            [scrollView addSubview:foodPackageView];
-            scrollViewContentHight = foodPackageView.frame.origin.y + foodPackageView.frame.size.height;
-            [scrollView setFrame:CGRectMake(scrollView.frame.origin.x, scrollView.frame.origin.y, scrollView.frame.size.width, scrollViewContentHight>scrollViewMaxHeight?scrollViewMaxHeight:scrollViewContentHight)];
-            [scrollView setContentSize:CGSizeMake(scrollView.contentSize.width, scrollViewContentHight)];
-            
-        }
-        
-        buttomY = scrollView.frame.origin.y+scrollView.frame.size.height;
+        buttomY = _scrollView.frame.origin.y+_scrollView.frame.size.height;
         
         //确定按钮
         QSBlockButtonStyleModel *submitBtStyleModel = [QSBlockButtonStyleModel alloc];
@@ -112,16 +100,26 @@
         submitBtStyleModel.title    = @"确定";
         submitBtStyleModel.titleNormalColor = [UIColor whiteColor];
         submitBtStyleModel.cornerRadio = 6.;
-        UIButton *submitBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, buttomY, _contentBackgroundView.frame.size.width-12*2, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
+        self.submitBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, buttomY, _contentBackgroundView.frame.size.width-12*2, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
             
             NSLog(@"submitBtl");
+            
+            if (![self checkSelected]) {
+                UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请选择主食，配饮各一份" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alertview show];
+                return ;
+            }
+            
             [self hidePackageView];
             [self removeFromSuperview];
+            if (delegate) {
+                [delegate submitWithData:[self getSelectFoodData]];
+            }
             
         }];
-        [_contentBackgroundView addSubview:submitBt];
+        [_contentBackgroundView addSubview:_submitBt];
         
-        [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, submitBt.frame.origin.y+submitBt.frame.size.height+12)];
+        [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, _submitBt.frame.origin.y+_submitBt.frame.size.height+12)];
         
         [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
     }
@@ -147,19 +145,98 @@
 - (void)updateFoodData:(id)data
 {
     //TODO: 设置套餐数据
+    
+    [self.foodNameLabel setText:@""];
+    for (UIView *view in [_scrollView subviews]) {
+        if (view && [view isKindOfClass:[QSPFoodPackageItemView class]]) {
+            [view removeFromSuperview];
+        }
+    }
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, 100)];
+    [_submitBt setFrame:CGRectMake(12, _scrollView.frame.origin.y+_scrollView.frame.size.height, _submitBt.frame.size.width, _submitBt.frame.size.height)];
+    [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, _submitBt.frame.origin.y+_submitBt.frame.size.height+12)];
+    [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+    
+    if (!data || ![data isKindOfClass:[QSGoodsDataModel class]]) {
+        return;
+    }
+    
+    QSGoodsDataModel *foodData = (QSGoodsDataModel*)data;
+    [self.foodNameLabel setText:foodData.goodsName];
+    
+    
+    //套餐列表
+    CGFloat scrollViewContentHight = 0.;
+    CGFloat scrollViewMaxHeight = SIZE_DEVICE_HEIGHT - 150;
+
+    if (foodData.stapleFoodList&&[foodData.stapleFoodList isKindOfClass:[NSArray class]]&&[foodData.stapleFoodList count]) {
+        
+        QSPFoodPackageItemView *foodPackageView = [[QSPFoodPackageItemView alloc] initItemViewWithData:foodData.stapleFoodList withTypeName:@"主食"];
+        [foodPackageView setTag:101];
+        [foodPackageView setFrame:CGRectMake(0, scrollViewContentHight, foodPackageView.frame.size.width, foodPackageView.frame.size.height)];
+        [_scrollView addSubview:foodPackageView];
+        scrollViewContentHight = foodPackageView.frame.origin.y + foodPackageView.frame.size.height;
+        [_scrollView setFrame:CGRectMake(_scrollView.frame.origin.x, _scrollView.frame.origin.y, _scrollView.frame.size.width, scrollViewContentHight>scrollViewMaxHeight?scrollViewMaxHeight:scrollViewContentHight)];
+        [_scrollView setContentSize:CGSizeMake(_scrollView.contentSize.width, scrollViewContentHight)];
+    }
+    
+    if (foodData.ingredientList&&[foodData.ingredientList isKindOfClass:[NSArray class]]&&[foodData.ingredientList count]) {
+        
+        QSPFoodPackageItemView *foodPackageView = [[QSPFoodPackageItemView alloc] initItemViewWithData:foodData.ingredientList withTypeName:@"配汤、饮品"];
+        [foodPackageView setTag:102];
+        [foodPackageView setFrame:CGRectMake(0, scrollViewContentHight, foodPackageView.frame.size.width, foodPackageView.frame.size.height)];
+        [_scrollView addSubview:foodPackageView];
+        scrollViewContentHight = foodPackageView.frame.origin.y + foodPackageView.frame.size.height;
+        [_scrollView setFrame:CGRectMake(_scrollView.frame.origin.x, _scrollView.frame.origin.y, _scrollView.frame.size.width, scrollViewContentHight>scrollViewMaxHeight?scrollViewMaxHeight:scrollViewContentHight)];
+        [_scrollView setContentSize:CGSizeMake(_scrollView.contentSize.width, scrollViewContentHight)];
+    }
+    
+    [_submitBt setFrame:CGRectMake(12, _scrollView.frame.origin.y+_scrollView.frame.size.height, _submitBt.frame.size.width, _submitBt.frame.size.height)];
+    [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, _submitBt.frame.origin.y+_submitBt.frame.size.height+12)];
+    [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+    
+}
+
+/**
+ *  检查选择套餐是否成功
+ *
+ *  @return YES：成功  NO：不成功
+ */
+- (BOOL)checkSelected{
+    
+    BOOL flag = YES;
+    for (UIView *view in [_scrollView subviews]) {
+        if (view.tag == 101) {
+            QSPFoodPackageItemView *foodPackageView = (QSPFoodPackageItemView*)view;
+            NSArray *array = [foodPackageView getSelectFoodList];
+            if (!array||![array isKindOfClass:[NSArray class]]||[array count]<=0) {
+                flag = NO;
+            }
+        }
+        if (view.tag == 102) {
+            QSPFoodPackageItemView *foodPackageView = (QSPFoodPackageItemView*)view;
+            NSArray *array = [foodPackageView getSelectFoodList];
+            if (!array||![array isKindOfClass:[NSArray class]]||[array count]<=0) {
+                flag = NO;
+            }
+        }
+    }
+
+    return flag;
 }
 
 - (id)getSelectFoodData
 {
-    //TODO: 返回套餐选择结果
+    
     NSMutableArray *selectPackageList = [NSMutableArray arrayWithCapacity:0];
-    for (QSPFoodPackageItemView *item in [_contentBackgroundView subviews]) {
-        
-        [selectPackageList addObject:[item getSelectFoodList]];
-        
+    for (UIView *view in [_scrollView subviews]) {
+        if (view&&[view isKindOfClass:[QSPFoodPackageItemView class]]) {
+            QSPFoodPackageItemView *item = (QSPFoodPackageItemView*)view;
+            [selectPackageList addObject:[item getSelectFoodList]];
+        }
     }
     
-    return nil;
+    return selectPackageList;
 }
 
 /*

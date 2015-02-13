@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSPFoodPackageItemGridView.h"
 
-@interface QSPFoodPackageItemView : UIView
+@interface QSPFoodPackageItemView : UIView<QSPFoodPackageItemGridViewDelegate>
 
-- (instancetype)initItemViewWithData:(id)foodData;
+- (instancetype)initItemViewWithData:(NSArray*)foodDataList withTypeName:(NSString*)typeName;
 
 - (NSArray*)getSelectFoodList;
 

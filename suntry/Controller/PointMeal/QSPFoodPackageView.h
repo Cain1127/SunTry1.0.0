@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol QSPFoodPackageViewDelegate<NSObject>
+
+- (void)submitWithData:(id)data;
+
+@end
+
 @interface QSPFoodPackageView : UIView
+
+@property(nonatomic,assign) id<QSPFoodPackageViewDelegate> delegate;
 
 /**
  *  创建初始化套餐弹出界面

@@ -153,8 +153,14 @@
     //库存
     NSString* inStockCountStr = [NSString stringWithFormat:@"库存：%@份",_foodData.goodsInstockNum];
     [self.inStockCountLabel setText:inStockCountStr];
+    
     if ([_foodData.goodsInstockNum integerValue]>0) {
         [_foodCountControlView setHidden:NO];
+    }
+    
+    //库存为0或者套餐时隐藏库存信息
+    if ([_foodData.goodsInstockNum integerValue]==0||[_foodData.goodsTypeID isEqualToString:@"5"]) {
+        [self.inStockCountLabel setHidden:YES];
     }
     
     [_pricemarkIconView setHidden:NO];

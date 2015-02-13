@@ -251,7 +251,7 @@
         self.goodListInShoppingCar = [NSMutableArray arrayWithCapacity:0];
     }
     
-    if (!goodData||![goodData isKindOfClass:[QSGoodsDataModel class]]) {
+    if (!goodData||!([goodData isKindOfClass:[QSGoodsDataModel class]]||[goodData isKindOfClass:[QSGoodsDataSubModel class]])) {
         NSLog(@"购物车接受菜品数据格式出错！");
         return;
     }

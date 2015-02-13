@@ -33,6 +33,50 @@
     
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"staple_food" toKeyPath:@"stapleFoodList" withMapping:[QSGoodsDataSubModel objectMapping]]];
+    
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"soup" toKeyPath:@"ingredientList" withMapping:[QSGoodsDataSubModel objectMapping]]];
+    
+    return shared_mapping;
+    
+}
+
+- (NSString*)getOnsalePrice
+{
+    
+    NSString* price = [_goodsSpecialPrice isEqualToString:@"-1"] ? _goodsPrice:_goodsSpecialPrice;
+    
+    return price;
+    
+}
+
+@end
+
+@implementation QSGoodsDataSubModel
+
++ (RKObjectMapping *)objectMapping
+{
+    
+    RKObjectMapping *shared_mapping = nil;
+    
+    shared_mapping = [RKObjectMapping mappingForClass:[self class]];
+    
+    //mapping字典
+    NSDictionary *mappingDict = @{@"mer_id":@"shopkeeperID",
+                                  @"id" : @"goodsID",
+                                  @"expant_2_title":@"goodsTypeName",
+                                  @"type":@"goodsTypeID",
+                                  @"goods_name" : @"goodsName",
+                                  @"pice":@"goodsPrice",
+                                  @"discount_price":@"goodsSpecialPrice",
+                                  @"banner":@"goodsImageUrl",
+                                  @"goods_num":@"goodsInstockNum",
+                                  @"begin_time":@"beginTime",
+                                  @"over_time":@"overTime"
+                                  };
+    
+    [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
+    
     return shared_mapping;
     
 }

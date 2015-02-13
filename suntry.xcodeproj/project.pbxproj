@@ -19,6 +19,7 @@
 		1836741A1A7F8FA800BCCF39 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 183674021A7F8FA800BCCF39 /* UIKit.framework */; };
 		183674221A7F8FA800BCCF39 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 183674201A7F8FA800BCCF39 /* InfoPlist.strings */; };
 		183674241A7F8FA800BCCF39 /* suntryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 183674231A7F8FA800BCCF39 /* suntryTests.m */; };
+		47F7B3EB1A8DDBF9003226ED /* QSGoodsStapleFoodReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47F7B3EA1A8DDBF9003226ED /* QSGoodsStapleFoodReturnData.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -134,6 +135,8 @@
 		1836741F1A7F8FA800BCCF39 /* suntryTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "suntryTests-Info.plist"; sourceTree = "<group>"; };
 		183674211A7F8FA800BCCF39 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		183674231A7F8FA800BCCF39 /* suntryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = suntryTests.m; sourceTree = "<group>"; };
+		47F7B3E91A8DDBF9003226ED /* QSGoodsStapleFoodReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSGoodsStapleFoodReturnData.h; sourceTree = "<group>"; };
+		47F7B3EA1A8DDBF9003226ED /* QSGoodsStapleFoodReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSGoodsStapleFoodReturnData.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -430,6 +433,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		47F7B3E81A8DDBF9003226ED /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				47F7B3E91A8DDBF9003226ED /* QSGoodsStapleFoodReturnData.h */,
+				47F7B3EA1A8DDBF9003226ED /* QSGoodsStapleFoodReturnData.m */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
 		CE53412C1A7FA4CE002BA188 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -710,6 +722,7 @@
 		CE571ECC1A84798800609788 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				47F7B3E81A8DDBF9003226ED /* Order */,
 				CEEAC3EE1A8DA845009AC6AA /* User */,
 				CEEAC3751A8CA4EF009AC6AA /* Base */,
 				CEEAC3861A8CA4EF009AC6AA /* Configuration */,
@@ -1213,6 +1226,7 @@
 				CEEAC3BE1A8CA517009AC6AA /* QSPOrderViewHadOrderCell.m in Sources */,
 				CE571F011A84C86A00609788 /* QSWMyStoredCardViewController.m in Sources */,
 				CEEAC3BD1A8CA517009AC6AA /* QSPOrderViewController.m in Sources */,
+				47F7B3EB1A8DDBF9003226ED /* QSGoodsStapleFoodReturnData.m in Sources */,
 				CEEAC3C51A8D0B34009AC6AA /* QSWLoginViewController.m in Sources */,
 				CEEAC3C81A8D0DA7009AC6AA /* QSWRegisterViewController.m in Sources */,
 				CEEAC3B81A8CA517009AC6AA /* QSPFoodTypeTableViewCell.m in Sources */,
@@ -1346,6 +1360,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou Ruis Network Technology Co., Ltd";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "suntry/suntry-Prefix.pch";
 				INFOPLIST_FILE = "suntry/suntry-Info.plist";
@@ -1361,6 +1376,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou Ruis Network Technology Co., Ltd";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "suntry/suntry-Prefix.pch";
 				INFOPLIST_FILE = "suntry/suntry-Info.plist";

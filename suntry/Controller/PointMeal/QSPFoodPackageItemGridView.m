@@ -12,6 +12,8 @@
 #import "UIImageView+CacheImage.h"
 #import "NSString+Calculation.h"
 #import "QSBlockButton.h"
+#import "QSGoodsDataModel.h"
+#import "ImageHeader.h"
 
 #define PACKAGE_VIEW_FOOD_PACKAGE_NAME_STRING_FONT_SIZE        17.
 #define PACKAGE_VIEW_FOOD_PACKAGE_NAME_TEXT_COLOR             [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -20,33 +22,40 @@
 
 @interface QSPFoodPackageItemGridView ()
 
-@property(nonatomic,strong) id          foodData;
-@property(nonatomic,strong) QSLabel     *packageNameLabel;
-@property(nonatomic,strong) UIButton    *selectBt;
+@property(nonatomic,strong) QSGoodsDataSubModel    *foodData;
+@property(nonatomic,strong) QSLabel             *packageNameLabel;
+@property(nonatomic,strong) UIButton            *selectBt;
 
 @end
 
 @implementation QSPFoodPackageItemGridView
 
+@synthesize delegate;
 
 - (instancetype)initGridViewWithData:(id)foodData
 {
     
-    self.foodData = foodData;
     if (self = [super init]) {
         
         [self setFrame:CGRectMake(0, 0, 144/375.*SIZE_DEVICE_WIDTH, 128/667.*SIZE_DEVICE_HEIGHT)];
         [self setBackgroundColor:[UIColor clearColor]];
+        
+        if (!foodData||![foodData isKindOfClass:[QSGoodsDataSubModel class]]) {
+            NSLog(@"初始化套餐详情接收菜品数据出错！");
+            return self;
+        }
+        
+        self.foodData = (QSGoodsDataSubModel*)foodData;
         
         //菜展示图
         UIImageView *contentImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 97/667.*SIZE_DEVICE_HEIGHT)];
         [contentImgView setBackgroundColor:[UIColor clearColor]];
         [self addSubview:contentImgView];
         
-        [contentImgView loadImageWithURL:[NSURL URLWithString:@"http://admin.9dxz.com/files/jpg(18).jpeg"] placeholderImage:nil];
+        [contentImgView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,_foodData.goodsImageUrl]] placeholderImage:nil];
         
         //菜名元素
-        NSString* foodNameStr = @"猪扒拼鸡扒";
+        NSString* foodNameStr = _foodData.goodsName;
         CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
         QSLabel *foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(contentImgView.frame.origin.x, self.frame.size.height-14-3, foodNameWidth, 14)];
         [foodNameLabel setTextColor:PACKAGE_VIEW_FOOD_NAME_TEXT_COLOR];
@@ -72,6 +81,10 @@
                 
             }
             
+            if (delegate) {
+                [delegate beSeleted:button withData:_foodData];
+            }
+            
         }];
         
         [self addSubview:self.selectBt];
@@ -92,6 +105,23 @@
         
     }
     return flag;
+    
+}
+
+- (void)setSelectState:(BOOL)state
+{
+    
+    if (state) {
+        
+        _selectBt.tag = 1;
+        [_selectBt setImage:[UIImage imageNamed:@"public_choose_selected"] forState:UIControlStateNormal];
+        
+    }else{
+        
+        _selectBt.tag = 0;
+        [_selectBt setImage:[UIImage imageNamed:@"public_choose_normal"] forState:UIControlStateNormal];
+        
+    }
     
 }
 

@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol QSPFoodPackageItemGridViewDelegate<NSObject>
+
+- (void)beSeleted:(UIButton*)button withData:(id)data;
+
+@end
+
 @interface QSPFoodPackageItemGridView : UIView
+
+@property(nonatomic,assign) id<QSPFoodPackageItemGridViewDelegate> delegate;
 
 /**
  *  创建初始化菜品单品View
@@ -25,6 +33,13 @@
  *  @return YES：选中状态  NO：未选中
  */
 - (BOOL)getSelectState;
+
+/**
+ *  设置此菜品选择是否被选择
+ *
+ *  @param state  YES：选中状态  NO：未选中
+ */
+- (void)setSelectState:(BOOL)state;
 
 /**
  *  返回该View显示的菜品
