@@ -99,6 +99,18 @@
         NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_count"];
         NSString *pwd = [[NSUserDefaults standardUserDefaults] objectForKey:@"pwd"];
         
+        if (nil == userName || [userName length] < 1) {
+            
+            return;
+            
+        }
+        
+        if (nil == pwd || [pwd length] < 2) {
+            
+            return;
+            
+        }
+        
         ///封装登录参数
         NSDictionary *params = @{@"account" : userName,@"psw" : pwd,@"type" : @"1"};
         
