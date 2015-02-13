@@ -12,6 +12,7 @@
 #import "QSWSettingGroup.h"
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
+#import "QSWResetPswController.h"
 
 @interface QSWForgetPswController ()
 
@@ -69,6 +70,8 @@
 -(void)gotoNextVC
 {
     
+    QSWResetPswController *VC=[[QSWResetPswController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
     
 }
 

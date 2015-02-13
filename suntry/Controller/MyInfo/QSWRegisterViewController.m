@@ -13,7 +13,7 @@
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
 
-@interface QSWRegisterViewController ()
+@interface QSWRegisterViewController ()<UITextFieldDelegate>
 
 @end
 
@@ -64,17 +64,62 @@
     // 背景和文字
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
-    [footterButton setTitle:@"登录" forState:UIControlStateNormal];
+    [footterButton setTitle:@"提交注册" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     // footer
     UIView *footer = [[UIView alloc] init];
-    CGFloat footerH = footterButtonH + 20;
+    CGFloat footerH = footterButtonH + 20.0f +5.0f+44.0f;
     footer.frame = CGRectMake(0, 0, 0, footerH);
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
+    
+    ///激活textfield
+//    UITextField *activate=[[UITextField alloc]initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f+5.0f+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 150.0f, 44.0f)];
+    UITextField *activate=[[UITextField alloc] init];
+    activate.placeholder = @"激活码";
+    activate.translatesAutoresizingMaskIntoConstraints=NO;
+    activate.returnKeyType=UIReturnKeySearch;
+    //textfield.autocorrectionType=UITextAutocorrectionTypeNo;
+    activate.clearButtonMode=UITextFieldViewModeUnlessEditing;
+    activate.delegate=self;
+    activate.tag = 222;
+    activate.borderStyle = UITextBorderStyleRoundedRect;
+    [footer addSubview:activate];
+    
+    ///获取激活码按钮
+    UIButton *activateButton=[[UIButton alloc] init];
+    activateButton.translatesAutoresizingMaskIntoConstraints=NO;
+    [activateButton setTitle:@"获取激活码" forState:UIControlStateNormal];
+    [activateButton setBackgroundColor:[UIColor brownColor]];
+    [activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [footer addSubview:activateButton];
+    
+    
+    ///4.添加VFL约束
+    ///参数
+    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activate,activateButton);
+    NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
+    
+    ///约束
+    NSString *___hVFL_activate = @"H:|-margin-[activate]-5-[activateButton(100)]-margin-|";
+    NSString *___vVFL_activate = @"V:|-margin-[activate(44)]";
+    NSString *___vVFL_activateButton=@"V:[activateButton(44)]";
+    
+    ///添加约束
+    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_activate options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
+    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activate  options:0 metrics:___sizeVFL views:___viewsVFL]];
+    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activateButton options:0 metrics:___sizeVFL views:___viewsVFL]];
+    
+}
+
+///获取激活码事件
+-(void)activateButtonAction
+{
+
 }
 
 ///进入注册按钮事件

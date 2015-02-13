@@ -14,6 +14,7 @@
 #import "CommonHeader.h"
 #import "DeviceSizeHeader.h"
 #import "QSWTextFieldItem.h"
+#import "QSWLoginViewController.h"
 
 @interface QSWSettingViewController ()<UITextFieldDelegate>
 
@@ -125,19 +126,19 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    // 1.取出模型
+    /// 1.取出模型
     QSWSettingGroup *group = self.groups[indexPath.section];
     QSWSettingItem *item = group.items[indexPath.row];
     
-    // 2.操作
+    /// 2.操作
     if (item.operation) {
         
         item.operation();
         
     }
     
-    // 3.右侧类型
-    //右侧是跳转箭头
+    /// 3.右侧类型
+    ///右侧是跳转箭头
     if ([item isKindOfClass:[QSWSettingArrowItem class]]) {
         
         QSWSettingArrowItem *arrowItem = (QSWSettingArrowItem *)item;
@@ -149,7 +150,7 @@
         
     }
     
-    //右侧是按钮
+    ///右侧是按钮
     if ([item isKindOfClass:[QSWSettingButtonItem class]]) {
         
         QSWSettingButtonItem *buttonItem = (QSWSettingButtonItem*)item;
