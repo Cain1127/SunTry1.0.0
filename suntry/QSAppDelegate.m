@@ -15,6 +15,8 @@
 #import "QSSelectDataModel.h"
 #import "QSSelectReturnData.h"
 
+#import "QSUserLoginReturnData.h"
+
 @implementation QSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -60,6 +62,9 @@
         
     });
     
+    ///判断是否已有用户信息:如果已有信息，则自动登录
+    [self autoLogin];
+    
     ///区请求信息
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
@@ -82,6 +87,62 @@
     });
     
     return YES;
+}
+
+#pragma mark - 自动登录
+- (void)autoLogin
+{
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        
+        ///获取本地登录信息
+        NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_count"];
+        NSString *pwd = [[NSUserDefaults standardUserDefaults] objectForKey:@"pwd"];
+        
+        ///封装登录参数
+        NSDictionary *params = @{@"account" : userName,@"psw" : pwd,@"type" : @"1"};
+        
+        [QSRequestManager requestDataWithType:rRequestTypeLogin andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///判断是否登录成功
+            if (rRequestResultTypeSuccess == resultStatus) {
+                
+                ///转换模型
+                QSUserLoginReturnData *tempModel = resultData;
+                
+                ///保存到本地
+                [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"user_count"];
+                [[NSUserDefaults standardUserDefaults] setObject:pwd forKey:@"pwd"];
+                [[NSUserDefaults standardUserDefaults] setObject:tempModel.userInfo.userID forKey:@"user_id"];
+                
+                ///修改登录状态
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"is_login"];
+                
+                ///同步数据
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                ///把用信息coding在本地
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_info"];
+                
+                ///把地址信息coding在本地
+                NSData *tempData = [NSKeyedArchiver archivedDataWithRootObject:tempModel.userInfo];
+                [tempData writeToFile:path atomically:YES];
+                
+            } else {
+                
+                ///修改登录状态
+                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_login"];
+                
+                ///同步数据
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+            }
+            
+        }];
+        
+    });
+    
 }
 
 #pragma mark - 请求区信息

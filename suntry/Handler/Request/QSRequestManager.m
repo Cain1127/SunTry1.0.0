@@ -354,7 +354,7 @@
 {
     
     ///获取用户ID
-    NSString *userID = @"47";
+    NSString *userID = @"1";
     
     ///判断是否已登录
     NSString *isLogin = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"];
@@ -376,7 +376,7 @@
     [tempParams setObject:@"iOS" forKey:@"device"];
     
     ///获取用户ID
-    NSString *userID = @"47";
+    NSString *userID = @"1";
     
     ///判断是否已登录
     NSString *isLogin = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"];

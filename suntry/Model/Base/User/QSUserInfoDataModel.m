@@ -54,6 +54,8 @@
         self.company = [aDecoder decodeObjectForKey:@"company"];
         self.pay = [aDecoder decodeObjectForKey:@"pay"];
         self.pay_salt = [aDecoder decodeObjectForKey:@"pay_salt"];
+        self.addressID = [aDecoder decodeObjectForKey:@"addressID"];
+        self.address = [aDecoder decodeObjectForKey:@"address"];
         
     }
     
@@ -76,6 +78,8 @@
     [aCoder encodeObject:self.company forKey:@"company"];
     [aCoder encodeObject:self.pay forKey:@"pay"];
     [aCoder encodeObject:self.pay_salt forKey:@"pay_salt"];
+    [aCoder encodeObject:self.addressID forKey:@"addressID"];
+    [aCoder encodeObject:self.address forKey:@"address"];
     
 }
 

@@ -10,4 +10,19 @@
 
 @interface QSWTextFieldItem :QSWSettingItem
 
+@property (nonatomic,assign) id<UITextFieldDelegate> delegate;//!<UITextField的代理
+
+/**
+ *  @author         yangshengmeng, 15-02-13 15:02:49
+ *
+ *  @brief          按给定的代理，创建一个输入框的自定义cell
+ *
+ *  @param title    textField的placeHold信息
+ *  @param delegate textField的代理
+ *
+ *
+ *  @since          1.0.0
+ */
++ (instancetype)itemWithTitle:(NSString *)title andDelegate:(id<UITextFieldDelegate>)delegate;
+
 @end
