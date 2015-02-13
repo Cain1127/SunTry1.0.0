@@ -100,6 +100,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
+    
 }
 
 #pragma mark - 代理

@@ -14,7 +14,7 @@
 		<key>url</key>
 		<string>user/AddressList</string>
 		<key>class</key>
-		<string></string>
+		<string>QSUserAddressListReturnData</string>
 	</dict>
 	<key>1036</key>
 	<dict>

@@ -353,8 +353,18 @@
 - (NSDictionary *)postUserInfoParams
 {
     
-    ///这里需要获取本地用户的ID
-    return [self packPostParamsWithBody:@{@"device":@"iOS",@"user_id":@"1"}];
+    ///获取用户ID
+    NSString *userID = @"47";
+    
+    ///判断是否已登录
+    NSString *isLogin = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"];
+    if ([isLogin intValue] == 1) {
+        
+        userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"user_id"];
+        
+    }
+    
+    return [self packPostParamsWithBody:@{@"device" : @"iOS",@"user_id" : userID}];
     
 }
 
@@ -364,7 +374,19 @@
     
     NSMutableDictionary *tempParams = [params mutableCopy];
     [tempParams setObject:@"iOS" forKey:@"device"];
-    [tempParams setObject:@"1" forKey:@"user_id"];
+    
+    ///获取用户ID
+    NSString *userID = @"47";
+    
+    ///判断是否已登录
+    NSString *isLogin = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"];
+    if ([isLogin intValue] == 1) {
+        
+        userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"user_id"];
+        
+    }
+    
+    [tempParams setObject:userID forKey:@"user_id"];
     return [self packPostParamsWithBody:tempParams];
     
 }

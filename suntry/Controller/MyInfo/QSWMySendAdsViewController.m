@@ -15,22 +15,36 @@
 #import "DeviceSizeHeader.h"
 #import "QSWAddSendAdsViewController.h"
 #import "QSWEditSendAdsViewController.h"
+#import "MJRefresh.h"
+
+#import "QSUserAddressListReturnData.h"
+
+#import "QSRequestManager.h"
 
 @interface QSWMySendAdsViewController ()
 
-@property(nonatomic,copy) NSString *phone;
-@property(nonatomic,copy) NSString *adress;
+@property (nonatomic,retain) NSMutableArray *dataSource;//!<地址数据源
 
 @end
 
 @implementation QSWMySendAdsViewController
 
+#pragma mark - UI搭建
 - (void)viewDidLoad {
     
     [super viewDidLoad];
     self.title=@"送餐地址管理";
     [self setupGrounp0];
     [self setupFooter];
+    
+    ///初始化数据源
+    self.dataSource = [[NSMutableArray alloc] init];
+    
+    ///添加头部刷新
+    [self.tableView addHeaderWithTarget:self action:@selector(getUserAddressList)];
+    
+    ///开始就头部刷新
+    [self.tableView headerBeginRefreshing];
     
 }
 
@@ -43,6 +57,41 @@
 
 }
 
+#pragma mark - 返回每个地址信息cell
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    if ([self.dataSource count] > 0) {
+        
+        QSWSettingCell *normalCell = [QSWSettingCell cellWithTableView:tableView];
+        
+        ///获取地址模型
+        QSUserAddressDataModel *addressModel = self.dataSource[indexPath.row];
+        
+        ///创建item
+        QSWSettingButtonItem *tempItem = [QSWSettingButtonItem itemWithIcon:nil title:[NSString stringWithFormat:@"%@    %@",addressModel.userName,addressModel.phone] subtitle:[NSString stringWithFormat:@"地址：%@",addressModel.address] destVcClass:nil];
+        
+        normalCell.item = tempItem;
+        normalCell.indexPath = indexPath;
+        
+        ///取消选择状态
+        normalCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return normalCell;
+        
+    }
+    
+    QSWSettingCell *cell = [QSWSettingCell cellWithTableView:tableView];
+    QSWSettingGroup *group = self.groups[indexPath.section];
+    cell.item = group.items[indexPath.row];
+    cell.indexPath = indexPath;
+    
+    ///取消选择状态
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
+
+}
 
 - (void)setupFooter
 {
@@ -85,6 +134,45 @@
 {
 
     return 60.0f;
+    
+}
+
+#pragma mark - 请求用户的送餐地址列表
+///请求用户的送餐地址列表
+- (void)getUserAddressList
+{
+
+    [QSRequestManager requestDataWithType:rRequestTypeUserSendAddressList andParams:@{@"status" : @"0"} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///清空数据
+        [self.dataSource removeAllObjects];
+        
+        ///请成功，并有数据
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///转换模型
+            QSUserAddressListReturnData *tempModel = resultData;
+            
+            ///判断是否有数据
+            if ([tempModel.addressList count] > 0) {
+                
+                [self.dataSource addObjectsFromArray:tempModel.addressList];
+                
+            }
+            
+        }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            ///刷新数据
+            [self.tableView reloadData];
+            
+            ///结束刷新动画
+            [self.tableView headerEndRefreshing];
+            
+        });
+        
+    }];
     
 }
 
