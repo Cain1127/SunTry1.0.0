@@ -1,53 +1,59 @@
 //
-//  QSWMySendAdsViewController.m
+//  QSWResetPswController.m
 //  suntry
 //
-//  Created by 王树朋 on 15/2/6.
+//  Created by 王树朋 on 15/2/13.
 //  Copyright (c) 2015年 广州七升网络科技有限公司. All rights reserved.
 //
 
-#import "QSWMySendAdsViewController.h"
+#import "QSWResetPswController.h"
 #import "QSWSettingCell.h"
 #import "QSWSettingItem.h"
 #import "QSWSettingGroup.h"
-#import "QSWSettingButtonItem.h"
-#import "QSWSettingArrowItem.h"
+#import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
-#import "QSWAddSendAdsViewController.h"
-#import "QSWEditSendAdsViewController.h"
 
-@interface QSWMySendAdsViewController ()
-
-@property(nonatomic,copy) NSString *phone;
-@property(nonatomic,copy) NSString *adress;
+@interface QSWResetPswController ()
 
 @end
 
-@implementation QSWMySendAdsViewController
+@implementation QSWResetPswController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
-    self.title=@"送餐地址管理";
-    [self setupGrounp0];
+    self.title=@"重置密码";
+    [self setupGroup0];
+    [self setupGroup1];
     [self setupFooter];
-    
 }
 
--(void)setupGrounp0
+-(void)setupGroup0
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWSettingItem *item = [QSWSettingItem itemWithTitle:@"暂无记录"];
+    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的新密码"];
+    
+    
     group.items = @[item];
-
+    
 }
 
+-(void)setupGroup1
+{
+    
+    QSWSettingGroup *group = [self addGroup];
+    
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"再次确认您的新密码"];
+    
+    
+    group.items = @[item];
+    
+}
 
 - (void)setupFooter
 {
-    
-    ///按钮
+    // 按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
     CGFloat footterButtonY = 10;
@@ -55,37 +61,44 @@
     CGFloat footterButtonH = 44;
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
-    ///背景和文字
+    // 背景和文字
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
-    [footterButton setTitle:@"新增送餐地址" forState:UIControlStateNormal];
+    [footterButton setTitle:@"提交" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    ///footer
+    // footer
     UIView *footer = [[UIView alloc] init];
     CGFloat footerH = footterButtonH + 20;
     footer.frame = CGRectMake(0, 0, 0, footerH);
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
-        
 }
 
-///新增送餐地址按钮方法
+///进入注册按钮事件
 -(void)gotoNextVC
 {
     
-    QSWAddSendAdsViewController *VC=[[QSWAddSendAdsViewController alloc]init];
-    [self.navigationController pushViewController:VC animated:YES];
-
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-    return 60.0f;
     
 }
+
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

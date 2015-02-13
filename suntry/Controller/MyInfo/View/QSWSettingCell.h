@@ -13,7 +13,6 @@
 @interface QSWSettingCell : UITableViewCell
 
 @property (strong, nonatomic) QSWSettingItem *item;
-@property (strong,nonatomic) QSWTextFieldItem *textFieldItem;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 

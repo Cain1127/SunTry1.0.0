@@ -56,6 +56,36 @@
     
 }
 
+-(UILabel *)labelView
+{
+
+    if (_labelView==nil) {
+        
+        _labelView=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 60.0F, 30.0F)];
+        _labelView.text=@"先生好";
+    }
+    
+    return _labelView;
+}
+
+-(UITextField *)textFieldView
+{
+
+    if (_textFieldView==nil) {
+        ///1.添加textfield输入框控件
+        _textFieldView=[[UITextField alloc]initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.frame.size.height)];
+
+        _textFieldView.translatesAutoresizingMaskIntoConstraints=NO;
+        _textFieldView.returnKeyType=UIReturnKeyDone;
+        //textfield.autocorrectionType=UITextAutocorrectionTypeNo;
+        _textFieldView.clearButtonMode=UITextFieldViewModeUnlessEditing;
+        _textFieldView.delegate=self;
+        _textFieldView.tag = 200;
+        _textFieldView.borderStyle = UITextBorderStyleRoundedRect;
+        _textFieldView.delegate=self;
+    }
+    return _textFieldView;
+}
 
 
 + (instancetype)cellWithTableView:(UITableView *)tableView
@@ -90,6 +120,7 @@
         self.detailTextLabel.highlightedTextColor = self.detailTextLabel.textColor;
         self.detailTextLabel.textColor = [UIColor brownColor];
         self.detailTextLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+        
         
     }
     return self;
@@ -131,18 +162,24 @@
     // 2.标题
     if (self.item.title) {
         
+        if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
+            self.textFieldView.placeholder=self.item.title;
+        }
+    
         self.textLabel.text = self.item.title;
+       
         
     }
     
     /// 3.副标题
     if (self.item.subtitle) {
         
+        if ([self.item isKindOfClass:[QSWLabelItem class]]) {
+            self.labelView.text=self.item.subtitle;
+        }
         self.detailTextLabel.text=self.item.subtitle;
         
     }
-    
-    
     
 }
 
@@ -164,26 +201,9 @@
     ///自定义textField样式cell
     else if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
         
-        /*for (UIView *obj in [self.contentView subviews]) {
-         
-         [obj removeFromSuperview];
-         
-         }
-         */
+        [self.contentView addSubview:self.textFieldView];
+        self.selectionStyle=UITableViewCellSelectionStyleNone;
         
-        ///1.添加textfield输入框控件
-        _textFieldView=[[UITextField alloc]initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.frame.size.height)];
-        _textFieldView.placeholder=@"注册香哉得豪礼";
-        // _textFieldView.placeholder = _textFieldItem.placeHolder;
-        _textFieldView.translatesAutoresizingMaskIntoConstraints=NO;
-        _textFieldView.returnKeyType=UIReturnKeyDone;
-        //textfield.autocorrectionType=UITextAutocorrectionTypeNo;
-        _textFieldView.clearButtonMode=UITextFieldViewModeUnlessEditing;
-        _textFieldView.delegate=self;
-        _textFieldView.tag = 200;
-        _textFieldView.borderStyle = UITextBorderStyleRoundedRect;
-        _textFieldView.delegate=self;
-        [self.contentView addSubview:_textFieldView];
         
     }
     
@@ -199,7 +219,7 @@
         
         // 右边是按钮
         self.accessoryView = self.buttonView;
-        self.selectionStyle = UITableViewCellSelectionStyleDefault;
+        //self.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     
     

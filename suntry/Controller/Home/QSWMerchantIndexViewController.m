@@ -22,19 +22,19 @@
 
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;    //!<菜品图片
-@property (weak, nonatomic) IBOutlet UIButton *sharkButton; //!<摇一摇按钮
-@property (weak, nonatomic) IBOutlet UIButton *packageButton;   //!<美味套餐按钮
-@property (weak, nonatomic) IBOutlet UIButton *carButton;   //!<车车在哪儿按钮
-@property (weak, nonatomic) IBOutlet UIButton *customButton;    //!<客服按钮
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;  //!<更多按钮
-@property (weak, nonatomic) IBOutlet UILabel *specialsLabel;    //!<第日优惠菜品优惠价label
-@property (strong, nonatomic)UICollectionView *collectionView; //!<每日优惠菜品窗体
+@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;  //!<菜品图片
+@property (weak, nonatomic) IBOutlet UIButton *sharkButton;       //!<摇一摇按钮
+@property (weak, nonatomic) IBOutlet UIButton *packageButton;     //!<美味套餐按钮
+@property (weak, nonatomic) IBOutlet UIButton *carButton;         //!<车车在哪儿按钮
+@property (weak, nonatomic) IBOutlet UIButton *customButton;      //!<客服按钮
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;        //!<更多按钮
+@property (weak, nonatomic) IBOutlet UILabel *specialsLabel;      //!<第日优惠菜品优惠价label
+@property (strong, nonatomic)UICollectionView *collectionView;    //!<每日优惠菜品窗体
 
-@property (strong,nonatomic)NSString *distictID;    //!<地区ID
-@property (strong,nonatomic)NSString *distictName;  //!<地区名称
+@property (strong,nonatomic)NSString *distictID;                  //!<地区ID
+@property (strong,nonatomic)NSString *distictName;                //!<地区名称
 
-@property (nonatomic,retain) NSMutableArray *specialDataSource;//!<优惠信息数据源
+@property (nonatomic,retain) NSMutableArray *specialDataSource;   //!<优惠信息数据源
 
 @end
 
@@ -245,10 +245,10 @@
 }
 
 #pragma mark--每日特价网络信息请求
-///街道查询信息请求
+///每日特价查询信息请求
 - (void)downloadAspecialInfo
 {
-    //街道搜索信息请求参数
+    //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4"};
     
     [QSRequestManager requestDataWithType:rRequestTypeAspecial andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {

@@ -27,12 +27,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"我的储值卡";
+    self.view.backgroundColor=[UIColor whiteColor];
     
     //没有数据时的显示
     self.nodataView = [[UIView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:_nodataView];
     
-    UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"order_list_no_data_logo"]];
+    UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_rmbmark"]];
     [nodataImgView setCenter:self.view.center];
     [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 110/667.*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
     [_nodataView addSubview:nodataImgView];
@@ -48,12 +49,11 @@
     
     QSBlockButtonStyleModel *submitBtStyleModel = [QSBlockButtonStyleModel alloc];
     submitBtStyleModel.bgColor  = [UIColor colorWithRed:0.471 green:0.176 blue:0.224 alpha:1.000];;
-    submitBtStyleModel.title    = @"赶紧点一份";
+    submitBtStyleModel.title    = @"请购买储值卡";
     submitBtStyleModel.titleNormalColor = [UIColor whiteColor];
     submitBtStyleModel.cornerRadio = 6.;
     UIButton *submitBt = [UIButton createBlockButtonWithFrame:CGRectMake((SIZE_DEVICE_WIDTH-245./375.*SIZE_DEVICE_WIDTH)/2, infoLabel.frame.origin.y+infoLabel.frame.size.height+5, 245./375.*SIZE_DEVICE_WIDTH, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
-        
-        [self.tabBarController setSelectedIndex:1];
+
         
     }];
     [_nodataView addSubview:submitBt];

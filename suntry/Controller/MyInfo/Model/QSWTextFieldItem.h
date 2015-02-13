@@ -10,10 +10,4 @@
 
 @interface QSWTextFieldItem :QSWSettingItem
 
-@property (assign, nonatomic) Class destVcClass;
-
-@property (nonatomic,copy) NSString *placeHolder;
-
-+ (instancetype)itemWithPlaceHolder:(NSString *)placeHolderName;
-
 @end
