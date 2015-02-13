@@ -12,6 +12,7 @@
 #import "QSWSettingGroup.h"
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
+#import "ColorHeader.h"
 
 @interface QSWRegisterViewController ()<UITextFieldDelegate>
 
@@ -53,21 +54,16 @@
 
 - (void)setupFooter
 {
-    // 按钮
+    // 提交注册按钮
       UIButton *footterButton = [[UIButton alloc] init];
       footterButton.translatesAutoresizingMaskIntoConstraints=NO;
-//    CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
-//    CGFloat footterButtonY = 10;
-//    CGFloat footterButtonW = self.tableView.frame.size.width - 2 * footterButtonX;
-//    CGFloat footterButtonH = 44;
-//    footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
     // 背景和文字
-    [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
-    [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
+    footterButton.backgroundColor=COLOR_CHARACTERS_RED;
     [footterButton setTitle:@"提交注册" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    footterButton.layer.cornerRadius = 6.0f;
     
     // footer
     UIView *footer = [[UIView alloc] init];
@@ -78,12 +74,10 @@
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
     
     ///激活textfield
-//    UITextField *activate=[[UITextField alloc]initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f+5.0f+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 150.0f, 44.0f)];
     UITextField *activate=[[UITextField alloc] init];
     activate.placeholder = @"激活码";
     activate.translatesAutoresizingMaskIntoConstraints=NO;
     activate.returnKeyType=UIReturnKeySearch;
-    //textfield.autocorrectionType=UITextAutocorrectionTypeNo;
     activate.clearButtonMode=UITextFieldViewModeUnlessEditing;
     activate.delegate=self;
     activate.tag = 222;
@@ -96,6 +90,7 @@
     [activateButton setTitle:@"获取激活码" forState:UIControlStateNormal];
     [activateButton setBackgroundColor:[UIColor brownColor]];
     [activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    activateButton.layer.cornerRadius = 6.0f;
     [activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:activateButton];
     

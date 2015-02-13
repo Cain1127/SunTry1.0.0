@@ -14,6 +14,7 @@
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
 #import "QSRequestManager.h"
+#import "ColorHeader.h"
 
 @interface QSWAddSendAdsViewController ()<UITextFieldDelegate>
 
@@ -100,8 +101,7 @@
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
     // 背景和文字
-    [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
-    [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
+    footterButton.backgroundColor=COLOR_CHARACTERS_RED;
     [footterButton setTitle:@"添加" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
