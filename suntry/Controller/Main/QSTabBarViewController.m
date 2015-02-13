@@ -14,6 +14,7 @@
 #import "ImageHeader.h"
 #import "QSOrderListViewController.h"
 #import "CommonHeader.h"
+#import "QSWLoginViewController.h"
 
 @interface QSTabBarViewController ()
 
@@ -46,6 +47,9 @@
     [self setupChildViewController:order title:@"订单" imageName:@"tab_order_normal" selectedImageName:@"tab_order_selected"];
     
     ///4.我的
+//    QSWLoginViewController *login=[[QSWLoginViewController alloc] init];
+//    [self setupChildViewController:login title:@"" imageName:@"tab_myinfo_normal" selectedImageName:@"tab_myinfo_selected"];
+    
     QSMyinfoViewController *myinfo=[[QSMyinfoViewController alloc]init];
     [self setupChildViewController:myinfo title:@"我的" imageName:@"tab_myinfo_normal" selectedImageName:@"tab_myinfo_selected"];
 

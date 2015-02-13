@@ -10,11 +10,4 @@
 
 @implementation QSWTextFieldItem
 
-+ (instancetype)itemWithPlaceHolder:(NSString *)placeHolderName
-{
-    QSWTextFieldItem *item = [[QSWTextFieldItem alloc]init];
-    item.placeHolder = placeHolderName;
-    return item;
-}
-
 @end

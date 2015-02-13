@@ -1,46 +1,41 @@
 //
-//  QSWMySendAdsViewController.m
+//  QSWForgetPswController.m
 //  suntry
 //
-//  Created by 王树朋 on 15/2/6.
+//  Created by 王树朋 on 15/2/13.
 //  Copyright (c) 2015年 广州七升网络科技有限公司. All rights reserved.
 //
 
-#import "QSWMySendAdsViewController.h"
+#import "QSWForgetPswController.h"
 #import "QSWSettingCell.h"
 #import "QSWSettingItem.h"
 #import "QSWSettingGroup.h"
-#import "QSWSettingButtonItem.h"
-#import "QSWSettingArrowItem.h"
+#import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
-#import "QSWAddSendAdsViewController.h"
-#import "QSWEditSendAdsViewController.h"
 
-@interface QSWMySendAdsViewController ()
+@interface QSWForgetPswController ()
 
-@property(nonatomic,copy) NSString *phone;
-@property(nonatomic,copy) NSString *adress;
 @end
 
-@implementation QSWMySendAdsViewController
+@implementation QSWForgetPswController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title=@"送餐地址管理";
-    [self setupGrounp0];
+    self.title=@"忘记密码";
+    [self setupGroup0];
     [self setupFooter];
 }
 
--(void)setupGrounp0
+-(void)setupGroup0
 {
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWSettingButtonItem *item = [QSWSettingButtonItem itemWithIcon:nil title:@"李先生:119110118" subtitle:@"地址:天河体育西108号" destVcClass:[QSWEditSendAdsViewController class]];
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的手机号码"];
     
     
     group.items = @[item];
-
+    
 }
 
 
@@ -57,7 +52,7 @@
     // 背景和文字
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateNormal];
     [footterButton setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forState:UIControlStateHighlighted];
-    [footterButton setTitle:@"新增送餐地址" forState:UIControlStateNormal];
+    [footterButton setTitle:@"下一步" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
@@ -70,25 +65,27 @@
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
 }
 
-///新增送餐地址按钮方法
+///进入下一步按钮事件
 -(void)gotoNextVC
 {
     
-    QSWAddSendAdsViewController *VC=[[QSWAddSendAdsViewController alloc]init];
-    [self.navigationController pushViewController:VC animated:YES];
-
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-    return 60.0f;
     
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end
