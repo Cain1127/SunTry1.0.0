@@ -103,7 +103,11 @@
 -(void)gotoLoginVC
 {
     
-    ///
+    ///判断数据
+    NSString *userName = ((UITextField *)self.userNameItem.property).text;
+    NSString *pwd = ((UITextField *)self.passWordItem.property).text;
+    
+    
     
     [QSRequestManager requestDataWithType:rRequestTypeLogin andParams:nil andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
