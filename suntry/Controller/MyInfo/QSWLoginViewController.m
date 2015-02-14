@@ -65,7 +65,7 @@
 - (void)setupFooter
 {
     
-    /// 按钮
+    ///  登录按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
     CGFloat footterButtonY = 10;

@@ -17,7 +17,7 @@
 
 #import "QSUserAddressDataModel.h"
 
-@interface QSWEditSendAdsViewController ()
+@interface QSWEditSendAdsViewController ()<UITextFieldDelegate>
 
 @property (nonatomic,retain) QSUserAddressDataModel *addressModel;//!<地址数据模型
 
@@ -72,7 +72,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"用户名"];
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"用户名" andDelegate:self];
     item.subtitle = self.addressModel.userName;
     group.items = @[item];
     
@@ -82,7 +82,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"性别"];
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"性别" andDelegate:self];
     item.subtitle = ([self.addressModel.gender intValue] == 1) ? @"男" : @"女";
     group.items = @[item];
     
@@ -92,7 +92,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"送餐地址"];
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"送餐地址" andDelegate:self];
     item.subtitle = self.addressModel.address;
     group.items = @[item];
     
@@ -102,7 +102,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"公司"];
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"公司" andDelegate:self];
     item.subtitle = self.addressModel.company;
     group.items = @[item];
     
@@ -112,7 +112,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"联系电话"];
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"联系电话" andDelegate:self];
     item.subtitle = self.addressModel.phone;
     group.items = @[item];
     
@@ -122,7 +122,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"设为默认配送地址"];
+    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"设为默认配送地址" andDelegate:self];
     item.subtitle = ([self.addressModel.is_master intValue] == 1) ? @"默认送餐地址" : @"设置为默认地址";
     group.items = @[item];
     

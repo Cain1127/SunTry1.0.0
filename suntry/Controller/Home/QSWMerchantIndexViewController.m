@@ -19,6 +19,7 @@
 #import "QSRequestTaskDataModel.h"
 #import "UIImageView+CacheImage.h"
 #import "FontHeader.h"
+#import "MJRefresh.h"
 
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -270,7 +271,7 @@
             [self.specialDataSource addObjectsFromArray:array];
             
             ///结束刷新动画
-            
+            [self.collectionView headerEndRefreshing];
             
             ///reload数据
             [self.collectionView reloadData];

@@ -37,6 +37,7 @@ typedef enum
     rRequestTypeAllGoods    =1050,          //!<所有菜品
     
     rRequestTypeLogin = 1002,               //!<登录
+    rRequestTypeRegister = 1102,            //!<注册
     
     rRequestTypeUserSendAddressList = 1100, //!<当前用户的送餐地址列表
     rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址

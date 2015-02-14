@@ -13,8 +13,17 @@
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
+#import "MBProgressHUD.h"
+#import "QSUserRegisterReturnData.h"
+#import "QSRegisterDataModel.h"
+#import "QSRequestManager.h"
 
 @interface QSWRegisterViewController ()<UITextFieldDelegate>
+
+@property (nonatomic,retain) QSWSettingItem *userNameItem;  //!<用户账号
+@property (nonatomic,retain) QSWSettingItem *passWordItem;  //!<密码
+
+@property (nonatomic,retain) MBProgressHUD *hud;        //!<HUD
 
 @end
 
@@ -33,10 +42,9 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"请输入您的手机号码"];
+    self.userNameItem = [QSWTextFieldItem itemWithTitle:@"请输入您的手机号码" andDelegate:self];
     
-    
-    group.items = @[item];
+    group.items = @[self.userNameItem];
     
 }
 
@@ -45,10 +53,10 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"请输入您的登录密码"];
+    self.passWordItem = [QSWTextFieldItem itemWithTitle:@"请输入您的登录密码" andDelegate:self];
     
     
-    group.items = @[item];
+    group.items = @[self.passWordItem];
     
 }
 
@@ -71,7 +79,7 @@
     footer.frame = CGRectMake(0, 0, 0, footerH);
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
-    [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
+    [footterButton addTarget:self action:@selector(gotoRegister) forControlEvents:UIControlEventTouchUpInside];
     
     ///激活textfield
     UITextField *activate=[[UITextField alloc] init];
@@ -113,17 +121,74 @@
     
 }
 
-///获取激活码事件
+///点击获取激活码
 -(void)activateButtonAction
 {
 
     
 }
 
-///进入注册按钮事件
--(void)gotoNextVC
+///点击注册按钮
+-(void)gotoRegister
 {
     
+    //判断数据
+    NSString *userName = ((UITextField *)self.userNameItem.property).text;
+    NSString *pwd = ((UITextField *)self.passWordItem.property).text;
+    
+    ///回收键盘
+    [((UITextField *)self.userNameItem.property) resignFirstResponder];
+    [((UITextField *)self.passWordItem.property) resignFirstResponder];
+    
+    if ((nil == userName) || (0 >= [userName length])) {
+        
+        return;
+        
+    }
+    
+    if ((nil == pwd) || (0 >= [pwd length])) {
+        
+        return;
+        
+    }
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    ///封装登录参数
+    NSDictionary *params = @{@"account" : userName,@"psw" : pwd,@"type" : @"1"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeRegister andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否登录成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            self.hud.labelText = @"注册成功";
+            [self.hud hide:YES afterDelay:1.5f];
+            
+            ///转换模型
+            QSUserRegisterReturnData *tempModel = resultData;
+             NSLog(@"===========成功注册的用户名==========");
+             NSLog(@"%@",tempModel.RegisterList.userName);
+             NSLog(@"===========成功注册的用户名==========");
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                ///返回上一页
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            });
+            
+        } else {
+            
+            self.hud.labelText = @"注册失败";
+            [self.hud hide:YES afterDelay:1.0f];
+            
+            
+        }
+        
+    }];
+
     
 }
 

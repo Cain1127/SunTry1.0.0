@@ -616,6 +616,13 @@
             
             break;
             
+            ///注册的信息
+        case rRequestTypeRegister:
+            
+            return rRequestHttpRequestTypePost;
+            
+            break;
+            
             ///默认返回Post
         default:
             
