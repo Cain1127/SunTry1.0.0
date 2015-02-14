@@ -28,7 +28,8 @@
                                   @"banner":@"goodsImageUrl",
                                   @"goods_num":@"goodsInstockNum",
                                   @"begin_time":@"beginTime",
-                                  @"over_time":@"overTime"
+                                  @"over_time":@"overTime",
+                                  @"expant_3":@"presentPrice"
                                   };
     
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
@@ -73,6 +74,7 @@
                                   @"goods_num":@"goodsInstockNum",
                                   @"begin_time":@"beginTime",
                                   @"over_time":@"overTime"
+                                  
                                   };
     
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];

@@ -11,6 +11,11 @@
 #import "ImageHeader.h"
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
+#import "QSRequestManager.h"
+#import "QSRequestTaskDataModel.h"
+#import "QSGoodsDataModel.h"
+#import "QSGoodsListReturnData.h"
+#import "MJRefresh.h"
 
 #define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -22,16 +27,27 @@
 @property (strong, nonatomic)  UILabel *priceLabel;                   //!<价钱label
 @property (strong, nonatomic)  UILabel *specialLabel;                 //!<优惠label
 @property (strong, nonatomic)UICollectionView *collectionView;      //!<充值窗体
-@property (nonatomic,retain) NSMutableArray *specialDataSource;     //!<充值卡信息数据源
+@property (nonatomic,retain) NSMutableArray *storedCardDataSource;     //!<充值卡信息数据源
 
 @end
 
 @implementation QSWMyStoredCardViewController
 
+//-(NSMutableArray *)storedCardDataSource
+//{
+//    if (self.storedCardDataSource==nil) {
+//        self.storedCardDataSource=[[NSMutableArray alloc]init];
+//    }
+//
+//    return self.storedCardDataSource;
+//}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"我的储值卡";
     self.view.backgroundColor=[UIColor whiteColor];
+    
+    [self getStoredCardList];
     
     //没有数据时的显示
     self.nodataView = [[UIView alloc] initWithFrame:self.view.frame];
@@ -81,8 +97,7 @@
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 6;
-   // return [self.specialDataSource count];
+    return [self.storedCardDataSource count];
     
 }
 
@@ -101,21 +116,33 @@
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
     ///获取模型
-    //QSGoodsDataModel *tempModel = self.specialDataSource[indexPath.row];
+    QSGoodsDataModel *tempModel = self.storedCardDataSource[indexPath.row];
+    
     _priceLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height*0.25, cell.frame.size.width, cell.frame.size.height*0.25)];
     _priceLabel.textColor = [UIColor brownColor];
     _priceLabel.textAlignment=NSTextAlignmentCenter;
-    _priceLabel.text=@"￥100";
+    _priceLabel.text=tempModel.goodsPrice;
     
     _specialLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height*0.5+5.0f, cell.frame.size.width, cell.frame.size.height*0.2)];
     _specialLabel.textColor = [UIColor brownColor];
     _specialLabel.textAlignment=NSTextAlignmentCenter;
-    _specialLabel.text=@"送￥20";
+    _specialLabel.text=tempModel.presentPrice;
     //_priceLabel.text = [NSString stringWithFormat:@"%d",indexPath.row];
     
     for (id subView in cell.contentView.subviews) {
         [subView removeFromSuperview];
     }
+    
+    ///加边框
+    UIView *lineRootView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, cell.frame.size.height)];
+    lineRootView.backgroundColor = [UIColor clearColor];
+    lineRootView.layer.borderColor = [[UIColor colorWithRed:194.0f / 255.0f green:181.0f / 255.0f blue:156.0f / 255.0f alpha:1.0f] CGColor];
+    lineRootView.layer.borderWidth = 0.5f;
+    lineRootView.layer.cornerRadius = 6.0f;
+    
+    ///加载到content上
+    [cell.contentView addSubview:lineRootView];
+    [cell.contentView sendSubviewToBack:lineRootView];
     
     cell.backgroundColor=[UIColor clearColor];
     [cell.contentView addSubview:_priceLabel];
@@ -146,7 +173,49 @@
     
 }
 
+///获取网络数据
+-(void)getStoredCardList
+{
 
+    //每日特价信息请求参数
+    NSDictionary *dict = @{@"type" : @"11", @"key" : @"",@"goods_tag":@"",@"source":@"phone"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeAspecial andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            //模型转换
+            QSGoodsListReturnData *tempModel = resultData;
+            NSArray *array = tempModel.goodsListData.goodsList;
+            
+            NSLog(@"QSAspecialReturnData : %@",tempModel);
+            //设置页码：当前页码/最大页码
+            
+            self.storedCardDataSource=[[NSMutableArray alloc]init];
+            //清空的数据源
+            [self.storedCardDataSource removeAllObjects];
+            
+            ///保存数据源
+            [self.storedCardDataSource addObjectsFromArray:array];
+            
+            ///结束刷新动画
+            [self.collectionView headerEndRefreshing];
+            
+            ///reload数据
+            [self.collectionView reloadData];
+            
+        } else {
+            
+            NSLog(@"================今日特价搜索信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================今日特价搜索信息请求失败================");
+            
+        }
+        
+    }];
+
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
