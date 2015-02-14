@@ -121,13 +121,14 @@
     _priceLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height*0.25, cell.frame.size.width, cell.frame.size.height*0.25)];
     _priceLabel.textColor = [UIColor brownColor];
     _priceLabel.textAlignment=NSTextAlignmentCenter;
-    _priceLabel.text=tempModel.goodsPrice;
+    _priceLabel.text=[NSString stringWithFormat:@"￥%@",tempModel.goodsPrice];
+    _priceLabel.font=[UIFont systemFontOfSize:20];
     
     _specialLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height*0.5+5.0f, cell.frame.size.width, cell.frame.size.height*0.2)];
     _specialLabel.textColor = [UIColor brownColor];
     _specialLabel.textAlignment=NSTextAlignmentCenter;
-    _specialLabel.text=tempModel.presentPrice;
-    //_priceLabel.text = [NSString stringWithFormat:@"%d",indexPath.row];
+    _specialLabel.text=[NSString stringWithFormat:@"送￥%@",tempModel.presentPrice];
+    _specialLabel.font=[UIFont systemFontOfSize:16];
     
     for (id subView in cell.contentView.subviews) {
         [subView removeFromSuperview];
@@ -157,11 +158,8 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-//    QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row];
-//    QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
-//    [self.tabBarController.view addSubview:shakeFoodView];
-//    [shakeFoodView updateFoodData:goodsItem];
-//    [shakeFoodView showShakeFoodView];
+   //QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row];
+    
     
 }
 
