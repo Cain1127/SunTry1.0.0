@@ -48,7 +48,7 @@ typedef enum {
 @property (nonatomic,assign) BOOL isShowSearchStreetList;       //!<是否显示搜索结果
 @property(nonatomic,strong) NSMutableArray *tempStreetList;     //!<临时搜索返回数据
 @property(nonatomic,strong) NSArray     *districtStreetList;    //!<搜索返回数据
-@property (nonatomic,strong) NSArray *searchHistoryList;        //!<搜索历史数据
+@property (nonatomic,strong) NSMutableArray *searchHistoryList; //!<搜索历史数据
 
 @property (nonatomic,strong) QSDatePickerViewController *customPicker;//!<选择框
 
@@ -108,7 +108,7 @@ typedef enum {
     
     ///encode数据
     NSArray *selectData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
-    self.searchHistoryList = [[NSArray alloc] initWithArray:selectData];
+    self.searchHistoryList = [[NSMutableArray alloc] initWithArray:selectData];
     
 }
 
@@ -475,16 +475,42 @@ typedef enum {
     ///通过搜索结果进入
     if (self.isShowSearchStreetList) {
         
+        ///保存数据
+        QSSearchHistoryDataModel *tempModel = [[QSSearchHistoryDataModel alloc] init];
+        QSSelectDataModel *selectedModel = self.tempStreetList[indexPath.row];
+        tempModel.title = selectedModel.streetName;
+        tempModel.key = selectedModel.streetID;
+        [self addSearchHistoryData:tempModel];
+        
+        ///设置为历史状态
+        self.isShowDistrictStreetList = NO;
+        self.isShowSearchStreetList = NO;
+        [self.searchListTableView reloadData];
+        
         QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
         [self.navigationController pushViewController:VC animated:YES];
+        return;
         
     }
     
     ///判断是否是搜索当前区
     if (self.isShowDistrictStreetList) {
         
+        ///保存数据
+        QSSearchHistoryDataModel *tempModel = [[QSSearchHistoryDataModel alloc] init];
+        QSSelectDataModel *selectedModel = self.districtList[indexPath.row];
+        tempModel.title = selectedModel.streetName;
+        tempModel.key = selectedModel.streetID;
+        [self addSearchHistoryData:tempModel];
+        
+        ///设置为历史状态
+        self.isShowDistrictStreetList = NO;
+        self.isShowSearchStreetList = NO;
+        [self.searchListTableView reloadData];
+        
         QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
         [self.navigationController pushViewController:VC animated:YES];
+        return;
         
     }
     
@@ -613,6 +639,35 @@ typedef enum {
     ///刷新数据
     [self.searchListTableView reloadData];
     
+}
+
+#pragma mark - 添加搜索历史
+- (void)addSearchHistoryData:(QSSearchHistoryDataModel *)model
+{
+
+    ///循环原数据，判断是否存在，已存在，则不再保存
+    for (QSSearchHistoryDataModel *obj in self.searchHistoryList) {
+        
+        if ([obj.key isEqualToString:model.key]) {
+            
+            break;
+            return;
+            
+        }
+        
+    }
+    
+    ///添加
+    [self.searchHistoryList addObject:model];
+    
+    ///更新本地
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/searchHistory"];
+    
+    ///首先转成data
+    NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:self.searchHistoryList];
+    [saveData writeToFile:path atomically:YES];
+
 }
 
 @end
