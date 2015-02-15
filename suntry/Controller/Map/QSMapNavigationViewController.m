@@ -7,9 +7,16 @@
 //
 
 #import "QSMapNavigationViewController.h"
-#import <MapKit/MapKit.h>
 #import "QSAnnotation.h"
 #import "QSMapManager.h"
+#import "DeviceSizeHeader.h"
+#import "QSBlockButton.h"
+
+#import <MapKit/MapKit.h>
+#import <objc/runtime.h>
+
+///关联
+static char titleLabelKey;//!<标题关联
 
 @interface QSMapNavigationViewController ()<MKMapViewDelegate,CLLocationManagerDelegate>{
     
@@ -28,11 +35,13 @@
 {
     
     if (!_geocoder) {
+        
         self.geocoder=[[CLGeocoder alloc]init];
         
     }
     
     return _geocoder;
+    
 }
 
 
@@ -40,11 +49,36 @@
     
     [super viewDidLoad];
     
-    self.navigationItem.title=@"车车在哪儿";
+    ///导航栏
+    UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
+    navRootView.userInteractionEnabled = YES;
+    navRootView.image = [UIImage imageNamed:@"nav_backgroud"];
+    [self.view addSubview:navRootView];
+    
+    ///添加导航栏标题
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake((navRootView.frame.size.width - 80.0f) / 2.0f, 64.0f - 37.0f, 80.0f, 30.0f)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentRight];
+    navTitle.adjustsFontSizeToFitWidth = YES;
+    [navTitle setText:@"车车在哪儿"];
+    [navRootView addSubview:navTitle];
+    objc_setAssociatedObject(self, &titleLabelKey, navTitle, OBJC_ASSOCIATION_ASSIGN);
+    
+    ///返回按钮
+    UIButton *turnBackButton = [UIButton createBlockButtonWithFrame:CGRectMake(10.0f, navTitle.frame.origin.y, 30.0f, 30.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }];
+    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal];
+    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted];
+    [navRootView addSubview:turnBackButton];
     
     ///初始化mapView
-    _mapView=[[MKMapView alloc]init];
-    _mapView.frame=CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height-64.0f);
+    _mapView=[[MKMapView alloc] init];
+    _mapView.frame=CGRectMake(0.0f, 64.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 64.0f - 49.0f);
     
     _mapView.delegate=self;
     [self.view addSubview:_mapView];
@@ -53,7 +87,6 @@
     [self getUseLocation];
     
     ///导航
-    //目的地
     NSString *destinationPm=@"天河员村";
     
     QSMapManager *mapManamer=[[QSMapManager alloc]init];

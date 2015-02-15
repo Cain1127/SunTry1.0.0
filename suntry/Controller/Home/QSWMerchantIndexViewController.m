@@ -21,28 +21,40 @@
 #import "FontHeader.h"
 #import "MJRefresh.h"
 
+#import "QSDatePickerViewController.h"
+#import "ASDepthModalViewController.h"
+#import "QSSelectReturnData.h"
+#import "QSSelectDataModel.h"
+
+#import <objc/runtime.h>
+
+///关联
+static char titleLabelKey;//!<标题key
+
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;  //!<菜品图片
-@property (weak, nonatomic) IBOutlet UIButton *sharkButton;       //!<摇一摇按钮
-@property (weak, nonatomic) IBOutlet UIButton *packageButton;     //!<美味套餐按钮
-@property (weak, nonatomic) IBOutlet UIButton *carButton;         //!<车车在哪儿按钮
-@property (weak, nonatomic) IBOutlet UIButton *customButton;      //!<客服按钮
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;        //!<更多按钮
-@property (weak, nonatomic) IBOutlet UILabel *specialsLabel;      //!<第日优惠菜品优惠价label
-@property (strong, nonatomic)UICollectionView *collectionView;    //!<每日优惠菜品窗体
+@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;    //!<菜品图片
+@property (weak, nonatomic) IBOutlet UIButton *sharkButton;         //!<摇一摇按钮
+@property (weak, nonatomic) IBOutlet UIButton *packageButton;       //!<美味套餐按钮
+@property (weak, nonatomic) IBOutlet UIButton *carButton;           //!<车车在哪儿按钮
+@property (weak, nonatomic) IBOutlet UIButton *customButton;        //!<客服按钮
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;          //!<更多按钮
+@property (weak, nonatomic) IBOutlet UILabel *specialsLabel;        //!<第日优惠菜品优惠价label
+@property (strong, nonatomic)UICollectionView *collectionView;      //!<每日优惠菜品窗体
 
-@property (strong,nonatomic)NSString *distictID;                  //!<地区ID
-@property (strong,nonatomic)NSString *distictName;                //!<地区名称
+@property (strong,nonatomic)NSString *distictID;                    //!<地区ID
+@property (strong,nonatomic)NSString *distictName;                  //!<地区名称
 
-@property (nonatomic,retain) NSMutableArray *specialDataSource;   //!<优惠信息数据源
+@property (nonatomic,retain) NSMutableArray *specialDataSource;     //!<优惠信息数据源
+@property (nonatomic,retain) NSMutableArray *streetList;            //!<街道数据源
+@property (nonatomic,strong) QSDatePickerViewController *customPicker;    //!<选择器
 
 @end
 
 @implementation QSWMerchantIndexViewController
 
 #pragma mark - 初始化
-
+///初始化
 - (instancetype)initWithID:(NSString *)distictID andDistictName:(NSString *)districtName
 {
 
@@ -54,21 +66,72 @@
         ///初始化数据源数组
         self.specialDataSource = [[NSMutableArray alloc] init];
         
+        ///初始化街道数据
+        [self getDistrictStreetList];
+        
     }
     
     return self;
 
 }
 
-#pragma mark--控件加载
+#pragma mark - 获取本地位置的区信息
+///获取本地位置的区信息
+-(void)getDistrictStreetList
+{
+    
+    ///数据地址
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/selectData"];
+    
+    ///首先转成data
+    NSData *saveData = [NSData dataWithContentsOfFile:path];
+    
+    ///encode数据
+    QSSelectReturnData *selectData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
+    _streetList = [[NSMutableArray alloc] initWithArray:selectData.selectList];
+    
+}
+
+#pragma mark - 初始UI搭建
+///UI搭建
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
-     self.title=self.distictName;
     
-    [self downloadAspecialInfo];
-    
+    ///添加摇一摇功能
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
     [self becomeFirstResponder];
+    
+    ///导航栏
+    UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
+    navRootView.userInteractionEnabled = YES;
+    navRootView.image = [UIImage imageNamed:@"nav_backgroud"];
+    [self.view addSubview:navRootView];
+    
+    ///0.添加导航栏主题view
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, 80.0f, 30.0f)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentRight];
+    navTitle.adjustsFontSizeToFitWidth = YES;
+    [navTitle setText:self.distictName];
+    objc_setAssociatedObject(self, &titleLabelKey, navTitle, OBJC_ASSOCIATION_ASSIGN);
+    
+    UIImageView *localImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_local"] ];
+    localImageView.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+    
+    UIImageView *titleImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_arrow_down"] ];
+    titleImageView.frame = CGRectMake(110.0f, 0.0f, 30.0f, 30.0f);
+    
+    UIButton *districtButton = [[UIButton alloc] initWithFrame:CGRectMake((SIZE_DEVICE_WIDTH - 140.0f) / 2.0f, navRootView.frame.size.height - 37.0f, 140.0f, 30.0f)];
+    [districtButton addSubview:navTitle];
+    [districtButton addSubview:titleImageView];
+    [districtButton addSubview:localImageView];
+    
+    [navRootView addSubview:districtButton];
+    [districtButton addTarget:self action:@selector(showStreetPicker) forControlEvents:UIControlEventTouchUpInside];
     
     ///加载头部view
     [self setupTopView];
@@ -82,24 +145,20 @@
 -(void)setupTopView
 {
     
-    _foodImageView.frame=CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT);
+    _foodImageView.frame=CGRectMake(0.0f, 64.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT);
     
-    CGFloat buttonW=(SIZE_DEVICE_WIDTH-5*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)/4;
-    CGFloat buttonH=buttonW*74/78;
-    CGFloat buttonY=SIZE_DEFAULT_HOME_BANNAR_HEIGHT+SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
+    CGFloat buttonW = (SIZE_DEVICE_WIDTH - 5.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) / 4.0f;
+    CGFloat buttonH = buttonW * 74.0f / 78.0f;
+    CGFloat buttonY = 64.0f + SIZE_DEFAULT_HOME_BANNAR_HEIGHT + SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
     
     _sharkButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, buttonY, buttonW, buttonH);
-    
-    _packageButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT*2+buttonW, buttonY, buttonW, buttonH);
-    
-    _carButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT*3+2*buttonW, buttonY, buttonW, buttonH);
-    
-     _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT*4+3*buttonW, buttonY, buttonW, buttonH);
-    
+    _packageButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 2.0f + buttonW, buttonY, buttonW, buttonH);
+    _carButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 3.0f + 2.0f * buttonW, buttonY, buttonW, buttonH);
+     _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 4.0f + 3.0f * buttonW, buttonY, buttonW, buttonH);
     _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 20.0f);
     [_specialsLabel setFont:[UIFont systemFontOfSize:20.0f]];
     
-    _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT-30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 20.0f);
+    _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 20.0f);
     
 }
 
@@ -118,13 +177,17 @@
     flowLayout.itemSize = itemSize;
     flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
     
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, self.moreButton.frame.origin.y+20.0f+5.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-self.moreButton.frame.origin.y-20-49.0f-64.0f) collectionViewLayout:flowLayout];
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, self.moreButton.frame.origin.y + 20.0f + 5.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - self.moreButton.frame.origin.y - 20.0f - 49.0f) collectionViewLayout:flowLayout];
     self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
+    
+    ///添加头部刷新
+    [self.collectionView addHeaderWithTarget:self action:@selector(downloadAspecialInfo)];
+    [self.collectionView headerBeginRefreshing];
     
     //注册Cell，必须要有
     [self.collectionView registerClass:[QSWMerchantIndexCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
@@ -133,9 +196,71 @@
     
 }
 
-#pragma mark -- UICollectionViewDataSource数据源方法
+#pragma mark - 街道选择
+///弹出街道选择窗口
+- (void)showStreetPicker
+{
+    
+    ///标题
+    __block UILabel *titleLabel = objc_getAssociatedObject(self, &titleLabelKey);
+    
+    ///创建选择框
+    self.customPicker = [[QSDatePickerViewController alloc] init];
+    self.customPicker.pickerType = kPickerType_Item;
+    
+    ///转换数据模型
+    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    
+    if (nil == self.streetList || 0 >= self.streetList) {
+        
+        [self getDistrictStreetList];
+        
+    }
+    
+    for (int i = 0; i < [self.streetList count]; i++) {
+        
+        ///获取地区模型
+        QSSelectDataModel *streetModel = self.streetList[i];
+        
+        if ([streetModel.isSend intValue] == 1) {
+            
+            [tempArray addObject:streetModel.streetName];
+            
+        }
+        
+    }
+    
+    self.customPicker.dataSource = tempArray;
+    
+    ///点击取消时的回调
+    self.customPicker.onCancelButtonHandler = ^{
+        
+        [ASDepthModalViewController dismiss];
+        
+    };
+    
+    ///self的弱引用
+    __weak QSWMerchantIndexViewController *weakSelf = self;
+    
+    ///点击确认时的回调
+    self.customPicker.onItemConfirmButtonHandler = ^(NSInteger index,NSString *item){
+        
+        ///改变标题
+        titleLabel.text = item;
+        
+        ///刷新数据
+        [weakSelf.collectionView headerBeginRefreshing];
+        
+        [ASDepthModalViewController dismiss];
+        
+    };
+    
+    [ASDepthModalViewController presentView:self.customPicker.view];
 
-//定义展示的UICollectionViewCell的个数
+}
+
+#pragma mark - 当前特价总数
+///定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     
@@ -143,7 +268,7 @@
     
 }
 
-//定义展示的Section的个数
+///定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     
@@ -151,7 +276,8 @@
     
 }
 
-//每个UICollectionView展示的内容
+#pragma mark - 返回每一个特价信息cell
+///每个UICollectionView展示的内容
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * CellIdentifier = @"UICollectionViewCell";
@@ -176,9 +302,8 @@
     
 }
 
-#pragma mark --UICollectionViewDelegate代理方法
-
-//UICollectionView被选中时调用的方法
+#pragma mark - 点击某一个特价，进入点餐页面
+///点击某一个特价，进入点餐页面
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -190,7 +315,7 @@
     
 }
 
-//返回这个UICollectionView是否可以被选择
+///返回这个UICollectionView是否可以被选择
 -(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -198,7 +323,8 @@
     
 }
 
-#pragma mark --按钮点击事件
+#pragma mark - 摇一摇
+///点击摇一摇功能按钮
 - (IBAction)sharkButtonClick:(id)sender
 {
     
@@ -206,6 +332,8 @@
     
 }
 
+#pragma mark - 优惠套餐按钮事件
+///优惠套餐按钮事件
 - (IBAction)packageButtonClick:(id)sender
 {
    
@@ -213,42 +341,49 @@
     
 }
 
-- (IBAction)carButtonClick:(id)sender {
+#pragma mark - 车在哪按钮
+///车在哪按钮
+- (IBAction)carButtonClick:(id)sender
+{
     
     QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init];
     [self.navigationController pushViewController:VC animated:YES];
     
 }
 
-- (IBAction)customButtonClick:(id)sender {
+#pragma mark - 客服热线
+///客服热线
+- (IBAction)customButtonClick:(id)sender
+{
     
     
     
 }
-- (IBAction)moreButtonClick:(id)sender {
+
+#pragma mark - 更多点餐信息
+///更多点餐信息
+- (IBAction)moreButtonClick:(id)sender
+{
     
      [self.tabBarController setSelectedIndex:1];
     
 }
 
+#pragma mark - 摇一摇事件
+///摇一摇事件接收入口
 -(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
     
-    NSLog(@"触发摇一摇");
     //FIXME: 需要完善逻辑，预防网络慢时同时触发调用的问题。
     [self getRandomGoods];
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    
-}
-
-#pragma mark--每日特价网络信息请求
+#pragma mark - 每日特价网络信息请求
 ///每日特价查询信息请求
 - (void)downloadAspecialInfo
 {
+    
     //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4"};
     
@@ -288,9 +423,11 @@
     
 }
 
-#pragma mark--随机菜品网络信息请求
+#pragma mark - 随机菜品网络信息请求
+///随机菜品网络信息请求
 - (void)getRandomGoods
 {
+    
     //随机菜品信息请求参数
     NSDictionary *dict = @{@"num" : @"1"};
     
@@ -314,11 +451,6 @@
                 
             }
             
-//            for (int i=0; i<[array count];i++)
-//            {
-//                QSGoodsDataModel *goodsItem = array[i];
-//                NSLog(@"随机菜品：%d  %@",i ,goodsItem.goodsName);
-//            }
             
         } else {
             

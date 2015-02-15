@@ -41,6 +41,7 @@
     ///1.首页
     QSHomeViewController *home=[[QSHomeViewController alloc] init];
     [tempArray addObject:[self setupChildViewController:home title:@"首页" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"]];
+    [home.navigationController setNavigationBarHidden:YES];
     
     ///2.点餐
     QSPointMealViewController *pointmeal=[[QSPointMealViewController alloc]init];
