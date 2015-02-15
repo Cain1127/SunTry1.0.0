@@ -168,21 +168,18 @@ typedef enum {
     [_districtButton addTarget:self action:@selector(showDistrictPicker) forControlEvents:UIControlEventTouchUpInside];
     
     ///1.添加textfield输入框控件
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 72.0f, SIZE_DEFAULT_MAX_WIDTH - 44.0f - 5.0f, 44.0f)];
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 72.0f, SIZE_DEFAULT_MAX_WIDTH - 44.0f - 10.0f, 44.0f)];
     self.searchBar.placeholder = @"请输入您的位置";
     self.searchBar.delegate = self;
-    self.searchBar.backgroundColor = [UIColor whiteColor];
-    self.searchBar.searchBarStyle = UISearchBarStyleDefault;
+    self.searchBar.backgroundImage = [UIImage imageNamed:@"home_search_bar_bg"];
+    self.searchBar.layer.cornerRadius = 6.0f;
+    self.searchBar.layer.borderWidth = 0.25f;
+    [self.searchBar setImage:[UIImage imageNamed:@"public_search_normal"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+    self.searchBar.layer.borderColor = [[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.4f] CGColor];
     [self.view addSubview:self.searchBar];
     
-    for (UIView *obj in [self.searchBar subviews]) {
-        
-        obj.backgroundColor = [UIColor whiteColor];
-        
-    }
-    
     ///2.添加搜索框按钮
-    UIButton *searchButton=[[UIButton alloc] initWithFrame:CGRectMake(self.searchBar.frame.origin.x + self.searchBar.frame.size.width + 5.0f, 72.0f, 44.0f, 44.0f)];
+    UIButton *searchButton=[[UIButton alloc] initWithFrame:CGRectMake(self.searchBar.frame.origin.x + self.searchBar.frame.size.width + 10.0f, 72.0f, 44.0f, 44.0f)];
     searchButton.backgroundColor=COLOR_CHARACTERS_RED;
     searchButton.layer.cornerRadius = 6.0f;
     [searchButton setImage:[UIImage imageNamed:@"public_search_normal"] forState:UIControlStateNormal];
