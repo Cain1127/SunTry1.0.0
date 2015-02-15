@@ -21,21 +21,33 @@
 #import "FontHeader.h"
 #import "MJRefresh.h"
 
+#import "QSDatePickerViewController.h"
+#import "ASDepthModalViewController.h"
+#import "QSSelectReturnData.h"
+#import "QSSelectDataModel.h"
+
+#import <objc/runtime.h>
+
+///关联
+static char titleLabelKey;//!<标题key
+
 @interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;  //!<菜品图片
-@property (weak, nonatomic) IBOutlet UIButton *sharkButton;       //!<摇一摇按钮
-@property (weak, nonatomic) IBOutlet UIButton *packageButton;     //!<美味套餐按钮
-@property (weak, nonatomic) IBOutlet UIButton *carButton;         //!<车车在哪儿按钮
-@property (weak, nonatomic) IBOutlet UIButton *customButton;      //!<客服按钮
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;        //!<更多按钮
-@property (weak, nonatomic) IBOutlet UILabel *specialsLabel;      //!<第日优惠菜品优惠价label
-@property (strong, nonatomic)UICollectionView *collectionView;    //!<每日优惠菜品窗体
+@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;    //!<菜品图片
+@property (weak, nonatomic) IBOutlet UIButton *sharkButton;         //!<摇一摇按钮
+@property (weak, nonatomic) IBOutlet UIButton *packageButton;       //!<美味套餐按钮
+@property (weak, nonatomic) IBOutlet UIButton *carButton;           //!<车车在哪儿按钮
+@property (weak, nonatomic) IBOutlet UIButton *customButton;        //!<客服按钮
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;          //!<更多按钮
+@property (weak, nonatomic) IBOutlet UILabel *specialsLabel;        //!<第日优惠菜品优惠价label
+@property (strong, nonatomic)UICollectionView *collectionView;      //!<每日优惠菜品窗体
 
-@property (strong,nonatomic)NSString *distictID;                  //!<地区ID
-@property (strong,nonatomic)NSString *distictName;                //!<地区名称
+@property (strong,nonatomic)NSString *distictID;                    //!<地区ID
+@property (strong,nonatomic)NSString *distictName;                  //!<地区名称
 
-@property (nonatomic,retain) NSMutableArray *specialDataSource;   //!<优惠信息数据源
+@property (nonatomic,retain) NSMutableArray *specialDataSource;     //!<优惠信息数据源
+@property (nonatomic,retain) NSMutableArray *streetList;            //!<街道数据源
+@property (nonatomic,strong) QSDatePickerViewController *customPicker;    //!<选择器
 
 @end
 
@@ -54,10 +66,31 @@
         ///初始化数据源数组
         self.specialDataSource = [[NSMutableArray alloc] init];
         
+        ///初始化街道数据
+        [self getDistrictStreetList];
+        
     }
     
     return self;
 
+}
+
+#pragma mark - 获取本地位置的区信息
+///获取本地位置的区信息
+-(void)getDistrictStreetList
+{
+    
+    ///数据地址
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/selectData"];
+    
+    ///首先转成data
+    NSData *saveData = [NSData dataWithContentsOfFile:path];
+    
+    ///encode数据
+    QSSelectReturnData *selectData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
+    _streetList = [[NSMutableArray alloc] initWithArray:selectData.selectList];
+    
 }
 
 #pragma mark - 初始UI搭建
@@ -65,9 +98,6 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
-    ///下载数据
-    [self downloadAspecialInfo];
     
     ///添加摇一摇功能
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
@@ -80,23 +110,22 @@
     [self.view addSubview:navRootView];
     
     ///0.添加导航栏主题view
-    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, 60.0f, 30.0f)];
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, 80.0f, 30.0f)];
     [navTitle setFont:[UIFont boldSystemFontOfSize:18.0f]];
     [navTitle setTextColor:[UIColor whiteColor]];
     [navTitle setBackgroundColor:[UIColor clearColor]];
     [navTitle setTextAlignment:NSTextAlignmentRight];
+    navTitle.adjustsFontSizeToFitWidth = YES;
     [navTitle setText:self.distictName];
-    navTitle.tag = 51;
+    objc_setAssociatedObject(self, &titleLabelKey, navTitle, OBJC_ASSOCIATION_ASSIGN);
     
     UIImageView *localImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_local"] ];
     localImageView.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
-    localImageView.tag = 52;
     
     UIImageView *titleImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_arrow_down"] ];
-    titleImageView.frame = CGRectMake(90.0f, 0.0f, 30.0f, 30.0f);
-    titleImageView.tag = 50;
+    titleImageView.frame = CGRectMake(110.0f, 0.0f, 30.0f, 30.0f);
     
-    UIButton *districtButton = [[UIButton alloc] initWithFrame:CGRectMake((SIZE_DEVICE_WIDTH - 120.0f) / 2.0f, navRootView.frame.size.height - 37.0f, 120.0f, 30.0f)];
+    UIButton *districtButton = [[UIButton alloc] initWithFrame:CGRectMake((SIZE_DEVICE_WIDTH - 140.0f) / 2.0f, navRootView.frame.size.height - 37.0f, 140.0f, 30.0f)];
     [districtButton addSubview:navTitle];
     [districtButton addSubview:titleImageView];
     [districtButton addSubview:localImageView];
@@ -156,6 +185,10 @@
     self.collectionView.delegate=self;
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
     
+    ///添加头部刷新
+    [self.collectionView addHeaderWithTarget:self action:@selector(downloadAspecialInfo)];
+    [self.collectionView headerBeginRefreshing];
+    
     //注册Cell，必须要有
     [self.collectionView registerClass:[QSWMerchantIndexCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
@@ -167,8 +200,62 @@
 ///弹出街道选择窗口
 - (void)showStreetPicker
 {
-
     
+    ///标题
+    __block UILabel *titleLabel = objc_getAssociatedObject(self, &titleLabelKey);
+    
+    ///创建选择框
+    self.customPicker = [[QSDatePickerViewController alloc] init];
+    self.customPicker.pickerType = kPickerType_Item;
+    
+    ///转换数据模型
+    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    
+    if (nil == self.streetList || 0 >= self.streetList) {
+        
+        [self getDistrictStreetList];
+        
+    }
+    
+    for (int i = 0; i < [self.streetList count]; i++) {
+        
+        ///获取地区模型
+        QSSelectDataModel *streetModel = self.streetList[i];
+        
+        if ([streetModel.isSend intValue] == 1) {
+            
+            [tempArray addObject:streetModel.streetName];
+            
+        }
+        
+    }
+    
+    self.customPicker.dataSource = tempArray;
+    
+    ///点击取消时的回调
+    self.customPicker.onCancelButtonHandler = ^{
+        
+        [ASDepthModalViewController dismiss];
+        
+    };
+    
+    ///self的弱引用
+    __weak QSWMerchantIndexViewController *weakSelf = self;
+    
+    ///点击确认时的回调
+    self.customPicker.onItemConfirmButtonHandler = ^(NSInteger index,NSString *item){
+        
+        ///改变标题
+        titleLabel.text = item;
+        
+        ///刷新数据
+        [weakSelf.collectionView headerBeginRefreshing];
+        
+        [ASDepthModalViewController dismiss];
+        
+    };
+    
+    [ASDepthModalViewController presentView:self.customPicker.view];
 
 }
 
@@ -296,6 +383,7 @@
 ///每日特价查询信息请求
 - (void)downloadAspecialInfo
 {
+    
     //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4"};
     
@@ -339,6 +427,7 @@
 ///随机菜品网络信息请求
 - (void)getRandomGoods
 {
+    
     //随机菜品信息请求参数
     NSDictionary *dict = @{@"num" : @"1"};
     
