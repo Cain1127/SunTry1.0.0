@@ -23,9 +23,9 @@
 
 @interface QSWMyStoredCardViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic, strong) UIView *nodataView;                   //!<没有储值卡view
-@property (strong, nonatomic) UILabel *priceLabel;                 //!<价钱label
-@property (strong, nonatomic) UILabel *specialLabel;               //!<优惠label
+@property (nonatomic, strong) UIView *nodataView;                    //!<没有储值卡view
+@property (strong, nonatomic) UILabel *priceLabel;                   //!<价钱label
+@property (strong, nonatomic) UILabel *specialLabel;                 //!<优惠label
 @property (strong, nonatomic) UICollectionView *collectionView;      //!<每个充值按钮
 @property (nonatomic,retain)  NSMutableArray *storedCardDataSource;  //!<充值卡信息数据源
 

@@ -23,9 +23,10 @@
 		1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3AA1A8DFB2000EABC7D /* QSDatePickerViewController.m */; };
 		1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */; };
 		1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */; };
+		1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
 		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
-		1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */; };
+		CE207ABD1A9073FE00ACF741 /* QSWStoredCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207ABC1A9073FE00ACF741 /* QSWStoredCardCell.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -159,6 +160,8 @@
 		CE207AB61A90430000ACF741 /* QSWStoredCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWStoredCardViewController.h; sourceTree = "<group>"; };
 		CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWStoredCardViewController.m; sourceTree = "<group>"; };
 		CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QSWStoredCardViewController.xib; sourceTree = "<group>"; };
+		CE207ABB1A9073FE00ACF741 /* QSWStoredCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWStoredCardCell.h; sourceTree = "<group>"; };
+		CE207ABC1A9073FE00ACF741 /* QSWStoredCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWStoredCardCell.m; sourceTree = "<group>"; };
 		CE5341311A7FA4CE002BA188 /* QSTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTabBarViewController.h; sourceTree = "<group>"; };
 		CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTabBarViewController.m; sourceTree = "<group>"; };
 		CE5341341A7FA4CE002BA188 /* QSAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAnnotation.h; sourceTree = "<group>"; };
@@ -540,6 +543,8 @@
 				CE207AB61A90430000ACF741 /* QSWStoredCardViewController.h */,
 				CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */,
 				CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */,
+				CE207ABB1A9073FE00ACF741 /* QSWStoredCardCell.h */,
+				CE207ABC1A9073FE00ACF741 /* QSWStoredCardCell.m */,
 				CE571F021A84C8E000609788 /* QSWLoginPswViewController.h */,
 				CE571F031A84C8E000609788 /* QSWLoginPswViewController.m */,
 				CE571F051A84C92B00609788 /* QSWUserSettingViewController.h */,
@@ -1239,6 +1244,7 @@
 				CE571EEB1A84AF7800609788 /* QSWSettingViewController.m in Sources */,
 				CE5341821A7FBCAC002BA188 /* QSImageView.m in Sources */,
 				CE53415D1A7FA527002BA188 /* QSRequestTaskDataModel.m in Sources */,
+				CE207ABD1A9073FE00ACF741 /* QSWStoredCardCell.m in Sources */,
 				CE7946C01A8B705600C0113B /* QSWMerchantIndexViewController.m in Sources */,
 				CEEAC3C21A8CCC72009AC6AA /* QSWEditSendAdsViewController.m in Sources */,
 				CE571EF31A84AFB200609788 /* QSWSettingArrowItem.m in Sources */,

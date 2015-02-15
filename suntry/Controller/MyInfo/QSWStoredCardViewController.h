@@ -10,4 +10,12 @@
 
 @interface QSWStoredCardViewController : UIViewController
 
+- (IBAction)chargeButton:(id)sender;    //!<充值储存卡按钮事件
+
+- (IBAction)resetPswButton:(id)sender;  //!<重置储存卡按钮事件
+
+- (IBAction)chargeRecord:(id)sender;    //!<充值记录按钮事件
+
+- (IBAction)consumeRecord:(id)sender;   //!<消费记录按钮事件
+
 @end

@@ -17,6 +17,7 @@
 #import "QSWMyCouponViewController.h"
 #import "QSWUserSettingViewController.h"
 #import "QSWMyStoredCardViewController.h"
+#import "QSWStoredCardViewController.h"
 #import "QSWLoginPswViewController.h"
 #import "QSWAddSendAdsViewController.h"
 #import "QSWTextFieldItem.h"
@@ -73,7 +74,7 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_storagecard_normal" title:@"我的储值卡" destVcClass:[QSWMyStoredCardViewController class]];
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_storagecard_normal" title:@"我的储值卡" destVcClass:[QSWStoredCardViewController class]];
     group.items = @[item];
 
 }
