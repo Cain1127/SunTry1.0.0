@@ -25,6 +25,7 @@
 		1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
 		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
+		1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -150,6 +151,8 @@
 		1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QSDatePickerViewController.xib; sourceTree = "<group>"; };
 		1859F3AF1A8DFE1B00EABC7D /* QSUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSUserManager.h; path = User/QSUserManager.h; sourceTree = "<group>"; };
 		1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSUserManager.m; path = User/QSUserManager.m; sourceTree = "<group>"; };
+		1878D4C01A9043B200AF68A4 /* QSSearchHistoryDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSSearchHistoryDataModel.h; path = Search/QSSearchHistoryDataModel.h; sourceTree = "<group>"; };
+		1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSSearchHistoryDataModel.m; path = Search/QSSearchHistoryDataModel.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -463,6 +466,15 @@
 				1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */,
 			);
 			name = User;
+			sourceTree = "<group>";
+		};
+		1878D4BF1A90438E00AF68A4 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				1878D4C01A9043B200AF68A4 /* QSSearchHistoryDataModel.h */,
+				1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */,
+			);
+			name = Search;
 			sourceTree = "<group>";
 		};
 		33C6DF1C30579CFE5CB10286 /* Pods */ = {
@@ -892,6 +904,7 @@
 		CEEAC3751A8CA4EF009AC6AA /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				1878D4BF1A90438E00AF68A4 /* Search */,
 				CECCC3231A8DDCB00079F224 /* Order */,
 				CEEAC3E91A8DA83D009AC6AA /* User */,
 				CEEAC3761A8CA4EF009AC6AA /* District */,
@@ -1127,6 +1140,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "广州七升网络科技有限公司";
 				TargetAttributes = {
+					183673FA1A7F8FA800BCCF39 = {
+						DevelopmentTeam = EVE58S56QZ;
+					};
 					183674151A7F8FA800BCCF39 = {
 						TestTargetID = 183673FA1A7F8FA800BCCF39;
 					};
@@ -1227,6 +1243,7 @@
 				CEEAC3C21A8CCC72009AC6AA /* QSWEditSendAdsViewController.m in Sources */,
 				CE571EF31A84AFB200609788 /* QSWSettingArrowItem.m in Sources */,
 				CEEAC3B41A8CA517009AC6AA /* QSPFoodInfoListTableViewCell.m in Sources */,
+				1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */,
 				CE7946BD1A8B705600C0113B /* QSHomeViewController.m in Sources */,
 				CE5341A21A7FBFAA002BA188 /* QSImageView+Block.m in Sources */,
 				CEEAC3F21A8DA845009AC6AA /* QSUserAddressListReturnData.m in Sources */,
@@ -1420,12 +1437,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou Ruis Network Technology Co., Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "suntry/suntry-Prefix.pch";
 				INFOPLIST_FILE = "suntry/suntry-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1436,12 +1455,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Guangzhou Ruis Network Technology Co., Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "suntry/suntry-Prefix.pch";
 				INFOPLIST_FILE = "suntry/suntry-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

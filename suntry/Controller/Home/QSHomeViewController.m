@@ -14,14 +14,21 @@
 #import "QSWMerchantIndexViewController.h"
 #import "QSBlockButton.h"
 #import "QSRequestManager.h"
+
 #import "QSRequestTaskDataModel.h"
 #import "QSSelectDataModel.h"
 #import "QSSelectReturnData.h"
 #import "QSDistrictReturnData.h"
+#import "QSSearchHistoryDataModel.h"
+
+#import "QSDatePickerViewController.h"
+#import "ASDepthModalViewController.h"
 
 typedef enum {
+    
     DistrictListTable= 1,
     SearchListTable
+    
 }tableViewType;
 
 @interface QSHomeViewController ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
@@ -29,39 +36,24 @@ typedef enum {
     BOOL isOpened;
 }
 
-@property(nonatomic,strong) UITableView *districtListTableView; //!<区选择view
 @property(nonatomic,strong) NSArray   *districtList;            //!<区选择数据列表
 @property(nonatomic,strong) UIButton *districtButton;           //!<区选择按钮
-@property(nonatomic,strong) NSString *districtName;             //!<区名
 
-@property (nonatomic,copy)  NSString *inputContent;             //!<输入框内容
-@property (nonatomic,strong) UITextField *locationTextField;     //!<定位搜索
-@property (nonatomic,strong) UIImageView *chooseImage;           //!<选择图片框
+@property (nonatomic,strong) UITextField *inputField;           //!<输入框
+@property (nonatomic,strong)UIImageView *chooseImage;           //!<选择图片框
 
 @property(nonatomic,strong) UITableView *searchListTableView;   //!<搜索返回列表view
-@property(nonatomic,strong) NSArray     *searchList;            //!<搜索返回数据
-@property(nonatomic,assign) int streetID;                       //!<街道ID
+@property (nonatomic,assign) BOOL isShowDistrictStreetList;     //!<显示当前区的数据
+@property(nonatomic,strong) NSArray     *districtStreetList;    //!<搜索返回数据
+@property (nonatomic,strong) NSArray *searchHistoryList;        //!<搜索历史数据
+
+@property (nonatomic,strong) QSDatePickerViewController *customPicker;//!<选择框
+
 @end
 
 @implementation QSHomeViewController
 
-
-///获取输入框内容
--(NSString *)inputContent
-{
-    
-    if (_inputContent==nil) {
-        
-        NSString *dict=[[NSString alloc] init];
-        
-        _inputContent=dict;
-        
-    }
-    
-    return _inputContent;
-    
-}
-
+#pragma mark - 获取地区数组
 ///获取区的接口数据
 -(NSArray *)districtList
 {
@@ -79,19 +71,41 @@ typedef enum {
         QSDistrictReturnData *districtData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
         self.districtList = [[NSMutableArray alloc] initWithArray:districtData.districtList];
         
-        NSLog(@"================区信息个数================");
-        NSLog(@"%ld",self.districtList.count);
-        NSLog(@"================区信息个数================");
-        
     }
     
     return _districtList;
+    
 }
 
--(NSArray *)searchList
+#pragma mark - 获取搜索历史数据
+///获取搜索历史数据
+- (NSArray *)searchHistoryList
 {
     
-    if (_searchList==nil) {
+    if (nil == _searchHistoryList) {
+        
+        ///数据地址
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/searchHistory"];
+        ///首先转成data
+        NSData *saveData = [NSData dataWithContentsOfFile:path];
+        
+        ///encode数据
+        NSArray *selectData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
+        _searchHistoryList = [[NSArray alloc] initWithArray:selectData];
+        
+    }
+    
+    return _searchHistoryList;
+    
+}
+
+#pragma mark - 获取本地位置的区信息
+///获取本地位置的区信息
+-(NSArray *)districtStreetList
+{
+    
+    if (_districtStreetList==nil) {
         
         ///数据地址
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -101,23 +115,21 @@ typedef enum {
         
         ///encode数据
         QSSelectReturnData *selectData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
-        self.searchList = [[NSMutableArray alloc] initWithArray:selectData.selectList];
+        _districtStreetList = [[NSArray alloc] initWithArray:selectData.selectList];
         
-        NSLog(@"===============天河区模糊搜索数据数量================");
-        NSLog(@"%ld", self.searchList.count);
-         NSLog(@"===============天河区模糊搜索数据数量================");
-
     }
-    return _searchList;
-
+    
+    return _districtStreetList;
+    
 }
 
-#pragma mark --加载控件
+#pragma mark - 加载控件
+///加载控制
 - (void)viewDidLoad {
     
     [super viewDidLoad];
- 
-     isOpened=NO;
+    
+    isOpened=NO;
     
     ///0.添加导航栏主题view
     UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70.0f, 30.0f)];
@@ -126,330 +138,303 @@ typedef enum {
     [navTitle setBackgroundColor:[UIColor clearColor]];
     [navTitle setTextAlignment:NSTextAlignmentRight];
     [navTitle setText:@"天河区"];
+    navTitle.tag = 51;
     
     UIImageView *titleImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_arrow_down"] ];
+    titleImageView.tag = 50;
     
-    _districtButton=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 110.0f, 30.0f)];
+    _districtButton=[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 110.0f, 30.0f)];
     [_districtButton addSubview:navTitle];
     [_districtButton addSubview:titleImageView];
-
+    
     self.navigationItem.titleView = _districtButton;
     [_districtButton addTarget:self action:@selector(setupTopTableView) forControlEvents:UIControlEventTouchUpInside];
     
-    //默认选中天河
-    [self.districtListTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
-    
     ///1.添加textfield输入框控件
-    UITextField *textfield=[[UITextField alloc] init];
-    textfield.placeholder = @"请输入您的位置";
-    textfield.translatesAutoresizingMaskIntoConstraints=NO;
-    textfield.returnKeyType=UIReturnKeySearch;
-    //textfield.autocorrectionType=UITextAutocorrectionTypeNo;
-    textfield.clearButtonMode=UITextFieldViewModeUnlessEditing;
-    textfield.delegate=self;
-    textfield.tag = 200;
-    textfield.borderStyle = UITextBorderStyleRoundedRect;
-    [self.view addSubview:textfield];
+    self.inputField = [[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 72.0f, SIZE_DEFAULT_MAX_WIDTH - 44.0f - 5.0f, 44.0f)];
+    self.inputField.placeholder = @"请输入您的位置";
+    self.inputField.translatesAutoresizingMaskIntoConstraints=NO;
+    self.inputField.returnKeyType=UIReturnKeySearch;
+    self.inputField.clearButtonMode=UITextFieldViewModeUnlessEditing;
+    self.inputField.delegate=self;
+    self.inputField.borderStyle = UITextBorderStyleRoundedRect;
+    [self.view addSubview:self.inputField];
     
     ///2.添加搜索框按钮
-    UIButton *searchButton=[[UIButton alloc] init];
+    UIButton *searchButton=[[UIButton alloc] initWithFrame:CGRectMake(self.inputField.frame.origin.x + self.inputField.frame.size.width + 5.0f, 72.0f, 44.0f, 44.0f)];
     searchButton.translatesAutoresizingMaskIntoConstraints=NO;
     searchButton.backgroundColor=COLOR_CHARACTERS_RED;
     searchButton.layer.cornerRadius = 6.0f;
     [searchButton setImage:[UIImage imageNamed:@"public_search_normal"] forState:UIControlStateNormal];
-    [searchButton addTarget:self action:@selector(locationSearch) forControlEvents:UIControlEventTouchUpInside];
+    [searchButton addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:searchButton];
     
-    ///3.添加定位textfield
-    //添加中间文字内容
-    _locationTextField=[[UITextField alloc] init];
-    _locationTextField.translatesAutoresizingMaskIntoConstraints=NO;
-    _locationTextField.borderStyle=UITextBorderStyleRoundedRect;
-    _locationTextField.autocorrectionType=UITextAutocorrectionTypeNo;
-    _locationTextField.text=@"定位当前地址" ;
-    
-    //添加左边选择状态图片
-    _chooseImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_choose_normal"]];
-    _chooseImage.highlightedImage=[UIImage imageNamed:@"public_choose_selected"];
-    _locationTextField.leftView=_chooseImage;
-    _locationTextField.leftViewMode=UITextFieldViewModeAlways;
-    _locationTextField.delegate = self;
-    _locationTextField.tag=201;
-    
-    [self.view addSubview:_locationTextField];
-    
-    ///textfiled公共属性
-    textfield.enablesReturnKeyAutomatically=YES;//!<没有输入任何字符的话，右下角的返回按钮是disabled
-    
-    ///2.VFL生成约束
-    
-    ///参数
-    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(textfield,searchButton,_locationTextField);
-    NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
-    
-    ///约束
-    NSString *___hVFL_textField = @"H:|-margin-[textfield]-5-[searchButton(44)]-margin-|";
-    NSString *___hVFL_locationTextField = @"H:|-margin-[_locationTextField(>=160)]-margin-|";
-    NSString *___vVFL_all = @"V:|-10-[textfield(44)]-8-[_locationTextField(textfield)]";
-    
-    ///添加约束
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_textField options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_locationTextField options:0 metrics:___sizeVFL views:___viewsVFL]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all options:0 metrics:___sizeVFL views:___viewsVFL]];
-    
-    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
-    self.navigationItem.backBarButtonItem=backItem;
-    //backItem.image=[UIImage imageNamed:@"nav_back_normal"];
-    backItem.title=@"";
+    ///刷新数据
+    [self setupSearchTabbleView];
     
 }
 
-#pragma mark --按钮点击事件
--(void)locationSearch
+#pragma mark - 点击搜索按钮
+///点击搜索按钮
+- (void)locationSearch:(UIButton *)button
 {
-    [self touchesBegan:nil withEvent:nil];
-    ///删除定位按钮
-    [UIView animateWithDuration:0.5 animations:^{
+    
+    ///获取输入框信息
+    NSString *searchInfo = self.inputField.text;
+    
+    if (nil == searchInfo || 0 >= [searchInfo length]) {
         
-        [_locationTextField removeFromSuperview];
+        return;
         
-    } completion:^(BOOL finished) {
-        
-        [self setupSearchTabbleView];
-        
-    }];
+    }
+    
+    ///进行搜索
+    
+    
 }
 
-///加载头部区选择的tabbleview
+#pragma mark - 弹出地区选择窗口
+///弹出地区选择窗口
 -(void)setupTopTableView
 {
+    
     // 1.(状态取反)
     isOpened=!isOpened;
     
     if (isOpened) {
         
-        self.districtButton.imageView.transform = CGAffineTransformMakeRotation(M_PI_2);
-        //1.加载discitTabbleView
-        _districtListTableView=[[UITableView alloc]initWithFrame:CGRectMake(0, _districtButton.frame.origin.y, SIZE_DEVICE_WIDTH, [_districtList count]*35.0f)];
-        _districtListTableView.delegate=self;
-        _districtListTableView.dataSource=self;
-        [_districtListTableView setTag: DistrictListTable];
+        ///获取图片view
+        __block UIImageView *arrowImageView = (UIImageView *)[self.districtButton viewWithTag:50];
+        arrowImageView.transform = CGAffineTransformMakeRotation(M_PI);
         
-        [self.view addSubview:_districtListTableView];
+        ///标题
+        __block UILabel *titleLabel = (UILabel *)[self.districtButton viewWithTag:51];
         
-        ///刷新数据
-        [self.districtListTableView reloadData];
+        ///创建选择框
+        self.customPicker = [[QSDatePickerViewController alloc] init];
+        self.customPicker.pickerType = kPickerType_Item;
+        
+        ///转换数据模型
+        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < [self.districtList count]; i++) {
+            
+            ///获取地区模型
+            QSDistrictDataModel *districtModel = self.districtList[i];
+            [tempArray addObject:districtModel.val];
+            
+        }
+        
+        self.customPicker.dataSource = tempArray;
+        
+        ///点击取消时的回调
+        self.customPicker.onCancelButtonHandler = ^{
+            
+            [ASDepthModalViewController dismiss];
+            
+            ///剪头复位
+            arrowImageView.transform = CGAffineTransformIdentity;
+            
+        };
+        
+        ///点击确认时的回调
+        self.customPicker.onItemConfirmButtonHandler = ^(NSInteger index,NSString *item){
+            
+            ///改变标题
+            titleLabel.text = item;
+            
+            [ASDepthModalViewController dismiss];
+            
+            ///剪头复位
+            arrowImageView.transform = CGAffineTransformIdentity;
+            
+        };
+        
+        [ASDepthModalViewController presentView:self.customPicker.view];
+        
+    } else {
+        
+        ///获取图片view
+        UIImageView *arrowImageView = (UIImageView *)[self.districtButton viewWithTag:50];
+        arrowImageView.transform = CGAffineTransformIdentity;
+        [ASDepthModalViewController dismiss];
+        
     }
-    else
-      {
-         self.districtButton.imageView.transform = CGAffineTransformMakeRotation(0);
-        [_districtListTableView removeFromSuperview];
-       }
-        
-    }
+    
+}
 
+#pragma mark - 搜索框的UITableView搭建
 ///加载返回的搜索tabbleview
 -(void)setupSearchTabbleView
 {
     
-    CGRect rect=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 66.0f, SIZE_DEFAULT_MAX_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-64.0f-49.0f-66.0f);
+    CGRect rect=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 120.0f, SIZE_DEFAULT_MAX_WIDTH, SIZE_DEVICE_HEIGHT - 120.0f - 49.0f);
     _searchListTableView=[[UITableView alloc]initWithFrame:rect];
-    _searchListTableView.delegate=self;
-    _searchListTableView.dataSource=self;
-    [_searchListTableView setTag:SearchListTable];
+    _searchListTableView.delegate = self;
+    _searchListTableView.dataSource = self;
     [self.view addSubview:_searchListTableView];
     
-    ///刷新数据
-    [self.searchListTableView reloadData];
+    ///取消选择样式
+    _searchListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    ///取消滚动条
+    _searchListTableView.showsHorizontalScrollIndicator = NO;
+    _searchListTableView.showsVerticalScrollIndicator = NO;
     
 }
 
-#pragma mark --UItabbleViewDelegate代理方法
+#pragma mark - 返回有多少个区
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    NSInteger count = 1;
-    
-    switch (tableView.tag){
-            
-        case DistrictListTable:
-            
-            break;
-            
-        case SearchListTable:
-            
-            count = 1;
-            
-            break;
-        default:
-            break;
-            
-    }
-    
-    return count;
+    return 1;
     
 }
 
-///返回行数
+///返回搜索历史有多少行
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    NSInteger count = 0;
-    
-    switch (tableView.tag){
-            
-        case DistrictListTable:
-            
-            count = [self.districtList count];
-            
-            break;
-            
-        case SearchListTable:
-          
-            count = [self.searchList count];
-            
-            break;
-        default:
-            break;
-            
+    if (self.searchHistoryList && [self.searchHistoryList count] > 0) {
+        
+        return [self.searchHistoryList count];
+        
     }
     
-    return count;
-
+    if (self.isShowDistrictStreetList) {
+        
+        return [self.districtStreetList count];
+        
+    }
+    
+    return 1;
     
 }
 
-/// 返回行高
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+///返回行高
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
-    CGFloat height=0;
-    switch (tableView.tag) {
-        case DistrictListTable:
-        {
-            height=35;
-        }
-            break;
-            
-        case SearchListTable:
-        {
-            height=44;
-        }
-            
-        default:
-            break;
-    }
-    
-    return height;
+    return 44.0f;
     
 }
 
-///返回的每行
+#pragma mark - 返回搜索项内容
+///返回搜索项内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (tableView.tag) {
-        case DistrictListTable:
-        {
-            static NSString *Indentifier=@"cellIndentifier";
-            UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:Indentifier];
-            
-            if (cell==nil) {
-                
-                cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
-                
-            }
-            
-            cell.textLabel.textAlignment=NSTextAlignmentCenter;
-            cell.selectionStyle=UITableViewCellSelectionStyleNone;
-            QSDistrictDataModel *tempModel = self.districtList[indexPath.row];
-            cell.textLabel.text = tempModel.val;
-            return cell;
-            
-        }
-            break;
-            
-        case SearchListTable:
-        {
-            static NSString *Indentifier=@"cellIndentifier";
-            UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:Indentifier];
-            
-            if (cell==nil) {
-                
-                cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Indentifier];
-                
-            }
-            cell.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
-            cell.selectionStyle=UITableViewCellSelectionStyleNone;
-            QSSelectDataModel *tempModel = self.searchList[indexPath.row];
-            cell.textLabel.text=tempModel.streetName;
-            return cell;
-        }
-            break;
-            
-        default:
-            return  nil;
-    }
-    }
-
-///点击每一行事件
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
     
-    switch (tableView.tag) {
-        case DistrictListTable:
-        {
+    ///如果当前没有搜索历史
+    if (!(self.isShowDistrictStreetList) && [self.searchHistoryList count] <= 0) {
+        
+        static NSString *localCell=@"localTipsCell";
+        UITableViewCell *cellLocal=[tableView dequeueReusableCellWithIdentifier:localCell];
+        
+        if (cellLocal==nil) {
             
-            _districtButton.titleLabel.text= [NSString stringWithFormat:@"%d",(int)indexPath.row];
-            [_districtListTableView removeFromSuperview];
-            //[self touchesBegan:nil withEvent:nil];
-        }
-            break;
-            
-        case SearchListTable:
-        {
-            
-            QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
-            [self.navigationController pushViewController:VC animated:YES];
-            //[self touchesBegan:nil withEvent:nil];
+            cellLocal=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:localCell];
             
         }
-        default:
-            break;
+        
+        cellLocal.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
+        cellLocal.selectionStyle=UITableViewCellSelectionStyleNone;
+        cellLocal.textLabel.text = @"定位当前地址";
+        
+        ///添加边框样式
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
+        lineView.backgroundColor = [UIColor clearColor];
+        lineView.layer.cornerRadius = 6.0f;
+        lineView.layer.borderColor = [[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.3f] CGColor];
+        lineView.layer.borderWidth = 0.5f;
+        [cellLocal.contentView addSubview:lineView];
+        
+        ///取消选择样式
+        cellLocal.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cellLocal;
+        
     }
+    
+    ///如果是点击了本地数据
+    if (self.isShowDistrictStreetList) {
+        
+        static NSString *districtStreetCell=@"districtStreetCell";
+        UITableViewCell *cellDistrictStree=[tableView dequeueReusableCellWithIdentifier:districtStreetCell];
+        
+        if (cellDistrictStree==nil) {
+            
+            cellDistrictStree=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:districtStreetCell];
+            
+        }
+        
+        cellDistrictStree.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
+        cellDistrictStree.selectionStyle=UITableViewCellSelectionStyleNone;
+        QSSelectDataModel *tempModel = self.districtStreetList[indexPath.row];
+        cellDistrictStree.textLabel.text=tempModel.streetName;
+        
+        ///取消选择样式
+        cellDistrictStree.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        ///分隔线
+        UILabel *lineLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 43.5f, SIZE_DEFAULT_MAX_WIDTH - 20.0f, 0.25f)];
+        lineLabel.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.3f];
+        [cellDistrictStree.contentView addSubview:lineLabel];
+        
+        return cellDistrictStree;
+        
+    }
+    
+    ///搜索记录
+    static NSString *searchHistoryCell=@"searchHistory";
+    UITableViewCell *cellSearchHistory=[tableView dequeueReusableCellWithIdentifier:searchHistoryCell];
+    
+    if (cellSearchHistory==nil) {
+        
+        cellSearchHistory=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:searchHistoryCell];
+        
+    }
+    
+    cellSearchHistory.imageView.image=[UIImage imageNamed:@"public_choose_normal"];
+    cellSearchHistory.selectionStyle=UITableViewCellSelectionStyleNone;
+    QSSearchHistoryDataModel *tempModel = self.searchHistoryList[indexPath.row];
+    cellSearchHistory.textLabel.text=tempModel.title;
+    
+    ///取消选择样式
+    cellSearchHistory.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    ///分隔线
+    UILabel *lineLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 43.5f, SIZE_DEFAULT_MAX_WIDTH - 20.0f, 0.25f)];
+    lineLabel.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.3f];
+    [cellSearchHistory.contentView addSubview:lineLabel];
+    
+    return cellSearchHistory;
     
 }
 
-#pragma mark--UItextFieldDelegate方法
-///开始编辑
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+#pragma mark - 选择某一个街道
+///选择某一个街道
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (textField.tag == 200) {
+    ///判断是否是搜索当前区
+    if (self.isShowDistrictStreetList) {
         
-        _inputContent=nil;
-        _inputContent=textField.text;
-        
-        return YES;
-        
-    }
-    
-    if (textField.tag==201) {
-        
-        [self locationSearch];
-        
-        ///定位搜索
-        //        QSMapManager *mapManager=[[QSMapManager alloc]init];
-        //        [mapManager getUserLocation:^(BOOL isLocalSuccess, NSString *placename) {
-        //
-        //            NSLog(@"当前用户地标%@",placename);
-        //            _inputContent=placename;
-        //            [self locationSearch];
-        //
-        //        }];
+        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
+        [self.navigationController pushViewController:VC animated:YES];
         
     }
     
-    
-    return NO;
+    if (nil == self.searchHistoryList || [self.searchHistoryList count] <= 0) {
+        
+        self.isShowDistrictStreetList = YES;
+        [self.searchListTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationRight];
+        
+    } else {
+        
+        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
+        [self.navigationController pushViewController:VC animated:YES];
+        
+    }
     
 }
 
@@ -458,8 +443,6 @@ typedef enum {
 {
     
     [textField resignFirstResponder];
-    [self locationSearch];
-    NSLog(@"%@",textField.text);
     return YES;
     
 }
