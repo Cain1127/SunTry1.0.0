@@ -22,8 +22,7 @@
 
 @property (nonatomic,retain) QSWSettingItem *userNameItem;  //!<用户账号
 @property (nonatomic,retain) QSWSettingItem *passWordItem;  //!<密码
-
-@property (nonatomic,retain) MBProgressHUD *hud;        //!<HUD
+@property (nonatomic,retain) MBProgressHUD *hud;            //!<HUD
 
 @end
 
@@ -132,7 +131,7 @@
 -(void)gotoRegister
 {
     
-    //判断数据
+    ///判断数据
     NSString *userName = ((UITextField *)self.userNameItem.property).text;
     NSString *pwd = ((UITextField *)self.passWordItem.property).text;
     
@@ -197,15 +196,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

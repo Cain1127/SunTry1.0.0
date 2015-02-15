@@ -54,7 +54,7 @@
 
 - (void)setupFooter
 {
-    // 按钮
+    ///按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
     CGFloat footterButtonY = 10;
@@ -62,7 +62,7 @@
     CGFloat footterButtonH = 44;
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
-    // 背景和文字
+    ///背景和文字
     footterButton.backgroundColor=COLOR_CHARACTERS_RED;
     [footterButton setTitle:@"提交" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -92,14 +92,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

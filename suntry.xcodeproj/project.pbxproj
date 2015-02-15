@@ -23,6 +23,8 @@
 		1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3AA1A8DFB2000EABC7D /* QSDatePickerViewController.m */; };
 		1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */; };
 		1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */; };
+		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
+		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -151,6 +153,9 @@
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE207AB61A90430000ACF741 /* QSWStoredCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWStoredCardViewController.h; sourceTree = "<group>"; };
+		CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWStoredCardViewController.m; sourceTree = "<group>"; };
+		CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QSWStoredCardViewController.xib; sourceTree = "<group>"; };
 		CE5341311A7FA4CE002BA188 /* QSTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTabBarViewController.h; sourceTree = "<group>"; };
 		CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTabBarViewController.m; sourceTree = "<group>"; };
 		CE5341341A7FA4CE002BA188 /* QSAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAnnotation.h; sourceTree = "<group>"; };
@@ -520,6 +525,9 @@
 				CE571EFD1A84C7B200609788 /* QSWMyCouponViewController.m */,
 				CE571EFF1A84C86A00609788 /* QSWMyStoredCardViewController.h */,
 				CE571F001A84C86A00609788 /* QSWMyStoredCardViewController.m */,
+				CE207AB61A90430000ACF741 /* QSWStoredCardViewController.h */,
+				CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */,
+				CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */,
 				CE571F021A84C8E000609788 /* QSWLoginPswViewController.h */,
 				CE571F031A84C8E000609788 /* QSWLoginPswViewController.m */,
 				CE571F051A84C92B00609788 /* QSWUserSettingViewController.h */,
@@ -1152,6 +1160,7 @@
 				CE53415E1A7FA527002BA188 /* RequestInfo.plist in Resources */,
 				CEEAC3E11A8DA7DF009AC6AA /* MJRefresh.bundle in Resources */,
 				CE7946C11A8B705600C0113B /* QSWMerchantIndexViewController.xib in Resources */,
+				CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */,
 				CE5341A51A7FBFD8002BA188 /* Readme.rtf in Resources */,
 				183674111A7F8FA800BCCF39 /* Images.xcassets in Resources */,
 			);
@@ -1246,6 +1255,7 @@
 				CE7946BE1A8B705600C0113B /* QSPShakeFoodView.m in Sources */,
 				CEB630CB1A88643A00F64DEE /* QSWSettingButtonItem.m in Sources */,
 				CEEAC3B51A8CA517009AC6AA /* QSPFoodPackageItemGridView.m in Sources */,
+				CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */,
 				1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */,
 				CE53415C1A7FA527002BA188 /* QSRequestManager.m in Sources */,
 				CEEAC3E71A8DA7DF009AC6AA /* UIScrollView+MJRefresh.m in Sources */,

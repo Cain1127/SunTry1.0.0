@@ -23,15 +23,15 @@
 
 @interface QSWAddSendAdsViewController ()<UITextFieldDelegate>
 
-@property (nonatomic,retain) QSWTextFieldItem *userNameItem;//!<用户名输入框模型
-@property (nonatomic,retain) QSWTextFieldItem *genderItem;  //!<性别选择框模型
-@property (nonatomic,retain) QSWTextFieldItem *addressItem; //!<送餐地址输入框模型
-@property (nonatomic,retain) QSWTextFieldItem *companyItem; //!<所在公司输入框模型
-@property (nonatomic,retain) QSWTextFieldItem *phoneItem;   //!<联系电话输入框模型
-@property (nonatomic,retain) QSWTextFieldItem *isMasterItem;//!<是否默认配送选择框模型
+@property (nonatomic,retain) QSWTextFieldItem *userNameItem;        //!<用户名输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *genderItem;          //!<性别选择框模型
+@property (nonatomic,retain) QSWTextFieldItem *addressItem;         //!<送餐地址输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *companyItem;         //!<所在公司输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *phoneItem;           //!<联系电话输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *isMasterItem;        //!<是否默认配送选择框模型
 
-@property (nonatomic,retain) QSUserInfoDataModel *userInfo;
-@property (nonatomic,strong) QSDatePickerViewController *pickerVC;//!<选择器
+@property (nonatomic,retain) QSUserInfoDataModel *userInfo;         //!<用户信息模型
+@property (nonatomic,strong) QSDatePickerViewController *pickerVC;  //!<选择器
 
 @end
 

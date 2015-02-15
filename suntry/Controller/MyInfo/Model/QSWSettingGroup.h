@@ -8,9 +8,9 @@
 #import <Foundation/Foundation.h>
 
 @interface QSWSettingGroup : NSObject
-@property (copy, nonatomic) NSString *header;
-@property (copy, nonatomic) NSString *footer;
-@property (strong, nonatomic) NSArray *items;
+@property (copy, nonatomic) NSString *header;//!<组头部
+@property (copy, nonatomic) NSString *footer;//!<组脚部
+@property (strong, nonatomic) NSArray *items;//!<组数
 
 + (instancetype)group;
 @end

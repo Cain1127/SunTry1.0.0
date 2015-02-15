@@ -26,8 +26,7 @@
 
 @property (nonatomic,retain) QSWSettingItem *userNameItem;  //!<用户账号
 @property (nonatomic,retain) QSWSettingItem *passWordItem;  //!<密码
-
-@property (nonatomic,retain) MBProgressHUD *hud;        //!<HUD
+@property (nonatomic,retain) MBProgressHUD *hud;            //!<HUD
 
 @end
 

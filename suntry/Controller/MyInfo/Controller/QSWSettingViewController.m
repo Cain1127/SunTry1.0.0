@@ -46,18 +46,23 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
+    
     return [super initWithStyle:UITableViewStyleGrouped];
+    
 }
 
 - (id)init
 {
+    
     return [super initWithStyle:UITableViewStyleGrouped];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {}
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     
     self.tableView.backgroundView = nil;
@@ -80,13 +85,17 @@
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    
     return self.groups.count;
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    
     QSWSettingGroup *group = self.groups[section];
     return group.items.count;
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

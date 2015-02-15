@@ -29,18 +29,18 @@ typedef enum {
     BOOL isOpened;
 }
 
-@property(nonatomic,strong) UITableView *districtListTableView;//区选择view
-@property(nonatomic,strong) NSArray   *districtList;//区选择数据列表
-@property(nonatomic,strong) UIButton *districtButton;//区选择按钮
-@property(nonatomic,strong) NSString *districtName;//区名
+@property(nonatomic,strong) UITableView *districtListTableView; //!<区选择view
+@property(nonatomic,strong) NSArray   *districtList;            //!<区选择数据列表
+@property(nonatomic,strong) UIButton *districtButton;           //!<区选择按钮
+@property(nonatomic,strong) NSString *districtName;             //!<区名
 
-@property (nonatomic,copy)  NSString *inputContent;//!<输入框内容
-@property (nonatomic,strong)UITextField *locationTextField;//!<定位搜索
-@property (nonatomic,strong)UIImageView *chooseImage;//选择图片框
+@property (nonatomic,copy)  NSString *inputContent;             //!<输入框内容
+@property (nonatomic,strong) UITextField *locationTextField;     //!<定位搜索
+@property (nonatomic,strong) UIImageView *chooseImage;           //!<选择图片框
 
-@property(nonatomic,strong) UITableView *searchListTableView;//搜索返回列表view
-@property(nonatomic,strong) NSArray     *searchList;//搜索返回数据
-@property(nonatomic,assign) int streetID;//街道ID
+@property(nonatomic,strong) UITableView *searchListTableView;   //!<搜索返回列表view
+@property(nonatomic,strong) NSArray     *searchList;            //!<搜索返回数据
+@property(nonatomic,assign) int streetID;                       //!<街道ID
 @end
 
 @implementation QSHomeViewController
@@ -49,6 +49,7 @@ typedef enum {
 ///获取输入框内容
 -(NSString *)inputContent
 {
+    
     if (_inputContent==nil) {
         
         NSString *dict=[[NSString alloc] init];
@@ -64,6 +65,7 @@ typedef enum {
 ///获取区的接口数据
 -(NSArray *)districtList
 {
+    
     if (_districtList==nil) {
         
         ///数据地址

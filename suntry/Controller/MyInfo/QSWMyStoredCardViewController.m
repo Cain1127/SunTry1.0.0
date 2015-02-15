@@ -24,10 +24,10 @@
 @interface QSWMyStoredCardViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIView *nodataView;                   //!<没有储值卡view
-@property (strong, nonatomic)  UILabel *priceLabel;                   //!<价钱label
-@property (strong, nonatomic)  UILabel *specialLabel;                 //!<优惠label
-@property (strong, nonatomic)UICollectionView *collectionView;      //!<充值窗体
-@property (nonatomic,retain) NSMutableArray *storedCardDataSource;     //!<充值卡信息数据源
+@property (strong, nonatomic) UILabel *priceLabel;                 //!<价钱label
+@property (strong, nonatomic) UILabel *specialLabel;               //!<优惠label
+@property (strong, nonatomic) UICollectionView *collectionView;      //!<每个充值按钮
+@property (nonatomic,retain)  NSMutableArray *storedCardDataSource;  //!<充值卡信息数据源
 
 @end
 
@@ -43,13 +43,15 @@
 //}
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     self.title=@"我的储值卡";
     self.view.backgroundColor=[UIColor whiteColor];
     
+    ///加载储值卡数据
     [self getStoredCardList];
     
-    //没有数据时的显示
+    ///没有数据时的显示
     self.nodataView = [[UIView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:_nodataView];
     
@@ -71,21 +73,23 @@
     UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     
-    ///设置cell
+    ///设置每个cell大小与位置
     CGFloat viewW = (SIZE_DEVICE_WIDTH - 6.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) * 1/3;
     CGFloat viewH = viewW;
     CGSize itemSize = CGSizeMake(viewW, viewH);
     flowLayout.itemSize = itemSize;
     flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
     
+    ///初始化collectionView
     self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, infoLabel.frame.origin.y+infoLabel.frame.size.height+10.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-infoLabel.frame.origin.y-infoLabel.frame.size.height-10.0f-49.0f-64.0f) collectionViewLayout:flowLayout];
+    ///取消导航条
     self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
-    
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
     self.collectionView.backgroundColor=[UIColor clearColor];
-    //注册Cell，必须要有
+    
+    ///注册Cell
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
     [self.view addSubview:self.collectionView];
@@ -94,14 +98,14 @@
 
 #pragma mark -- UICollectionViewDataSource数据源方法
 
-//定义展示的UICollectionViewCell的个数
+///定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [self.storedCardDataSource count];
     
 }
 
-//定义展示的Section的个数
+///定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     
@@ -109,9 +113,10 @@
     
 }
 
-//每个UICollectionView展示的内容
+///每个UICollectionView展示的内容
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString * CellIdentifier = @"UICollectionViewCell";
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
@@ -131,7 +136,9 @@
     _specialLabel.font=[UIFont systemFontOfSize:16];
     
     for (id subView in cell.contentView.subviews) {
+        
         [subView removeFromSuperview];
+        
     }
     
     ///加边框
@@ -186,8 +193,8 @@
             //模型转换
             QSGoodsListReturnData *tempModel = resultData;
             NSArray *array = tempModel.goodsListData.goodsList;
-            
             NSLog(@"QSAspecialReturnData : %@",tempModel);
+            
             //设置页码：当前页码/最大页码
             
             self.storedCardDataSource=[[NSMutableArray alloc]init];

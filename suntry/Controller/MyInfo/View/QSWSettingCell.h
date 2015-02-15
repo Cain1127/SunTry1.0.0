@@ -12,8 +12,8 @@
 
 @interface QSWSettingCell : UITableViewCell
 
-@property (strong, nonatomic) QSWSettingItem *item;
-@property (nonatomic, strong) NSIndexPath *indexPath;
-+ (instancetype)cellWithTableView:(UITableView *)tableView;
+@property (strong, nonatomic) QSWSettingItem *item;         //!<cell的模型
+@property (nonatomic, strong) NSIndexPath *indexPath;       //!<tabbleView每行cell的序号
++ (instancetype)cellWithTableView:(UITableView *)tableView; //!<处始化cell的方法
 
 @end

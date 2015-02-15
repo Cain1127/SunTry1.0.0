@@ -49,6 +49,7 @@
     
 }
 
+///每一组cell
 -(void)setupGroup0
 {
   
@@ -96,9 +97,10 @@
 
 }
 
+///脚部view
 - (void)setupFooter
 {
-    // 按钮
+    ///按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
     CGFloat footterButtonY = 10;
@@ -106,7 +108,7 @@
     CGFloat footterButtonH = 44;
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
-    // 背景和文字
+    /// 背景和文字
     footterButton.backgroundColor = [UIColor colorWithRed:247.0f / 255.0f green:243.0f / 255.0f blue:245.0f / 255.0f alpha:1.0f];
     [footterButton setTitle:@"   香哉客户服务热线:4006780022" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -124,7 +126,7 @@
 }
 
 
-#pragma mark - 点击某一行
+#pragma mark - 点击某一行事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 

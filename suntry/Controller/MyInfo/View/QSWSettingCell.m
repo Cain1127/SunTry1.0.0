@@ -18,11 +18,9 @@
 
 @interface QSWSettingCell()<UITextFieldDelegate>
 
-  //右侧箭头
-@property (strong, nonatomic) UIImageView *arrowView;
- //右侧按钮
-@property (strong,nonatomic) UIImageView *buttonView;
-@property (nonatomic, weak) UITableView *tableView;
+@property (strong, nonatomic) UIImageView *arrowView;    //!<右侧箭头
+@property (strong,nonatomic) UIImageView *buttonView;    //!<右侧按钮
+@property (nonatomic, weak) UITableView *tableView;      //!<
 @property (nonatomic,strong) UITextField *textFieldView;
 @property (nonatomic,strong) UILabel *labelView;
 

@@ -21,10 +21,12 @@
 @implementation QSWMyCouponViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     self.title=@"我的优惠券";
     [self setupHeader];
     [self setupGrounp0];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,10 +85,11 @@
     
 }
 
-//搜索按钮事件
+///搜索按钮事件
 -(void)addButtonAction
 {
 
+    
 }
 
 -(void)setupGrounp0

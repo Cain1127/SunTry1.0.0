@@ -17,8 +17,8 @@
     
 }
 
-@property (nonatomic,strong) CLLocationManager *locMgr;
-@property (nonatomic,strong) CLGeocoder *geocoder;
+@property (nonatomic,strong) CLLocationManager *locMgr;//!<定位服务管理
+@property (nonatomic,strong) CLGeocoder *geocoder;     //!<地理编码器
 
 @end
 
@@ -100,28 +100,28 @@
     toAnno.title = toPm.name;
     [_mapView addAnnotation:toAnno];
     
-    // 2.查找路线
+    /// 2.查找路线
     
-    // 方向请求
+    /// 方向请求
     MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
-    // 设置起点
+    /// 设置起点
     MKPlacemark *sourcePm = [[MKPlacemark alloc] initWithPlacemark:fromPm];
     request.source = [[MKMapItem alloc] initWithPlacemark:sourcePm];
     
-    // 设置终点
+    /// 设置终点
     MKPlacemark *destinationPm = [[MKPlacemark alloc] initWithPlacemark:toPm];
     request.destination = [[MKMapItem alloc] initWithPlacemark:destinationPm];
     
-    // 方向对象
+    /// 方向对象
     MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
     
-    // 计算路线
+    /// 计算路线
     [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) {
         NSLog(@"总共%d条路线", response.routes.count);
         
-        // 遍历所有的路线
+        /// 遍历所有的路线
         for (MKRoute *route in response.routes) {
-            // 添加路线遮盖
+            /// 添加路线遮盖
             [_mapView addOverlay:route.polyline];
         }
     }];
@@ -131,7 +131,7 @@
 -(void)getUseLocation
 {
     ///1.跟踪用户位置(显示用户的具体位置)
-    // [self.locMgr startUpdatingLocation];
+    /// [self.locMgr startUpdatingLocation];
     
     ///关闭地图用户信息
     _mapView.showsUserLocation=NO;
@@ -203,7 +203,7 @@
  */
 - (void)countLineDistance
 {
-    // 计算2个经纬度之间的直线距离
+    /// 计算2个经纬度之间的直线距离
     CLLocation *loc1 = [[CLLocation alloc] initWithLatitude:40 longitude:116];
     CLLocation *loc2 = [[CLLocation alloc] initWithLatitude:41 longitude:116];
     CLLocationDistance distance = [loc1 distanceFromLocation:loc2];

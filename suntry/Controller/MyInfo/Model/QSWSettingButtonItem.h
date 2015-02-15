@@ -11,6 +11,7 @@
 @interface QSWSettingButtonItem : QSWSettingItem
 
 @property (assign, nonatomic) Class destVcClass;
+
 + (instancetype)itemWithIcon:(NSString *)icon title:(NSString *)title subtitle:(NSString *)subtitle destVcClass:(Class)destVcClass;
 + (instancetype)itemWithIcon:(NSString *)icon title:(NSString *)title destVcClass:(Class)destVcClass;
 + (instancetype)itemWithTitle:(NSString *)title destVcClass:(Class)destVcClass;

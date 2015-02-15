@@ -17,6 +17,7 @@
 @implementation QSWTheSuntryView
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     _suntryImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-64.0f-49.0f)];
     _suntryImage.image=[UIImage imageNamed:@"myinfo_thesuntry"];
