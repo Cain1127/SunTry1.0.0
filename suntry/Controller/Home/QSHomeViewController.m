@@ -20,8 +20,10 @@
 #import "QSDistrictReturnData.h"
 
 typedef enum {
+    
     DistrictListTable= 1,
     SearchListTable
+    
 }tableViewType;
 
 @interface QSHomeViewController ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
@@ -29,22 +31,21 @@ typedef enum {
     BOOL isOpened;
 }
 
-@property(nonatomic,strong) UITableView *districtListTableView;//区选择view
-@property(nonatomic,strong) NSArray   *districtList;//区选择数据列表
-@property(nonatomic,strong) UIButton *districtButton;//区选择按钮
-@property(nonatomic,strong) NSString *districtName;//区名
+@property(nonatomic,strong) UITableView *districtListTableView; //!<区选择view
+@property(nonatomic,strong) NSArray   *districtList;            //!<区选择数据列表
+@property(nonatomic,strong) UIButton *districtButton;           //!<区选择按钮
+@property(nonatomic,strong) NSString *districtName;             //!<区名
 
-@property (nonatomic,copy)  NSString *inputContent;//!<输入框内容
-@property (nonatomic,strong)UITextField *locationTextField;//!<定位搜索
-@property (nonatomic,strong)UIImageView *chooseImage;//选择图片框
+@property (nonatomic,copy)  NSString *inputContent;             //!<输入框内容
+@property (nonatomic,strong)UITextField *locationTextField;     //!<定位搜索
+@property (nonatomic,strong)UIImageView *chooseImage;           //!<选择图片框
 
-@property(nonatomic,strong) UITableView *searchListTableView;//搜索返回列表view
-@property(nonatomic,strong) NSArray     *searchList;//搜索返回数据
-@property(nonatomic,assign) int streetID;//街道ID
+@property(nonatomic,strong) UITableView *searchListTableView;   //!<搜索返回列表view
+@property(nonatomic,strong) NSArray     *searchList;            //!<搜索返回数据
+@property(nonatomic,assign) int streetID;                       //!<街道ID
 @end
 
 @implementation QSHomeViewController
-
 
 ///获取输入框内容
 -(NSString *)inputContent
@@ -64,6 +65,7 @@ typedef enum {
 ///获取区的接口数据
 -(NSArray *)districtList
 {
+    
     if (_districtList==nil) {
         
         ///数据地址
@@ -77,13 +79,10 @@ typedef enum {
         QSDistrictReturnData *districtData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
         self.districtList = [[NSMutableArray alloc] initWithArray:districtData.districtList];
         
-        NSLog(@"================区信息个数================");
-        NSLog(@"%ld",self.districtList.count);
-        NSLog(@"================区信息个数================");
-        
     }
     
     return _districtList;
+    
 }
 
 -(NSArray *)searchList
@@ -100,12 +99,9 @@ typedef enum {
         ///encode数据
         QSSelectReturnData *selectData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
         self.searchList = [[NSMutableArray alloc] initWithArray:selectData.selectList];
-        
-        NSLog(@"===============天河区模糊搜索数据数量================");
-        NSLog(@"%ld", self.searchList.count);
-         NSLog(@"===============天河区模糊搜索数据数量================");
 
     }
+    
     return _searchList;
 
 }
@@ -167,12 +163,12 @@ typedef enum {
     _locationTextField.text=@"定位当前地址" ;
     
     //添加左边选择状态图片
-    _chooseImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_choose_normal"]];
-    _chooseImage.highlightedImage=[UIImage imageNamed:@"public_choose_selected"];
-    _locationTextField.leftView=_chooseImage;
-    _locationTextField.leftViewMode=UITextFieldViewModeAlways;
+    _chooseImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_choose_normal"]];
+    _chooseImage.highlightedImage = [UIImage imageNamed:@"public_choose_selected"];
+    _locationTextField.leftView = _chooseImage;
+    _locationTextField.leftViewMode = UITextFieldViewModeAlways;
     _locationTextField.delegate = self;
-    _locationTextField.tag=201;
+    _locationTextField.tag = 201;
     
     [self.view addSubview:_locationTextField];
     
@@ -188,17 +184,12 @@ typedef enum {
     ///约束
     NSString *___hVFL_textField = @"H:|-margin-[textfield]-5-[searchButton(44)]-margin-|";
     NSString *___hVFL_locationTextField = @"H:|-margin-[_locationTextField(>=160)]-margin-|";
-    NSString *___vVFL_all = @"V:|-10-[textfield(44)]-8-[_locationTextField(textfield)]";
+    NSString *___vVFL_all = @"V:|-72-[textfield(44)]-8-[_locationTextField(textfield)]";
     
     ///添加约束
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_textField options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_locationTextField options:0 metrics:___sizeVFL views:___viewsVFL]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all options:0 metrics:___sizeVFL views:___viewsVFL]];
-    
-    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
-    self.navigationItem.backBarButtonItem=backItem;
-    //backItem.image=[UIImage imageNamed:@"nav_back_normal"];
-    backItem.title=@"";
     
 }
 

@@ -23,32 +23,40 @@
 @implementation QSTabBarViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     
     // 初始化所有的子控制器
     [self setupAllChildViewControllers];
+    
 }
 
 
 -(void)setupAllChildViewControllers
 {
     
+    ///tabbar容器
+    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    
     ///1.首页
-    QSHomeViewController *home=[[QSHomeViewController alloc]init];
-    [self setupChildViewController:home title:@"越秀" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"];
+    QSHomeViewController *home=[[QSHomeViewController alloc] init];
+    [tempArray addObject:[self setupChildViewController:home title:@"首页" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"]];
     
     ///2.点餐
     QSPointMealViewController *pointmeal=[[QSPointMealViewController alloc]init];
-    [self setupChildViewController:pointmeal title:@"美食餐单" imageName:@"tab_pointmeal_normal" selectedImageName:@"tab_pointmeal_selected"];
+    [tempArray addObject:[self setupChildViewController:pointmeal title:@"点餐" imageName:@"tab_pointmeal_normal" selectedImageName:@"tab_pointmeal_selected"]];
     [pointmeal setHidesBottomBarWhenPushed:YES];
     
     ///3.定餐
     QSOrderListViewController *order=[[QSOrderListViewController alloc]init];
-    [self setupChildViewController:order title:@"订单" imageName:@"tab_order_normal" selectedImageName:@"tab_order_selected"];
+    [tempArray addObject:[self setupChildViewController:order title:@"订单" imageName:@"tab_order_normal" selectedImageName:@"tab_order_selected"]];
     
     ///4.我的
     QSMyinfoViewController *myinfo=[[QSMyinfoViewController alloc]init];
-    [self setupChildViewController:myinfo title:@"我的" imageName:@"tab_myinfo_normal" selectedImageName:@"tab_myinfo_selected"];
+    [tempArray addObject:[self setupChildViewController:myinfo title:@"我的" imageName:@"tab_myinfo_normal" selectedImageName:@"tab_myinfo_selected"]];
+    
+    ///添加
+    self.viewControllers = tempArray;
 
 }
 
@@ -60,32 +68,26 @@
  *  @param imageName         图标
  *  @param selectedImageName 选中的图标
  */
-- (void)setupChildViewController:(UIViewController *)childVc title:(NSString *)title imageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName
+- (UINavigationController *)setupChildViewController:(UIViewController *)childVc title:(NSString *)title imageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName
 {
+    
     // 1.设置控制器的属性
-    childVc.navigationItem.title=[NSString stringWithFormat:@"%@",title];
+    childVc.title=[NSString stringWithFormat:@"%@",title];
     childVc.view.backgroundColor=[UIColor whiteColor];
+    childVc.automaticallyAdjustsScrollViewInsets = NO;
     childVc.tabBarItem.image = [UIImage imageNamed:imageName];
     childVc.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     // 2.包装一个导航控制器
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:childVc];
     
-    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
-    nav.navigationItem.backBarButtonItem=backItem;
-    backItem.title=@"";
-    
     ///设置导航栏背景图片
     [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_backgroud"] forBarMetrics: UIBarMetricsDefault];
     
-    [self addChildViewController:nav];
+    ///设置tabbar文字的选择状态
+    self.tabBar.tintColor = COLOR_CHARACTERS_RED;
+    
+    return nav;
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 
 @end
