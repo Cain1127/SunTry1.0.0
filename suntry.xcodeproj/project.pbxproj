@@ -35,6 +35,8 @@
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
 		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
 		CE207ABD1A9073FE00ACF741 /* QSWStoredCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207ABC1A9073FE00ACF741 /* QSWStoredCardCell.m */; };
+		CE207AC11A917FE200ACF741 /* QSUserStoredCardReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AC01A917FE200ACF741 /* QSUserStoredCardReturnData.m */; };
+		CE207AC41A91844900ACF741 /* QSStoredCardDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AC31A91844900ACF741 /* QSStoredCardDataModel.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -185,6 +187,10 @@
 		CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QSWStoredCardViewController.xib; sourceTree = "<group>"; };
 		CE207ABB1A9073FE00ACF741 /* QSWStoredCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWStoredCardCell.h; sourceTree = "<group>"; };
 		CE207ABC1A9073FE00ACF741 /* QSWStoredCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWStoredCardCell.m; sourceTree = "<group>"; };
+		CE207ABF1A917FE200ACF741 /* QSUserStoredCardReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSUserStoredCardReturnData.h; sourceTree = "<group>"; };
+		CE207AC01A917FE200ACF741 /* QSUserStoredCardReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSUserStoredCardReturnData.m; sourceTree = "<group>"; };
+		CE207AC21A91844900ACF741 /* QSStoredCardDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSStoredCardDataModel.h; sourceTree = "<group>"; };
+		CE207AC31A91844900ACF741 /* QSStoredCardDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSStoredCardDataModel.m; sourceTree = "<group>"; };
 		CE5341311A7FA4CE002BA188 /* QSTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTabBarViewController.h; sourceTree = "<group>"; };
 		CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTabBarViewController.m; sourceTree = "<group>"; };
 		CE5341341A7FA4CE002BA188 /* QSAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAnnotation.h; sourceTree = "<group>"; };
@@ -532,6 +538,15 @@
 				A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		CE207ABE1A917FAD00ACF741 /* StoredCard */ = {
+			isa = PBXGroup;
+			children = (
+				CE207ABF1A917FE200ACF741 /* QSUserStoredCardReturnData.h */,
+				CE207AC01A917FE200ACF741 /* QSUserStoredCardReturnData.m */,
+			);
+			path = StoredCard;
 			sourceTree = "<group>";
 		};
 		CE53412C1A7FA4CE002BA188 /* Controller */ = {
@@ -1094,6 +1109,8 @@
 		CEEAC3E91A8DA83D009AC6AA /* User */ = {
 			isa = PBXGroup;
 			children = (
+				CE207AC21A91844900ACF741 /* QSStoredCardDataModel.h */,
+				CE207AC31A91844900ACF741 /* QSStoredCardDataModel.m */,
 				CEEAC4041A8DD245009AC6AA /* QSUserInfoDataModel.h */,
 				CEEAC4051A8DD245009AC6AA /* QSUserInfoDataModel.m */,
 				CECCC32A1A8EE70B0079F224 /* QSRegisterDataModel.h */,
@@ -1115,6 +1132,7 @@
 		CEEAC3EE1A8DA845009AC6AA /* User */ = {
 			isa = PBXGroup;
 			children = (
+				CE207ABE1A917FAD00ACF741 /* StoredCard */,
 				CEEAC4001A8DD156009AC6AA /* Login */,
 				CEEAC3EF1A8DA845009AC6AA /* AddressList */,
 			);
@@ -1361,6 +1379,7 @@
 				CEEAC3BE1A8CA517009AC6AA /* QSPOrderViewHadOrderCell.m in Sources */,
 				CE571F011A84C86A00609788 /* QSWMyStoredCardViewController.m in Sources */,
 				CEEAC3BD1A8CA517009AC6AA /* QSPOrderViewController.m in Sources */,
+				CE207AC11A917FE200ACF741 /* QSUserStoredCardReturnData.m in Sources */,
 				CECCC3261A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.m in Sources */,
 				CEEAC3C51A8D0B34009AC6AA /* QSWLoginViewController.m in Sources */,
 				CEEAC3C81A8D0DA7009AC6AA /* QSWRegisterViewController.m in Sources */,
@@ -1373,6 +1392,7 @@
 				CE571EFE1A84C7B200609788 /* QSWMyCouponViewController.m in Sources */,
 				CEEAC4061A8DD245009AC6AA /* QSUserInfoDataModel.m in Sources */,
 				CECCC3291A8EE6AC0079F224 /* QSUserRegisterReturnData.m in Sources */,
+				CE207AC41A91844900ACF741 /* QSStoredCardDataModel.m in Sources */,
 				CE53415A1A7FA527002BA188 /* QSDataMappingManager.m in Sources */,
 				CE5341A01A7FBFAA002BA188 /* NSString+Calculation.m in Sources */,
 				CEEAC3B31A8CA517009AC6AA /* QSPFoodCountControlView.m in Sources */,
