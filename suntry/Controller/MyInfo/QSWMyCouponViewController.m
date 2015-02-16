@@ -22,6 +22,16 @@
 
 - (void)viewDidLoad {
     
+    ///自定义返回按钮
+    UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
+    turnBackButton.tintColor = [UIColor whiteColor];
+    
+    ///设置返回按钮的颜色
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    self.navigationItem.leftBarButtonItem = turnBackButton;
+    
     [super viewDidLoad];
     self.title=@"我的优惠券";
     [self setupHeader];
@@ -82,6 +92,14 @@
     [header addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_textField options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
     [header addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_textField  options:0 metrics:___sizeVFL views:___viewsVFL]];
     [header addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_addButton options:0 metrics:___sizeVFL views:___viewsVFL]];
+    
+}
+
+#pragma mark - 返回事件
+- (void)turnBackAction
+{
+    
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

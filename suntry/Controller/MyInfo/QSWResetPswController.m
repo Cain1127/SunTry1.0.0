@@ -21,6 +21,18 @@
 @implementation QSWResetPswController
 
 - (void)viewDidLoad {
+    
+    ///自定义返回按钮
+    UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
+    turnBackButton.tintColor = [UIColor whiteColor];
+    
+    ///设置返回按钮的颜色
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    self.navigationItem.leftBarButtonItem = turnBackButton;
+
+    
     [super viewDidLoad];
     self.title=@"重置密码";
     [self setupGroup0];
@@ -76,6 +88,14 @@
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark - 返回事件
+- (void)turnBackAction
+{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 ///进入注册按钮事件
