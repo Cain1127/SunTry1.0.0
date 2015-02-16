@@ -76,7 +76,7 @@
     
     if (iOS7) {
         
-        self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
+        self.tableView.contentInset = UIEdgeInsetsMake(-20.0f, 0, 0, 0);
         
     }
     
