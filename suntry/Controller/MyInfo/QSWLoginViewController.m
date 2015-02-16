@@ -156,6 +156,7 @@
             [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"user_count"];
             [[NSUserDefaults standardUserDefaults] setObject:pwd forKey:@"pwd"];
             [[NSUserDefaults standardUserDefaults] setObject:tempModel.userInfo.userID forKey:@"user_id"];
+            [[NSUserDefaults standardUserDefaults] setObject:tempModel.userInfo.phone forKey:@"phone"];
             
             ///修改登录状态
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"is_login"];

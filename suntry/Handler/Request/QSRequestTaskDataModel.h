@@ -45,6 +45,7 @@ typedef enum
     rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址
     rRequestTypeUserCouponList = 1103,      //!<个人优惠券列表
     rRequestTypeUserGetCoupon = 1104,       //!<根据key获取优惠券
+    rRequestTypeUserForgetPassword = 1105,  //!<忘记密码
     
     rRequestTypeMaxLimited = 99999          //!<最大值限制
     
