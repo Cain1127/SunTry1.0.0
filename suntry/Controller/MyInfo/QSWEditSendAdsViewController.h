@@ -11,6 +11,8 @@
 @class QSUserAddressDataModel;
 @interface QSWEditSendAdsViewController : QSWSettingViewController
 
+@property (nonatomic,copy) void(^editSendAddressCallBack)(BOOL);//!<修改/删除送餐地址后的回调
+
 /**
  *  @author         yangshengmeng, 15-02-13 11:02:53
  *

@@ -27,6 +27,7 @@
 		184AE0811A90730F007A8CBD /* PinyinHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 184AE07A1A90730F007A8CBD /* PinyinHelper.m */; };
 		184AE0821A90730F007A8CBD /* unicode_to_hanyu_pinyin.txt in Resources */ = {isa = PBXBuildFile; fileRef = 184AE07B1A90730F007A8CBD /* unicode_to_hanyu_pinyin.txt */; };
 		184AE0851A9073EF007A8CBD /* ChineseInclude.m in Sources */ = {isa = PBXBuildFile; fileRef = 184AE0841A9073EF007A8CBD /* ChineseInclude.m */; };
+		185343B11A91883800A83039 /* NSString+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 185343B01A91883800A83039 /* NSString+Format.m */; };
 		1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3A61A8DEF9000EABC7D /* QSPickerViewItem.m */; };
 		1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3AA1A8DFB2000EABC7D /* QSDatePickerViewController.m */; };
 		1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */; };
@@ -168,6 +169,8 @@
 		184AE07B1A90730F007A8CBD /* unicode_to_hanyu_pinyin.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unicode_to_hanyu_pinyin.txt; sourceTree = "<group>"; };
 		184AE0831A9073EF007A8CBD /* ChineseInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseInclude.h; sourceTree = "<group>"; };
 		184AE0841A9073EF007A8CBD /* ChineseInclude.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseInclude.m; sourceTree = "<group>"; };
+		185343AF1A91883800A83039 /* NSString+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Format.h"; path = "String/NSString+Format.h"; sourceTree = "<group>"; };
+		185343B01A91883800A83039 /* NSString+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Format.m"; path = "String/NSString+Format.m"; sourceTree = "<group>"; };
 		1859F3A51A8DEF9000EABC7D /* QSPickerViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPickerViewItem.h; sourceTree = "<group>"; };
 		1859F3A61A8DEF9000EABC7D /* QSPickerViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPickerViewItem.m; sourceTree = "<group>"; };
 		1859F3A91A8DFB2000EABC7D /* QSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSDatePickerViewController.h; sourceTree = "<group>"; };
@@ -497,6 +500,15 @@
 			path = PinYin;
 			sourceTree = "<group>";
 		};
+		185343AE1A9187FE00A83039 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				185343AF1A91883800A83039 /* NSString+Format.h */,
+				185343B01A91883800A83039 /* NSString+Format.m */,
+			);
+			name = String;
+			sourceTree = "<group>";
+		};
 		1859F3A81A8DFB2000EABC7D /* Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,6 +726,7 @@
 		CE53416F1A7FBB4E002BA188 /* QSTool */ = {
 			isa = PBXGroup;
 			children = (
+				185343AE1A9187FE00A83039 /* String */,
 				1859F3A81A8DFB2000EABC7D /* Picker */,
 				CE5341A61A7FC268002BA188 /* TextField */,
 				CE5341831A7FBD4C002BA188 /* Label */,
@@ -1341,6 +1354,7 @@
 				CE571EF21A84AFB200609788 /* QSWSettingGroup.m in Sources */,
 				CEEAC3901A8CA4EF009AC6AA /* QSHeaderDataModel.m in Sources */,
 				CECCC32C1A8EE70B0079F224 /* QSRegisterDataModel.m in Sources */,
+				185343B11A91883800A83039 /* NSString+Format.m in Sources */,
 				CEEAC3CB1A8D0F36009AC6AA /* QSWForgetPswController.m in Sources */,
 				CEEAC3B71A8CA517009AC6AA /* QSPFoodPackageView.m in Sources */,
 				CE7946BF1A8B705600C0113B /* QSWMerchantIndexCell.m in Sources */,

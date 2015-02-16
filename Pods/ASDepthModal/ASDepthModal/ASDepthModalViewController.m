@@ -68,6 +68,7 @@ static NSInteger const kDepthModalOptionTapMask = 1 << 9;
     [self.rootViewController.view removeFromSuperview];
     self.rootViewController.view.transform = window.rootViewController.view.transform;
     window.rootViewController = self.rootViewController;
+    
 }
 
 - (void)dismiss

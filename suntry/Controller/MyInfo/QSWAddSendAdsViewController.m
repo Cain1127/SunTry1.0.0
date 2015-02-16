@@ -19,6 +19,7 @@
 #import "QSDatePickerViewController.h"
 #import "QSUserInfoDataModel.h"
 
+#import "NSString+Format.h"
 #import "ASDepthModalViewController.h"
 
 @interface QSWAddSendAdsViewController ()<UITextFieldDelegate>
@@ -74,9 +75,9 @@
     QSWSettingGroup *group = [self addGroup];
     self.userNameItem = [QSWTextFieldItem itemWithTitle: @"请填写联系人姓名" andDelegate:self];
     
-    if ((self.userInfo && self.userInfo.realName)) {
+    if ((self.userInfo && self.userInfo.receidName)) {
         
-        self.userNameItem.subtitle = self.userInfo.realName;
+        self.userNameItem.subtitle = self.userInfo.receidName;
         
     }
     
@@ -92,13 +93,13 @@
     
     if (self.userInfo && self.userInfo.gender) {
         
-        if ([self.userInfo.gender intValue] == 1) {
+        if ([self.userInfo.gender intValue] == 0) {
             
             genderTitle = @"男";
             
         }
         
-        if ([self.userInfo.gender intValue] == 0) {
+        if ([self.userInfo.gender intValue] == 1) {
             
             genderTitle = @"女";
             
@@ -186,7 +187,7 @@
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
     ///背景和文字
-    footterButton.backgroundColor=COLOR_CHARACTERS_RED;
+    footterButton.backgroundColor = COLOR_CHARACTERS_RED;
     [footterButton setTitle:@"添加" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -215,7 +216,112 @@
 -(void)gotoNextVC
 {
 
+    ///姓名
+    UITextField *nameField = ((UITextField *)self.userNameItem.property);
+    NSString *name = nameField.text;
     
+    ///判断姓名
+    if (nil == name || 0 >= [name length]) {
+        
+        [nameField becomeFirstResponder];
+        return;
+        
+    }
+    
+    ///性别
+    UITextField *genderField = (UITextField *)self.genderItem.property;
+    UILabel *genderLabel = [genderField.rightView subviews][0];
+    NSString *genderString = genderLabel.text ? genderLabel.text : @"男";
+    NSString *gender = ([genderString isEqualToString:@"男"]) ? @"0" : @"1";
+    
+    ///地址
+    UITextField *addressField = (UITextField *)self.addressItem.property;
+    NSString *address = addressField.text;
+    if (nil == address || 0 >= address) {
+        
+        [addressField becomeFirstResponder];
+        return;
+        
+    }
+    
+    ///公司
+    UITextField *companyField = (UITextField *)self.companyItem.property;
+    NSString *company = companyField.text;
+    if (nil == company || 0 >= [company length]) {
+        
+        [companyField becomeFirstResponder];
+        return;
+        
+    }
+    
+    ///电话
+    UITextField *phoneField = (UITextField *)self.phoneItem.property;
+    NSString *phone = phoneField.text;
+    BOOL isPhone = [NSString isValidateMobile:phone];
+    if (!isPhone) {
+        
+        [phoneField becomeFirstResponder];
+        return;
+        
+    }
+    
+    ///是否默认配送地址
+    UITextField *isMasterField = (UITextField *)self.isMasterItem.property;
+    UILabel *isMasterLabel = [isMasterField.rightView subviews][0];
+    NSString *isMasterString = isMasterLabel.text ? isMasterLabel.text : @"否";
+    NSString *isMaster = ([isMasterString isEqualToString:@"是"]) ? @"1" : @"0";
+    
+    ///生成参数
+    NSDictionary *params = @{@"name" : name,
+                             @"sex" : gender,
+                             @"address" : address,
+                             @"company" : company,
+                             @"phone" : phone,
+                             @"master" : isMaster};
+    
+    ///发回服务端添加
+    [QSRequestManager requestDataWithType:rRequestTypeAddSendAddress andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///添加成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"添加成功。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+                ///刷新送餐地址列表
+                if (self.addSendAddressCallBack) {
+                    
+                    self.addSendAddressCallBack(YES);
+                    
+                }
+                
+                ///返回上一页
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            });
+            
+        } else {
+        
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"添加送餐地址失败，请稍后再试。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
+        
+        }
+        
+    }];
 
 }
 

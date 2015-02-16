@@ -224,7 +224,10 @@
         
         [self.httpRequestManager GET:taskModel.requestURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            [self handleRequestSuccess:responseObject andRespondData:operation.responseData andTaskModel:taskModel];
+            ///转码
+            NSString *tempString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+            
+            [self handleRequestSuccess:responseObject andRespondData:[tempString dataUsingEncoding:NSUTF8StringEncoding] andTaskModel:taskModel];
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
@@ -245,8 +248,11 @@
         
         [self.httpRequestManager POST:taskModel.requestURL parameters:postParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
+            ///转码
+            NSString *tempString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+            
             ///请求成功
-            [self handleRequestSuccess:responseObject andRespondData:operation.responseData andTaskModel:taskModel];
+            [self handleRequestSuccess:responseObject andRespondData:[tempString dataUsingEncoding:NSUTF8StringEncoding] andTaskModel:taskModel];
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             

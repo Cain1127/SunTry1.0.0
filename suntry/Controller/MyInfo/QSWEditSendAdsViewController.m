@@ -14,12 +14,25 @@
 #import "QSWTextFieldItem.h"
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
-
+#import "QSDatePickerViewController.h"
+#import "NSString+Format.h"
+#import "ASDepthModalViewController.h"
 #import "QSUserAddressDataModel.h"
+#import "QSPickerViewItem.h"
+#import "QSRequestManager.h"
 
 @interface QSWEditSendAdsViewController ()<UITextFieldDelegate>
 
 @property (nonatomic,retain) QSUserAddressDataModel *addressModel;//!<地址数据模型
+
+@property (nonatomic,retain) QSWTextFieldItem *userNameItem;        //!<用户名输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *genderItem;          //!<性别选择框模型
+@property (nonatomic,retain) QSWTextFieldItem *addressItem;         //!<送餐地址输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *companyItem;         //!<所在公司输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *phoneItem;           //!<联系电话输入框模型
+@property (nonatomic,retain) QSWTextFieldItem *isMasterItem;        //!<是否默认配送选择框模型
+
+@property (nonatomic,strong) QSDatePickerViewController *pickerVC;  //!<选择器
 
 @end
 
@@ -57,6 +70,16 @@
     
     [super viewDidLoad];
     
+    ///自定义返回按钮
+    UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
+    turnBackButton.tintColor = [UIColor whiteColor];
+    
+    ///设置返回按钮的颜色
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    self.navigationItem.leftBarButtonItem = turnBackButton;
+    
     self.title=@"编辑送餐地址";
     [self setupGroup0];
     [self setupGroup1];
@@ -72,9 +95,9 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"用户名" andDelegate:self];
-    item.subtitle = self.addressModel.userName;
-    group.items = @[item];
+    self.userNameItem = [QSWTextFieldItem itemWithTitle:@"用户名" andDelegate:self];
+    self.userNameItem.subtitle = self.addressModel.userName;
+    group.items = @[self.userNameItem];
     
 }
 
@@ -82,9 +105,9 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"性别" andDelegate:self];
-    item.subtitle = ([self.addressModel.gender intValue] == 1) ? @"男" : @"女";
-    group.items = @[item];
+    self.genderItem = [QSPickerViewItem itemWithTitle:@"性别" andDelegate:self];
+    [self.genderItem setValue:([self.addressModel.gender intValue] == 0) ? @"男" : @"女" forKey:@"rightTitle"];
+    group.items = @[self.genderItem];
     
 }
 
@@ -92,9 +115,9 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"送餐地址" andDelegate:self];
-    item.subtitle = self.addressModel.address;
-    group.items = @[item];
+    self.addressItem = [QSWTextFieldItem itemWithTitle:@"送餐地址" andDelegate:self];
+    self.addressItem.subtitle = self.addressModel.address;
+    group.items = @[self.addressItem];
     
 }
 
@@ -102,9 +125,9 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"公司" andDelegate:self];
-    item.subtitle = self.addressModel.company;
-    group.items = @[item];
+    self.companyItem = [QSWTextFieldItem itemWithTitle:@"公司" andDelegate:self];
+    self.companyItem.subtitle = self.addressModel.company;
+    group.items = @[self.companyItem];
     
 }
 
@@ -112,9 +135,9 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"联系电话" andDelegate:self];
-    item.subtitle = self.addressModel.phone;
-    group.items = @[item];
+    self.phoneItem = [QSWTextFieldItem itemWithTitle:@"联系电话" andDelegate:self];
+    self.phoneItem.subtitle = self.addressModel.phone;
+    group.items = @[self.phoneItem];
     
 }
 
@@ -122,9 +145,9 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"设为默认配送地址" andDelegate:self];
-    item.subtitle = ([self.addressModel.is_master intValue] == 1) ? @"默认送餐地址" : @"设置为默认地址";
-    group.items = @[item];
+    self.isMasterItem = [QSPickerViewItem itemWithTitle:@"是否默认配送地址" andDelegate:self];
+    [self.isMasterItem setValue:(([self.addressModel.is_master intValue] == 1) ? @"是" : @"否") forKey:@"rightTitle"];
+    group.items = @[self.isMasterItem];
     
 }
 
@@ -178,6 +201,113 @@
 -(void)gotoNextVC
 {
     
+    ///姓名
+    UITextField *nameField = ((UITextField *)self.userNameItem.property);
+    NSString *name = nameField.text;
+    
+    ///判断姓名
+    if (nil == name || 0 >= [name length]) {
+        
+        [nameField becomeFirstResponder];
+        return;
+        
+    }
+    
+    ///性别
+    UITextField *genderField = (UITextField *)self.genderItem.property;
+    UILabel *genderLabel = [genderField.rightView subviews][0];
+    NSString *genderString = genderLabel.text ? genderLabel.text : @"男";
+    NSString *gender = ([genderString isEqualToString:@"男"]) ? @"0" : @"1";
+    
+    ///地址
+    UITextField *addressField = (UITextField *)self.addressItem.property;
+    NSString *address = addressField.text;
+    if (nil == address || 0 >= address) {
+        
+        [addressField becomeFirstResponder];
+        return;
+        
+    }
+    
+    ///公司
+    UITextField *companyField = (UITextField *)self.companyItem.property;
+    NSString *company = companyField.text;
+    if (nil == company || 0 >= [company length]) {
+        
+        [companyField becomeFirstResponder];
+        return;
+        
+    }
+    
+    ///电话
+    UITextField *phoneField = (UITextField *)self.phoneItem.property;
+    NSString *phone = phoneField.text;
+    BOOL isPhone = [NSString isValidateMobile:phone];
+    if (!isPhone) {
+        
+        [phoneField becomeFirstResponder];
+        return;
+        
+    }
+    
+    ///是否默认配送地址
+    UITextField *isMasterField = (UITextField *)self.isMasterItem.property;
+    UILabel *isMasterLabel = [isMasterField.rightView subviews][0];
+    NSString *isMasterString = isMasterLabel.text ? isMasterLabel.text : @"否";
+    NSString *isMaster = ([isMasterString isEqualToString:@"是"]) ? @"1" : @"0";
+    
+    ///生成参数
+    NSDictionary *params = @{@"id" : self.addressModel.addressID,
+                             @"name" : name,
+                             @"sex" : gender,
+                             @"address" : address,
+                             @"company" : company,
+                             @"phone" : phone,
+                             @"master" : isMaster};
+    
+    ///发回服务端添加
+    [QSRequestManager requestDataWithType:rRequestTypeAddSendAddress andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///添加成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"添加成功。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+                ///刷新送餐地址列表
+                if (self.editSendAddressCallBack) {
+                    
+                    self.editSendAddressCallBack(YES);
+                    
+                }
+                
+                ///返回上一页
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            });
+            
+        } else {
+            
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"添加送餐地址失败，请稍后再试。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
+            
+        }
+        
+    }];
     
 }
 
@@ -185,6 +315,101 @@
 -(void)gotoNextVC1
 {
     
+    
+}
+
+#pragma mark - 点击输入框时性别和默认送餐地址为弹出样式
+///点击输入框时性别和默认送餐地址为弹出样式
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    
+    ///如果是性别选择框，则弹出选择框
+    if (textField == self.genderItem.property) {
+        
+        [((UITextField *)self.userNameItem.property) resignFirstResponder];
+        [((UITextField *)self.addressItem.property) resignFirstResponder];
+        [((UITextField *)self.companyItem.property) resignFirstResponder];
+        [((UITextField *)self.phoneItem.property) resignFirstResponder];
+        
+        ///设置选择的VC
+        self.pickerVC = [[QSDatePickerViewController alloc] init];
+        self.pickerVC.pickerType = kPickerType_Item;
+        self.pickerVC.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女",@"男"]];
+        self.pickerVC.onCancelButtonHandler = ^{
+            
+            [ASDepthModalViewController dismiss];
+            
+        };
+        self.pickerVC.onItemConfirmButtonHandler = ^(NSInteger index, NSString *item){
+            
+            ///更换标题
+            UILabel *titleLabel = [textField.rightView subviews][0];
+            titleLabel.text = item;
+            
+            [ASDepthModalViewController dismiss];
+            
+        };
+        
+        ///用动画弹框
+        [ASDepthModalViewController presentView:self.pickerVC.view];
+        
+        return NO;
+        
+    }
+    
+    
+    ///如果是默认配送地址选择框，则弹出选择框
+    if (textField == self.isMasterItem.property) {
+        
+        [((UITextField *)self.userNameItem.property) resignFirstResponder];
+        [((UITextField *)self.addressItem.property) resignFirstResponder];
+        [((UITextField *)self.companyItem.property) resignFirstResponder];
+        [((UITextField *)self.phoneItem.property) resignFirstResponder];
+        
+        ///设置选择的VC
+        self.pickerVC = [[QSDatePickerViewController alloc] init];
+        self.pickerVC.pickerType = kPickerType_Item;
+        self.pickerVC.dataSource = [[NSMutableArray alloc] initWithArray:@[@"是",@"否"]];
+        self.pickerVC.onCancelButtonHandler = ^{
+            
+            [ASDepthModalViewController dismiss];
+            
+        };
+        self.pickerVC.onItemConfirmButtonHandler = ^(NSInteger index, NSString *item){
+            
+            ///更换标题
+            UILabel *titleLabel = [textField.rightView subviews][0];
+            titleLabel.text = item;
+            
+            [ASDepthModalViewController dismiss];
+            
+        };
+        
+        ///用动画弹框
+        [ASDepthModalViewController presentView:self.pickerVC.view];
+        
+        return NO;
+        
+    }
+    
+    return YES;
+    
+}
+
+///键盘回收
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    
+    [textField resignFirstResponder];
+    return YES;
+    
+}
+
+#pragma mark - 返回事件
+- (void)turnBackAction
+{
+    
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 

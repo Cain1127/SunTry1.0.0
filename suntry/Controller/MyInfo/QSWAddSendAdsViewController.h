@@ -10,4 +10,6 @@
 
 @interface QSWAddSendAdsViewController : QSWSettingViewController
 
+@property (nonatomic,copy) void(^addSendAddressCallBack)(BOOL);//!<添加送餐地址后的回调
+
 @end

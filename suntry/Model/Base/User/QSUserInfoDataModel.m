@@ -57,7 +57,10 @@
                                   @"sex" : @"gender",
                                   @"company" : @"company",
                                   @"pay" : @"pay",
-                                  @"pay_salt" : @"pay_salt"};
+                                  @"pay_salt" : @"pay_salt",
+                                  @"address_id" : @"addressID",
+                                  @"address" : @"address",
+                                  @"address_name" : @"receidName"};
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
     return shared_mapping;
@@ -84,6 +87,7 @@
         self.pay_salt = [aDecoder decodeObjectForKey:@"pay_salt"];
         self.addressID = [aDecoder decodeObjectForKey:@"addressID"];
         self.address = [aDecoder decodeObjectForKey:@"address"];
+        self.receidName = [aDecoder decodeObjectForKey:@"receidName"];
         
     }
     
@@ -108,6 +112,7 @@
     [aCoder encodeObject:self.pay_salt forKey:@"pay_salt"];
     [aCoder encodeObject:self.addressID forKey:@"addressID"];
     [aCoder encodeObject:self.address forKey:@"address"];
+    [aCoder encodeObject:self.receidName forKey:@"receidName"];
     
 }
 

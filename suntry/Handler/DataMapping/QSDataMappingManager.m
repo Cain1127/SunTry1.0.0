@@ -71,6 +71,7 @@
     
     ///判断是否序列化成功
     if (error) {
+        
         mappingCallBack(NO,nil);
         return;
         

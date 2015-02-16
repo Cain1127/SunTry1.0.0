@@ -111,11 +111,6 @@
         ///取消选择状态
         normalCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        ///添加分隔线
-        UILabel *sepLine = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 59.5f, SIZE_DEFAULT_MAX_WIDTH, 0.5f)];
-        sepLine.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
-        [normalCell.contentView addSubview:sepLine];
-        
         return normalCell;
         
     }
@@ -162,6 +157,15 @@
         ///模型
         QSUserAddressDataModel *tempModel = self.dataSource[indexPath.row];
         QSWEditSendAdsViewController *editVC = [[QSWEditSendAdsViewController alloc] initWithAddressModel:tempModel];
+        editVC.editSendAddressCallBack = ^(BOOL flag){
+        
+            if (flag) {
+                
+                [self.tableView headerBeginRefreshing];
+                
+            }
+        
+        };
         [self.navigationController pushViewController:editVC animated:YES];
         
     }
@@ -200,15 +204,25 @@
 -(void)gotoNextVC
 {
     
-    QSWAddSendAdsViewController *VC=[[QSWAddSendAdsViewController alloc]init];
-    [self.navigationController pushViewController:VC animated:YES];
+    QSWAddSendAdsViewController *addSendVC=[[QSWAddSendAdsViewController alloc] init];
+    addSendVC.addSendAddressCallBack = ^(BOOL flag){
+        
+        if (flag) {
+            
+            ///刷新数据
+            [self.tableView headerBeginRefreshing];
+            
+        }
+        
+    };
+    [self.navigationController pushViewController:addSendVC animated:YES];
 
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    return 60.0f;
+    return 70.0f;
     
 }
 

@@ -29,5 +29,6 @@
 
 @property (nonatomic,copy) NSString *addressID;     //!<默认送餐地址ID
 @property (nonatomic,copy) NSString *address;       //!<送餐地址
+@property (nonatomic,copy) NSString *receidName;    //!<收餐人姓名
 
 @end
