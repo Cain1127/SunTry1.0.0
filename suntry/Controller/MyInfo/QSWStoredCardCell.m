@@ -24,17 +24,17 @@
         _cTimeLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height,viewW*1/3, viewH)];
         _cTimeLabel.textColor = [UIColor brownColor];
         _cTimeLabel.textAlignment=NSTextAlignmentCenter;
-        _cTimeLabel.font=[UIFont systemFontOfSize:20.0f];
+        _cTimeLabel.font=[UIFont systemFontOfSize:16.0f];
         
         _cPrcieLabel =[[UILabel alloc] initWithFrame:CGRectMake(viewW*1/3, self.frame.size.height, viewW*1/3, viewH)];
         _cPrcieLabel.textColor = [UIColor brownColor];
         _cPrcieLabel.textAlignment=NSTextAlignmentCenter;
-        _cPrcieLabel.font=[UIFont systemFontOfSize:20.0f];
+        _cPrcieLabel.font=[UIFont systemFontOfSize:16.0f];
         
         _cBalanceLabel =[[UILabel alloc] initWithFrame:CGRectMake(viewW*2/3, self.frame.size.height, viewW*1/3, viewH)];
         _cBalanceLabel.textColor = [UIColor brownColor];
         _cBalanceLabel.textAlignment=NSTextAlignmentCenter;
-        _cBalanceLabel.font=[UIFont systemFontOfSize:20.0f];
+        _cBalanceLabel.font=[UIFont systemFontOfSize:16.0f];
         
         ///加边框
         //    UIView *lineRootView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, cell.frame.size.height)];

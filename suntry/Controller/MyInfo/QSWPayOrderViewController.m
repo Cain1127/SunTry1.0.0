@@ -1,27 +1,21 @@
 //
-//  QSWMyStoredCardViewController.m
+//  QSWPayOrderViewController.m
 //  suntry
 //
-//  Created by 王树朋 on 15/2/6.
+//  Created by 王树朋 on 15/2/16.
 //  Copyright (c) 2015年 广州七升网络科技有限公司. All rights reserved.
 //
 
-#import "QSWMyStoredCardViewController.h"
-#import "QSBlockButton.h"
-#import "ImageHeader.h"
-#import "QSLabel.h"
+#import "QSWPayOrderViewController.h"
 #import "DeviceSizeHeader.h"
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
 #import "QSGoodsDataModel.h"
 #import "QSGoodsListReturnData.h"
 #import "MJRefresh.h"
+#import "ColorHeader.h"
 
-#define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
-#define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
-#define ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE     17.
-
-@interface QSWMyStoredCardViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface QSWPayOrderViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIView *nodataView;                    //!<没有储值卡view
 @property (strong, nonatomic) UILabel *priceLabel;                   //!<价钱label
@@ -31,19 +25,9 @@
 
 @end
 
-@implementation QSWMyStoredCardViewController
-
-//-(NSMutableArray *)storedCardDataSource
-//{
-//    if (self.storedCardDataSource==nil) {
-//        self.storedCardDataSource=[[NSMutableArray alloc]init];
-//    }
-//
-//    return self.storedCardDataSource;
-//}
+@implementation QSWPayOrderViewController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     ///自定义返回按钮
     UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
@@ -54,30 +38,31 @@
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
-
-    self.title=@"我的储值卡";
+    
+    self.title=@"支付订单";
     self.view.backgroundColor=[UIColor whiteColor];
     
     ///加载储值卡数据
     [self getStoredCardList];
     
-    ///没有数据时的显示
-    self.nodataView = [[UIView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:_nodataView];
+    UILabel *orderNumLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 250.0f, 44.0f)];
+    orderNumLabel.text=@"订单编号:20150203";
+    [self.view addSubview:orderNumLabel];
     
-    UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_rmbmark"]];
-    [nodataImgView setCenter:self.view.center];
-    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 110/667.*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
-    [_nodataView addSubview:nodataImgView];
+    UILabel *userBanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f, 150.0f, 44.0f)];
+    userBanlaceLabel.text=@"帐户余额";
+    [self.view addSubview:userBanlaceLabel];
     
-    QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(20, nodataImgView.frame.origin.y+nodataImgView.frame.size.height+5, SIZE_DEVICE_WIDTH-40, 50)];
-    [infoLabel setFont:[UIFont boldSystemFontOfSize:ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE]];
-    [infoLabel setBackgroundColor:[UIColor clearColor]];
-    [infoLabel setNumberOfLines:2];
-    [infoLabel setTextAlignment:NSTextAlignmentCenter];
-    [infoLabel setText:@"您的帐号还没有储值卡，请选择需要购买的储值卡"];
-    [infoLabel setTextColor:ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR];
-    [_nodataView addSubview:infoLabel];
+    UILabel *BanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH-60.0f-SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f, 60.0f, 44.0f)];
+    userBanlaceLabel.text=@"￥0";
+    [self.view addSubview:BanlaceLabel];
+    
+    UILabel *storedCardPrice=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 88.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
+    
+    storedCardPrice.text=@"储值卡金额";
+    [self.view addSubview:storedCardPrice];
+    
+    
     
     //确定是水平滚动，还是垂直滚动
     UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
@@ -91,7 +76,7 @@
     flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
     
     ///初始化collectionView
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, infoLabel.frame.origin.y+infoLabel.frame.size.height+10.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-infoLabel.frame.origin.y-infoLabel.frame.size.height-10.0f-49.0f-64.0f) collectionViewLayout:flowLayout];
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, storedCardPrice.frame.origin.y+storedCardPrice.frame.size.height+10.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-storedCardPrice.frame.origin.y-storedCardPrice.frame.size.height-10.0f-49.0f-64.0f) collectionViewLayout:flowLayout];
     ///取消导航条
     self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
@@ -103,6 +88,16 @@
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
     [self.view addSubview:self.collectionView];
+    
+    
+    UIButton *putPayButton=[[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-64.0f-44.0f-49.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
+    [putPayButton setTitle:@"提交支付" forState:UIControlStateNormal];
+    [putPayButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    putPayButton.backgroundColor=COLOR_CHARACTERS_RED;
+    
+    [putPayButton addTarget:self action:@selector(putPayButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:putPayButton];
 
 }
 
@@ -175,7 +170,7 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-   //QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row];
+    //QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row];
     
     
 }
@@ -186,6 +181,14 @@
     
     return YES;
     
+}
+
+#pragma mark --提交支付按钮方法
+-(void)putPayButtonAction
+{
+
+
+
 }
 
 #pragma mark - 返回事件
@@ -199,7 +202,7 @@
 #pragma mark --获取网络数据
 -(void)getStoredCardList
 {
-
+    
     //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"11", @"key" : @"",@"goods_tag":@"",@"source":@"phone"};
     
@@ -237,8 +240,9 @@
         }
         
     }];
-
+    
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

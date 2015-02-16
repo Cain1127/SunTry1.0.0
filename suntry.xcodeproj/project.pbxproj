@@ -41,6 +41,7 @@
 		CE207ABD1A9073FE00ACF741 /* QSWStoredCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207ABC1A9073FE00ACF741 /* QSWStoredCardCell.m */; };
 		CE207AC11A917FE200ACF741 /* QSUserStoredCardReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AC01A917FE200ACF741 /* QSUserStoredCardReturnData.m */; };
 		CE207AC41A91844900ACF741 /* QSStoredCardDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AC31A91844900ACF741 /* QSStoredCardDataModel.m */; };
+		CE207AC71A91D43000ACF741 /* QSWPayOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AC61A91D43000ACF741 /* QSWPayOrderViewController.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -203,6 +204,8 @@
 		CE207AC01A917FE200ACF741 /* QSUserStoredCardReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSUserStoredCardReturnData.m; sourceTree = "<group>"; };
 		CE207AC21A91844900ACF741 /* QSStoredCardDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSStoredCardDataModel.h; sourceTree = "<group>"; };
 		CE207AC31A91844900ACF741 /* QSStoredCardDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSStoredCardDataModel.m; sourceTree = "<group>"; };
+		CE207AC51A91D43000ACF741 /* QSWPayOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWPayOrderViewController.h; sourceTree = "<group>"; };
+		CE207AC61A91D43000ACF741 /* QSWPayOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWPayOrderViewController.m; sourceTree = "<group>"; };
 		CE5341311A7FA4CE002BA188 /* QSTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTabBarViewController.h; sourceTree = "<group>"; };
 		CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTabBarViewController.m; sourceTree = "<group>"; };
 		CE5341341A7FA4CE002BA188 /* QSAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAnnotation.h; sourceTree = "<group>"; };
@@ -653,6 +656,8 @@
 				CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */,
 				CE207ABB1A9073FE00ACF741 /* QSWStoredCardCell.h */,
 				CE207ABC1A9073FE00ACF741 /* QSWStoredCardCell.m */,
+				CE207AC51A91D43000ACF741 /* QSWPayOrderViewController.h */,
+				CE207AC61A91D43000ACF741 /* QSWPayOrderViewController.m */,
 				CE571F021A84C8E000609788 /* QSWLoginPswViewController.h */,
 				CE571F031A84C8E000609788 /* QSWLoginPswViewController.m */,
 				CE571F051A84C92B00609788 /* QSWUserSettingViewController.h */,
@@ -1436,6 +1441,7 @@
 				CEEAC3BD1A8CA517009AC6AA /* QSPOrderViewController.m in Sources */,
 				CE207AC11A917FE200ACF741 /* QSUserStoredCardReturnData.m in Sources */,
 				CECCC3261A8DDCB00079F224 /* QSGoodsStapleFoodReturnData.m in Sources */,
+				CE207AC71A91D43000ACF741 /* QSWPayOrderViewController.m in Sources */,
 				CEEAC3C51A8D0B34009AC6AA /* QSWLoginViewController.m in Sources */,
 				CEEAC3C81A8D0DA7009AC6AA /* QSWRegisterViewController.m in Sources */,
 				185343B51A91C22300A83039 /* QSUserCouponTableViewCell.m in Sources */,

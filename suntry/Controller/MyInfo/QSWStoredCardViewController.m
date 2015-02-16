@@ -14,6 +14,9 @@
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
 #import "MJRefresh.h"
+#import "ColorHeader.h"
+#import "QSWResetPswController.h"
+#import "QSWPayOrderViewController.h"
 
 @interface QSWStoredCardViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -49,7 +52,6 @@
     [self setupTopView];
     [self setupMiddleView];
     [self setupBottomView];
-    [self getStoredCardList];
     
 }
 
@@ -68,16 +70,21 @@
     
     ///加边框
     UIView *lineTopView = [[UIView alloc] initWithFrame:CGRectMake(_payPswLabel.frame.origin.x, _payPswLabel.frame.origin.y, _payPswLabel.frame.size.width, 0.5f)];
-    lineTopView.backgroundColor=[UIColor brownColor];
+    lineTopView.backgroundColor=[UIColor lightGrayColor];
     
     ///加边框
     UIView *lineBottomView = [[UIView alloc] initWithFrame:CGRectMake(_payPswLabel.frame.origin.x, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height, _payPswLabel.frame.size.width, 0.5f)];
     [_topView addSubview:lineTopView];
     [_topView addSubview:lineBottomView];
-    lineBottomView.backgroundColor=[UIColor brownColor];
+    lineBottomView.backgroundColor=[UIColor lightGrayColor];
     
     _chargeButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height+topViewH*1/8,(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5, topViewH*1/4);
+    _chargeButton.backgroundColor=COLOR_CHARACTERS_RED;
+    _chargeButton.layer.cornerRadius=6.0f;
+    
     _resetPswButton.frame=CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT+_chargeButton.frame.size.width, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height+topViewH*1/8,(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5, topViewH*1/4);
+    _resetPswButton.backgroundColor=COLOR_CHARACTERS_RED;
+    _resetPswButton.layer.cornerRadius=6.0f;
     
     
 }
@@ -87,17 +94,19 @@
 {
     
     _middleView.frame=CGRectMake(0, _topView.frame.origin.y+_topView.frame.size.height, SIZE_DEVICE_WIDTH, 45.0f);
+        _middleView.backgroundColor=[UIColor whiteColor];
+    
     _chargeRecord.frame=CGRectMake(0, 0, SIZE_DEVICE_WIDTH*0.5f, 45.0f);
+    
     _consumeRecord.frame=CGRectMake(_chargeRecord.frame.size.width, 0, SIZE_DEVICE_WIDTH*0.5f, 45.0f);
-    _middleView.backgroundColor=[UIColor whiteColor];
     
     ///加边框
     UIView *lineTopView = [[UIView alloc] initWithFrame:CGRectMake(_consumeRecord.frame.origin.x,0,0.5f,45.0f)];
-    lineTopView.backgroundColor=[UIColor brownColor];
+    lineTopView.backgroundColor=[UIColor lightGrayColor];
     
     ///加边框
     UIView *lineBottomView = [[UIView alloc] initWithFrame:CGRectMake(_chargeRecord.frame.origin.x, 44.5f, SIZE_DEVICE_WIDTH, 0.5f)];
-    lineBottomView.backgroundColor=[UIColor brownColor];
+    lineBottomView.backgroundColor=[UIColor lightGrayColor];
     
     [_middleView addSubview:lineTopView];
     [_middleView addSubview:lineBottomView];
@@ -171,10 +180,9 @@
     QSStoredCardDataModel *tempModel = self.storedCardDataSource[indexPath.row];
     
     cell.cTimeLabel.text=tempModel.createTime;
-    cell.cPrcieLabel.text=tempModel.amount;
-    cell.cBalanceLabel.text=tempModel.remark;
+    cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥%@",tempModel.amount];
+    //cell.cBalanceLabel.text=tempModel.amount;
 
-    
     return cell;
 
     
@@ -208,26 +216,41 @@
 
 #pragma mark --按钮事件
 ///点击充值储存卡
-- (IBAction)chargeButton:(id)sender {
+- (IBAction)chargeButton:(id)sender
+{
+    
+    QSWPayOrderViewController *VC=[[QSWPayOrderViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
+    
 }
 
 ///点击重置密码
-- (IBAction)resetPswButton:(id)sender {
+- (IBAction)resetPswButton:(id)sender
+{
+    
+    QSWResetPswController *VC=[[QSWResetPswController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
+    
 }
 
 ///点击充值记录
 - (IBAction)chargeRecord:(id)sender {
+    
+     [self getChargeRecordList];
+    
 }
 
 ///点击消费记录
 - (IBAction)consumeRecord:(id)sender {
+    
+    [self getConsumRecordList];
 }
 
 ///获取网络数据
--(void)getStoredCardList
+-(void)getChargeRecordList
 {
     
-    //用户充值卡信息请求参数
+    //储值卡信息请求参数
     NSDictionary *dict = @{@"type":@"",@"key": @"",@"user_id":@"47",@"flag":@"income"};
     
     [QSRequestManager requestDataWithType:rRequestTypeStoredCard andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
@@ -265,6 +288,48 @@
         
     }];
     
+}
+
+-(void)getConsumRecordList
+{
+    
+    //用户充值卡信息请求参数
+    NSDictionary *dict = @{@"type":@"",@"key": @"",@"user_id":@"47",@"flag":@"expand"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeStoredCard andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            //模型转换
+            QSUserStoredCardReturnData *tempModel = resultData;
+            NSArray *array = tempModel.storedCardListData.storedCardList;
+            NSLog(@"QSStoredCardReturnData : %@",tempModel);
+            
+            //设置页码：当前页码/最大页码
+            
+            self.storedCardDataSource=[[NSMutableArray alloc]init];
+            //清空的数据源
+            [self.storedCardDataSource removeAllObjects];
+            
+            ///保存数据源
+            [self.storedCardDataSource addObjectsFromArray:array];
+            
+            ///结束刷新动画
+            [self.collectionView headerEndRefreshing];
+            
+            ///reload数据
+            [self.collectionView reloadData];
+            
+        } else {
+            
+            NSLog(@"================储值卡信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================储值卡信息请求失败================");
+        }
+        
+    }];
+
 }
 
 - (void)didReceiveMemoryWarning {

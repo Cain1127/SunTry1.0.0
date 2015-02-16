@@ -46,6 +46,9 @@
     
     [super viewDidLoad];
     self.title=@"登录";
+    ///密码密文输入
+    ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
+    
     [self setupGroup0];
     [self setupGroup1];
     [self setupFooter];
