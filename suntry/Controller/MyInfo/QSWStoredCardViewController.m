@@ -9,6 +9,11 @@
 #import "QSWStoredCardViewController.h"
 #import "DeviceSizeHeader.h"
 #import "QSWStoredCardCell.h"
+#import "QSStoredCardDataModel.h"
+#import "QSUserStoredCardReturnData.h"
+#import "QSRequestManager.h"
+#import "QSRequestTaskDataModel.h"
+#import "MJRefresh.h"
 
 @interface QSWStoredCardViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -34,6 +39,7 @@
     [self setupTopView];
     [self setupMiddleView];
     [self setupBottomView];
+    [self getStoredCardList];
     
 }
 
@@ -124,9 +130,8 @@
 ///定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    
-    return 3;
-    //return [self.storedCardDataSource count];
+    NSLog(@"%d",[self.storedCardDataSource count]);
+    return [self.storedCardDataSource count];
     
 }
 
@@ -153,11 +158,11 @@
     }
     
     ///获取模型
-    //QSGoodsDataModel *tempModel = self.specialDataSource[indexPath.row];
+    QSStoredCardDataModel *tempModel = self.storedCardDataSource[indexPath.row];
     
-    cell.cTimeLabel.text=@"2015-11-11";
-    cell.cPrcieLabel.text=@"222";
-    cell.cBalanceLabel.text=@"888";
+    cell.cTimeLabel.text=tempModel.createTime;
+    cell.cPrcieLabel.text=tempModel.amount;
+    cell.cBalanceLabel.text=tempModel.remark;
 
     
     return cell;
@@ -165,11 +170,7 @@
     
 }
 
-//-(UIView *)
-
-
 #pragma mark --UICollectionViewDelegate代理方法
-
 //UICollectionView被选中时调用的方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -204,6 +205,50 @@
 
 ///点击消费记录
 - (IBAction)consumeRecord:(id)sender {
+}
+
+///获取网络数据
+-(void)getStoredCardList
+{
+    
+    //用户充值卡信息请求参数
+    NSDictionary *dict = @{@"type":@"",@"key": @"",@"user_id":@"47",@"flag":@"income"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeStoredCard andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            //模型转换
+            QSUserStoredCardReturnData *tempModel = resultData;
+            NSArray *array = tempModel.storedCardListData.storedCardList;
+            NSLog(@"QSStoredCardReturnData : %@",tempModel);
+            NSLog(@"%d",tempModel.storedCardListData.storedCardList.count);
+            //设置页码：当前页码/最大页码
+            
+            self.storedCardDataSource=[[NSMutableArray alloc]init];
+            //清空的数据源
+            [self.storedCardDataSource removeAllObjects];
+            
+            ///保存数据源
+            [self.storedCardDataSource addObjectsFromArray:array];
+            
+            ///结束刷新动画
+            [self.collectionView headerEndRefreshing];
+            
+            ///reload数据
+            [self.collectionView reloadData];
+            
+        } else {
+            
+            NSLog(@"================今日特价搜索信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================今日特价搜索信息请求失败================");
+            
+        }
+        
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning {

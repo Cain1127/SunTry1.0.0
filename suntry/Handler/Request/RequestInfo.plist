@@ -8,6 +8,13 @@
 		<string>promotion/coupList</string>
 		<key>class</key>
 		<string></string>
+    </dict>
+	<key>1042</key>
+	<dict>
+		<key>url</key>
+		<string>userFinance/list</string>
+		<key>class</key>
+		<string>QSUserStoredCardReturnData</string>
 	</dict>
 	<key>1102</key>
 	<dict>
