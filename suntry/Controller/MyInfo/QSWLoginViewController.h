@@ -10,4 +10,7 @@
 
 @interface QSWLoginViewController : QSWSettingViewController
 
+///登录成功后的回调
+@property (nonatomic,copy) void(^loginSuccessCallBack)(BOOL flag);
+
 @end

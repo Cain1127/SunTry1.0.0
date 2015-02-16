@@ -24,8 +24,18 @@
 #import "QSWLoginViewController.h"
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
+#import "QSStoredCardDataModel.h"
+#import "QSUserStoredCardReturnData.h"
+#import "QSRequestManager.h"
+#import "QSRequestTaskDataModel.h"
+
+#import "QSUserStoredCardReturnData.h"
+#import "MJRefresh.h"
 
 @interface QSMyinfoViewController ()
+
+///当前用户的储值卡信息
+@property (nonatomic,retain) QSUserStoredCardReturnData *storeCarDataModel;
 
 @end
 
@@ -37,6 +47,7 @@
     
     [super viewDidLoad];
     
+    [self getStoredCardList];
     [self setupGroup0];
     [self setupGroup1];
     [self setupGroup2];
@@ -73,9 +84,9 @@
 {
     
     QSWSettingGroup *group = [self addGroup];
-    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_storagecard_normal" title:@"我的储值卡" destVcClass:[QSWStoredCardViewController class]];
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_storagecard_normal" title:@"我的储值卡" destVcClass:[QSWMyStoredCardViewController class]];
     group.items = @[item];
-
+    
 }
 
 -(void)setupGroup3
@@ -130,7 +141,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    if (indexPath.row >= 4) {
+    if (indexPath.section >= 4) {
         
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
         
@@ -141,16 +152,82 @@
     
     if (1 == isLogin) {
         
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+        if (2 == indexPath.section) {
+            
+            if ([self.storeCarDataModel.storedCardListData.storedCardList count] > 0) {
+                
+                QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+                [self.navigationController pushViewController:storeCardVC animated:YES];
+                
+            } else {
+            
+                QSWMyStoredCardViewController *myStoreCardVC = [[QSWMyStoredCardViewController alloc] init];
+                [self.navigationController pushViewController:myStoreCardVC animated:YES];
+            
+            }
+            
+        } else {
+        
+            [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+        
+        }
         
     } else {
     
         ///弹出登录框
         QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
+        loginVC.loginSuccessCallBack = ^(BOOL flag){
+        
+            if (flag) {
+                
+                [self getStoredCardList];
+                
+            }
+        
+        };
         [self.navigationController pushViewController:loginVC animated:YES];
     
     }
 
 }
+
+#pragma mark --获取网络数据
+-(void)getStoredCardList
+{
+    
+    ///判断是否已登录
+    NSString *isLogin = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"];
+    if (!([isLogin intValue] == 1)) {
+        
+        return;
+        
+    }
+    
+    //每日特价信息请求参数
+    NSDictionary *dict = @{@"type" : @"", @"key" : @"",@"flag":@"income"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeStoredCard andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            //模型转换
+            QSUserStoredCardReturnData *tempModel = resultData;
+            
+            ///暂存储值卡模型
+            self.storeCarDataModel = tempModel;
+            
+        } else {
+            
+            NSLog(@"================储值卡信息下载失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================储值卡信息下载失败================");
+            
+        }
+        
+    }];
+    
+}
+
 
 @end

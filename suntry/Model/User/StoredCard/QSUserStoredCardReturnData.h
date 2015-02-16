@@ -10,14 +10,15 @@
 
 #import "QSMSGModel.h"
 
-@interface QSStoredCardListData : QSMSGModel
-
-@property (nonatomic,retain) NSArray *storedCardList;//!<充值卡数组
-
-@end
-
+@class QSStoredCardListData;
 @interface QSUserStoredCardReturnData : QSHeaderDataModel
 
 @property (nonatomic,retain) QSStoredCardListData *storedCardListData;//!<msg头信息;
+
+@end
+
+@interface QSStoredCardListData : QSMSGModel
+
+@property (nonatomic,retain) NSArray *storedCardList;//!<充值卡数组
 
 @end
