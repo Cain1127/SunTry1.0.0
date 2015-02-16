@@ -6,7 +6,6 @@
 //  Copyright (c) 2015年 wangshupeng. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "QSWSettingViewController.h"
 
 @interface QSMyinfoViewController :QSWSettingViewController

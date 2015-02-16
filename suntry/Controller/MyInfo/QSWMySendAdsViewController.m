@@ -31,9 +31,21 @@
 @implementation QSWMySendAdsViewController
 
 #pragma mark - UI搭建
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     
     [super viewDidLoad];
+    
+    ///自定义返回按钮
+    UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
+    turnBackButton.tintColor = [UIColor whiteColor];
+    
+    ///设置返回按钮的颜色
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    self.navigationItem.leftBarButtonItem = turnBackButton;
+    
     self.title=@"送餐地址管理";
     [self setupGrounp0];
     [self setupFooter];
@@ -71,6 +83,14 @@
 
 }
 
+#pragma mark - 返回事件
+- (void)turnBackAction
+{
+
+    [self.navigationController popViewControllerAnimated:YES];
+
+}
+
 #pragma mark - 返回每个地址信息cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -100,20 +120,35 @@
         
     }
     
-    QSWSettingCell *cell = [QSWSettingCell cellWithTableView:tableView];
-    QSWSettingGroup *group = self.groups[indexPath.section];
-    cell.item = group.items[indexPath.row];
-    cell.indexPath = indexPath;
+    static NSString *cellNoneName = @"noneCell";
+    UITableViewCell *noneCell = [tableView dequeueReusableCellWithIdentifier:cellNoneName];
+    if (nil == noneCell) {
+        
+        noneCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellNoneName];
+        
+    }
     
     ///取消选择状态
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    noneCell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    ///添加分隔线
-    UILabel *sepLine = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 59.5f, SIZE_DEFAULT_MAX_WIDTH, 0.5f)];
-    sepLine.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
-    [cell.contentView addSubview:sepLine];
+    ///虚线框
+    UIView *noRecordView = [[UIView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
+    noRecordView.backgroundColor = [UIColor whiteColor];
+    noRecordView.layer.borderColor = [[UIColor colorWithRed:194.0f / 255.0f green:181.0f / 255.0f blue:156.0f / 255.0f alpha:1.0f] CGColor];
+    noRecordView.layer.borderWidth = 0.5f;
+    noRecordView.layer.cornerRadius = 6.0f;
     
-    return cell;
+    ///标题Label
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 5.0f, noRecordView.frame.size.width - 30.0f, noRecordView.frame.size.height - 10.0f)];
+    titleLabel.text = @"暂无送餐地址";
+    titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    titleLabel.textColor = COLOR_CHARACTERS_RED;
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [noRecordView addSubview:titleLabel];
+    
+    [noneCell.contentView addSubview:noRecordView];
+    
+    return noneCell;
 
 }
 

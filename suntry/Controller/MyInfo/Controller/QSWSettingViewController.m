@@ -65,9 +65,8 @@
     
     [super viewDidLoad];
     
-    self.tableView.backgroundView = nil;
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    ///自身背景颜色
+    self.view.backgroundColor = [UIColor whiteColor];
     
     self.tableView.sectionHeaderHeight = SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
     self.tableView.sectionFooterHeight = 0;
@@ -80,6 +79,7 @@
         self.tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
         
     }
+    
 }
 
 #pragma mark - Table view data source

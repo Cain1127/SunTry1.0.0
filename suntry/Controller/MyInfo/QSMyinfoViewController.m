@@ -55,7 +55,7 @@
 {
   
     QSWSettingGroup *group = [self addGroup];
-    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_sendads_normal" title:@"我的送餐地址" destVcClass:[QSWMySendAdsViewController class]];
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_sendAds_normal" title:@"我的送餐地址" destVcClass:[QSWMySendAdsViewController class]];
     group.items = @[item];
     
 }
@@ -64,7 +64,6 @@
 {
 
     QSWSettingGroup *group = [self addGroup];
-    
     QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_coupon_normal" title:@"我的优惠券" destVcClass:[QSWMyCouponViewController class]];
     group.items = @[item];
     
@@ -109,20 +108,19 @@
     CGFloat footterButtonH = 44;
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
-    /// 背景和文字
+    ///背景和文字
     footterButton.backgroundColor = [UIColor colorWithRed:247.0f / 255.0f green:243.0f / 255.0f blue:245.0f / 255.0f alpha:1.0f];
     [footterButton setTitle:@"   香哉客户服务热线:4006780022" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateNormal];
     footterButton.layer.cornerRadius = 6.0f;
     
-    // footer
+    ///footer
     UIView *footer = [[UIView alloc] init];
     CGFloat footerH = footterButtonH + 20;
     footer.frame = CGRectMake(0, 0, 0, footerH);
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
-//    [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
