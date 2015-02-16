@@ -55,7 +55,7 @@
 {
   
     QSWSettingGroup *group = [self addGroup];
-    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_sendAds_normal" title:@"我的送餐地址" destVcClass:[QSWMySendAdsViewController class]];
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:@"myinfo_sendads_normal" title:@"我的送餐地址" destVcClass:[QSWMySendAdsViewController class]];
     group.items = @[item];
     
 }
