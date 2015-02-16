@@ -8,8 +8,13 @@
 
 #import "QSUserCouponTableViewCell.h"
 
+#import "UIImageView+CacheImage.h"
+
+#import "QSCouponInfoDataModel.h"
+
 #import "ColorHeader.h"
 #import "DeviceSizeHeader.h"
+#import "ImageHeader.h"
 
 @interface QSUserCouponTableViewCell ()
 
@@ -78,17 +83,17 @@
  *
  *  @since          1.0.0
  */
-- (void)updateUserCouponInfoCellUI:(QSUserCouponListInfoDataModel *)model
+- (void)updateUserCouponInfoCellUI:(QSCouponInfoDataModel *)model
 {
 
     ///更新标题
-    
+    self.titleLabel.text = model.goods_name;
     
     ///更新有效期
-    
+    self.dateLabel.text = model.goods_name;
     
     ///更新图片
-    
+    [self.imageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,model.banner]] placeholderImage:nil];
 
 }
 

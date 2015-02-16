@@ -8,6 +8,12 @@
 
 #import "QSWMyCouponViewController.h"
 #import "QSUserCouponTableViewCell.h"
+#import "MBProgressHUD.h"
+
+#import "QSUserCouponListReturnData.h"
+#import "QSCouponInfoDataModel.h"
+
+#import "QSRequestManager.h"
 
 #import "ColorHeader.h"
 #import "DeviceSizeHeader.h"
@@ -19,6 +25,7 @@
 @property (nonatomic,strong) UITextField *inputField;       //!<输入框
 @property (nonatomic,strong) UITableView *couponListView;   //!<优惠券列表
 @property (nonatomic,retain) NSMutableArray *dataSource;    //!<优惠券数据
+@property (nonatomic,strong) MBProgressHUD *hud;            //!<HUD
 
 @end
 
@@ -106,11 +113,33 @@
 - (void)getUserCouponList
 {
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    ///请求第一页数据
+    [QSRequestManager requestDataWithType:rRequestTypeUserCouponList andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
+        ///获取成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///清空原数据
+            [self.dataSource removeAllObjects];
+            
+            ///转换模型
+            QSUserCouponListReturnData *couponData = resultData;
+            
+            if ([couponData.couponListHeader.couponList count] > 0) {
+                
+                [self.dataSource addObjectsFromArray:couponData.couponListHeader.couponList];
+                
+            }
+            
+            ///刷新UI
+            [self.couponListView reloadData];
+            
+        }
+        
+        ///结束刷新动画
         [self.couponListView headerEndRefreshing];
         
-    });
+    }];
 
 }
 
@@ -129,12 +158,54 @@
     
 }
 
-#pragma mark - 搜索按钮
-///搜索按钮事件
+#pragma mark - 添加优惠券
+///添加优惠券
 -(void)addButtonAction
 {
 
+    ///获取优惠券key
+    NSString *couponKey = self.inputField.text;
+    if (nil == couponKey || 0 >= [couponKey length]) {
+        
+        [self.inputField becomeFirstResponder];
+        return;
+        
+    }
     
+    [self.inputField resignFirstResponder];
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.tabBarController.view animated:YES];
+    self.hud.labelText = @"正在添加……";
+    
+    ///封装参数
+    NSDictionary *params = @{@"coup_key" : couponKey};
+    
+    ///请求优惠券
+    [QSRequestManager requestDataWithType:rRequestTypeUserGetCoupon andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///获取成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///刷新优惠券列表
+            [self.couponListView headerBeginRefreshing];
+            
+            ///清空输入信息
+            self.inputField.text = @"";
+            
+            ///结束HUD
+            self.hud.labelText = @"添加成功！";
+            [self.hud hide:YES afterDelay:1.0f];
+            
+        } else {
+        
+            ///结束HUD
+            self.hud.labelText = @"添加失败，请稍后再试！";
+            [self.hud hide:YES afterDelay:1.0f];
+        
+        }
+        
+    }];
     
 }
 
@@ -191,23 +262,25 @@
         
         return cellNone;
         
-    }
-
-    static NSString *normalCell = @"normalCell";
-    QSUserCouponTableViewCell *cellNormal = [tableView dequeueReusableCellWithIdentifier:normalCell];
-    if (nil == cellNormal) {
+    } else {
         
-        cellNormal = [[QSUserCouponTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:normalCell];
+        static NSString *normalCell = @"normalCell";
+        QSUserCouponTableViewCell *cellNormal = [tableView dequeueReusableCellWithIdentifier:normalCell];
+        if (nil == cellNormal) {
+            
+            cellNormal = [[QSUserCouponTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:normalCell];
+            
+        }
+        
+        ///取消选择样式
+        cellNormal.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        ///更新数据
+        [cellNormal updateUserCouponInfoCellUI:self.dataSource[indexPath.row]];
+        
+        return cellNormal;
         
     }
-    
-    ///取消选择样式
-    cellNormal.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    ///更新数据
-    [cellNormal updateUserCouponInfoCellUI:self.dataSource[indexPath.row]];
-    
-    return cellNormal;
 
 }
 

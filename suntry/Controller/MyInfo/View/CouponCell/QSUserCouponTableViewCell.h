@@ -15,7 +15,7 @@
  *
  *  @since  1.0.0
  */
-@class QSUserCouponListInfoDataModel;
+@class QSCouponInfoDataModel;
 @interface QSUserCouponTableViewCell : UITableViewCell
 
 /**
@@ -27,6 +27,6 @@
  *
  *  @since          1.0.0
  */
-- (void)updateUserCouponInfoCellUI:(QSUserCouponListInfoDataModel *)model;
+- (void)updateUserCouponInfoCellUI:(QSCouponInfoDataModel *)model;
 
 @end

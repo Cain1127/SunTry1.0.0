@@ -29,6 +29,8 @@
 		184AE0851A9073EF007A8CBD /* ChineseInclude.m in Sources */ = {isa = PBXBuildFile; fileRef = 184AE0841A9073EF007A8CBD /* ChineseInclude.m */; };
 		185343B11A91883800A83039 /* NSString+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 185343B01A91883800A83039 /* NSString+Format.m */; };
 		185343B51A91C22300A83039 /* QSUserCouponTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 185343B41A91C22300A83039 /* QSUserCouponTableViewCell.m */; };
+		185343B91A91D17B00A83039 /* QSCouponInfoDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 185343B81A91D17B00A83039 /* QSCouponInfoDataModel.m */; };
+		185343BD1A91D29600A83039 /* QSUserCouponListReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 185343BC1A91D29600A83039 /* QSUserCouponListReturnData.m */; };
 		1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3A61A8DEF9000EABC7D /* QSPickerViewItem.m */; };
 		1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3AA1A8DFB2000EABC7D /* QSDatePickerViewController.m */; };
 		1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */; };
@@ -176,6 +178,10 @@
 		185343B01A91883800A83039 /* NSString+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Format.m"; path = "String/NSString+Format.m"; sourceTree = "<group>"; };
 		185343B31A91C22300A83039 /* QSUserCouponTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSUserCouponTableViewCell.h; path = CouponCell/QSUserCouponTableViewCell.h; sourceTree = "<group>"; };
 		185343B41A91C22300A83039 /* QSUserCouponTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSUserCouponTableViewCell.m; path = CouponCell/QSUserCouponTableViewCell.m; sourceTree = "<group>"; };
+		185343B71A91D17B00A83039 /* QSCouponInfoDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSCouponInfoDataModel.h; path = Coupon/QSCouponInfoDataModel.h; sourceTree = "<group>"; };
+		185343B81A91D17B00A83039 /* QSCouponInfoDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSCouponInfoDataModel.m; path = Coupon/QSCouponInfoDataModel.m; sourceTree = "<group>"; };
+		185343BB1A91D29600A83039 /* QSUserCouponListReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSUserCouponListReturnData.h; path = Coupon/QSUserCouponListReturnData.h; sourceTree = "<group>"; };
+		185343BC1A91D29600A83039 /* QSUserCouponListReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSUserCouponListReturnData.m; path = Coupon/QSUserCouponListReturnData.m; sourceTree = "<group>"; };
 		1859F3A51A8DEF9000EABC7D /* QSPickerViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPickerViewItem.h; sourceTree = "<group>"; };
 		1859F3A61A8DEF9000EABC7D /* QSPickerViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPickerViewItem.m; sourceTree = "<group>"; };
 		1859F3A91A8DFB2000EABC7D /* QSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSDatePickerViewController.h; sourceTree = "<group>"; };
@@ -525,6 +531,24 @@
 				185343B41A91C22300A83039 /* QSUserCouponTableViewCell.m */,
 			);
 			name = CouponCell;
+			sourceTree = "<group>";
+		};
+		185343B61A91D15D00A83039 /* Coupon */ = {
+			isa = PBXGroup;
+			children = (
+				185343B71A91D17B00A83039 /* QSCouponInfoDataModel.h */,
+				185343B81A91D17B00A83039 /* QSCouponInfoDataModel.m */,
+			);
+			name = Coupon;
+			sourceTree = "<group>";
+		};
+		185343BA1A91D26D00A83039 /* Coupon */ = {
+			isa = PBXGroup;
+			children = (
+				185343BB1A91D29600A83039 /* QSUserCouponListReturnData.h */,
+				185343BC1A91D29600A83039 /* QSUserCouponListReturnData.m */,
+			);
+			name = Coupon;
 			sourceTree = "<group>";
 		};
 		1859F3A81A8DFB2000EABC7D /* Picker */ = {
@@ -995,6 +1019,7 @@
 		CEEAC3751A8CA4EF009AC6AA /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				185343B61A91D15D00A83039 /* Coupon */,
 				1878D4BF1A90438E00AF68A4 /* Search */,
 				CECCC3231A8DDCB00079F224 /* Order */,
 				CEEAC3E91A8DA83D009AC6AA /* User */,
@@ -1158,6 +1183,7 @@
 		CEEAC3EE1A8DA845009AC6AA /* User */ = {
 			isa = PBXGroup;
 			children = (
+				185343BA1A91D26D00A83039 /* Coupon */,
 				CE207ABE1A917FAD00ACF741 /* StoredCard */,
 				CEEAC4001A8DD156009AC6AA /* Login */,
 				CEEAC3EF1A8DA845009AC6AA /* AddressList */,
@@ -1334,6 +1360,7 @@
 				CEEAC3961A8CA4EF009AC6AA /* QSSelectReturnData.m in Sources */,
 				CE571EEB1A84AF7800609788 /* QSWSettingViewController.m in Sources */,
 				CE5341821A7FBCAC002BA188 /* QSImageView.m in Sources */,
+				185343BD1A91D29600A83039 /* QSUserCouponListReturnData.m in Sources */,
 				CE53415D1A7FA527002BA188 /* QSRequestTaskDataModel.m in Sources */,
 				CE207ABD1A9073FE00ACF741 /* QSWStoredCardCell.m in Sources */,
 				CE7946C01A8B705600C0113B /* QSWMerchantIndexViewController.m in Sources */,
@@ -1355,6 +1382,7 @@
 				184AE07E1A90730F007A8CBD /* NSString+PinYin4Cocoa.m in Sources */,
 				CEEAC3951A8CA4EF009AC6AA /* QSGoodsListReturnData.m in Sources */,
 				1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */,
+				185343B91A91D17B00A83039 /* QSCouponInfoDataModel.m in Sources */,
 				CE5341811A7FBCAC002BA188 /* UIImageView+CacheImage.m in Sources */,
 				184AE0801A90730F007A8CBD /* PinYinForObjc.m in Sources */,
 				1836740F1A7F8FA800BCCF39 /* QSAppDelegate.m in Sources */,
