@@ -45,19 +45,15 @@
     ///加载储值卡数据
     [self getStoredCardList];
     
-    UILabel *orderNumLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 250.0f, 44.0f)];
-    orderNumLabel.text=@"订单编号:20150203";
-    [self.view addSubview:orderNumLabel];
-    
-    UILabel *userBanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f, 150.0f, 44.0f)];
+    UILabel *userBanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,0.0f, 150.0f, 44.0f)];
     userBanlaceLabel.text=@"帐户余额";
     [self.view addSubview:userBanlaceLabel];
     
-    UILabel *BanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH-60.0f-SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f, 60.0f, 44.0f)];
+    UILabel *BanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH-60.0f-SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 60.0f, 44.0f)];
     userBanlaceLabel.text=@"￥0";
     [self.view addSubview:BanlaceLabel];
     
-    UILabel *storedCardPrice=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 88.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
+    UILabel *storedCardPrice=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
     
     storedCardPrice.text=@"储值卡金额";
     [self.view addSubview:storedCardPrice];

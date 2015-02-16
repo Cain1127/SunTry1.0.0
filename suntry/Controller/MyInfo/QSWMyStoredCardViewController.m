@@ -16,6 +16,7 @@
 #import "QSGoodsDataModel.h"
 #import "QSGoodsListReturnData.h"
 #import "MJRefresh.h"
+#import "QSWPayOrderViewController.h"
 
 #define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -176,6 +177,8 @@
 {
     
    //QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row];
+    QSWPayOrderViewController *VC=[[QSWPayOrderViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:YES];
     
     
 }

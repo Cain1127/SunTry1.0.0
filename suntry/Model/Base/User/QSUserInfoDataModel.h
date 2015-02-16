@@ -26,6 +26,7 @@
 @property (nonatomic,copy) NSString *company;       //!<所在公司名
 @property (nonatomic,copy) NSString *pay;           //!<支付密码
 @property (nonatomic,copy) NSString *pay_salt;      //!<支付密钥
+@property (nonatomic,copy) NSString *balance;       //!<帐户余额
 
 @property (nonatomic,copy) NSString *addressID;     //!<默认送餐地址ID
 @property (nonatomic,copy) NSString *address;       //!<送餐地址
