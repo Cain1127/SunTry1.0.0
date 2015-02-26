@@ -15,9 +15,6 @@
 ///内部宏定义：自操作线程关键字
 #define QUEUE_REQUEST_OPERATION "com.77tng.car.request"
 
-///数据请求根地址
-#define REQUEST_ROOT_URL @"http://test.9dxz.com/"
-
 @interface QSRequestManager ()
 
 ///网络请求管理器

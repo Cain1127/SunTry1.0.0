@@ -191,7 +191,7 @@
 #pragma mark --获取网络数据
 -(void)getStoredCardList
 {
-
+    
     //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"11", @"key" : @"",@"goods_tag":@"",@"source":@"phone"};
     

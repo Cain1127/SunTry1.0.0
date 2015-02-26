@@ -10,4 +10,6 @@
 
 @interface QSAddOrderReturnData : QSHeaderDataModel
 
+@property (nonatomic,retain) NSArray *orderInfoList;//!<订单数据
+
 @end

@@ -7,7 +7,19 @@
 //
 
 #import "QSAddOrderReturnData.h"
+#import "QSOrderInfoDataModel.h"
 
 @implementation QSAddOrderReturnData
+
++ (RKObjectMapping *)objectMapping
+{
+    
+    RKObjectMapping *shared_mapping = [super objectMapping];
+    
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"msg" toKeyPath:@"orderInfoList" withMapping:[QSOrderInfoDataModel objectMapping]]];
+    
+    return shared_mapping;
+    
+}
 
 @end

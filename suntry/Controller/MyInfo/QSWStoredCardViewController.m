@@ -36,6 +36,22 @@
 
 @implementation QSWStoredCardViewController
 
+#pragma mark - 初始化
+- (instancetype)init
+{
+
+    if (self = [super init]) {
+        
+        self.pageGap = 2;
+        
+    }
+    
+    return self;
+
+}
+
+#pragma mark - UI搭建
+///UI搭建
 - (void)viewDidLoad {
     
     ///自定义返回按钮

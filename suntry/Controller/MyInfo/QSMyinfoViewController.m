@@ -59,6 +59,9 @@
     self.navigationItem.backBarButtonItem=backItem;
     backItem.title=@"";
     
+    ///添加储值卡购买后刷新数据的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getStoredCardList) name:@"buyStoreCardSuccess" object:nil];
+    
 }
 
 ///每一组cell
@@ -193,9 +196,16 @@
 
 }
 
-#pragma mark --获取网络数据
+#pragma mark - 获取网络数据
 -(void)getStoredCardList
 {
+    
+    ///原来已有数据，则不再请求数据
+    if ([self.storeCarDataModel.storedCardListData.storedCardList count] > 0) {
+    
+        return;
+    
+    }
     
     ///判断是否已登录
     NSString *isLogin = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"];
@@ -230,6 +240,5 @@
     }];
     
 }
-
 
 @end

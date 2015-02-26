@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>seller_id</key>
-	<string>2088511938856943</string>
-	<key>partner_id</key>
-	<string>2088511938856943</string>
-	<key>alaypay_private_key</key>
-	<string>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDi0i5PtG3NXdQcMw/9ZcsTGJEK9FOgHbtsqPsk0KmEwQ69ebnqr941+g1T/Ap5m2fsKo7y7sHC9eWuuU9KJy5rR+PHiqH4CgaqGEYOM4pTrDnu9fdEh9zrqHqBujKAifTyzNlF/jTkpJWndu2rEq/xpPlyBrvKhx4dS+WXczse2QIDAQAB</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -26,6 +20,17 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>SuntryAlixPayIdentifier</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -33,9 +38,9 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<true/>
 	<key>NSLocationUsageDescription</key>
-	<string>地图服务有特殊。。。1折</string>
+	<string>根据您当前位置，快捷查找配送餐车。</string>
 	<key>NSLocationWhenInUseDescription</key>
-	<string>确认开启地图导航服务吗</string>
+	<string>根据您当前位置，快捷查找配送餐车。</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -44,5 +49,11 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>alaypay_private_key</key>
+	<string>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDi0i5PtG3NXdQcMw/9ZcsTGJEK9FOgHbtsqPsk0KmEwQ69ebnqr941+g1T/Ap5m2fsKo7y7sHC9eWuuU9KJy5rR+PHiqH4CgaqGEYOM4pTrDnu9fdEh9zrqHqBujKAifTyzNlF/jTkpJWndu2rEq/xpPlyBrvKhx4dS+WXczse2QIDAQAB</string>
+	<key>partner_id</key>
+	<string>2088511938856943</string>
+	<key>seller_id</key>
+	<string>2088511938856943</string>
 </dict>
 </plist>
