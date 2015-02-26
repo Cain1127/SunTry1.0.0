@@ -170,8 +170,8 @@ void runtimeAlixPayIMP(id _rec, SEL _cmd, QSOrderInfoDataModel *serverOrderModel
     NSString *orderSpec = [order description];
     
     //获取私钥并将商户信息签名,外部商户可以根据情况存放私钥和签名,只需要遵循RSA签名规范,并将签名字符串base64编码和UrlEncode
-    
-    id <DataSigner> signer = CreateRSADataSigner(serverOrderModel.priPKCS8Key);
+    NSString *priPKKey = [NSString stringWithString:serverOrderModel.priPKCS8Key];
+    id <DataSigner> signer = CreateRSADataSigner(priPKKey);
     NSString *signedString = [signer signString:orderSpec];
     
     //将签名成功字符串格式化为订单字符串,请严格按照该格式

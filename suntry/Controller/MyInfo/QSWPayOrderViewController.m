@@ -357,7 +357,7 @@
     [tempParams setObject:@"1" forKey:@"diet_num"];
     
     ///买价
-    [tempParams setObject:tempModel.goodsSpecialPrice forKey:@"total_money"];
+    [tempParams setObject:tempModel.goodsPrice forKey:@"total_money"];
     
     ///时间戳：储值卡购买不需要时间戳
     [tempParams setObject:@"" forKey:@"get_time"];
@@ -394,7 +394,7 @@
     [orderDetail setObject:@"" forKey:@"sale_id"];
     
     ///购买价格
-    [orderDetail setObject:tempModel.goodsSpecialPrice forKey:@"sale_money"];
+    [orderDetail setObject:tempModel.goodsPrice forKey:@"sale_money"];
     
     ///商品名
     [orderDetail setObject:tempModel.goodsName forKey:@"name"];
@@ -429,7 +429,7 @@
             orderReturnModel.des = [NSString stringWithFormat:@"在线购买储蓄卡(￥%@)，%@",tempModel.goodsPrice,tempModel.goodsName];
             
             ///支付金额
-            orderReturnModel.payPrice = tempModel.goodsSpecialPrice;
+            orderReturnModel.payPrice = tempModel.goodsPrice;
             
             ///回调
             __block NSString *orderID = orderReturnModel.order_id;
