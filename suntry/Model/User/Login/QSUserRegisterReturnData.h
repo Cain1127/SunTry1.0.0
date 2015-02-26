@@ -9,5 +9,7 @@
 #import "QSHeaderDataModel.h"
 #import "QSRegisterDataModel.h"
 @interface QSUserRegisterReturnData : QSHeaderDataModel
+
 @property (nonatomic,retain) QSRegisterDataModel *RegisterList;//!<地址数组
+
 @end

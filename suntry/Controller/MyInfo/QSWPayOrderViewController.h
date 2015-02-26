@@ -10,4 +10,17 @@
 
 @interface QSWPayOrderViewController : UIViewController
 
+/**
+ *  @author             yangshengmeng, 15-02-23 11:02:17
+ *
+ *  @brief              根据给定的储值卡ID创建储值卡购买页面
+ *
+ *  @param storeCarID   当前选择的储值卡ID
+ *
+ *  @return             返回当前创建的储值卡购买页面
+ *
+ *  @since              1.0.0
+ */
+- (instancetype)initWithID:(NSString *)storeCarID;
+
 @end

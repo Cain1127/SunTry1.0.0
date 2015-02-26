@@ -114,21 +114,32 @@
     [footer addSubview:activateButton];
     
     ///条款控件
+    UIButton *selectButton=[[UIButton alloc] init];
+    UIImageView *selectImageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_select_normal"] highlightedImage:[UIImage imageNamed:@"myinfo_select_selected"]];
+    selectImageView.frame=CGRectMake(0, 0, 30.0f, 30.0f);
+    
+    UILabel *selectLabel=[[UILabel alloc] initWithFrame:CGRectMake(selectImageView.frame.origin.x+selectImageView.frame.size.width+5.0f, 0, 150.0f, 15.0f)];
+    selectLabel.text=@"我已阅读并同意《用户服务协议》";
+    
+    [selectButton addSubview:selectImageView];
+    [selectButton addSubview:selectLabel];
     
     
     ///4.添加VFL约束
     ///参数
-    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activateTextfield,activateButton,footterButton);
+    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activateTextfield,activateButton,footterButton,selectButton);
     NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
     
     ///约束
     NSString *___hVFL_activateTextfield = @"H:|-margin-[activateTextfield]-5-[activateButton(100)]-margin-|";
+    NSString *___hVFL_selectButton=@"H:|-margin-[selectButton]-margin-|";
     NSString *___hVFL_footterButton=@"H:|-margin-[footterButton]-margin-|";
-    NSString *___vVFL_all = @"V:|-margin-[activateTextfield(44)]-margin-[footterButton(44)]";
+    NSString *___vVFL_all = @"V:|-margin-[activateTextfield(44)]-margin-[selectButton(30)]-margin-[footterButton(44)]";
     NSString *___vVFL_activateButton=@"V:[activateButton(44)]";
     
     ///添加约束
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_activateTextfield options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
+    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_selectButton options:0 metrics:___sizeVFL views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_footterButton options:0 metrics:___sizeVFL  views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all  options:0 metrics:___sizeVFL views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activateButton options:0 metrics:___sizeVFL views:___viewsVFL]];

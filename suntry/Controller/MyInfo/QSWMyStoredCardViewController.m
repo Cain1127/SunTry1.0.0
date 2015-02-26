@@ -34,15 +34,6 @@
 
 @implementation QSWMyStoredCardViewController
 
-//-(NSMutableArray *)storedCardDataSource
-//{
-//    if (self.storedCardDataSource==nil) {
-//        self.storedCardDataSource=[[NSMutableArray alloc]init];
-//    }
-//
-//    return self.storedCardDataSource;
-//}
-
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -170,16 +161,14 @@
     
 }
 
-#pragma mark --UICollectionViewDelegate代理方法
-
+#pragma mark - 选择某个储值卡
 //UICollectionView被选中时调用的方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-   //QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row];
-    QSWPayOrderViewController *VC=[[QSWPayOrderViewController alloc] init];
+    QSGoodsDataModel *tempModel = self.storedCardDataSource[indexPath.row];
+    QSWPayOrderViewController *VC=[[QSWPayOrderViewController alloc] initWithID:tempModel.goodsID];
     [self.navigationController pushViewController:VC animated:YES];
-    
     
 }
 
@@ -216,8 +205,6 @@
             NSArray *array = tempModel.goodsListData.goodsList;
             NSLog(@"QSAspecialReturnData : %@",tempModel);
             
-            //设置页码：当前页码/最大页码
-            
             self.storedCardDataSource=[[NSMutableArray alloc]init];
             //清空的数据源
             [self.storedCardDataSource removeAllObjects];
@@ -241,11 +228,6 @@
         
     }];
 
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
