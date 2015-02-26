@@ -83,8 +83,8 @@
     userBanlaceLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:userBanlaceLabel];
     
-    UILabel *banlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH - 60.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 60.0f, 44.0f)];
-    banlaceLabel.text=@"￥0.0f";
+    UILabel *banlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH - 60.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 5.0f, 0.0f, 60.0f, 44.0f)];
+    banlaceLabel.text=@"￥0.0";
     banlaceLabel.textAlignment = NSTextAlignmentRight;
     banlaceLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:banlaceLabel];
