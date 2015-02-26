@@ -7,6 +7,7 @@
 //
 
 #import "QSOrderInfoDataModel.h"
+#import "QSAppDelegate.h"
 
 @implementation QSOrderInfoDataModel
 
@@ -58,6 +59,28 @@
 {
 
     return [NSString stringWithFormat:@"%@AppAliPay/NotifyUrl",REQUEST_ROOT_URL];
+
+}
+
+///支付宝支付的回调设置
+- (void)setAlixpayCallBack:(void (^)(NSString *, NSString *))alixpayCallBack
+{
+
+    ///自身的回调
+    if (_alixpayCallBack != alixpayCallBack) {
+        
+        _alixpayCallBack = nil;
+        _alixpayCallBack = [alixpayCallBack copy];
+        
+    }
+    
+    ///应用的回调
+    QSAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    if (appDelegate.alixPayCallBack != alixpayCallBack) {
+        
+        appDelegate.alixPayCallBack = alixpayCallBack;
+        
+    }
 
 }
 

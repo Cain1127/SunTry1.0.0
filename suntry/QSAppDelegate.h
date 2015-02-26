@@ -12,4 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+///支付宝支付的回调block
+@property (nonatomic,copy) void(^alixPayCallBack)(NSString *payCode,NSString *payInfo);
+
 @end

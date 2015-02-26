@@ -444,6 +444,9 @@
             [[QSAlixPayManager shareAlixPayManager] startAlixPay:orderReturnModel];
             
         } else {
+            
+            ///隐藏HUD
+            [self.hud hide:YES];
         
             ///订单生成失败
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"订单提交失败，请稍后再试……" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
@@ -549,7 +552,7 @@
     [self.hud hide:YES];
     
     ///支付失败
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"支付失败，请稍后再试……代码%@ 说明：%@",payCode,payInfo] delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"支付失败，请稍后再试……"] delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
     [alertView show];
     
     ///显示1秒后移聊
