@@ -236,11 +236,32 @@
 - (void)turnBackAction
 {
     
+    ///判断是否是返回给定的页面
+    if (self.pageGap > 2) {
+        
+        NSArray *vcArray = self.navigationController.viewControllers;
+        NSInteger index = [vcArray count] - self.pageGap;
+        if (index >= 0) {
+            
+            UIViewController *tempVC = self.navigationController.viewControllers[index];
+            [self.navigationController popToViewController:tempVC animated:YES];
+            
+        } else {
+        
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        
+        }
+        
+        return;
+        
+    }
+    
+    ///正常返回
     [self.navigationController popViewControllerAnimated:YES];
     
 }
 
-#pragma mark --按钮事件
+#pragma mark - 按钮事件
 ///点击充值储存卡
 - (IBAction)chargeButton:(id)sender
 {

@@ -35,6 +35,8 @@
 
 @property (nonatomic,retain) MBProgressHUD *hud;                        //!<HUD
 
+@property (nonatomic,retain) QSOrderInfoDataModel *orderFormModel;      //!<订单模型
+
 @end
 
 @implementation QSWPayOrderViewController
@@ -341,6 +343,14 @@
     ///显示HUD
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
+    ///判断是否再次支付
+    if (self.orderFormModel) {
+        
+        ///进入支付宝
+        [[QSAlixPayManager shareAlixPayManager] startAlixPay:self.orderFormModel];
+        return;
+    }
+    
     ///储值卡模型
     __block QSGoodsDataModel *tempModel = self.storedCardDataSource[self.selectedIndex];
     
@@ -420,33 +430,37 @@
             
             ///设置参数
             QSAddOrderReturnData *tempReturnModel = resultData;
-            QSOrderInfoDataModel *orderReturnModel = tempReturnModel.orderInfoList[0];
+            self.orderFormModel = tempReturnModel.orderInfoList[0];
             
             ///订单标题
-            orderReturnModel.orderTitle = [NSString stringWithFormat:@"购买储蓄卡(%@)",tempModel.goodsName];
+            self.orderFormModel.orderTitle = [NSString stringWithFormat:@"购买储蓄卡(%@)",tempModel.goodsName];
             
             ///订单描述
-            orderReturnModel.des = [NSString stringWithFormat:@"在线购买储蓄卡(￥%@)，%@",tempModel.goodsPrice,tempModel.goodsName];
+            self.orderFormModel.des = [NSString stringWithFormat:@"在线购买储蓄卡(￥%@)，%@",tempModel.goodsPrice,tempModel.goodsName];
             
             ///支付金额
-            orderReturnModel.payPrice = tempModel.goodsPrice;
+            self.orderFormModel.payPrice = tempModel.goodsPrice;
             
             ///回调
-            __block NSString *orderID = orderReturnModel.order_id;
-            orderReturnModel.alixpayCallBack = ^(NSString *payCode,NSString *payInfo){
+            __block NSString *orderID = self.orderFormModel.order_id;
+            __weak QSWPayOrderViewController *weakSelf = self;
+            self.orderFormModel.alixpayCallBack = ^(NSString *payCode,NSString *payInfo){
             
                 ///处理支付宝的回调结果
-                [self checkPayResultWithCode:payCode andPayResultInfo:payInfo andOrderID:orderID];
+                [weakSelf checkPayResultWithCode:payCode andPayResultInfo:payInfo andOrderID:orderID];
             
             };
             
             ///进入支付宝
-            [[QSAlixPayManager shareAlixPayManager] startAlixPay:orderReturnModel];
+            [[QSAlixPayManager shareAlixPayManager] startAlixPay:self.orderFormModel];
             
         } else {
             
             ///隐藏HUD
             [self.hud hide:YES];
+            
+            ///重置订单模型
+            self.orderFormModel = nil;
         
             ///订单生成失败
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"订单提交失败，请稍后再试……" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
@@ -571,8 +585,20 @@
 
     ///保存当前选择的储值卡
     QSGoodsDataModel *tempModel = self.storedCardDataSource[indexPath.row];
-    self.selectedID = tempModel.goodsID;
-    self.selectedIndex = (int)indexPath.row;
+    
+    ///判断当前选择的是否和原来的相同
+    if (self.selectedIndex == indexPath.row) {
+        
+        self.selectedID = tempModel.goodsID;
+        self.selectedIndex = (int)indexPath.row;
+        
+    } else {
+    
+        self.selectedID = tempModel.goodsID;
+        self.selectedIndex = (int)indexPath.row;
+        self.orderFormModel = nil;
+    
+    }
 
 }
 
