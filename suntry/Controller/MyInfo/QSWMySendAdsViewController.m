@@ -46,7 +46,14 @@
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
-    self.title=@"送餐地址管理";
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"送餐地址管理"];
+    self.navigationItem.titleView = navTitle;
+    
     [self setupGrounp0];
     [self setupFooter];
     

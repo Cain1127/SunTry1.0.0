@@ -28,7 +28,6 @@
 #import "QSUserStoredCardReturnData.h"
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
-
 #import "QSUserStoredCardReturnData.h"
 #import "MJRefresh.h"
 
@@ -58,6 +57,13 @@
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
     self.navigationItem.backBarButtonItem=backItem;
     backItem.title=@"";
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"我的"];
+    self.navigationItem.titleView = navTitle;
     
     ///添加储值卡购买后刷新数据的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getStoredCardList) name:@"buyStoreCardSuccess" object:nil];
@@ -215,7 +221,7 @@
         
     }
     
-    //每日特价信息请求参数
+    //储存卡信息请求参数
     NSDictionary *dict = @{@"type" : @"", @"key" : @"",@"flag":@"income"};
     
     [QSRequestManager requestDataWithType:rRequestTypeStoredCard andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {

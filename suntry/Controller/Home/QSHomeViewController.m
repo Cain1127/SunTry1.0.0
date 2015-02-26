@@ -487,7 +487,7 @@ typedef enum {
         self.isShowSearchStreetList = NO;
         [self.searchListTableView reloadData];
         
-        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
+     QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
         [self.navigationController pushViewController:VC animated:YES];
         return;
         
@@ -508,7 +508,7 @@ typedef enum {
         self.isShowSearchStreetList = NO;
         [self.searchListTableView reloadData];
         
-        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
+        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
         [self.navigationController pushViewController:VC animated:YES];
         return;
         
@@ -521,7 +521,7 @@ typedef enum {
         
     } else {
         
-        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西"];
+        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
         [self.navigationController pushViewController:VC animated:YES];
         
     }

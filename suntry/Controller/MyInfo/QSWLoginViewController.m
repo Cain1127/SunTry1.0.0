@@ -34,6 +34,17 @@
 
 - (void)viewDidLoad {
     
+    [super viewDidLoad];
+    
+    ///标题
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"登录"];
+    self.navigationItem.titleView = navTitle;
+    
     ///自定义返回按钮
     UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
     turnBackButton.tintColor = [UIColor whiteColor];
@@ -43,11 +54,6 @@
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
-    
-    [super viewDidLoad];
-    self.title=@"登录";
-    ///密码密文输入
-    ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
     
     [self setupGroup0];
     [self setupGroup1];
@@ -69,6 +75,8 @@
     
     QSWSettingGroup *group = [self addGroup];
     self.passWordItem = [QSWTextFieldItem itemWithTitle:@"输入您的登录密码" andDelegate:self];
+    ///密码密文输入
+    ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
     group.items = @[self.passWordItem];
     
 }

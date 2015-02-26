@@ -18,6 +18,8 @@
 #import "QSPOrderRemarkViewController.h"
 #import "QSWMyCouponViewController.h"
 #import "QSGoodsDataModel.h"
+#import "QSUserInfoDataModel.h"
+#import "QSPPayForOrderViewController.h"
 
 #define ORDERVIEWCONTROLLER_SHIP_BT_BG_COLOR    [UIColor colorWithRed:0.709 green:0.653 blue:0.543 alpha:1.000]
 #define ORDERVIEWCONTROLLER_TITLE_FONT_SIZE     17.
@@ -275,19 +277,29 @@
 
 - (void)updateAddress
 {
+    QSUserInfoDataModel *userData = [QSUserInfoDataModel userDataModel];
     
-    BOOL hasAddress = YES;
-    if (hasAddress) {
-        
-        [_shipToPersonName setText:@"李先生    18688888888"];
-        [_shipToAddress setText:@"地址：广州市天河区体育西路城建大厦五楼"];
-        
+    if (userData && userData.address) {
+        BOOL hasAddress = ![userData.address isEqualToString:@""];
+        if (hasAddress) {
+            
+//            [_shipToPersonName setText:@"李先生    18688888888"];
+//            [_shipToAddress setText:@"地址：广州市天河区体育西路城建大厦五楼"];
+            [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",userData.receidName, userData.phone]];
+            [_shipToAddress setText:userData.address];
+            
+        }else{
+            
+            QSPOrderAddNewAddressView *addNewAddView = [QSPOrderAddNewAddressView getAddNewAddressView];
+            [self.navigationController.view addSubview:addNewAddView];
+            [addNewAddView setDelegate:self];
+            [addNewAddView showAddNewAddressView];
+            
+        }
     }else{
-        
-        
+        //没有用户数据
         
     }
-    
 }
 
 - (void)updateHadOrderCount
@@ -390,7 +402,8 @@
     tempFrame.origin.y = _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height;
     [_specialOfferFrameView setFrame:tempFrame];
     
-    NSArray *specialOfferList = [NSArray arrayWithObjects:@"", nil];
+    //TODO: 用户的优惠券设置
+    NSArray *specialOfferList = [NSArray array];//[NSArray arrayWithObjects:@"", nil];
     
     for (UIView *view in [_specialOfferFrameView subviews]) {
         if (view.tag>=8000&&view.tag<8009) {
@@ -535,10 +548,19 @@
         UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请选择支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertview show];
         
+    }else if (currentSelectPayment == PaymentTypePayCrads) {
+        
+        QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
+        [self.navigationController pushViewController:pfovc animated:YES];
     }
     
     return flag;
     
+}
+
+- (void)AddNewAddressWithData:(id)data
+{
+    NSLog(@"添加新地址：%@",data);
 }
 
 /*

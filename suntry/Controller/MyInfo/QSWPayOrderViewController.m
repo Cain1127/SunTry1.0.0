@@ -53,7 +53,7 @@
  */
 - (instancetype)initWithID:(NSString *)storeCarID
 {
-
+    
     if (self = [super init]) {
         
         ///保存当前选择的储值卡ID
@@ -66,7 +66,7 @@
     }
     
     return self;
-
+    
 }
 
 #pragma mark - UI搭建
@@ -85,7 +85,14 @@
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
-    self.title=@"支付订单";
+    ///标题
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"支付订单"];
+    self.navigationItem.titleView = navTitle;
     self.view.backgroundColor=[UIColor whiteColor];
     
     ///加载储值卡数据
@@ -174,10 +181,11 @@
     [putPayButton setTitle:@"提交支付" forState:UIControlStateNormal];
     [putPayButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     putPayButton.backgroundColor=COLOR_CHARACTERS_RED;
+    putPayButton.layer.cornerRadius=6.0f;
     
     [putPayButton addTarget:self action:@selector(putPayButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:putPayButton];
-
+    
 }
 
 #pragma mark - 返回可购买的储值卡数量
@@ -221,7 +229,6 @@
     priceLabel.textAlignment=NSTextAlignmentCenter;
     priceLabel.text=[NSString stringWithFormat:@"￥%@",tempModel.goodsPrice];
     priceLabel.font=[UIFont systemFontOfSize:20];
-    priceLabel.tintColor = [UIColor whiteColor];
     priceLabel.tag = 98;
     
     UILabel *specialLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height*0.5+5.0f, cell.frame.size.width, cell.frame.size.height*0.2)];
@@ -229,7 +236,6 @@
     specialLabel.textAlignment=NSTextAlignmentCenter;
     specialLabel.text=[NSString stringWithFormat:@"送￥%@",tempModel.presentPrice];
     specialLabel.font=[UIFont systemFontOfSize:16];
-    specialLabel.tintColor = [UIColor whiteColor];
     specialLabel.tag = 99;
     
     ///加边框
@@ -259,9 +265,9 @@
         [collectionView selectItemAtIndexPath:[NSIndexPath indexPathWithIndex:indexPath.row] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
     } else if (self.selectedID && ([self.selectedID intValue] == [tempModel.goodsID intValue])) {
-    
+        
         [collectionView selectItemAtIndexPath:[NSIndexPath indexPathWithIndex:indexPath.row] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-    
+        
     }
     
     return cell;
@@ -272,6 +278,7 @@
 ///提交支付
 -(void)putPayButtonAction
 {
+
 
     /**
      *  user_id 用户id

@@ -46,8 +46,16 @@
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
-
-    self.title=@"我的储值卡";
+    
+    ///标题
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"我的储值卡"];
+    self.navigationItem.titleView = navTitle;
+    
     self.view.backgroundColor=[UIColor whiteColor];
     
     ///加载储值卡数据

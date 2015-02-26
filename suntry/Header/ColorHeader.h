@@ -26,4 +26,7 @@
 ///肝红色
 #define COLOR_CHARACTERS_RED COLOR_HEXCOLOR(0x812E3D)
 
+///边线颜色(银色)
+#define COLOR_CHARACTERS_ROOTLINE     [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
+
 #endif
