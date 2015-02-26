@@ -39,9 +39,22 @@
 		1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */; };
 		1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */; };
 		1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */; };
-		473901D51A9DA8C9000ECF41 /* QSPOrderAddNewAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 473901D41A9DA8C9000ECF41 /* QSPOrderAddNewAddressView.m */; };
-		473901D81A9DCB3B000ECF41 /* QSPAddNewAddressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 473901D71A9DCB3B000ECF41 /* QSPAddNewAddressTextField.m */; };
-		473901DC1A9EBEC8000ECF41 /* QSPPayForOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 473901DB1A9EBEC8000ECF41 /* QSPPayForOrderViewController.m */; };
+		4739023B1A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902171A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m */; };
+		4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902191A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m */; };
+		4739023D1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739021B1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m */; };
+		4739023E1A9EF3D4000ECF41 /* QSPFoodPackageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739021D1A9EF3D4000ECF41 /* QSPFoodPackageView.m */; };
+		4739023F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739021F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m */; };
+		473902401A9EF3D4000ECF41 /* QSPointMealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902211A9EF3D4000ECF41 /* QSPointMealViewController.m */; };
+		473902411A9EF3D4000ECF41 /* QSPFoodCountControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902241A9EF3D4000ECF41 /* QSPFoodCountControlView.m */; };
+		473902421A9EF3D4000ECF41 /* QSPAddNewAddressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902281A9EF3D4000ECF41 /* QSPAddNewAddressTextField.m */; };
+		473902431A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739022A1A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.m */; };
+		473902441A9EF3D4000ECF41 /* QSPOrderPaymentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739022C1A9EF3D4000ECF41 /* QSPOrderPaymentView.m */; };
+		473902451A9EF3D4000ECF41 /* QSPOrderRemarkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739022E1A9EF3D4000ECF41 /* QSPOrderRemarkViewController.m */; };
+		473902461A9EF3D4000ECF41 /* QSPOrderSubmitedStateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902301A9EF3D4000ECF41 /* QSPOrderSubmitedStateViewController.m */; };
+		473902471A9EF3D4000ECF41 /* QSPOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902321A9EF3D4000ECF41 /* QSPOrderViewController.m */; };
+		473902481A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902341A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m */; };
+		473902491A9EF3D4000ECF41 /* QSPPayForOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902371A9EF3D4000ECF41 /* QSPPayForOrderViewController.m */; };
+		4739024A1A9EF3D4000ECF41 /* QSPShoppingCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
 		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
 		CE207ABD1A9073FE00ACF741 /* QSWStoredCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207ABC1A9073FE00ACF741 /* QSWStoredCardCell.m */; };
@@ -103,19 +116,6 @@
 		CEEAC3941A8CA4EF009AC6AA /* QSDistrictReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3881A8CA4EF009AC6AA /* QSDistrictReturnData.m */; };
 		CEEAC3951A8CA4EF009AC6AA /* QSGoodsListReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC38A1A8CA4EF009AC6AA /* QSGoodsListReturnData.m */; };
 		CEEAC3961A8CA4EF009AC6AA /* QSSelectReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC38C1A8CA4EF009AC6AA /* QSSelectReturnData.m */; };
-		CEEAC3B31A8CA517009AC6AA /* QSPFoodCountControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC39A1A8CA517009AC6AA /* QSPFoodCountControlView.m */; };
-		CEEAC3B41A8CA517009AC6AA /* QSPFoodInfoListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC39C1A8CA517009AC6AA /* QSPFoodInfoListTableViewCell.m */; };
-		CEEAC3B51A8CA517009AC6AA /* QSPFoodPackageItemGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC39E1A8CA517009AC6AA /* QSPFoodPackageItemGridView.m */; };
-		CEEAC3B61A8CA517009AC6AA /* QSPFoodPackageItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3A01A8CA517009AC6AA /* QSPFoodPackageItemView.m */; };
-		CEEAC3B71A8CA517009AC6AA /* QSPFoodPackageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3A21A8CA517009AC6AA /* QSPFoodPackageView.m */; };
-		CEEAC3B81A8CA517009AC6AA /* QSPFoodTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3A41A8CA517009AC6AA /* QSPFoodTypeTableViewCell.m */; };
-		CEEAC3B91A8CA517009AC6AA /* QSPointMealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3A61A8CA517009AC6AA /* QSPointMealViewController.m */; };
-		CEEAC3BA1A8CA517009AC6AA /* QSPOrderPaymentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3A81A8CA517009AC6AA /* QSPOrderPaymentView.m */; };
-		CEEAC3BB1A8CA517009AC6AA /* QSPOrderRemarkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3AA1A8CA517009AC6AA /* QSPOrderRemarkViewController.m */; };
-		CEEAC3BC1A8CA517009AC6AA /* QSPOrderSubmitedStateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3AC1A8CA517009AC6AA /* QSPOrderSubmitedStateViewController.m */; };
-		CEEAC3BD1A8CA517009AC6AA /* QSPOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3AE1A8CA517009AC6AA /* QSPOrderViewController.m */; };
-		CEEAC3BE1A8CA517009AC6AA /* QSPOrderViewHadOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3B01A8CA517009AC6AA /* QSPOrderViewHadOrderCell.m */; };
-		CEEAC3BF1A8CA517009AC6AA /* QSPShoppingCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3B21A8CA517009AC6AA /* QSPShoppingCarView.m */; };
 		CEEAC3C21A8CCC72009AC6AA /* QSWEditSendAdsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3C11A8CCC72009AC6AA /* QSWEditSendAdsViewController.m */; };
 		CEEAC3C51A8D0B34009AC6AA /* QSWLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3C41A8D0B34009AC6AA /* QSWLoginViewController.m */; };
 		CEEAC3C81A8D0DA7009AC6AA /* QSWRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAC3C71A8D0DA7009AC6AA /* QSWRegisterViewController.m */; };
@@ -203,12 +203,38 @@
 		1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSUserManager.m; path = User/QSUserManager.m; sourceTree = "<group>"; };
 		1878D4C01A9043B200AF68A4 /* QSSearchHistoryDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSSearchHistoryDataModel.h; path = Search/QSSearchHistoryDataModel.h; sourceTree = "<group>"; };
 		1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSSearchHistoryDataModel.m; path = Search/QSSearchHistoryDataModel.m; sourceTree = "<group>"; };
-		473901D31A9DA8C9000ECF41 /* QSPOrderAddNewAddressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderAddNewAddressView.h; sourceTree = "<group>"; };
-		473901D41A9DA8C9000ECF41 /* QSPOrderAddNewAddressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderAddNewAddressView.m; sourceTree = "<group>"; };
-		473901D61A9DCB3B000ECF41 /* QSPAddNewAddressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPAddNewAddressTextField.h; sourceTree = "<group>"; };
-		473901D71A9DCB3B000ECF41 /* QSPAddNewAddressTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPAddNewAddressTextField.m; sourceTree = "<group>"; };
-		473901DA1A9EBEC8000ECF41 /* QSPPayForOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPPayForOrderViewController.h; sourceTree = "<group>"; };
-		473901DB1A9EBEC8000ECF41 /* QSPPayForOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPPayForOrderViewController.m; sourceTree = "<group>"; };
+		473902161A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodInfoListTableViewCell.h; sourceTree = "<group>"; };
+		473902171A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodInfoListTableViewCell.m; sourceTree = "<group>"; };
+		473902181A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodPackageItemGridView.h; sourceTree = "<group>"; };
+		473902191A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodPackageItemGridView.m; sourceTree = "<group>"; };
+		4739021A1A9EF3D4000ECF41 /* QSPFoodPackageItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodPackageItemView.h; sourceTree = "<group>"; };
+		4739021B1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodPackageItemView.m; sourceTree = "<group>"; };
+		4739021C1A9EF3D4000ECF41 /* QSPFoodPackageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodPackageView.h; sourceTree = "<group>"; };
+		4739021D1A9EF3D4000ECF41 /* QSPFoodPackageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodPackageView.m; sourceTree = "<group>"; };
+		4739021E1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodTypeTableViewCell.h; sourceTree = "<group>"; };
+		4739021F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodTypeTableViewCell.m; sourceTree = "<group>"; };
+		473902201A9EF3D4000ECF41 /* QSPointMealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPointMealViewController.h; sourceTree = "<group>"; };
+		473902211A9EF3D4000ECF41 /* QSPointMealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPointMealViewController.m; sourceTree = "<group>"; };
+		473902231A9EF3D4000ECF41 /* QSPFoodCountControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodCountControlView.h; sourceTree = "<group>"; };
+		473902241A9EF3D4000ECF41 /* QSPFoodCountControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodCountControlView.m; sourceTree = "<group>"; };
+		473902271A9EF3D4000ECF41 /* QSPAddNewAddressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPAddNewAddressTextField.h; sourceTree = "<group>"; };
+		473902281A9EF3D4000ECF41 /* QSPAddNewAddressTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPAddNewAddressTextField.m; sourceTree = "<group>"; };
+		473902291A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderAddNewAddressView.h; sourceTree = "<group>"; };
+		4739022A1A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderAddNewAddressView.m; sourceTree = "<group>"; };
+		4739022B1A9EF3D4000ECF41 /* QSPOrderPaymentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderPaymentView.h; sourceTree = "<group>"; };
+		4739022C1A9EF3D4000ECF41 /* QSPOrderPaymentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderPaymentView.m; sourceTree = "<group>"; };
+		4739022D1A9EF3D4000ECF41 /* QSPOrderRemarkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderRemarkViewController.h; sourceTree = "<group>"; };
+		4739022E1A9EF3D4000ECF41 /* QSPOrderRemarkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderRemarkViewController.m; sourceTree = "<group>"; };
+		4739022F1A9EF3D4000ECF41 /* QSPOrderSubmitedStateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderSubmitedStateViewController.h; sourceTree = "<group>"; };
+		473902301A9EF3D4000ECF41 /* QSPOrderSubmitedStateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderSubmitedStateViewController.m; sourceTree = "<group>"; };
+		473902311A9EF3D4000ECF41 /* QSPOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderViewController.h; sourceTree = "<group>"; };
+		473902321A9EF3D4000ECF41 /* QSPOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderViewController.m; sourceTree = "<group>"; };
+		473902331A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderViewHadOrderCell.h; sourceTree = "<group>"; };
+		473902341A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderViewHadOrderCell.m; sourceTree = "<group>"; };
+		473902361A9EF3D4000ECF41 /* QSPPayForOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPPayForOrderViewController.h; sourceTree = "<group>"; };
+		473902371A9EF3D4000ECF41 /* QSPPayForOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPPayForOrderViewController.m; sourceTree = "<group>"; };
+		473902391A9EF3D4000ECF41 /* QSPShoppingCarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPShoppingCarView.h; sourceTree = "<group>"; };
+		4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPShoppingCarView.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,32 +361,6 @@
 		CEEAC38A1A8CA4EF009AC6AA /* QSGoodsListReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSGoodsListReturnData.m; sourceTree = "<group>"; };
 		CEEAC38B1A8CA4EF009AC6AA /* QSSelectReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSSelectReturnData.h; sourceTree = "<group>"; };
 		CEEAC38C1A8CA4EF009AC6AA /* QSSelectReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSSelectReturnData.m; sourceTree = "<group>"; };
-		CEEAC3991A8CA517009AC6AA /* QSPFoodCountControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodCountControlView.h; sourceTree = "<group>"; };
-		CEEAC39A1A8CA517009AC6AA /* QSPFoodCountControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodCountControlView.m; sourceTree = "<group>"; };
-		CEEAC39B1A8CA517009AC6AA /* QSPFoodInfoListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodInfoListTableViewCell.h; sourceTree = "<group>"; };
-		CEEAC39C1A8CA517009AC6AA /* QSPFoodInfoListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodInfoListTableViewCell.m; sourceTree = "<group>"; };
-		CEEAC39D1A8CA517009AC6AA /* QSPFoodPackageItemGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodPackageItemGridView.h; sourceTree = "<group>"; };
-		CEEAC39E1A8CA517009AC6AA /* QSPFoodPackageItemGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodPackageItemGridView.m; sourceTree = "<group>"; };
-		CEEAC39F1A8CA517009AC6AA /* QSPFoodPackageItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodPackageItemView.h; sourceTree = "<group>"; };
-		CEEAC3A01A8CA517009AC6AA /* QSPFoodPackageItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodPackageItemView.m; sourceTree = "<group>"; };
-		CEEAC3A11A8CA517009AC6AA /* QSPFoodPackageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodPackageView.h; sourceTree = "<group>"; };
-		CEEAC3A21A8CA517009AC6AA /* QSPFoodPackageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodPackageView.m; sourceTree = "<group>"; };
-		CEEAC3A31A8CA517009AC6AA /* QSPFoodTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodTypeTableViewCell.h; sourceTree = "<group>"; };
-		CEEAC3A41A8CA517009AC6AA /* QSPFoodTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodTypeTableViewCell.m; sourceTree = "<group>"; };
-		CEEAC3A51A8CA517009AC6AA /* QSPointMealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPointMealViewController.h; sourceTree = "<group>"; };
-		CEEAC3A61A8CA517009AC6AA /* QSPointMealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPointMealViewController.m; sourceTree = "<group>"; };
-		CEEAC3A71A8CA517009AC6AA /* QSPOrderPaymentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderPaymentView.h; sourceTree = "<group>"; };
-		CEEAC3A81A8CA517009AC6AA /* QSPOrderPaymentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderPaymentView.m; sourceTree = "<group>"; };
-		CEEAC3A91A8CA517009AC6AA /* QSPOrderRemarkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderRemarkViewController.h; sourceTree = "<group>"; };
-		CEEAC3AA1A8CA517009AC6AA /* QSPOrderRemarkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderRemarkViewController.m; sourceTree = "<group>"; };
-		CEEAC3AB1A8CA517009AC6AA /* QSPOrderSubmitedStateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderSubmitedStateViewController.h; sourceTree = "<group>"; };
-		CEEAC3AC1A8CA517009AC6AA /* QSPOrderSubmitedStateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderSubmitedStateViewController.m; sourceTree = "<group>"; };
-		CEEAC3AD1A8CA517009AC6AA /* QSPOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderViewController.h; sourceTree = "<group>"; };
-		CEEAC3AE1A8CA517009AC6AA /* QSPOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderViewController.m; sourceTree = "<group>"; };
-		CEEAC3AF1A8CA517009AC6AA /* QSPOrderViewHadOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderViewHadOrderCell.h; sourceTree = "<group>"; };
-		CEEAC3B01A8CA517009AC6AA /* QSPOrderViewHadOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderViewHadOrderCell.m; sourceTree = "<group>"; };
-		CEEAC3B11A8CA517009AC6AA /* QSPShoppingCarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPShoppingCarView.h; sourceTree = "<group>"; };
-		CEEAC3B21A8CA517009AC6AA /* QSPShoppingCarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPShoppingCarView.m; sourceTree = "<group>"; };
 		CEEAC3C01A8CCC72009AC6AA /* QSWEditSendAdsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWEditSendAdsViewController.h; sourceTree = "<group>"; };
 		CEEAC3C11A8CCC72009AC6AA /* QSWEditSendAdsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWEditSendAdsViewController.m; sourceTree = "<group>"; };
 		CEEAC3C31A8D0B34009AC6AA /* QSWLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWLoginViewController.h; sourceTree = "<group>"; };
@@ -617,24 +617,91 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		473901D21A9DA889000ECF41 /* AddNewAddresView */ = {
+		473902141A9EF3D4000ECF41 /* PointMeal */ = {
 			isa = PBXGroup;
 			children = (
-				473901D31A9DA8C9000ECF41 /* QSPOrderAddNewAddressView.h */,
-				473901D41A9DA8C9000ECF41 /* QSPOrderAddNewAddressView.m */,
-				473901D61A9DCB3B000ECF41 /* QSPAddNewAddressTextField.h */,
-				473901D71A9DCB3B000ECF41 /* QSPAddNewAddressTextField.m */,
+				473902151A9EF3D4000ECF41 /* ALLFoodList */,
+				473902221A9EF3D4000ECF41 /* FoodCountControlView */,
+				473902251A9EF3D4000ECF41 /* Order */,
+				473902351A9EF3D4000ECF41 /* PayForOrder */,
+				473902381A9EF3D4000ECF41 /* ShoppingCar */,
+			);
+			path = PointMeal;
+			sourceTree = "<group>";
+		};
+		473902151A9EF3D4000ECF41 /* ALLFoodList */ = {
+			isa = PBXGroup;
+			children = (
+				473902161A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.h */,
+				473902171A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m */,
+				473902181A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.h */,
+				473902191A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m */,
+				4739021A1A9EF3D4000ECF41 /* QSPFoodPackageItemView.h */,
+				4739021B1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m */,
+				4739021C1A9EF3D4000ECF41 /* QSPFoodPackageView.h */,
+				4739021D1A9EF3D4000ECF41 /* QSPFoodPackageView.m */,
+				4739021E1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.h */,
+				4739021F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m */,
+				473902201A9EF3D4000ECF41 /* QSPointMealViewController.h */,
+				473902211A9EF3D4000ECF41 /* QSPointMealViewController.m */,
+			);
+			path = ALLFoodList;
+			sourceTree = "<group>";
+		};
+		473902221A9EF3D4000ECF41 /* FoodCountControlView */ = {
+			isa = PBXGroup;
+			children = (
+				473902231A9EF3D4000ECF41 /* QSPFoodCountControlView.h */,
+				473902241A9EF3D4000ECF41 /* QSPFoodCountControlView.m */,
+			);
+			path = FoodCountControlView;
+			sourceTree = "<group>";
+		};
+		473902251A9EF3D4000ECF41 /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				473902261A9EF3D4000ECF41 /* AddNewAddresView */,
+				4739022B1A9EF3D4000ECF41 /* QSPOrderPaymentView.h */,
+				4739022C1A9EF3D4000ECF41 /* QSPOrderPaymentView.m */,
+				4739022D1A9EF3D4000ECF41 /* QSPOrderRemarkViewController.h */,
+				4739022E1A9EF3D4000ECF41 /* QSPOrderRemarkViewController.m */,
+				4739022F1A9EF3D4000ECF41 /* QSPOrderSubmitedStateViewController.h */,
+				473902301A9EF3D4000ECF41 /* QSPOrderSubmitedStateViewController.m */,
+				473902311A9EF3D4000ECF41 /* QSPOrderViewController.h */,
+				473902321A9EF3D4000ECF41 /* QSPOrderViewController.m */,
+				473902331A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.h */,
+				473902341A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
+		473902261A9EF3D4000ECF41 /* AddNewAddresView */ = {
+			isa = PBXGroup;
+			children = (
+				473902271A9EF3D4000ECF41 /* QSPAddNewAddressTextField.h */,
+				473902281A9EF3D4000ECF41 /* QSPAddNewAddressTextField.m */,
+				473902291A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.h */,
+				4739022A1A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.m */,
 			);
 			path = AddNewAddresView;
 			sourceTree = "<group>";
 		};
-		473901D91A9EBEAC000ECF41 /* PayForOrder */ = {
+		473902351A9EF3D4000ECF41 /* PayForOrder */ = {
 			isa = PBXGroup;
 			children = (
-				473901DA1A9EBEC8000ECF41 /* QSPPayForOrderViewController.h */,
-				473901DB1A9EBEC8000ECF41 /* QSPPayForOrderViewController.m */,
+				473902361A9EF3D4000ECF41 /* QSPPayForOrderViewController.h */,
+				473902371A9EF3D4000ECF41 /* QSPPayForOrderViewController.m */,
 			);
 			path = PayForOrder;
+			sourceTree = "<group>";
+		};
+		473902381A9EF3D4000ECF41 /* ShoppingCar */ = {
+			isa = PBXGroup;
+			children = (
+				473902391A9EF3D4000ECF41 /* QSPShoppingCarView.h */,
+				4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */,
+			);
+			path = ShoppingCar;
 			sourceTree = "<group>";
 		};
 		CE207ABE1A917FAD00ACF741 /* StoredCard */ = {
@@ -649,7 +716,7 @@
 		CE53412C1A7FA4CE002BA188 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CEEAC3971A8CA517009AC6AA /* PointMeal */,
+				473902141A9EF3D4000ECF41 /* PointMeal */,
 				CE7946B21A8B705600C0113B /* Home */,
 				CE5341301A7FA4CE002BA188 /* Main */,
 				CE5341331A7FA4CE002BA188 /* Map */,
@@ -1136,49 +1203,6 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
-		CEEAC3971A8CA517009AC6AA /* PointMeal */ = {
-			isa = PBXGroup;
-			children = (
-				473901D91A9EBEAC000ECF41 /* PayForOrder */,
-				473901D21A9DA889000ECF41 /* AddNewAddresView */,
-				CEEAC3981A8CA517009AC6AA /* Order */,
-				CEEAC3991A8CA517009AC6AA /* QSPFoodCountControlView.h */,
-				CEEAC39A1A8CA517009AC6AA /* QSPFoodCountControlView.m */,
-				CEEAC39B1A8CA517009AC6AA /* QSPFoodInfoListTableViewCell.h */,
-				CEEAC39C1A8CA517009AC6AA /* QSPFoodInfoListTableViewCell.m */,
-				CEEAC39D1A8CA517009AC6AA /* QSPFoodPackageItemGridView.h */,
-				CEEAC39E1A8CA517009AC6AA /* QSPFoodPackageItemGridView.m */,
-				CEEAC39F1A8CA517009AC6AA /* QSPFoodPackageItemView.h */,
-				CEEAC3A01A8CA517009AC6AA /* QSPFoodPackageItemView.m */,
-				CEEAC3A11A8CA517009AC6AA /* QSPFoodPackageView.h */,
-				CEEAC3A21A8CA517009AC6AA /* QSPFoodPackageView.m */,
-				CEEAC3A31A8CA517009AC6AA /* QSPFoodTypeTableViewCell.h */,
-				CEEAC3A41A8CA517009AC6AA /* QSPFoodTypeTableViewCell.m */,
-				CEEAC3A51A8CA517009AC6AA /* QSPointMealViewController.h */,
-				CEEAC3A61A8CA517009AC6AA /* QSPointMealViewController.m */,
-				CEEAC3A71A8CA517009AC6AA /* QSPOrderPaymentView.h */,
-				CEEAC3A81A8CA517009AC6AA /* QSPOrderPaymentView.m */,
-				CEEAC3A91A8CA517009AC6AA /* QSPOrderRemarkViewController.h */,
-				CEEAC3AA1A8CA517009AC6AA /* QSPOrderRemarkViewController.m */,
-				CEEAC3AB1A8CA517009AC6AA /* QSPOrderSubmitedStateViewController.h */,
-				CEEAC3AC1A8CA517009AC6AA /* QSPOrderSubmitedStateViewController.m */,
-				CEEAC3AD1A8CA517009AC6AA /* QSPOrderViewController.h */,
-				CEEAC3AE1A8CA517009AC6AA /* QSPOrderViewController.m */,
-				CEEAC3AF1A8CA517009AC6AA /* QSPOrderViewHadOrderCell.h */,
-				CEEAC3B01A8CA517009AC6AA /* QSPOrderViewHadOrderCell.m */,
-				CEEAC3B11A8CA517009AC6AA /* QSPShoppingCarView.h */,
-				CEEAC3B21A8CA517009AC6AA /* QSPShoppingCarView.m */,
-			);
-			path = PointMeal;
-			sourceTree = "<group>";
-		};
-		CEEAC3981A8CA517009AC6AA /* Order */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Order;
-			sourceTree = "<group>";
-		};
 		CEEAC3CF1A8DA7DF009AC6AA /* Lib */ = {
 			isa = PBXGroup;
 			children = (
@@ -1409,9 +1433,10 @@
 				CE5341801A7FBCAC002BA188 /* UIImage+Compressed.m in Sources */,
 				185343CA1A9ED31000A83039 /* QSAddOrderReturnData.m in Sources */,
 				CE7946B01A8B6F2F00C0113B /* UIImageView+CacheImage.m in Sources */,
-				473901D51A9DA8C9000ECF41 /* QSPOrderAddNewAddressView.m in Sources */,
 				CE5341A31A7FBFAA002BA188 /* UITextField+CustomField.m in Sources */,
+				473902471A9EF3D4000ECF41 /* QSPOrderViewController.m in Sources */,
 				CE7946AF1A8B6F2F00C0113B /* UIImage+Compressed.m in Sources */,
+				473902441A9EF3D4000ECF41 /* QSPOrderPaymentView.m in Sources */,
 				CE5341761A7FBC6F002BA188 /* QSBlockButtonStyleModel.m in Sources */,
 				CEEAC3961A8CA4EF009AC6AA /* QSSelectReturnData.m in Sources */,
 				CE571EEB1A84AF7800609788 /* QSWSettingViewController.m in Sources */,
@@ -1421,87 +1446,86 @@
 				CE207ABD1A9073FE00ACF741 /* QSWStoredCardCell.m in Sources */,
 				CE7946C01A8B705600C0113B /* QSWMerchantIndexViewController.m in Sources */,
 				CEEAC3C21A8CCC72009AC6AA /* QSWEditSendAdsViewController.m in Sources */,
+				4739024A1A9EF3D4000ECF41 /* QSPShoppingCarView.m in Sources */,
 				CE571EF31A84AFB200609788 /* QSWSettingArrowItem.m in Sources */,
-				CEEAC3B41A8CA517009AC6AA /* QSPFoodInfoListTableViewCell.m in Sources */,
 				1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */,
 				CE7946BD1A8B705600C0113B /* QSHomeViewController.m in Sources */,
+				473902481A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m in Sources */,
 				184AE07C1A90730F007A8CBD /* ChineseToPinyinResource.m in Sources */,
 				CE5341A21A7FBFAA002BA188 /* QSImageView+Block.m in Sources */,
 				CEEAC3F21A8DA845009AC6AA /* QSUserAddressListReturnData.m in Sources */,
 				CEEAC3E81A8DA7DF009AC6AA /* UIView+MJExtension.m in Sources */,
-				CEEAC3B61A8CA517009AC6AA /* QSPFoodPackageItemView.m in Sources */,
 				CEEAC38F1A8CA4EF009AC6AA /* QSSelectDataModel.m in Sources */,
-				CEEAC3B91A8CA517009AC6AA /* QSPointMealViewController.m in Sources */,
 				1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */,
 				CEB630BF1A85C21700F64DEE /* QSWAddSendAdsViewController.m in Sources */,
+				4739023D1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m in Sources */,
 				CEEAC3E51A8DA7DF009AC6AA /* MJRefreshHeaderView.m in Sources */,
 				184AE07E1A90730F007A8CBD /* NSString+PinYin4Cocoa.m in Sources */,
 				CEEAC3951A8CA4EF009AC6AA /* QSGoodsListReturnData.m in Sources */,
+				4739023F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m in Sources */,
 				1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */,
+				473902401A9EF3D4000ECF41 /* QSPointMealViewController.m in Sources */,
 				185343B91A91D17B00A83039 /* QSCouponInfoDataModel.m in Sources */,
 				CE5341811A7FBCAC002BA188 /* UIImageView+CacheImage.m in Sources */,
 				184AE0801A90730F007A8CBD /* PinYinForObjc.m in Sources */,
 				1836740F1A7F8FA800BCCF39 /* QSAppDelegate.m in Sources */,
-				473901DC1A9EBEC8000ECF41 /* QSPPayForOrderViewController.m in Sources */,
 				CEEAC3911A8CA4EF009AC6AA /* QSGoodsDataModel.m in Sources */,
 				184AE0811A90730F007A8CBD /* PinyinHelper.m in Sources */,
 				CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */,
 				CEEAC3941A8CA4EF009AC6AA /* QSDistrictReturnData.m in Sources */,
 				CEB630BC1A85BE0C00F64DEE /* QSWTextFieldItem.m in Sources */,
 				CEEAC38E1A8CA4EF009AC6AA /* QSDistrictDataModel.m in Sources */,
-				CEEAC3BB1A8CA517009AC6AA /* QSPOrderRemarkViewController.m in Sources */,
-				CEEAC3BA1A8CA517009AC6AA /* QSPOrderPaymentView.m in Sources */,
-				473901D81A9DCB3B000ECF41 /* QSPAddNewAddressTextField.m in Sources */,
-				CEEAC3BF1A8CA517009AC6AA /* QSPShoppingCarView.m in Sources */,
 				CE53415B1A7FA527002BA188 /* QSMapManager.m in Sources */,
 				CE571F071A84C92B00609788 /* QSWUserSettingViewController.m in Sources */,
 				CE571EF41A84AFB200609788 /* QSWSettingItem.m in Sources */,
 				CE7946BE1A8B705600C0113B /* QSPShakeFoodView.m in Sources */,
 				CEB630CB1A88643A00F64DEE /* QSWSettingButtonItem.m in Sources */,
 				184AE07F1A90730F007A8CBD /* PinyinFormatter.m in Sources */,
-				CEEAC3B51A8CA517009AC6AA /* QSPFoodPackageItemGridView.m in Sources */,
 				CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */,
 				1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */,
+				4739023B1A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m in Sources */,
+				473902411A9EF3D4000ECF41 /* QSPFoodCountControlView.m in Sources */,
 				CE53415C1A7FA527002BA188 /* QSRequestManager.m in Sources */,
 				CEEAC3E71A8DA7DF009AC6AA /* UIScrollView+MJRefresh.m in Sources */,
+				4739023E1A9EF3D4000ECF41 /* QSPFoodPackageView.m in Sources */,
 				CEEAC3E61A8DA7DF009AC6AA /* UIScrollView+MJExtension.m in Sources */,
 				CEEAC3CE1A8D0F7D009AC6AA /* QSWResetPswController.m in Sources */,
 				CEEAC3E21A8DA7DF009AC6AA /* MJRefreshBaseView.m in Sources */,
+				473902451A9EF3D4000ECF41 /* QSPOrderRemarkViewController.m in Sources */,
 				CEEAC3E31A8DA7DF009AC6AA /* MJRefreshConst.m in Sources */,
 				CE571EF21A84AFB200609788 /* QSWSettingGroup.m in Sources */,
 				CEEAC3901A8CA4EF009AC6AA /* QSHeaderDataModel.m in Sources */,
 				CECCC32C1A8EE70B0079F224 /* QSRegisterDataModel.m in Sources */,
 				185343B11A91883800A83039 /* NSString+Format.m in Sources */,
 				CEEAC3CB1A8D0F36009AC6AA /* QSWForgetPswController.m in Sources */,
-				CEEAC3B71A8CA517009AC6AA /* QSPFoodPackageView.m in Sources */,
 				CE7946BF1A8B705600C0113B /* QSWMerchantIndexCell.m in Sources */,
 				CE5341A91A7FC268002BA188 /* QSTextField.m in Sources */,
+				473902491A9EF3D4000ECF41 /* QSPPayForOrderViewController.m in Sources */,
 				CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */,
+				473902431A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.m in Sources */,
 				CE571EF71A84AFEE00609788 /* QSWSettingCell.m in Sources */,
 				CEEAC3E41A8DA7DF009AC6AA /* MJRefreshFooterView.m in Sources */,
 				CE5341481A7FA4CE002BA188 /* QSMyinfoViewController.m in Sources */,
 				CEEAC3931A8CA4EF009AC6AA /* QSBaseModel.m in Sources */,
+				4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,
 				CE6ED5AE1A89EEF7009FF8A7 /* QSOrderListViewController.m in Sources */,
 				CEEAC3921A8CA4EF009AC6AA /* QSMSGModel.m in Sources */,
 				184AE07D1A90730F007A8CBD /* HanyuPinyinOutputFormat.m in Sources */,
-				CEEAC3BC1A8CA517009AC6AA /* QSPOrderSubmitedStateViewController.m in Sources */,
 				CEB630CE1A88A01700F64DEE /* QSWTheSuntryView.m in Sources */,
 				CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */,
 				CEB630C21A865BAF00F64DEE /* QSWLabelItem.m in Sources */,
-				CEEAC3BE1A8CA517009AC6AA /* QSPOrderViewHadOrderCell.m in Sources */,
 				CE571F011A84C86A00609788 /* QSWMyStoredCardViewController.m in Sources */,
-				CEEAC3BD1A8CA517009AC6AA /* QSPOrderViewController.m in Sources */,
 				CE207AC11A917FE200ACF741 /* QSUserStoredCardReturnData.m in Sources */,
 				CE207AC71A91D43000ACF741 /* QSWPayOrderViewController.m in Sources */,
 				CEEAC3C51A8D0B34009AC6AA /* QSWLoginViewController.m in Sources */,
 				CEEAC3C81A8D0DA7009AC6AA /* QSWRegisterViewController.m in Sources */,
 				185343B51A91C22300A83039 /* QSUserCouponTableViewCell.m in Sources */,
 				185343C01A9ED12300A83039 /* QSOrderInfoDataModel.m in Sources */,
-				CEEAC3B81A8CA517009AC6AA /* QSPFoodTypeTableViewCell.m in Sources */,
 				CE5341751A7FBC6F002BA188 /* QSBlockButton.m in Sources */,
 				184AE0851A9073EF007A8CBD /* ChineseInclude.m in Sources */,
 				CEEAC4031A8DD156009AC6AA /* QSUserLoginReturnData.m in Sources */,
+				473902421A9EF3D4000ECF41 /* QSPAddNewAddressTextField.m in Sources */,
 				CE571EFB1A84C66500609788 /* QSWMySendAdsViewController.m in Sources */,
 				CEEAC3ED1A8DA83D009AC6AA /* QSUserAddressDataModel.m in Sources */,
 				CE571EFE1A84C7B200609788 /* QSWMyCouponViewController.m in Sources */,
@@ -1511,7 +1535,7 @@
 				CE53415A1A7FA527002BA188 /* QSDataMappingManager.m in Sources */,
 				185343CB1A9ED31000A83039 /* QSGoodsStapleFoodReturnData.m in Sources */,
 				CE5341A01A7FBFAA002BA188 /* NSString+Calculation.m in Sources */,
-				CEEAC3B31A8CA517009AC6AA /* QSPFoodCountControlView.m in Sources */,
+				473902461A9EF3D4000ECF41 /* QSPOrderSubmitedStateViewController.m in Sources */,
 				CE571F041A84C8E000609788 /* QSWLoginPswViewController.m in Sources */,
 				CE5341861A7FBD4C002BA188 /* QSLabel.m in Sources */,
 			);
