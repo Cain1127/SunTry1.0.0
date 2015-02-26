@@ -10,8 +10,24 @@
 
 @interface QSUserInfoDataModel : QSBaseModel
 
+/**
+ *  @author yangshengmeng, 15-02-26 10:02:39
+ *
+ *  @brief  返回当前保存的用户信息
+ *
+ *  @return 返回当前保存的默认用户信息
+ *
+ *  @since  1.0.0
+ */
 + (instancetype)userDataModel;
 
+/**
+ *  @author yangshengmeng, 15-02-26 10:02:03
+ *
+ *  @brief  保存当前用户信息
+ *
+ *  @since  1.0.0
+ */
 - (void)saveUserData;
 
 @property (nonatomic,copy) NSString *userID;        //!<用户名
