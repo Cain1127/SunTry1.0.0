@@ -93,15 +93,15 @@
     [footterButton addTarget:self action:@selector(gotoRegister) forControlEvents:UIControlEventTouchUpInside];
     
     ///激活textfield
-    UITextField *activate=[[UITextField alloc] init];
-    activate.placeholder = @"激活码";
-    activate.translatesAutoresizingMaskIntoConstraints=NO;
-    activate.returnKeyType=UIReturnKeySearch;
-    activate.clearButtonMode=UITextFieldViewModeUnlessEditing;
-    activate.delegate=self;
-    activate.tag = 222;
-    activate.borderStyle = UITextBorderStyleRoundedRect;
-    [footer addSubview:activate];
+    UITextField *activateTextfield=[[UITextField alloc] init];
+    activateTextfield.placeholder = @"激活码";
+    activateTextfield.translatesAutoresizingMaskIntoConstraints=NO;
+    activateTextfield.returnKeyType=UIReturnKeySearch;
+    activateTextfield.clearButtonMode=UITextFieldViewModeUnlessEditing;
+    activateTextfield.delegate=self;
+    activateTextfield.tag = 222;
+    activateTextfield.borderStyle = UITextBorderStyleRoundedRect;
+    [footer addSubview:activateTextfield];
     
     ///获取激活码按钮
     UIButton *activateButton=[[UIButton alloc] init];
@@ -113,19 +113,22 @@
     [activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:activateButton];
     
+    ///条款控件
+    
+    
     ///4.添加VFL约束
     ///参数
-    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activate,activateButton,footterButton);
+    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activateTextfield,activateButton,footterButton);
     NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
     
     ///约束
-    NSString *___hVFL_activate = @"H:|-margin-[activate]-5-[activateButton(100)]-margin-|";
+    NSString *___hVFL_activateTextfield = @"H:|-margin-[activateTextfield]-5-[activateButton(100)]-margin-|";
     NSString *___hVFL_footterButton=@"H:|-margin-[footterButton]-margin-|";
-    NSString *___vVFL_all = @"V:|-margin-[activate(44)]-margin-[footterButton(44)]";
+    NSString *___vVFL_all = @"V:|-margin-[activateTextfield(44)]-margin-[footterButton(44)]";
     NSString *___vVFL_activateButton=@"V:[activateButton(44)]";
     
     ///添加约束
-    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_activate options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
+    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_activateTextfield options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_footterButton options:0 metrics:___sizeVFL  views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all  options:0 metrics:___sizeVFL views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activateButton options:0 metrics:___sizeVFL views:___viewsVFL]];

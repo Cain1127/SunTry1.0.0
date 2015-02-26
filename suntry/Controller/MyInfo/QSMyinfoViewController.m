@@ -28,7 +28,6 @@
 #import "QSUserStoredCardReturnData.h"
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
-
 #import "QSUserStoredCardReturnData.h"
 #import "MJRefresh.h"
 
@@ -203,7 +202,7 @@
         
     }
     
-    //每日特价信息请求参数
+    //储存卡信息请求参数
     NSDictionary *dict = @{@"type" : @"", @"key" : @"",@"flag":@"income"};
     
     [QSRequestManager requestDataWithType:rRequestTypeStoredCard andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {

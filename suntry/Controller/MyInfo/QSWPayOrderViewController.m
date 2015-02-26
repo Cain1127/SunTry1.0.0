@@ -45,20 +45,26 @@
     ///加载储值卡数据
     [self getStoredCardList];
     
-    UILabel *userBanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,0.0f, 150.0f, 44.0f)];
-    userBanlaceLabel.text=@"帐户余额";
+    UILabel *userBanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT,0.0f, 150.0f, 44.0f)];
+    userBanlaceLabel.text=@"帐户储值卡余额";
+    userBanlaceLabel.textColor=COLOR_CHARACTERS_ROOTLINE;
     [self.view addSubview:userBanlaceLabel];
     
     UILabel *BanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH-60.0f-SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 60.0f, 44.0f)];
-    userBanlaceLabel.text=@"￥0";
+    BanlaceLabel.text=@"￥0";
+    BanlaceLabel.textColor=COLOR_CHARACTERS_ROOTLINE;
     [self.view addSubview:BanlaceLabel];
     
-    UILabel *storedCardPrice=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
+    ///加边线
+    UIView *lineView1=[[UIView alloc] initWithFrame:CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, userBanlaceLabel.frame.origin.y+userBanlaceLabel.frame.size.height, self.view.frame.size.width-4*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.5f)];
+    lineView1.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    [self.view addSubview:lineView1];
+    
+    UILabel *storedCardPrice=[[UILabel alloc] initWithFrame:CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
     
     storedCardPrice.text=@"储值卡金额";
+    storedCardPrice.textAlignment=NSTextAlignmentLeft;
     [self.view addSubview:storedCardPrice];
-    
-    
     
     //确定是水平滚动，还是垂直滚动
     UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
@@ -72,7 +78,8 @@
     flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
     
     ///初始化collectionView
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, storedCardPrice.frame.origin.y+storedCardPrice.frame.size.height+10.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-storedCardPrice.frame.origin.y-storedCardPrice.frame.size.height-10.0f-49.0f-64.0f) collectionViewLayout:flowLayout];
+    int count=[self.storedCardDataSource count];
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, storedCardPrice.frame.origin.y+storedCardPrice.frame.size.height, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, (count%3+1)*viewH+2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT) collectionViewLayout:flowLayout];
     ///取消导航条
     self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
@@ -85,11 +92,43 @@
     
     [self.view addSubview:self.collectionView];
     
+    ///加边线
+    UIView *lineView3=[[UIView alloc] initWithFrame:CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.collectionView.frame.origin.y-5.0f, self.view.frame.size.width-4*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.5f)];
+    lineView3.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    [self.view addSubview:lineView3];
     
-    UIButton *putPayButton=[[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-64.0f-44.0f-49.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
+    ///加边线
+    UIView *lineView4=[[UIView alloc] initWithFrame:CGRectMake(lineView3.frame.origin.x, lineView3.frame.origin.y+self.collectionView.frame.size.height+10.0f, lineView3.frame.size.width, 0.5f)];
+    lineView4.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    [self.view addSubview:lineView4];
+    
+    ///添加支付宝支付控件
+    UILabel *payModeLabel=[[UILabel alloc] initWithFrame:CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT,self.collectionView.frame.origin.y+self.collectionView.frame.size.height+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 150.0f, 44.0f)];
+    payModeLabel.text=@"支付方式";
+    [self.view addSubview:payModeLabel];
+    
+    UILabel *onlinePayLabel=[[UILabel alloc] initWithFrame:CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, payModeLabel.frame.origin.y+payModeLabel.frame.size.height, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
+    
+    onlinePayLabel.text=@"在线支付:支付宝支付";
+    onlinePayLabel.textColor=COLOR_CHARACTERS_ROOTLINE;
+    [self.view addSubview:onlinePayLabel];
+    
+    ///加边线
+    UIView *lineView5=[[UIView alloc] initWithFrame:CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, onlinePayLabel.frame.origin.y, self.view.frame.size.width-4*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.5f)];
+    lineView5.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    [self.view addSubview:lineView5];
+    
+    ///加边线
+    UIView *lineView6=[[UIView alloc] initWithFrame:CGRectMake(lineView5.frame.origin.x, lineView5.frame.origin.y+onlinePayLabel.frame.size.height, lineView5.frame.size.width, 0.5f)];
+    lineView6.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    [self.view addSubview:lineView6];
+
+    ///添加提交支付按钮
+    UIButton *putPayButton=[[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-64.0f-44.0f-49.0f-10.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
     [putPayButton setTitle:@"提交支付" forState:UIControlStateNormal];
     [putPayButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     putPayButton.backgroundColor=COLOR_CHARACTERS_RED;
+    putPayButton.layer.cornerRadius=6.0f;
     
     [putPayButton addTarget:self action:@selector(putPayButtonAction) forControlEvents:UIControlEventTouchUpInside];
     
@@ -229,9 +268,9 @@
             
         } else {
             
-            NSLog(@"================今日特价搜索信息请求失败================");
+            NSLog(@"================储存卡信息请求失败================");
             NSLog(@"error : %@",errorInfo);
-            NSLog(@"================今日特价搜索信息请求失败================");
+            NSLog(@"================储存卡信息请求失败================");
             
         }
         
