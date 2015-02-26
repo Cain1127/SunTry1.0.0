@@ -11,6 +11,7 @@
 #import "DeviceSizeHeader.h"
 #import "QSBlockButton.h"
 #import "NSString+Calculation.h"
+#import "QSUserInfoDataModel.h"
 
 #define ORDER_PAYMENT_TITLE_FONT_SIZE       17.
 #define ORDER_PAYMENT_CONTENT_FONT_SIZE     17.
@@ -62,11 +63,18 @@
                 paymentNameFrame.size.width = nameWidth;
                 payForAfterTip.frame = paymentNameFrame;
                 
-                QSLabel *balanceTip = [[QSLabel alloc] initWithFrame:CGRectMake(payForAfterTip.frame.origin.x+payForAfterTip.frame.size.width, payForAfterTip.frame.origin.y, SIZE_DEVICE_WIDTH-24 -(payForAfterTip.frame.origin.x+payForAfterTip.frame.size.width), ORDER_PAYMENT_CELL_HEIGHT)];
-                [balanceTip setFont:[UIFont systemFontOfSize:ORDER_PAYMENT_TITLE_FONT_SIZE]];
-                [balanceTip setText:@"(余额：￥200)"];
-                [balanceTip setTextColor:ORDER_PAYMENT_BALANCE_TEXT_COLOR];
-                [self addSubview:balanceTip];
+                QSUserInfoDataModel *userData = [QSUserInfoDataModel userDataModel];
+                
+                if (userData && userData.balance) {
+                    
+                    QSLabel *balanceTip = [[QSLabel alloc] initWithFrame:CGRectMake(payForAfterTip.frame.origin.x+payForAfterTip.frame.size.width, payForAfterTip.frame.origin.y, SIZE_DEVICE_WIDTH-24 -(payForAfterTip.frame.origin.x+payForAfterTip.frame.size.width), ORDER_PAYMENT_CELL_HEIGHT)];
+                    [balanceTip setFont:[UIFont systemFontOfSize:ORDER_PAYMENT_TITLE_FONT_SIZE]];
+                    
+                    [balanceTip setText:[NSString stringWithFormat:@"(余额：￥%@)",userData.balance]];
+                    [balanceTip setTextColor:ORDER_PAYMENT_BALANCE_TEXT_COLOR];
+                    [self addSubview:balanceTip];
+                    
+                }
             }
             
             QSBlockButtonStyleModel *selectedBtStyle = [[QSBlockButtonStyleModel alloc] init];

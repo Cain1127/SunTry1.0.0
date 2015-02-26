@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "QSPOrderViewHadOrderCell.h"
 #import "QSPShoppingCarView.h"
+#import "QSPOrderAddNewAddressView.h"
 
-@interface QSPOrderViewController : UIViewController<QSPOrderViewHadOrderCellDelegate,QSPShoppingCarViewDelegate>
+@interface QSPOrderViewController : UIViewController<QSPOrderViewHadOrderCellDelegate,QSPShoppingCarViewDelegate, QSPOrderAddNewAddressViewDelegate>
 
 @property(nonatomic,strong) NSMutableArray  *foodSelectedList;
 

@@ -1,0 +1,373 @@
+//
+//  QSPOrderAddNewAddressView.m
+//  suntry
+//
+//  Created by CoolTea on 15/2/25.
+//  Copyright (c) 2015年 广州七升网络科技有限公司. All rights reserved.
+//
+
+#import "QSPOrderAddNewAddressView.h"
+#import "DeviceSizeHeader.h"
+#import "NSString+Calculation.h"
+#import "QSLabel.h"
+#import "QSBlockButton.h"
+#import "QSPAddNewAddressTextField.h"
+
+#define ADD_NEW_ADDRESS_VIEW_BACKGROUND_COLOR           [UIColor colorWithWhite:0 alpha:0.6]
+#define ADD_NEW_ADDRESS_LINEVIEW_BACKGROUND_COLOR       [UIColor colorWithRed:0.808 green:0.812 blue:0.816 alpha:1.000]
+#define ADD_NEW_ADDRESS_VIEW_TEXT_STRING_FONT_SIZE        17.
+#define ADD_NEW_ADDRESS_VIEW_TEXT_TIP_COLOR             [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
+#define ADD_NEW_ADDRESS_VIEW_TEXT_INFO_COLOR             [UIColor colorWithRed:0.503 green:0.183 blue:0.236 alpha:1.000]
+#define ADD_NEW_ADDRESS_PICKERVIEW_BACKGROUND_COLOR           [UIColor colorWithWhite:1 alpha:0.6]
+
+
+@interface QSPOrderAddNewAddressView ()
+
+@property(nonatomic,strong) UIView                    *contentBackgroundView;
+@property(nonatomic,assign) CGRect                    contentFrame;
+@property(nonatomic,strong) UIScrollView              *scrollView;
+@property(nonatomic,strong) UIButton                  *submitBt;
+@property(nonatomic,strong) QSPAddNewAddressTextField *nameTextField;
+@property(nonatomic,strong) QSPAddNewAddressTextField *sexTextField;
+@property(nonatomic,strong) QSPAddNewAddressTextField *addressTextField;
+@property(nonatomic,strong) QSPAddNewAddressTextField *conpanyTextField;
+@property(nonatomic,strong) QSPAddNewAddressTextField *telephoneTextField;
+@property(nonatomic,strong) QSLabel                   *sexLabel;
+@property(nonatomic,strong) UIPickerView              *sexPickerView;
+@property(nonatomic,strong) UIView                    *sexPickerBgView;
+
+@end
+
+@implementation QSPOrderAddNewAddressView
+@synthesize delegate;
+
++ (instancetype)getAddNewAddressView
+{
+    
+    static QSPOrderAddNewAddressView *addNewAddressView;
+    
+    if (!addNewAddressView) {
+        
+        addNewAddressView = [[QSPOrderAddNewAddressView alloc] initAddNewAddressView];
+        
+    }
+    
+    return addNewAddressView;
+    
+}
+
+- (instancetype)initAddNewAddressView
+{
+    
+    if (self = [super init]) {
+        
+        //半透明背景层
+        [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];
+        [self setBackgroundColor:ADD_NEW_ADDRESS_VIEW_BACKGROUND_COLOR];
+        
+        //中间内容区域层
+        self.contentBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 345/375.*SIZE_DEVICE_WIDTH, 469/667.*SIZE_DEVICE_HEIGHT)];
+        [_contentBackgroundView setBackgroundColor:[UIColor whiteColor]];
+        [self addSubview:_contentBackgroundView];
+        
+        //新增地址提示
+        QSLabel *tipLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 16, _contentBackgroundView.frame.size.width-50, 22)];
+        [tipLabel setTextColor:ADD_NEW_ADDRESS_VIEW_TEXT_TIP_COLOR];
+        [tipLabel setFont:[UIFont systemFontOfSize:ADD_NEW_ADDRESS_VIEW_TEXT_STRING_FONT_SIZE ]];
+        [tipLabel setBackgroundColor:[UIColor clearColor]];
+        [tipLabel setText:@"新增地址"];
+        [_contentBackgroundView addSubview:tipLabel];
+        
+        //关闭按钮
+        QSBlockButtonStyleModel *closeStyleModel = [QSBlockButtonStyleModel alloc];
+        closeStyleModel.imagesNormal = @"close_button_normal_icon";
+        closeStyleModel.imagesHighted = @"close_button_down_icon";
+        UIButton *closeBt = [UIButton createBlockButtonWithFrame:CGRectMake(_contentBackgroundView.frame.size.width-32-8, 8, 32, 32) andButtonStyle:closeStyleModel andCallBack:^(UIButton *button) {
+            [self hideAddNewAddressView];
+            [self removeFromSuperview];
+        }];
+        [_contentBackgroundView addSubview:closeBt];
+        
+        //第一条分割线
+        UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(tipLabel.frame.origin.x, tipLabel.frame.origin.y+tipLabel.frame.size.height+12, _contentBackgroundView.frame.size.width-tipLabel.frame.origin.x*2, 1)];
+        [lineView1 setBackgroundColor:ADD_NEW_ADDRESS_LINEVIEW_BACKGROUND_COLOR];
+        [_contentBackgroundView addSubview:lineView1];
+        
+        //新增地址提示
+        QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, lineView1.frame.origin.y+lineView1.frame.size.height+10, _contentBackgroundView.frame.size.width, 22)];
+        [infoLabel setTextColor:ADD_NEW_ADDRESS_VIEW_TEXT_INFO_COLOR];
+        [infoLabel setFont:[UIFont systemFontOfSize:ADD_NEW_ADDRESS_VIEW_TEXT_STRING_FONT_SIZE ]];
+        [infoLabel setBackgroundColor:[UIColor clearColor]];
+        [infoLabel setTextAlignment:NSTextAlignmentCenter];
+        [infoLabel setText:@"您还没有送餐地址，请添加地址！"];
+        [_contentBackgroundView addSubview:infoLabel];
+        
+        //第二条分割线
+        UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(lineView1.frame.origin.x, infoLabel.frame.origin.y+infoLabel.frame.size.height+12, lineView1.frame.size.width, lineView1.frame.size.height)];
+        [lineView2 setBackgroundColor:ADD_NEW_ADDRESS_LINEVIEW_BACKGROUND_COLOR];
+        [_contentBackgroundView addSubview:lineView2];
+        
+        CGFloat buttomY = lineView2.frame.origin.y + lineView2.frame.size.height;
+        
+        CGFloat scrollViewContentHight = 0.;
+        
+        self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(lineView2.frame.origin.x, lineView2.frame.origin.y+lineView2.frame.size.height, lineView2.frame.size.width, scrollViewContentHight)];
+        [_scrollView setBackgroundColor:[UIColor clearColor]];
+        [_contentBackgroundView addSubview:_scrollView];
+        
+        buttomY = _scrollView.frame.origin.y+_scrollView.frame.size.height;
+        
+        //添加地址按钮
+        QSBlockButtonStyleModel *submitBtStyleModel = [QSBlockButtonStyleModel alloc];
+        submitBtStyleModel.bgColor  = [UIColor colorWithRed:0.471 green:0.176 blue:0.224 alpha:1.000];;
+        submitBtStyleModel.title    = @"添加地址";
+        submitBtStyleModel.titleNormalColor = [UIColor whiteColor];
+        submitBtStyleModel.cornerRadio = 6.;
+        self.submitBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, buttomY, _contentBackgroundView.frame.size.width-12*2, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
+            
+            NSLog(@"submitBtl");
+            
+            if (![self checkAddress]) {
+                return;
+            }
+
+            [self hideAddNewAddressView];
+            [self removeFromSuperview];
+            if (delegate) {
+                [delegate AddNewAddressWithData:[self getAddressData]];
+            }
+            
+        }];
+        [_contentBackgroundView addSubview:_submitBt];
+        
+        [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, _submitBt.frame.origin.y+_submitBt.frame.size.height+12)];
+        
+        [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+    }
+    
+    [self initTextField];
+    
+    self.contentFrame = self.frame;
+    
+    return self;
+    
+}
+
+- (void)initTextField{
+    
+    //地址输入框列表
+    CGFloat scrollViewContentHight = 0.;
+    CGFloat scrollViewMaxHeight = SIZE_DEVICE_HEIGHT - 150;
+    
+
+    self.nameTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, 10, _scrollView.frame.size.width, 44)];
+    [self.nameTextField setPlaceholder:@"请填写联系人姓名"];
+    [self.nameTextField setDelegate:self];
+    [_scrollView addSubview:self.nameTextField];
+    
+    self.sexTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.nameTextField.frame.origin.y+self.nameTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
+    [self.sexTextField setPlaceholder:@"您的性别"];
+    [self.sexTextField setDelegate:self];
+    [self.sexTextField setUserInteractionEnabled:NO];
+    [_scrollView addSubview:self.sexTextField];
+    
+    self.sexPickerBgView = [[UIView alloc] initWithFrame:self.frame];
+    [self.sexPickerBgView setBackgroundColor:ADD_NEW_ADDRESS_PICKERVIEW_BACKGROUND_COLOR];
+    self.sexPickerView = [[UIPickerView alloc] init];
+    [self.sexPickerView setDelegate:self];
+    [self.sexPickerView setDataSource:self];
+    [self.sexPickerView setBackgroundColor:[UIColor whiteColor]];
+    [self.sexPickerView setFrame:CGRectMake(self.sexPickerView.frame.origin.x, self.frame.size.height-self.sexPickerView.frame.size.height, self.sexPickerView.frame.size.width, self.sexPickerView.frame.size.height)];
+    [self.sexPickerBgView addSubview:self.sexPickerView];
+    [self.sexPickerBgView setHidden:YES];
+    [self addSubview:self.sexPickerBgView];
+    
+    QSBlockButtonStyleModel *sexBtStyle = [[QSBlockButtonStyleModel alloc] init];
+    [sexBtStyle setTitleNormalColor:PLACEHOLDER_TEXT_COLOR];
+    [sexBtStyle setBgColor:[UIColor clearColor]];
+    UIButton *sexBt = [UIButton createBlockButtonWithFrame:_sexTextField.frame andButtonStyle:sexBtStyle andCallBack:^(UIButton *button) {
+        NSLog(@"sexBt");
+        [self hideKeybord];
+        [self.sexPickerBgView setHidden:NO];
+    }];
+
+    UIImageView *sexArrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
+    [sexArrowMarkView setFrame:CGRectMake(sexBt.frame.size.width-sexArrowMarkView.frame.size.width-6, (sexBt.frame.size.height-sexArrowMarkView.frame.size.height)/2, sexArrowMarkView.frame.size.width, sexArrowMarkView.frame.size.height)];
+    [sexBt addSubview:sexArrowMarkView];
+    
+    self.sexLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, 0, sexArrowMarkView.frame.origin.x, sexBt.frame.size.height)];
+    [self.sexLabel setTextColor:PLACEHOLDER_TEXT_COLOR];
+    [self.sexLabel setFont:[UIFont systemFontOfSize:ADD_NEW_ADDRESS_VIEW_TEXT_STRING_FONT_SIZE ]];
+    [self.sexLabel setBackgroundColor:[UIColor clearColor]];
+    [self.sexLabel setTextAlignment:NSTextAlignmentRight];
+    [self.sexLabel setText:@"先生"];
+    [sexBt addSubview:self.sexLabel];
+    
+    [_scrollView addSubview:sexBt];
+    
+    self.addressTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.sexTextField.frame.origin.y+self.sexTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
+    [self.addressTextField setDelegate:self];
+    [self.addressTextField setPlaceholder:@"送餐地址，请尽量填写详细"];
+    [_scrollView addSubview:self.addressTextField];
+    
+    self.conpanyTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.addressTextField.frame.origin.y+self.addressTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
+    [self.conpanyTextField setPlaceholder:@"请输入公司名称"];
+    [self.conpanyTextField setDelegate:self];
+    [_scrollView addSubview:self.conpanyTextField];
+    
+    self.telephoneTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.conpanyTextField.frame.origin.y+self.conpanyTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
+    [self.telephoneTextField setPlaceholder:@"配送人员联系您的电话"];
+    [self.telephoneTextField setDelegate:self];
+    [_scrollView addSubview:self.telephoneTextField];
+    
+    scrollViewContentHight = self.telephoneTextField.frame.origin.y + self.telephoneTextField.frame.size.height;
+    [_scrollView setFrame:CGRectMake(_scrollView.frame.origin.x, _scrollView.frame.origin.y, _scrollView.frame.size.width, scrollViewContentHight>scrollViewMaxHeight?scrollViewMaxHeight:scrollViewContentHight)];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.contentSize.width, scrollViewContentHight)];
+    
+    [_submitBt setFrame:CGRectMake(12, _scrollView.frame.origin.y+_scrollView.frame.size.height+10, _submitBt.frame.size.width, _submitBt.frame.size.height)];
+    [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, _submitBt.frame.origin.y+_submitBt.frame.size.height+12)];
+    [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+    
+}
+
+- (BOOL)checkAddress
+{
+    BOOL flag = YES;
+    
+    NSString *infoStr = @"";
+    if (flag && [[self.nameTextField text] isEqualToString:@""]) {
+        flag = NO;
+        infoStr= @"联系人姓名";
+    }
+    if (flag && [[self.addressTextField text] isEqualToString:@""]) {
+        flag = NO;
+        infoStr= @"送餐地址";
+    }
+    if (flag && [[self.telephoneTextField text] isEqualToString:@""]) {
+        flag = NO;
+        infoStr= @"联系电话";
+    }
+    
+    if (!flag) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"请输入%@",infoStr] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [av show];
+    }
+    
+    return flag;
+}
+
+- (void)showAddNewAddressView
+{
+    
+    [self setHidden:NO];
+    
+}
+
+- (void)hideAddNewAddressView
+{
+    
+    [self setHidden:YES];
+    
+}
+
+- (NSDictionary*)getAddressData
+{
+    NSMutableDictionary *addressDic = [NSMutableDictionary dictionaryWithCapacity:0];
+//    self.nameTextField;
+//    self.sexLabel;
+//    self.addressTextField;
+//    self.conpanyTextField;
+//    self.telephoneTextField;
+    return addressDic;
+}
+
+
+#pragma mark pickerview function
+
+/* return cor of pickerview*/
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+/*return row number*/
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 2;
+}
+
+/*return component row str*/
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSArray *sexList = [NSArray arrayWithObjects:@"先生",@"小姐", nil];
+    return [sexList objectAtIndex:row];
+}
+
+/*choose com is component,row's function*/
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    // NSLog(@"font %@ is selected.",row);
+    NSArray *sexList = [NSArray arrayWithObjects:@"先生",@"小姐", nil];
+    NSString *sexStr = [sexList objectAtIndex:row];
+    [self.sexLabel setText:sexStr];
+    [self.sexPickerBgView setHidden:YES];
+}
+
+- (void)hideKeybord
+{
+    [self.nameTextField resignFirstResponder];
+    [self.sexTextField resignFirstResponder];
+    [self.addressTextField resignFirstResponder];
+    [self.conpanyTextField resignFirstResponder];
+    [self.telephoneTextField resignFirstResponder];
+    [self setFrame:self.contentFrame];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self hideKeybord];
+    return YES;
+}
+
+//在UITextField 编辑之前调用方法
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self animateTextField: textField];
+}
+
+//在UITextField 编辑完成调用方法
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self animateTextField: textField];
+}
+
+//视图上移的方法
+- (void) animateTextField: (UITextField *) textField
+{
+    UIWindow * window = [[[UIApplication sharedApplication] delegate] window];
+    CGRect rect = [textField convertRect: textField.bounds toView:window];
+    
+    //设置视图上移的距离，单位像素
+    int movementDistance =(self.frame.size.height - 280) - (rect.origin.y+rect.size.height); // tweak as needed
+    //三目运算，判定是否需要上移视图或者不变
+    int movement = movementDistance<0?movementDistance:0;
+    //设置动画的名字
+    [UIView beginAnimations: @"Animation" context: nil];
+    //设置动画的开始移动位置
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    //设置动画的间隔时间
+    [UIView setAnimationDuration: 0.20];
+    //设置视图移动的位移
+    self.frame = CGRectOffset(self.frame, 0, movement);
+    //设置动画结束
+    [UIView commitAnimations];
+}
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+}
+*/
+
+@end
