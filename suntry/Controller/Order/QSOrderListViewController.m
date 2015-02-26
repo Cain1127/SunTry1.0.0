@@ -12,9 +12,6 @@
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
 
-//FIXME: 测试
-#import "QSPPayForOrderViewController.h"
-
 #define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE     17.
@@ -68,10 +65,7 @@
     submitBtStyleModel.cornerRadio = 6.;
     UIButton *submitBt = [UIButton createBlockButtonWithFrame:CGRectMake((SIZE_DEVICE_WIDTH-245./375.*SIZE_DEVICE_WIDTH)/2, infoLabel.frame.origin.y+infoLabel.frame.size.height+5, 245./375.*SIZE_DEVICE_WIDTH, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
         
-//        [self.tabBarController setSelectedIndex:1];
-        //FIXME: 测试
-        QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
-        [self.navigationController pushViewController:pfovc animated:YES];
+        [self.tabBarController setSelectedIndex:1];
         
     }];
     [_nodataView addSubview:submitBt];
