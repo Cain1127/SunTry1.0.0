@@ -40,6 +40,7 @@ typedef enum
     rRequestTypeRegister = 1102,            //!<注册
     
     rRequestTypeStoredCard = 1042,          //!<储值卡
+    rRequestTypeAddOrder = 1043,            //!<添加订单
     
     rRequestTypeUserSendAddressList = 1100, //!<当前用户的送餐地址列表
     rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址

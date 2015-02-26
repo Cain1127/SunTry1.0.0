@@ -157,11 +157,13 @@
             if ([self.storeCarDataModel.storedCardListData.storedCardList count] > 0) {
                 
                 QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+                storeCardVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:storeCardVC animated:YES];
                 
             } else {
             
                 QSWMyStoredCardViewController *myStoreCardVC = [[QSWMyStoredCardViewController alloc] init];
+                myStoreCardVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:myStoreCardVC animated:YES];
             
             }
