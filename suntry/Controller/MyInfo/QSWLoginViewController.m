@@ -34,6 +34,17 @@
 
 - (void)viewDidLoad {
     
+    [super viewDidLoad];
+    
+    ///标题
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"登录"];
+    self.navigationItem.titleView = navTitle;
+    
     ///自定义返回按钮
     UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
     turnBackButton.tintColor = [UIColor whiteColor];
@@ -43,9 +54,6 @@
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
-    
-    [super viewDidLoad];
-    self.title=@"登录";
     
     [self setupGroup0];
     [self setupGroup1];

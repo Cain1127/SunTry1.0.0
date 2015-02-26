@@ -8,7 +8,6 @@
 
 #import "QSBaseModel.h"
 
-
 @interface QSGoodsDataModel : QSBaseModel
 
 @property (nonatomic,copy) NSString *shopkeeperID;      //!<商家ID

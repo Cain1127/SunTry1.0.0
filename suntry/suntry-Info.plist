@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>seller_id</key>
+	<string>2088511938856943</string>
+	<key>partner_id</key>
+	<string>2088511938856943</string>
+	<key>alaypay_private_key</key>
+	<string>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDi0i5PtG3NXdQcMw/9ZcsTGJEK9FOgHbtsqPsk0KmEwQ69ebnqr941+g1T/Ap5m2fsKo7y7sHC9eWuuU9KJy5rR+PHiqH4CgaqGEYOM4pTrDnu9fdEh9zrqHqBujKAifTyzNlF/jTkpJWndu2rEq/xpPlyBrvKhx4dS+WXczse2QIDAQAB</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

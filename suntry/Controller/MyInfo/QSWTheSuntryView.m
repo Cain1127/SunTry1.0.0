@@ -18,6 +18,17 @@
 
 - (void)viewDidLoad {
     
+    [super viewDidLoad];
+    
+    ///标题
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"关于香哉"];
+    self.navigationItem.titleView = navTitle;
+    
     ///自定义返回按钮
     UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
     turnBackButton.tintColor = [UIColor whiteColor];
@@ -28,7 +39,6 @@
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
-    [super viewDidLoad];
     _suntryImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-64.0f-49.0f)];
     _suntryImage.image=[UIImage imageNamed:@"myinfo_thesuntry"];
     [self.view addSubview:_suntryImage];

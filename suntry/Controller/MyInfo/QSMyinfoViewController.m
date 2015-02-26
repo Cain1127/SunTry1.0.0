@@ -57,6 +57,13 @@
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
     self.navigationItem.backBarButtonItem=backItem;
     backItem.title=@"";
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"我的"];
+    self.navigationItem.titleView = navTitle;
     
 }
 
@@ -156,11 +163,13 @@
             if ([self.storeCarDataModel.storedCardListData.storedCardList count] > 0) {
                 
                 QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+                storeCardVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:storeCardVC animated:YES];
                 
             } else {
             
                 QSWMyStoredCardViewController *myStoreCardVC = [[QSWMyStoredCardViewController alloc] init];
+                myStoreCardVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:myStoreCardVC animated:YES];
             
             }

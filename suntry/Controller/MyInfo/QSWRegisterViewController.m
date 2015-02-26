@@ -29,8 +29,16 @@
 @implementation QSWRegisterViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
-    self.title=@"注册";
+    ///标题
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"注册"];
+    self.navigationItem.titleView = navTitle;
     ///密码密文输入
     ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
     [self setupGroup0];
@@ -86,7 +94,7 @@
     
     // footer
     UIView *footer = [[UIView alloc] init];
-    CGFloat footerH = 120.0f + 20.0f +5.0f+44.0f;
+    CGFloat footerH = 120.0f + 20.0f +5.0f+44.0f+40.0f;
     footer.frame = CGRectMake(0, 0, 0, footerH);
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
@@ -114,32 +122,32 @@
     [footer addSubview:activateButton];
     
     ///条款控件
-    UIButton *selectButton=[[UIButton alloc] init];
     UIImageView *selectImageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_select_normal"] highlightedImage:[UIImage imageNamed:@"myinfo_select_selected"]];
-    selectImageView.frame=CGRectMake(0, 0, 30.0f, 30.0f);
+    selectImageView.translatesAutoresizingMaskIntoConstraints=NO;
+    selectImageView.userInteractionEnabled=YES;
+    [footer addSubview:selectImageView];
     
-    UILabel *selectLabel=[[UILabel alloc] initWithFrame:CGRectMake(selectImageView.frame.origin.x+selectImageView.frame.size.width+5.0f, 0, 150.0f, 15.0f)];
+    UILabel *selectLabel=[[UILabel alloc] init];
+    selectLabel.translatesAutoresizingMaskIntoConstraints=NO;
     selectLabel.text=@"我已阅读并同意《用户服务协议》";
-    
-    [selectButton addSubview:selectImageView];
-    [selectButton addSubview:selectLabel];
-    
-    
+    selectLabel.font=[UIFont systemFontOfSize:14.0f];
+    [footer addSubview:selectLabel];
+
     ///4.添加VFL约束
     ///参数
-    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activateTextfield,activateButton,footterButton,selectButton);
+    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activateTextfield,activateButton,selectImageView,selectLabel,footterButton);
     NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
     
     ///约束
     NSString *___hVFL_activateTextfield = @"H:|-margin-[activateTextfield]-5-[activateButton(100)]-margin-|";
-    NSString *___hVFL_selectButton=@"H:|-margin-[selectButton]-margin-|";
+    NSString *___hVFL_selectImageView=@"H:|-margin-[selectImageView(20)]-5-[selectLabel]-margin-|";
     NSString *___hVFL_footterButton=@"H:|-margin-[footterButton]-margin-|";
-    NSString *___vVFL_all = @"V:|-margin-[activateTextfield(44)]-margin-[selectButton(30)]-margin-[footterButton(44)]";
+    NSString *___vVFL_all = @"V:|-margin-[activateTextfield(44)]-margin-[selectImageView(20)]-margin-[footterButton(44)]";
     NSString *___vVFL_activateButton=@"V:[activateButton(44)]";
     
     ///添加约束
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_activateTextfield options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
-    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_selectButton options:0 metrics:___sizeVFL views:___viewsVFL]];
+    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_selectImageView options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_footterButton options:0 metrics:___sizeVFL  views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all  options:0 metrics:___sizeVFL views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activateButton options:0 metrics:___sizeVFL views:___viewsVFL]];

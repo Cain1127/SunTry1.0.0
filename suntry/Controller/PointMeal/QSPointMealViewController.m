@@ -109,18 +109,20 @@ typedef enum {
     [self.view addSubview:self.foodInfoListTableView];
     
     [self.view addSubview:_shoppingCarView];
-    
+    [_shoppingCarView setHidden:YES];
+    [_foodTypeTableView setHidden:YES];
+    [_foodInfoListTableView setHidden:YES];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        [self getGoodsData];
-        
-    });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        
+//        [self getGoodsData];
+//        
+//    });
     
     
 }
@@ -128,6 +130,9 @@ typedef enum {
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    if ([_shoppingCarView isHidden]) {
+        [self getGoodsData];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -599,6 +604,9 @@ typedef enum {
 {
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [_shoppingCarView setHidden:YES];
+    [_foodTypeTableView setHidden:YES];
+    [_foodInfoListTableView setHidden:YES];
     
     [QSRequestManager requestDataWithType:rRequestTypeAllGoods andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
@@ -634,6 +642,9 @@ typedef enum {
             }
             
             [self.foodInfoListTableView reloadData];
+            [_shoppingCarView setHidden:NO];
+            [_foodTypeTableView setHidden:NO];
+            [_foodInfoListTableView setHidden:NO];
             
         } else {
             

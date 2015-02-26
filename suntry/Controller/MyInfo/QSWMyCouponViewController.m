@@ -50,7 +50,13 @@
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
     ///标题
-    self.title=@"我的优惠券";
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"我的优惠券"];
+    self.navigationItem.titleView = navTitle;
     
     ///头信息
     [self setupHeader];

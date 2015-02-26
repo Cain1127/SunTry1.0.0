@@ -15,12 +15,19 @@
 #import "MJRefresh.h"
 #import "ColorHeader.h"
 
+#import "MBProgressHUD.h"
+
+#import "QSUserInfoDataModel.h"
+
 @interface QSWPayOrderViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIView *nodataView;                       //!<没有储值卡view
 @property (strong, nonatomic) UICollectionView *collectionView;         //!<每个充值按钮
 @property (nonatomic,retain)  NSMutableArray *storedCardDataSource;     //!<充值卡信息数据源
 @property (nonatomic,copy) NSString *selectedID;                        //!<当前选择状态的储值卡ID
+@property (nonatomic,assign) int selectedIndex;                         //!<当前选择状态的下标
+
+@property (nonatomic,retain) MBProgressHUD *hud;                        //!<HUD
 
 @end
 
@@ -72,7 +79,14 @@
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
-    self.title=@"支付订单";
+    ///标题
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"支付订单"];
+    self.navigationItem.titleView = navTitle;
     self.view.backgroundColor=[UIColor whiteColor];
     
     ///加载储值卡数据
@@ -258,18 +272,154 @@
 ///提交支付
 -(void)putPayButtonAction
 {
+
+
+    /**
+     *  user_id 用户id
+     *  name 下订名字
+     *  address 地址
+     *  phone 电话
+     *  expand_4 （必传参数，支付类型，3，储蓄卡支付；1在线支付，2餐到付款 ）
+     *  mer_id 商家id
+     *  total_money 总价
+     *  get_time 要求获取的时间,字符串
+     *  ortherPhone 其他电话
+     *  desc 描述
+     *  diet 菜牌的数量
+     *  array() or json promotion 优惠数组
+     *  array() or json coupon 优惠卷
+     *  array() or json status 状态
+     *  source_type 来源类型 1 为后台，2为ios手机端，3为android手机端，4为网站端
+     *  latitude 经度，（可选）
+     *  longitude 纬度（可选）
+     *  diet_num 菜品总数
+     *  pay_type是否已支付，必传参数，默认传0
+     *  run_id 用户id
+     *  run_type 操作类型，1代表为后台下单，2代表为线上下单
+     */
     
+    /**
+     *  {
+            "user_id":"47",
+            "source_type":4,
+            "diet_num":1,
+            "total_money":"500",
+            "get_time":"",
+            "name":"充500送50",
+            "address":"地址",
+            "phone":"13430315807",
+            "expand_4":"5",
+            "mer_id":1,
+            "desc":"在线购买储蓄卡金额",
+            "diet":[{
+                        "goods_id":"94",
+                        "num":1,
+                        "sale_id":"",
+                        "sale_money":"500",
+                        "name":"充500送50"
+                    }],
+            "pay_type":0,
+            "run_id":"47",
+            "run_type":"1"
+     *  }
+     *
+     */
     
+    ///判断当前是否存在选择状态的储值卡ID
+    if (nil == self.selectedID || 0 >= self.selectedID.length) {
+        
+        return;
+        
+    }
     
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    ///储值卡模型
+    QSGoodsDataModel *tempModel = self.storedCardDataSource[self.selectedIndex];
+    
+    ///用户信息模型
+    QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+    
+    ///暂存参数
+    NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
+    
+    ///类型
+    [tempParams setObject:tempModel.goodsTypeID forKey:@"source_type"];
+    
+    ///购买数量
+    [tempParams setObject:@"1" forKey:@"diet_num"];
+    
+    ///买价
+    [tempParams setObject:tempModel.goodsSpecialPrice forKey:@"total_money"];
+    
+    ///时间戳：储值卡购买不需要时间戳
+    [tempParams setObject:@"" forKey:@"get_time"];
+    
+    ///订单标题
+    [tempParams setObject:[NSString stringWithFormat:@"购买储蓄卡(%@)",tempModel.goodsName] forKey:@"name"];
+    
+    ///用户地址
+    [tempParams setObject:userModel.address forKey:@"address"];
+    
+    ///用户手机号码
+    [tempParams setObject:userModel.phone forKey:@"phone"];
+    
+    ///支付类型：5-在线支付
+    [tempParams setObject:@"5" forKey:@"expand_4"];
+    
+    ///商户类型
+    [tempParams setObject:@"1" forKey:@"mer_id"];
+    
+    ///订单说明
+    [tempParams setObject:[NSString stringWithFormat:@"在线购买储蓄卡(￥%@)，%@",tempModel.goodsPrice,tempModel.goodsName] forKey:@"desc"];
+    
+    ///订单详情
+    NSMutableArray *orderList = [[NSMutableArray alloc] init];
+    NSMutableDictionary *orderDetail = [[NSMutableDictionary alloc] init];
+    
+    ///商品ID
+    [orderDetail setObject:tempModel.goodsID forKey:@"goods_id"];
+    
+    ///购买数量
+    [orderDetail setObject:@"1" forKey:@"num"];
+    
+    ///限时优惠使用字段
+    [orderDetail setObject:@"" forKey:@"sale_id"];
+    
+    ///购买价格
+    [orderDetail setObject:tempModel.goodsSpecialPrice forKey:@"sale_money"];
+    
+    ///商品名
+    [orderDetail setObject:tempModel.goodsName forKey:@"name"];
+    
+    ///将商品放在参数里
+    [orderList addObject:orderDetail];
+    [tempParams setObject:orderList forKey:@"diet"];
+    
+    ///支付状态：0-未支付
+    [tempParams setObject:@"0" forKey:@"pay_type"];
+    
+    ///用户ID
+    [tempParams setObject:userModel.userID forKey:@"run_id"];
+    
+    ///下单方式：储值卡购买肯定为在线下单
+    [tempParams setObject:@"2" forKey:@"run_type"];
+    
+    ///生成订单
+
 }
 
 #pragma mark - 选择一项储值卡时，改变字体颜色
 ///选择某一个储值卡时，字体颜色为白色
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
-    
+
+    ///保存当前选择的储值卡
+    QSGoodsDataModel *tempModel = self.storedCardDataSource[indexPath.row];
+    self.selectedID = tempModel.goodsID;
+    self.selectedIndex = (int)indexPath.row;
+
 }
 
 #pragma mark - 返回事件

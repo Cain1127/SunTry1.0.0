@@ -55,7 +55,13 @@
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
     ///设置标题
-    self.title=@"新增送餐地址";
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"新增送餐地址"];
+    self.navigationItem.titleView = navTitle;
     
     ///获取用户数据
     self.userInfo = [QSUserInfoDataModel userDataModel];
@@ -217,6 +223,9 @@
 ///确认添加地址
 -(void)gotoNextVC
 {
+    
+    ///用户ID
+    
 
     ///姓名
     UITextField *nameField = ((UITextField *)self.userNameItem.property);
@@ -310,6 +319,7 @@
             
         } else {
         
+            NSLog(@"%@",errorInfo);
             ///弹出提示
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"添加送餐地址失败，请稍后再试。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alert show];
