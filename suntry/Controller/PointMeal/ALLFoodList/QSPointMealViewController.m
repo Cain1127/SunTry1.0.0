@@ -132,6 +132,9 @@ typedef enum {
     [super viewDidAppear:animated];
     if ([_shoppingCarView isHidden]) {
         [self getGoodsData];
+    }else{
+        [_shoppingCarView updateShoppingCar];
+        [_foodInfoListTableView reloadData];
     }
 }
 
@@ -420,18 +423,18 @@ typedef enum {
                     [cell updateFoodData:tempArray[indexPath.row]];
                 }
 
-                NSArray *selectedArray = [_shoppingCarView getGoods];
+                NSArray *selectedArray = [QSPShoppingCarData getShoppingCarDataList];
                 if (selectedArray&&[selectedArray count]>0) {
                     for (int i=0; i<[selectedArray count]; i++) {
                         NSDictionary *item = selectedArray[i];
-                        NSNumber *counNum = [item objectForKey:@"count"];
+                        NSString *counStr = [item objectForKey:@"num"];
                         QSGoodsDataModel *goodData = [cell getFoodData];
-                        QSGoodsDataModel *food = [item objectForKey:@"goods"];
-                        if (food&&[food isKindOfClass:[QSGoodsDataModel class]]&&goodData&&[goodData isKindOfClass:[QSGoodsDataModel class]]) {
+                        NSString *foodID = [item objectForKey:@"goods_id"];
+                        if (foodID&&[foodID isKindOfClass:[NSString class]]&&goodData&&[goodData isKindOfClass:[QSGoodsDataModel class]]) {
                             
-                            if ([food.goodsName isEqualToString:((QSGoodsDataModel*)goodData).goodsName]) {
+                            if ([foodID isEqualToString:((QSGoodsDataModel*)goodData).goodsID]) {
                                 
-                                [cell setSlelectedCount:[counNum integerValue]];
+                                [cell setSlelectedCount:[counStr integerValue]];
                                 
                             }
                         }
@@ -507,32 +510,20 @@ typedef enum {
                 if (tempArray){
                     QSGoodsDataModel *itemData = tempArray[indexPath.row];
                     if (itemData&&[itemData isKindOfClass:[QSGoodsDataModel class]]) {
-                        if ([itemData.goodsTypeID integerValue] == 1) {
+                        if ([itemData.goodsTypeID integerValue] == 1 || [itemData.goodsTypeID integerValue] == 5) {
                             
                             QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
                             [self.tabBarController.view addSubview:shakeFoodView];
                             [shakeFoodView updateFoodData:itemData];
                             [shakeFoodView showShakeFoodView];
                             
-                        }else if ([itemData.goodsTypeID integerValue] == 5) {
-                            
-                            QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
-                            [self.navigationController.view addSubview:packageView];
-                            [packageView updateFoodData:itemData];
-                            [packageView setDelegate:self];
-                            [packageView showPackageView];
-                            
                         }
-                        
                     }
-
                 }
-                
             }
             break;
         default:
             break;
-            
     }
     
 }
@@ -583,8 +574,32 @@ typedef enum {
     
     NSLog(@"changedCount:%ld withFoodData:%@",(long)count,foodData);
     
-    if (_shoppingCarView) {
-        [_shoppingCarView changeGoods:foodData withCount:count];
+    if (foodData && [foodData isKindOfClass:[QSGoodsDataModel class]]) {
+        
+        NSMutableDictionary *foodDic = [NSMutableDictionary dictionaryWithCapacity:0];
+        QSGoodsDataModel *food = (QSGoodsDataModel*)foodData;
+        
+        if ([food.goodsTypeID integerValue]==5) {
+            //是套餐时
+            
+            QSPFoodPackageView *packageView = [QSPFoodPackageView getPackageView];
+            [self.navigationController.view addSubview:packageView];
+            [packageView updateFoodData:food];
+            [packageView setDelegate:self];
+            [packageView showPackageView];
+
+            return;
+        }
+        
+        [foodDic setObject:food.goodsID forKey:@"goods_id"];
+        [foodDic setObject:[food getOnsalePrice] forKey:@"sale_money"];
+        [foodDic setObject:food.goodsName forKey:@"name"];
+        [foodDic setObject:food.shopkeeperID forKey:@"sale_id"];
+        [foodDic setObject:[NSArray array] forKey:@"diet"];
+        
+        if (_shoppingCarView) {
+            [_shoppingCarView changeGoods:foodDic withCount:count];
+        }
     }
     
 }
@@ -595,7 +610,6 @@ typedef enum {
     NSLog(@"orderWithData:%@",foodData);
 
     QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
-    [orderVc setFoodSelectedList:[NSMutableArray arrayWithArray:foodData]];
     [self.navigationController pushViewController:orderVc animated:YES];
     
 }
@@ -657,21 +671,17 @@ typedef enum {
     
 }
 
-- (void)submitWithData:(id)data
+- (void)submitPackageWithData:(id)data
 {
+    
     NSLog(@"submitWithData :%@",data);
-    if (data&&[data isKindOfClass:[NSArray class]]) {
-        NSArray *list = (NSArray*)data;
-        for (id item in list) {
-            if (item&&[item isKindOfClass:[NSArray class]]) {
-                NSArray *sublist = (NSArray*)item;
-                for (id subItem in sublist) {
-                    if (_shoppingCarView) {
-                            [_shoppingCarView changeGoods:subItem withCount:1];
-                    }
-                }
-            }
+    if (data&&[data isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *dic = (NSDictionary*)data;
+        
+        if (_shoppingCarView) {
+            [_shoppingCarView changeGoods:dic withCount:1];
         }
+        
     }
 }
 

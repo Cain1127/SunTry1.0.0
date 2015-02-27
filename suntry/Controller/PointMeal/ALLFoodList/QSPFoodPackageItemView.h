@@ -13,6 +13,6 @@
 
 - (instancetype)initItemViewWithData:(NSArray*)foodDataList withTypeName:(NSString*)typeName;
 
-- (NSArray*)getSelectFoodList;
+- (id)getSelectFoodData;
 
 @end

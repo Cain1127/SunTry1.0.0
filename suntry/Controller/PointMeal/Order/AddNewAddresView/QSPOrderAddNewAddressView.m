@@ -30,7 +30,7 @@
 @property(nonatomic,strong) QSPAddNewAddressTextField *nameTextField;
 @property(nonatomic,strong) QSPAddNewAddressTextField *sexTextField;
 @property(nonatomic,strong) QSPAddNewAddressTextField *addressTextField;
-@property(nonatomic,strong) QSPAddNewAddressTextField *conpanyTextField;
+@property(nonatomic,strong) QSPAddNewAddressTextField *companyTextField;
 @property(nonatomic,strong) QSPAddNewAddressTextField *telephoneTextField;
 @property(nonatomic,strong) QSLabel                   *sexLabel;
 @property(nonatomic,strong) UIPickerView              *sexPickerView;
@@ -210,12 +210,12 @@
     [self.addressTextField setPlaceholder:@"送餐地址，请尽量填写详细"];
     [_scrollView addSubview:self.addressTextField];
     
-    self.conpanyTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.addressTextField.frame.origin.y+self.addressTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
-    [self.conpanyTextField setPlaceholder:@"请输入公司名称"];
-    [self.conpanyTextField setDelegate:self];
-    [_scrollView addSubview:self.conpanyTextField];
+    self.companyTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.addressTextField.frame.origin.y+self.addressTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
+    [self.companyTextField setPlaceholder:@"请输入公司名称"];
+    [self.companyTextField setDelegate:self];
+    [_scrollView addSubview:self.companyTextField];
     
-    self.telephoneTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.conpanyTextField.frame.origin.y+self.conpanyTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
+    self.telephoneTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.companyTextField.frame.origin.y+self.companyTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
     [self.telephoneTextField setPlaceholder:@"配送人员联系您的电话"];
     [self.telephoneTextField setDelegate:self];
     [_scrollView addSubview:self.telephoneTextField];
@@ -247,6 +247,12 @@
         flag = NO;
         infoStr= @"联系电话";
     }
+    if (flag && ![[self.telephoneTextField text] isEqualToString:@""]) {
+        if (![self isMobileNumberClassification:[self.telephoneTextField text]]) {
+            flag = NO;
+            infoStr= @"正确的联系电话格式";
+        }
+    }
     
     if (!flag) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"请输入%@",infoStr] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -273,11 +279,13 @@
 - (NSDictionary*)getAddressData
 {
     NSMutableDictionary *addressDic = [NSMutableDictionary dictionaryWithCapacity:0];
-//    self.nameTextField;
-//    self.sexLabel;
-//    self.addressTextField;
-//    self.conpanyTextField;
-//    self.telephoneTextField;
+    
+    [addressDic setObject:[self.nameTextField text] forKey:@"name"];
+    [addressDic setObject:[self.telephoneTextField text] forKey:@"phone"];
+    [addressDic setObject:[self.addressTextField text] forKey:@"address"];
+    [addressDic setObject:[self.sexLabel text] forKey:@"sex"];
+    [addressDic setObject:[self.companyTextField text] forKey:@"company"];
+    
     return addressDic;
 }
 
@@ -317,7 +325,7 @@
     [self.nameTextField resignFirstResponder];
     [self.sexTextField resignFirstResponder];
     [self.addressTextField resignFirstResponder];
-    [self.conpanyTextField resignFirstResponder];
+    [self.companyTextField resignFirstResponder];
     [self.telephoneTextField resignFirstResponder];
     [self setFrame:self.contentFrame];
 }
@@ -360,6 +368,60 @@
     self.frame = CGRectOffset(self.frame, 0, movement);
     //设置动画结束
     [UIView commitAnimations];
+}
+
+
+- (BOOL)isMobileNumberClassification:(NSString*)phoneStr{
+    /**
+     * 手机号码
+     * 移动：134[0-8],135,136,137,138,139,150,151,157,158,159,182,187,188,1705
+     * 联通：130,131,132,152,155,156,185,186,1709
+     * 电信：133,1349,153,180,189,1700
+     */
+    //    NSString * MOBILE = @"^1((3//d|5[0-35-9]|8[025-9])//d|70[059])\\d{7}$";//总况
+    
+    /**
+     10         * 中国移动：China Mobile
+     11         * 134[0-8],135,136,137,138,139,150,151,157,158,159,182,187,188，1705
+     12         */
+    NSString * CM = @"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\\d|705)\\d{7}$";
+    /**
+     15         * 中国联通：China Unicom
+     16         * 130,131,132,152,155,156,185,186,1709
+     17         */
+    NSString * CU = @"^1((3[0-2]|5[256]|8[56])\\d|709)\\d{7}$";
+    /**
+     20         * 中国电信：China Telecom
+     21         * 133,1349,153,180,189,1700
+     22         */
+    NSString * CT = @"^1((33|53|8[09])\\d|349|700)\\d{7}$";
+    
+    
+    /**
+     25         * 大陆地区固话及小灵通
+     26         * 区号：010,020,021,022,023,024,025,027,028,029
+     27         * 号码：七位或八位
+     28         */
+    NSString * PHS = @"^0(10|2[0-5789]|\\d{3})\\d{7,8}$";
+    
+    
+    //    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+    NSPredicate *regextestcm = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CM];
+    NSPredicate *regextestcu = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CU];
+    NSPredicate *regextestct = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CT];
+    NSPredicate *regextestphs = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",PHS];
+    
+    if (([regextestcm evaluateWithObject:phoneStr] == YES)
+        || ([regextestct evaluateWithObject:phoneStr] == YES)
+        || ([regextestcu evaluateWithObject:phoneStr] == YES)
+        || ([regextestphs evaluateWithObject:phoneStr] == YES))
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 /*

@@ -30,4 +30,11 @@
 
 - (void)setCount:(NSInteger)count;
 
+/**
+ *  设置操作过程中是否只显示增加按钮，用在选择菜品列表界面
+ *
+ *  @param flag YES：只显示增加按钮，NO：默认显示全部按钮
+ */
+- (void)setOnlyShowAddButton:(BOOL)flag;
+
 @end

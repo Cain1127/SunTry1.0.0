@@ -65,23 +65,41 @@
     
 }
 
-- (NSArray*)getSelectFoodList
-{
-    
-    NSMutableArray *selectFoodList = [NSMutableArray arrayWithCapacity:0];
+//- (NSArray*)getSelectFoodList
+//{
+//    
+//    NSMutableArray *selectFoodList = [NSMutableArray arrayWithCapacity:0];
+//
+//    for (UIView *view in [self subviews]) {
+//        if (view&&[view isKindOfClass:[QSPFoodPackageItemGridView class]]) {
+//            QSPFoodPackageItemGridView *gridView = (QSPFoodPackageItemGridView*)view;
+//            if ([gridView getSelectState]) {
+//                
+//                [selectFoodList addObject:[gridView getFoodData]];
+//                
+//            }
+//        }
+//        
+//    }
+//    return selectFoodList;
+//    
+//}
 
+- (id)getSelectFoodData
+{
+
+    id data = nil;
+    
     for (UIView *view in [self subviews]) {
         if (view&&[view isKindOfClass:[QSPFoodPackageItemGridView class]]) {
             QSPFoodPackageItemGridView *gridView = (QSPFoodPackageItemGridView*)view;
             if ([gridView getSelectState]) {
-                
-                [selectFoodList addObject:[gridView getFoodData]];
-                
+                data = [gridView getFoodData];
             }
         }
         
     }
-    return selectFoodList;
+    return data;
     
 }
 

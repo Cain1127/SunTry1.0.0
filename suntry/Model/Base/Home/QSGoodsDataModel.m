@@ -45,10 +45,15 @@
 - (NSString*)getOnsalePrice
 {
     
-    NSString* price = [_goodsSpecialPrice isEqualToString:@"-1"] ? _goodsPrice:_goodsSpecialPrice;
-    
+    NSString* price =@"";
+    if (nil == _goodsSpecialPrice) {
+        price = nil==_goodsPrice?@"":_goodsPrice;
+    }else if (nil == _goodsPrice){
+        price = nil==_goodsSpecialPrice?@"":_goodsSpecialPrice;;
+    }else{
+        price = [_goodsSpecialPrice isEqualToString:@"-1"] ? _goodsPrice:_goodsSpecialPrice;
+    }
     return price;
-    
 }
 
 @end
@@ -85,9 +90,14 @@
 
 - (NSString*)getOnsalePrice
 {
-    
-    NSString* price = [_goodsSpecialPrice isEqualToString:@"-1"] ? _goodsPrice:_goodsSpecialPrice;
-    
+    NSString* price =@"";
+    if (nil == _goodsSpecialPrice) {
+        price = nil==_goodsPrice?@"":_goodsPrice;
+    }else if (nil == _goodsPrice){
+        price = nil==_goodsSpecialPrice?@"":_goodsSpecialPrice;;
+    }else{
+        price = [_goodsSpecialPrice isEqualToString:@"-1"] ? _goodsPrice:_goodsSpecialPrice;
+    }
     return price;
     
 }

@@ -10,7 +10,7 @@
 
 @protocol QSPFoodPackageViewDelegate<NSObject>
 
-- (void)submitWithData:(id)data;
+- (void)submitPackageWithData:(id)data;
 
 @end
 

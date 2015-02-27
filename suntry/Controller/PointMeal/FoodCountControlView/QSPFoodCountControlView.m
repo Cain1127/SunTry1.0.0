@@ -16,11 +16,12 @@
 
 @interface QSPFoodCountControlView ()
 
-@property(nonatomic,assign) CGPoint marginTopRight;//相对父View右上点距
-@property(nonatomic,assign) NSInteger countInt;//选择该菜的数量
-@property(nonatomic,strong) UILabel *countLabel;
-@property(nonatomic,strong) UIButton *addBt;
-@property(nonatomic,strong) UIButton *reduceBt;
+@property(nonatomic,assign) CGPoint     marginTopRight;//相对父View右上点距
+@property(nonatomic,assign) NSInteger   countInt;//选择该菜的数量
+@property(nonatomic,strong) UILabel     *countLabel;
+@property(nonatomic,strong) UIButton    *addBt;
+@property(nonatomic,strong) UIButton    *reduceBt;
+@property(nonatomic,assign) BOOL        OnlyShowAddButton;
 
 @end
 
@@ -32,7 +33,7 @@
 {
     
     if (self = [super init]) {
-        
+        _OnlyShowAddButton = NO;
         self.marginTopRight = CGPointZero;
         [self setFrame:CGRectMake(0, 0, 104, 32)];
         
@@ -144,6 +145,15 @@
     [self.countLabel setFrame:CGRectMake(self.addBt.frame.origin.x-countStrWidth+3, (self.frame.size.height-self.countLabel.frame.size.height)/2, countStrWidth, self.countLabel.frame.size.height)];
     [self.reduceBt setFrame:CGRectMake(self.countLabel.frame.origin.x-self.countLabel.frame.size.width-6, self.reduceBt.frame.origin.y, self.reduceBt.frame.size.width, self.reduceBt.frame.size.height)];
     
+    if (_OnlyShowAddButton) {
+        [_reduceBt setHidden:YES];
+        [_countLabel setHidden:YES];
+    }
+}
+
+- (void)setOnlyShowAddButton:(BOOL)flag
+{
+    _OnlyShowAddButton = flag;
 }
 
 
