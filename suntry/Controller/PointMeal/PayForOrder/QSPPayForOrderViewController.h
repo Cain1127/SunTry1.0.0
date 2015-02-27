@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSOrderInfoDataModel.h"
 
 @interface QSPPayForOrderViewController : UIViewController
+
+@property(nonatomic,strong) QSOrderInfoDataModel *orderFormModel;
 
 @end

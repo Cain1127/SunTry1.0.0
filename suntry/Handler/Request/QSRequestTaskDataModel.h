@@ -50,6 +50,8 @@ typedef enum
     rRequestTypeUserGetCoupon = 1104,       //!<根据key获取优惠券
     rRequestTypeUserForgetPassword = 1105,  //!<忘记密码
     
+    rRequestTypePayJudgeBalanceData = 1143,  //储值卡支付
+    
     rRequestTypeMaxLimited = 99999          //!<最大值限制
     
     

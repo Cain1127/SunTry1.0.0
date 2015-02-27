@@ -27,7 +27,7 @@
 #import "QSAddOrderReturnData.h"
 #import "QSOrderInfoDataModel.h"
 #import "QSAlixPayManager.h"
-
+#import "QSUserAddressDataModel.h"
 
 #define ORDERVIEWCONTROLLER_SHIP_BT_BG_COLOR    [UIColor colorWithRed:0.709 green:0.653 blue:0.543 alpha:1.000]
 #define ORDERVIEWCONTROLLER_TITLE_FONT_SIZE     17.
@@ -305,13 +305,28 @@
     if (userData) {
         
         if (userData.address && ![userData.address isEqualToString:@""]) {
-            
+
             self.orderName = userData.receidName;
             self.orderAddress = userData.address;
             self.orderPhone = userData.phone;
             [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
             [_shipToAddress setText:self.orderAddress];
             return;
+        }else if(userData.address && [userData.address isEqualToString:@""]){
+            ///获取本地数据
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
+            NSData *tempData = [NSData dataWithContentsOfFile:path];
+            NSArray *tempList = [NSKeyedUnarchiver unarchiveObjectWithData:tempData];
+            if (tempList && [tempList count] > 0) {
+                QSUserAddressDataModel* addressDic = (QSUserAddressDataModel*)(tempList[0]);
+                self.orderName = addressDic.userName;
+                self.orderAddress = addressDic.address;
+                self.orderPhone = addressDic.phone;
+                [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
+                [_shipToAddress setText:self.orderAddress];
+                return;
+            }
         }
         
         QSPOrderAddNewAddressView *addNewAddView = [QSPOrderAddNewAddressView getAddNewAddressView];
@@ -576,7 +591,7 @@
         // mer_id 商家ID
         [tempParams setObject:@"1" forKey:@"mer_id"];
         // total_money 总价
-        [tempParams setObject:[NSString stringWithFormat:@"%f",[QSPShoppingCarData getTotalPrice]] forKey:@"total_money"];
+        [tempParams setObject:[NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]] forKey:@"total_money"];
         // get_time 获取的时间,字符串
         [tempParams setObject:[NSString stringWithFormat:@"%ld", (long)[[NSDate  date] timeIntervalSince1970]] forKey:@"get_time"];
         // ortherPhone 其他电话
@@ -648,6 +663,7 @@
                         [ossVc setPaymentSate:YES];
                         [self.navigationController pushViewController:ossVc animated:YES];
                         //支付类型 2餐到付款
+                        [QSPShoppingCarData clearShoopingCar];
                     }
                         break;
                     case PaymentTypeAlipay:
@@ -660,7 +676,7 @@
                             orderFormModel.des = [NSString stringWithFormat:@"在线支付订单:%@",orderFormModel.order_num];
 
                             //支付金额
-                            orderFormModel.payPrice = [NSString stringWithFormat:@"%f",[QSPShoppingCarData getTotalPrice]];
+                            orderFormModel.payPrice = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
 
                             //回调
                             __block NSString *orderID = orderFormModel.order_id;
@@ -674,25 +690,28 @@
 
                             //进入支付宝
                             [[QSAlixPayManager shareAlixPayManager] startAlixPay:orderFormModel];
+                            
+                            [QSPShoppingCarData clearShoopingCar];
                         }
                         break;
                     case PaymentTypePayCrads:
                         //支付类型 3，储蓄卡支付
-                        
+                        {
+                            QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
+                            [pfovc setOrderFormModel:orderFormModel];
+                            [self.navigationController pushViewController:pfovc animated:YES];
+                            
+                        }
                         break;
                     default:
                         break;
                 }
-                [QSPShoppingCarData clearShoopingCar];
                 
             } else {
                 
                 switch (selectedPayment) {
                     case PaymentTypePayForAfter:
                     {
-                        QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
-                        [ossVc setPaymentSate:NO];
-                        [self.navigationController pushViewController:ossVc animated:YES];
                         //支付类型 2餐到付款
                     }
                         break;
@@ -702,12 +721,24 @@
                         break;
                     case PaymentTypePayCrads:
                         //支付类型 3，储蓄卡支付
-                        
+                        {
+                        }
                         break;
                     default:
                         break;
                 }
                 
+                ///弹出提示
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"提交订单失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                [alert show];
+                
+                ///显示1秒后移除提示
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    [alert dismissWithClickedButtonIndex:0 animated:YES];
+                    
+                });
+
             }
             
         }];
@@ -743,11 +774,12 @@
         UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请选择支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertview show];
         
-    }else if (currentSelectPayment == PaymentTypePayCrads) {
-        
-        QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
-        [self.navigationController pushViewController:pfovc animated:YES];
     }
+//    else if (currentSelectPayment == PaymentTypePayCrads) {
+//        
+//        QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
+//        [self.navigationController pushViewController:pfovc animated:YES];
+//    }
     
     return flag;
     
