@@ -66,12 +66,6 @@
             
         }
         
-        ///保存上界面选择的储值卡序号
-        if (indexPathrow) {
-            
-            self.selectedIndex=(int)indexPathrow;
-            
-        }
         self.isTurnBack = flag;
         
     }

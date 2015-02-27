@@ -143,12 +143,6 @@
 #pragma mark - 点击某一行事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-//    if (indexPath.section >= 4) {
-//        
-//        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-//        
-//    }
     
     ///判断是否已经登录
     int isLogin = [[[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"] intValue];
