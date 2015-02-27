@@ -25,6 +25,7 @@
 @property(nonatomic,strong) UIView          *contentBackgroundView;
 @property(nonatomic,strong) UIScrollView    *scrollView;
 @property(nonatomic,strong) UIButton        *submitBt;
+@property(nonatomic,strong) NSMutableDictionary    *packageSelectedFoodData;
 
 @end
 
@@ -52,6 +53,8 @@
 {
     
     if (self = [super init]) {
+        
+        self.packageSelectedFoodData = [NSMutableDictionary dictionaryWithCapacity:0];
         
         //半透明背景层
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];
@@ -113,7 +116,7 @@
             [self hidePackageView];
             [self removeFromSuperview];
             if (delegate) {
-                [delegate submitWithData:[self getSelectFoodData]];
+                [delegate submitPackageWithData:[self getSelectFoodData]];
             }
             
         }];
@@ -145,6 +148,7 @@
 - (void)updateFoodData:(id)data
 {
     //TODO: 设置套餐数据
+    [self.packageSelectedFoodData removeAllObjects];
     
     [self.foodNameLabel setText:@""];
     for (UIView *view in [_scrollView subviews]) {
@@ -164,6 +168,11 @@
     QSGoodsDataModel *foodData = (QSGoodsDataModel*)data;
     [self.foodNameLabel setText:foodData.goodsName];
     
+    [self.packageSelectedFoodData setObject:foodData.goodsID forKey:@"goods_id"];
+    [self.packageSelectedFoodData setObject:[foodData getOnsalePrice] forKey:@"sale_money"];
+    [self.packageSelectedFoodData setObject:foodData.goodsName forKey:@"name"];
+    [self.packageSelectedFoodData setObject:foodData.shopkeeperID forKey:@"sale_id"];
+    [self.packageSelectedFoodData setObject:@"0" forKey:@"num"];
     
     //套餐列表
     CGFloat scrollViewContentHight = 0.;
@@ -206,17 +215,11 @@
     
     BOOL flag = YES;
     for (UIView *view in [_scrollView subviews]) {
-        if (view.tag == 101) {
+        if (view.tag == 101 || view.tag == 102) {
+            
             QSPFoodPackageItemView *foodPackageView = (QSPFoodPackageItemView*)view;
-            NSArray *array = [foodPackageView getSelectFoodList];
-            if (!array||![array isKindOfClass:[NSArray class]]||[array count]<=0) {
-                flag = NO;
-            }
-        }
-        if (view.tag == 102) {
-            QSPFoodPackageItemView *foodPackageView = (QSPFoodPackageItemView*)view;
-            NSArray *array = [foodPackageView getSelectFoodList];
-            if (!array||![array isKindOfClass:[NSArray class]]||[array count]<=0) {
+            id  tempData = [foodPackageView getSelectFoodData];
+            if (!tempData || ![tempData isKindOfClass:[QSGoodsDataSubModel class]]) {
                 flag = NO;
             }
         }
@@ -228,15 +231,55 @@
 - (id)getSelectFoodData
 {
     
-    NSMutableArray *selectPackageList = [NSMutableArray arrayWithCapacity:0];
+    NSMutableArray *dietList = [NSMutableArray arrayWithCapacity:0];
+
+    [self.packageSelectedFoodData setObject:@"1" forKey:@"num"];
+    
     for (UIView *view in [_scrollView subviews]) {
         if (view&&[view isKindOfClass:[QSPFoodPackageItemView class]]) {
             QSPFoodPackageItemView *item = (QSPFoodPackageItemView*)view;
-            [selectPackageList addObject:[item getSelectFoodList]];
+            
+            if (view.tag==101) {
+                NSMutableDictionary *tempFoodData = [NSMutableDictionary dictionaryWithCapacity:0];
+                id  tempData = [item getSelectFoodData];
+                if (tempData&&[tempData isKindOfClass:[QSGoodsDataSubModel class]]) {
+                    QSGoodsDataSubModel *foodData = (QSGoodsDataSubModel*)tempData;
+                    [tempFoodData setObject:foodData.goodsID forKey:@"goods_id"];
+                    [tempFoodData setObject:[foodData getOnsalePrice] forKey:@"sale_money"];
+                    [tempFoodData setObject:foodData.goodsName forKey:@"name"];
+                    [tempFoodData setObject:foodData.shopkeeperID forKey:@"sale_id"];
+                    [tempFoodData setObject:@"1" forKey:@"num"];
+                    [dietList addObject:tempFoodData];
+                    
+                }else{
+                    NSLog(@"%@ 101 [item getSelectFoodData]获取选择菜品失败",self);
+                }
+                
+            }
+            if (view.tag==102) {
+                
+                NSMutableDictionary *tempFoodData = [NSMutableDictionary dictionaryWithCapacity:0];
+                id  tempData = [item getSelectFoodData];
+                if (tempData&&[tempData isKindOfClass:[QSGoodsDataSubModel class]]) {
+                    
+                    QSGoodsDataSubModel *foodData = (QSGoodsDataSubModel*)tempData;
+                    [tempFoodData setObject:foodData.goodsID forKey:@"goods_id"];
+                    [tempFoodData setObject:[foodData getOnsalePrice] forKey:@"sale_money"];
+                    [tempFoodData setObject:foodData.goodsName forKey:@"name"];
+                    [tempFoodData setObject:foodData.shopkeeperID forKey:@"sale_id"];
+                    [tempFoodData setObject:@"1" forKey:@"num"];
+                    [dietList addObject:tempFoodData];
+                    
+                }else{
+                    NSLog(@"%@ 102 [item getSelectFoodData]获取选择菜品失败",self);
+                }
+            }
         }
     }
     
-    return selectPackageList;
+    [self.packageSelectedFoodData setObject:dietList forKey:@"diet"];
+    
+    return _packageSelectedFoodData;
 }
 
 /*

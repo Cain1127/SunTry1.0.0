@@ -30,11 +30,9 @@
 #import "QSRequestTaskDataModel.h"
 #import "QSUserStoredCardReturnData.h"
 #import "MJRefresh.h"
+#import "QSUserInfoDataModel.h"
 
 @interface QSMyinfoViewController ()
-
-///当前用户的储值卡信息
-@property (nonatomic,retain) QSUserStoredCardReturnData *storeCarDataModel;
 
 @end
 
@@ -46,7 +44,6 @@
     
     [super viewDidLoad];
     
-    [self getStoredCardList];
     [self setupGroup0];
     [self setupGroup1];
     [self setupGroup2];
@@ -158,9 +155,12 @@
     
     if (1 == isLogin) {
         
+        ///获取用户模型
+        QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+        
         if (2 == indexPath.section) {
             
-            if ([self.storeCarDataModel.storedCardListData.storedCardList count] > 0) {
+            if (userModel.isBoughtStoreCard) {
                 
                 QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
                 storeCardVC.hidesBottomBarWhenPushed = YES;
@@ -184,58 +184,10 @@
     
         ///弹出登录框
         QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
-        loginVC.loginSuccessCallBack = ^(BOOL flag){
-        
-            if (flag) {
-                
-                [self getStoredCardList];
-                
-            }
-        
-        };
         [self.navigationController pushViewController:loginVC animated:YES];
     
     }
 
 }
-
-#pragma mark --获取网络数据
--(void)getStoredCardList
-{
-    
-    ///判断是否已登录
-    NSString *isLogin = [[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"];
-    if (!([isLogin intValue] == 1)) {
-        
-        return;
-        
-    }
-    
-    //储存卡信息请求参数
-    NSDictionary *dict = @{@"type" : @"", @"key" : @"",@"flag":@"income"};
-    
-    [QSRequestManager requestDataWithType:rRequestTypeStoredCard andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
-        
-        ///判断是否请求成功
-        if (rRequestResultTypeSuccess == resultStatus) {
-            
-            //模型转换
-            QSUserStoredCardReturnData *tempModel = resultData;
-            
-            ///暂存储值卡模型
-            self.storeCarDataModel = tempModel;
-            
-        } else {
-            
-            NSLog(@"================储值卡信息下载失败================");
-            NSLog(@"error : %@",errorInfo);
-            NSLog(@"================储值卡信息下载失败================");
-            
-        }
-        
-    }];
-    
-}
-
 
 @end

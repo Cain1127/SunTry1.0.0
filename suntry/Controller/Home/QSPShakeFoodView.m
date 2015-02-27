@@ -154,7 +154,7 @@
     }
     [_contentImgView setImage:nil];
     QSGoodsDataModel *goodsItem = data;
-    
+    [_foodCountControlView setHidden:YES];
     //菜类型
     NSString* foodTypeStr = goodsItem.goodsTypeName;
     CGFloat foodTypeWidth = [foodTypeStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
@@ -193,9 +193,14 @@
     //库存
     NSString* inStockCountStr = [NSString stringWithFormat:@"现有库存：%@份",goodsItem.goodsInstockNum];
     [self.inStockCountLabel setText:inStockCountStr];
+    if (!goodsItem.goodsInstockNum || [goodsItem.goodsInstockNum isEqualToString:@""]) {
+        [self.inStockCountLabel setHidden:YES];
+    }else{
+        [self.inStockCountLabel setHidden:NO];
+    }
     
-    //库存少于0时隐藏添加减少控件
-    if (0>=[goodsItem.goodsInstockNum integerValue]) {
+    //库存少于0时,或者套餐时隐藏添加减少控件
+    if ( 0<=[goodsItem.goodsInstockNum integerValue] && ![goodsItem.goodsTypeID isEqualToString:@"5"]) {
         [_foodCountControlView setHidden:NO];
     }
     

@@ -10,4 +10,7 @@
 
 @interface QSWRegisterViewController : QSWSettingViewController
 
+///注册成功时的回调
+@property (nonatomic,copy) void(^registCallBack)(BOOL flag,NSString *userName,NSString *psw);
+
 @end

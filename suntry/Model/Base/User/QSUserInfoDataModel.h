@@ -43,9 +43,13 @@
 @property (nonatomic,copy) NSString *pay;           //!<支付密码
 @property (nonatomic,copy) NSString *pay_salt;      //!<支付密钥
 @property (nonatomic,copy) NSString *balance;       //!<帐户余额
+@property (nonatomic,copy) NSString *is_buy_card;   //!<是否购买过储值卡标识:0-未购买过，1-已购买过
 
 @property (nonatomic,copy) NSString *addressID;     //!<默认送餐地址ID
 @property (nonatomic,copy) NSString *address;       //!<送餐地址
 @property (nonatomic,copy) NSString *receidName;    //!<收餐人姓名
+
+///返回当前用户是否已购买过储值卡:YES-购买过
+- (BOOL)isBoughtStoreCard;
 
 @end

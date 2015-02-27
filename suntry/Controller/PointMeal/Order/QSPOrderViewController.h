@@ -13,6 +13,4 @@
 
 @interface QSPOrderViewController : UIViewController<QSPOrderViewHadOrderCellDelegate,QSPShoppingCarViewDelegate, QSPOrderAddNewAddressViewDelegate>
 
-@property(nonatomic,strong) NSMutableArray  *foodSelectedList;
-
 @end

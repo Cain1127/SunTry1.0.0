@@ -7,6 +7,8 @@
 //
 
 #import "QSWPayOrderViewController.h"
+#import "QSWStoredCardViewController.h"
+
 #import "DeviceSizeHeader.h"
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
@@ -15,12 +17,17 @@
 #import "MJRefresh.h"
 #import "ColorHeader.h"
 
+#import "QSAlixPayManager.h"
+
 #import "MBProgressHUD.h"
 
 #import "QSUserInfoDataModel.h"
+#import "QSAddOrderReturnData.h"
+#import "QSOrderInfoDataModel.h"
 
 @interface QSWPayOrderViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
+@property (nonatomic,assign) BOOL isTurnBack;                           //!<是否回退
 @property (nonatomic, strong) UIView *nodataView;                       //!<没有储值卡view
 @property (strong, nonatomic) UICollectionView *collectionView;         //!<每个充值按钮
 @property (nonatomic,retain)  NSMutableArray *storedCardDataSource;     //!<充值卡信息数据源
@@ -28,6 +35,8 @@
 @property (nonatomic,assign) int selectedIndex;                         //!<当前选择状态的下标
 
 @property (nonatomic,retain) MBProgressHUD *hud;                        //!<HUD
+
+@property (nonatomic,retain) QSOrderInfoDataModel *orderFormModel;      //!<订单模型
 
 @end
 
@@ -45,7 +54,7 @@
  *
  *  @since              1.0.0
  */
-- (instancetype)initWithID:(NSString *)storeCarID andNSIndexPath:(NSString *)indexPathrow
+- (instancetype)initWithID:(NSString *)storeCarID isTurnBack:(BOOL)flag
 {
     
     if (self = [super init]) {
@@ -63,6 +72,7 @@
             self.selectedIndex=(int)indexPathrow;
             
         }
+        self.isTurnBack = flag;
         
     }
     
@@ -344,8 +354,16 @@
     ///显示HUD
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
+    ///判断是否再次支付
+    if (self.orderFormModel) {
+        
+        ///进入支付宝
+        [[QSAlixPayManager shareAlixPayManager] startAlixPay:self.orderFormModel];
+        return;
+    }
+    
     ///储值卡模型
-    QSGoodsDataModel *tempModel = self.storedCardDataSource[self.selectedIndex];
+    __block QSGoodsDataModel *tempModel = self.storedCardDataSource[self.selectedIndex];
     
     ///用户信息模型
     QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
@@ -360,7 +378,7 @@
     [tempParams setObject:@"1" forKey:@"diet_num"];
     
     ///买价
-    [tempParams setObject:tempModel.goodsSpecialPrice forKey:@"total_money"];
+    [tempParams setObject:tempModel.goodsPrice forKey:@"total_money"];
     
     ///时间戳：储值卡购买不需要时间戳
     [tempParams setObject:@"" forKey:@"get_time"];
@@ -397,7 +415,7 @@
     [orderDetail setObject:@"" forKey:@"sale_id"];
     
     ///购买价格
-    [orderDetail setObject:tempModel.goodsSpecialPrice forKey:@"sale_money"];
+    [orderDetail setObject:tempModel.goodsPrice forKey:@"sale_money"];
     
     ///商品名
     [orderDetail setObject:tempModel.goodsName forKey:@"name"];
@@ -416,7 +434,163 @@
     [tempParams setObject:@"2" forKey:@"run_type"];
     
     ///生成订单
+    [QSRequestManager requestDataWithType:rRequestTypeAddOrder andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///订单生成成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///设置参数
+            QSAddOrderReturnData *tempReturnModel = resultData;
+            self.orderFormModel = tempReturnModel.orderInfoList[0];
+            
+            ///订单标题
+            self.orderFormModel.orderTitle = [NSString stringWithFormat:@"购买储蓄卡(%@)",tempModel.goodsName];
+            
+            ///订单描述
+            self.orderFormModel.des = [NSString stringWithFormat:@"在线购买储蓄卡(￥%@)，%@",tempModel.goodsPrice,tempModel.goodsName];
+            
+            ///支付金额
+            self.orderFormModel.payPrice = tempModel.goodsPrice;
+            
+            ///回调
+            __block NSString *orderID = self.orderFormModel.order_id;
+            __weak QSWPayOrderViewController *weakSelf = self;
+            self.orderFormModel.alixpayCallBack = ^(NSString *payCode,NSString *payInfo){
+            
+                ///处理支付宝的回调结果
+                [weakSelf checkPayResultWithCode:payCode andPayResultInfo:payInfo andOrderID:orderID];
+            
+            };
+            
+            ///进入支付宝
+            [[QSAlixPayManager shareAlixPayManager] startAlixPay:self.orderFormModel];
+            
+        } else {
+            
+            ///隐藏HUD
+            [self.hud hide:YES];
+            
+            ///重置订单模型
+            self.orderFormModel = nil;
+        
+            ///订单生成失败
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"订单提交失败，请稍后再试……" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alertView show];
+            
+            ///显示1秒后移聊
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alertView dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
+        
+        }
+        
+    }];
 
+}
+
+#pragma mark - 支付宝支付时的回调处理
+/**
+ *  @author         yangshengmeng, 15-02-26 14:02:38
+ *
+ *  @brief          支付宝支付时的回调处理
+ *
+ *  @param payCode  支付结果的编码
+ *  @param payInfo  支付结果说明
+ *
+ *  @since          1.0.0
+ */
+- (void)checkPayResultWithCode:(NSString *)payCode andPayResultInfo:(NSString *)payInfo andOrderID:(NSString *)orderID
+{
+    
+    ///将支付回调的代码，转换为整数代码
+    int resultCode = [payCode intValue];
+    
+    /**
+     *                  9000---订单支付成功
+     *                  8000---正在处理中
+     *                  4000---订单支付失败
+     *                  6001---用户中途取消
+     *                  6002---网络连接出错
+     */
+    
+    ///支付成功回调：进入支付成功页面
+    if (resultCode == 9000) {
+        
+        ///确认参数
+        NSDictionary *tempParams = @{@"id" : orderID,
+                                     @"type" : @"1",
+                                     @"is_pay" : @"1",
+                                     @"desc" : @"储值卡购买确认"};
+        
+        ///回调服务端确认支付
+        [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///移聊HUD
+            [self.hud hide:YES];
+            
+            ///更新用户购买储值卡的状态
+            QSUserInfoDataModel *userDataModel = [QSUserInfoDataModel userDataModel];
+            userDataModel.is_buy_card = @"1";
+            [userDataModel saveUserData];
+            
+            ///返回储值卡页面
+            QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+            storeCardVC.pageGap = 4;
+            [self.navigationController pushViewController:storeCardVC animated:YES];
+            
+        }];
+        
+        return;
+        
+    }
+    
+    ///支付回调：正在处理中
+    if (resultCode == 8000) {
+        
+        ///确认参数
+        NSDictionary *tempParams = @{@"id" : orderID,
+                                     @"type" : @"1",
+                                     @"is_pay" : @"0",
+                                     @"desc" : @"储值卡购买确认"};
+        
+        ///回调服务端确认支付
+        [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///移聊HUD
+            [self.hud hide:YES];
+            
+            ///更新用户购买储值卡的状态
+            QSUserInfoDataModel *userDataModel = [QSUserInfoDataModel userDataModel];
+            userDataModel.is_buy_card = @"1";
+            [userDataModel saveUserData];
+            
+            ///返回储值卡页面
+            QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+            storeCardVC.pageGap = 4;
+            [self.navigationController pushViewController:storeCardVC animated:YES];
+            
+        }];
+        
+        return;
+        
+    }
+    
+    ///移聊HUD
+    [self.hud hide:YES];
+    
+    ///支付失败
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"支付失败，请稍后再试……"] delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    [alertView show];
+    
+    ///显示1秒后移聊
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        [alertView dismissWithClickedButtonIndex:0 animated:YES];
+        
+    });
+    
 }
 
 #pragma mark - 选择一项储值卡时，改变字体颜色
@@ -426,8 +600,20 @@
 
     ///保存当前选择的储值卡
     QSGoodsDataModel *tempModel = self.storedCardDataSource[indexPath.row];
-    self.selectedID = tempModel.goodsID;
-    self.selectedIndex = (int)indexPath.row;
+    
+    ///判断当前选择的是否和原来的相同
+    if (self.selectedIndex == indexPath.row) {
+        
+        self.selectedID = tempModel.goodsID;
+        self.selectedIndex = (int)indexPath.row;
+        
+    } else {
+    
+        self.selectedID = tempModel.goodsID;
+        self.selectedIndex = (int)indexPath.row;
+        self.orderFormModel = nil;
+    
+    }
 
 }
 

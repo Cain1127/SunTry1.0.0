@@ -157,11 +157,24 @@
     if ([_foodData.goodsInstockNum integerValue]>0) {
         [_foodCountControlView setHidden:NO];
     }
-    
-    //库存为0或者套餐时隐藏库存信息
-    if ([_foodData.goodsInstockNum integerValue]==0||[_foodData.goodsTypeID isEqualToString:@"5"]) {
-        [self.inStockCountLabel setHidden:YES];
+    if ([_foodData.goodsTypeID integerValue]==5) {
+        //是套餐,无库存字段时允许添加套餐
+        [_foodCountControlView setHidden:NO];
+        [_foodCountControlView setOnlyShowAddButton:YES];
+    }else{
+        [_foodCountControlView setOnlyShowAddButton:NO];
     }
+    
+    if (!_foodData.goodsInstockNum || [_foodData.goodsInstockNum isEqualToString:@""]) {
+        [_inStockCountLabel setHidden:YES];
+    }else{
+        [_inStockCountLabel setHidden:NO];
+    }
+    
+//    //库存为0或者套餐时隐藏库存信息
+//    if ([_foodData.goodsInstockNum integerValue]==0||[_foodData.goodsTypeID isEqualToString:@"5"]) {
+//        [self.inStockCountLabel setHidden:YES];
+//    }
     
     [_pricemarkIconView setHidden:NO];
     //当前售卖价格
@@ -169,11 +182,6 @@
     CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]+4;
     [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
     [self.priceLabel setText:priceStr];
-    
-    if ([_foodData.goodsTypeID integerValue]==5) {
-        //是套餐
-//        NSLog(@"套餐 %@",_foodData.stapleFoodList);
-    }
     
 }
 

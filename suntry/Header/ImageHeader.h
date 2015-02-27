@@ -9,7 +9,7 @@
 #ifndef suntry_ImageHeader_h
 #define suntry_ImageHeader_h
 
-#pragma mark --导航栏使用图片资源
+#pragma mark - 导航栏使用图片资源
 /*!
  *  @author wangshupeng, 15-02-02 21:02:45
  *

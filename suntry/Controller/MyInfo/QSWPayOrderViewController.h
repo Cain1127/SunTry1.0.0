@@ -10,6 +10,9 @@
 
 @interface QSWPayOrderViewController : UIViewController
 
+///购买储值卡结果回调
+@property (nonatomic,copy) void(^buyStoreCardCallBack)(BOOL flag);
+
 /**
  *  @author             yangshengmeng, 15-02-23 11:02:17
  *
@@ -21,6 +24,6 @@
  *
  *  @since              1.0.0
  */
-- (instancetype)initWithID:(NSString *)storeCarID andNSIndexPath:(NSString *)indexPathrow;
+- (instancetype)initWithID:(NSString *)storeCarID isTurnBack:(BOOL)flag;
 
 @end

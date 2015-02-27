@@ -13,4 +13,7 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+
+    #import "CommonHeader.h"//!<通用宏定义头文件
+
 #endif

@@ -223,6 +223,16 @@
 {
     
     QSWRegisterViewController *VC=[[QSWRegisterViewController alloc] init];
+    VC.registCallBack = ^(BOOL flag,NSString *userName,NSString *psw){
+    
+        if (flag) {
+            
+            ((UITextField *)self.userNameItem.property).text = userName;
+            ((UITextField *)self.passWordItem.property).text = psw;
+            
+        }
+    
+    };
     [self.navigationController pushViewController:VC animated:YES];
     
 }

@@ -41,6 +41,7 @@ typedef enum
     
     rRequestTypeStoredCard = 1042,          //!<储值卡
     rRequestTypeAddOrder = 1043,            //!<添加订单
+    rRequestTypeCommitOrderPayResult = 1044,//!<确认订单支付结果
     
     rRequestTypeUserSendAddressList = 1100, //!<当前用户的送餐地址列表
     rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址

@@ -20,6 +20,7 @@
 #import "QSGoodsDataModel.h"
 #import "QSUserInfoDataModel.h"
 #import "QSPPayForOrderViewController.h"
+#import "QSWLoginViewController.h"
 
 #define ORDERVIEWCONTROLLER_SHIP_BT_BG_COLOR    [UIColor colorWithRed:0.709 green:0.653 blue:0.543 alpha:1.000]
 #define ORDERVIEWCONTROLLER_TITLE_FONT_SIZE     17.
@@ -48,13 +49,15 @@
 @property (nonatomic, strong) UIView  *remarkFrameView;
 @property (nonatomic, strong) QSPOrderPaymentView *paymentView;
 
-@property(nonatomic,strong) QSPShoppingCarView *shoppingCarView;
+@property (nonatomic, strong) QSPShoppingCarView *shoppingCarView;
+
+@property (nonatomic, strong) NSString *orderName;      //下单名字
+@property (nonatomic, strong) NSString *orderAddress;   // 地址
+@property (nonatomic, strong) NSString *orderPhone;     //下单电话
 
 @end
 
 @implementation QSPOrderViewController
-
-//@synthesize foodSelectedList;
 
 - (void)loadView{
     
@@ -277,52 +280,47 @@
 
 - (void)updateAddress
 {
+    self.orderName = @"";
+    self.orderAddress = @"";
+    self.orderPhone = @"";
+    [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
+    [_shipToAddress setText:self.orderAddress];
+    
     QSUserInfoDataModel *userData = [QSUserInfoDataModel userDataModel];
     
-    if (userData && userData.address) {
-        BOOL hasAddress = ![userData.address isEqualToString:@""];
-        if (hasAddress) {
+    if (userData) {
+        
+        if (userData.address && ![userData.address isEqualToString:@""]) {
             
-//            [_shipToPersonName setText:@"李先生    18688888888"];
-//            [_shipToAddress setText:@"地址：广州市天河区体育西路城建大厦五楼"];
-            [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",userData.receidName, userData.phone]];
-            [_shipToAddress setText:userData.address];
-            
-        }else{
-            
-            QSPOrderAddNewAddressView *addNewAddView = [QSPOrderAddNewAddressView getAddNewAddressView];
-            [self.navigationController.view addSubview:addNewAddView];
-            [addNewAddView setDelegate:self];
-            [addNewAddView showAddNewAddressView];
-            
+            self.orderName = userData.receidName;
+            self.orderAddress = userData.address;
+            self.orderPhone = userData.phone;
+            [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
+            [_shipToAddress setText:self.orderAddress];
+            return;
         }
-    }else{
-        //没有用户数据
+        
+        QSPOrderAddNewAddressView *addNewAddView = [QSPOrderAddNewAddressView getAddNewAddressView];
+        [self.navigationController.view addSubview:addNewAddView];
+        [addNewAddView setDelegate:self];
+        [addNewAddView showAddNewAddressView];
         
     }
+
 }
 
 - (void)updateHadOrderCount
 {
+    //FIXME: 逻辑需要根据购物车逻辑完善。
     NSInteger selectedTotalCount = 0;
-    if (self.foodSelectedList&&[self.foodSelectedList isKindOfClass:[NSArray class]])
-    {
-        NSArray *array = self.foodSelectedList;
-        
-        for (int i=0; i<[array count]; i++) {
-            NSDictionary *dic = array[i];
-            NSNumber *count = [dic objectForKey:@"count"];
-            if (count) {
-                
-                selectedTotalCount += count.integerValue;
-                
-                QSGoodsDataModel *food = [dic objectForKey:@"goods"];
-                if (food&&[food isKindOfClass:[QSGoodsDataModel class]]) {
-                    
-                    [_shoppingCarView changeGoods:food withCount:count.longValue];
-                    
-                }
-            }
+
+    NSArray *array = [QSPShoppingCarData getShoppingCarDataList];
+    
+    for (int i=0; i<[array count]; i++) {
+        NSDictionary *dic = array[i];
+        NSString *countStr = [dic objectForKey:@"num"];
+        if (countStr&&[countStr isKindOfClass:[NSString class]]) {
+            selectedTotalCount += countStr.integerValue;
         }
     }
     
@@ -345,7 +343,9 @@
     tempFrame.origin.x = _hadOrderTotalCountTip.frame.origin.x+_hadOrderTotalCountTip.frame.size.width;
     [_hadOrderTotalUnitTip setFrame:tempFrame];
     
-    
+    if (_shoppingCarView) {
+        [_shoppingCarView updateShoppingCar];
+    }
 }
 
 - (void)updateHadOrderFoodList
@@ -356,22 +356,17 @@
             [view removeFromSuperview];
         }
     }
-    if (self.foodSelectedList&&[self.foodSelectedList isKindOfClass:[NSArray class]])
-    {
-        NSArray *array = self.foodSelectedList;
-        for (int i=0; i<[array count]; i++) {
-            NSDictionary *dic = array[i];
-            id foodData = [dic objectForKey:@"goods"];
-            if (foodData&&[foodData isKindOfClass:[QSGoodsDataModel class]]) {
-                NSNumber *count = [dic objectForKey:@"count"];
-                
-                QSPOrderViewHadOrderCell *cell = [[QSPOrderViewHadOrderCell alloc] initOrderItemViewWithData:(QSGoodsDataModel*)foodData withCount:count.integerValue];
-                [cell setFrame:CGRectMake(0, _hadOrderTotalTip.frame.origin.y+_hadOrderTotalTip.frame.size.height+12 + i *cell.frame.size.height, cell.frame.size.width, cell.frame.size.height)];
-                [cell setDelegate:self];
-                [_hadOrderFrameView addSubview:cell];
-                [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, cell.frame.origin.y+cell.frame.size.height)];
-            }
-        }
+    
+    NSArray *array = [QSPShoppingCarData getShoppingCarDataList];
+    for (int i=0; i<[array count]; i++) {
+        NSDictionary *dic = array[i];
+            NSString *countStr = [dic objectForKey:@"num"];
+        
+            QSPOrderViewHadOrderCell *cell = [[QSPOrderViewHadOrderCell alloc] initOrderItemViewWithData:dic withCount:countStr.integerValue];
+            [cell setFrame:CGRectMake(0, _hadOrderTotalTip.frame.origin.y+_hadOrderTotalTip.frame.size.height+12 + i *cell.frame.size.height, cell.frame.size.width, cell.frame.size.height)];
+            [cell setDelegate:self];
+            [_hadOrderFrameView addSubview:cell];
+            [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, cell.frame.origin.y+cell.frame.size.height)];
     }
     
  }
@@ -449,6 +444,29 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    int isLogin = [[[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"] intValue];
+    
+    if (isLogin != 1 ) {
+        
+        QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
+        loginVC.loginSuccessCallBack = ^(BOOL flag){
+            
+            if (flag) {
+                
+                [self updateView];
+            }
+            
+        };
+        [self.navigationController pushViewController:loginVC animated:YES];
+        
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -465,30 +483,13 @@
     
     NSLog(@"changedCount:%ld withFoodData:%@",(long)count,foodData);
 
-    BOOL hadGood = NO;
-    for (int i=0; i<[self.foodSelectedList count]; i++) {
-        NSMutableDictionary *tempDic = self.foodSelectedList[i];
-        if (tempDic) {
-            
-            QSGoodsDataModel *food = [tempDic objectForKey:@"goods"];
-            if (food&&[food isKindOfClass:[QSGoodsDataModel class]]&&foodData&&[foodData isKindOfClass:[QSGoodsDataModel class]]) {
-                
-                if ([food.goodsName isEqualToString:((QSGoodsDataModel*)foodData).goodsName]) {
-                    
-                    hadGood = YES;
-                    [tempDic setObject:[NSNumber numberWithInt:(int)(count)] forKey:@"count"];
-                    
-                }
-            }
-        }
-    }
-    if (NO==hadGood) {
-        NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:foodData,@"goods",[NSNumber numberWithInt:(int)count],@"count",nil];
-        [self.foodSelectedList addObject:itemDic];
-    }
+    [QSPShoppingCarData setShoppingCarDataListWithData:foodData withCount:count AddOrSetPackageData:NO];
     
-    
-    [self updateHadOrderCount];
+    if (count==0) {
+        [self updateView];
+    }else{
+        [self updateHadOrderCount];
+    }
     
 }
 
@@ -537,7 +538,13 @@
     
     BOOL flag = YES;
     
-    //TODO: 判断有没有地址
+    //判断有没有地址
+    if (!self.orderName || !self.orderAddress || !self.orderPhone || [self.orderName isEqualToString:@""] || [self.orderAddress isEqualToString:@""] || [self.orderPhone isEqualToString:@""]) {
+        UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请添加您的送餐地址" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertview show];
+        flag = NO;
+        return flag;
+    }
     
     PaymentType currentSelectPayment = [_paymentView getSelectedPayment];
     
@@ -558,9 +565,29 @@
     
 }
 
-- (void)AddNewAddressWithData:(id)data
+/**
+ *  接受添加地址信息
+ *
+ *  @param data NSDictionary:
+ 
+ {
+ address = 地址;
+ company = 公司;
+ name = 姓名;
+ phone = 电话号码;
+ sex = 性别;
+ }
+ 
+ */
+- (void)AddNewAddressWithData:(NSDictionary*)data
 {
     NSLog(@"添加新地址：%@",data);
+    
+    self.orderName = [NSString stringWithFormat:@"%@%@",[data objectForKey:@"name"],[data objectForKey:@"sex"]];
+    self.orderAddress = [data objectForKey:@"address"];
+    self.orderPhone = [data objectForKey:@"phone"];
+    [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
+    [_shipToAddress setText:self.orderAddress];
 }
 
 /*

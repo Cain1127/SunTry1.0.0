@@ -60,7 +60,8 @@
                                   @"pay_salt" : @"pay_salt",
                                   @"address_id" : @"addressID",
                                   @"address" : @"address",
-                                  @"address_name" : @"receidName"};
+                                  @"address_name" : @"receidName",
+                                  @"is_buy_card" : @"is_buy_card"};
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
     return shared_mapping;
@@ -88,6 +89,7 @@
         self.addressID = [aDecoder decodeObjectForKey:@"addressID"];
         self.address = [aDecoder decodeObjectForKey:@"address"];
         self.receidName = [aDecoder decodeObjectForKey:@"receidName"];
+        self.is_buy_card = [aDecoder decodeObjectForKey:@"is_buy_card"];
         
     }
     
@@ -113,7 +115,23 @@
     [aCoder encodeObject:self.addressID forKey:@"addressID"];
     [aCoder encodeObject:self.address forKey:@"address"];
     [aCoder encodeObject:self.receidName forKey:@"receidName"];
+    [aCoder encodeObject:self.is_buy_card forKey:@"is_buy_card"];
     
+}
+
+#pragma mark - 返回当前用户是否购买过储值卡的标识
+///返回当前用户是否已购买过储值卡:YES-购买过
+- (BOOL)isBoughtStoreCard
+{
+
+    if ([self.is_buy_card intValue] == 1) {
+        
+        return YES;
+        
+    }
+    
+    return NO;
+
 }
 
 @end
