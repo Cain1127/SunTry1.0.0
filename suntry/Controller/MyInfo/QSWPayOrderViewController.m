@@ -264,8 +264,6 @@
     bgView.layer.cornerRadius = 6.0f;
     cell.selectedBackgroundView = bgView;
     
-    [collectionView selectItemAtIndexPath:[NSIndexPath indexPathWithIndex:self.selectedIndex]  animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-    
     ///判断是否第一行
     if (0 == indexPath.row && !(self.selectedID)) {
         
@@ -609,13 +607,6 @@
     
     }
 
-}
-
--(void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-
-    self.selectedIndex = (int)indexPath.row;
-    
 }
 
 -(BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
