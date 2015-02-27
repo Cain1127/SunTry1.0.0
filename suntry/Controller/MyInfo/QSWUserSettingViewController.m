@@ -14,6 +14,7 @@
 #import "DeviceSizeHeader.h"
 #import "QSWTheSuntryView.h"
 #import "QSWServiceTermViewController.h"
+#import "QSWCheckAppVersionViewController.h"
 
 @interface QSWUserSettingViewController ()
 
@@ -64,7 +65,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"检查更新" destVcClass:nil];
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"检查更新" destVcClass:[QSWCheckAppVersionViewController class]];
     group.items = @[item];
     
 }

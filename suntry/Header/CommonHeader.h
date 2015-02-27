@@ -1,3 +1,6 @@
+// 0.从appStore上获取最新的版本信息
+
+static NSString *const QSGetAppStoreVersion = @"http://itunes.apple.com/lookup?id=908958155";
 
 ///数据请求根地址
 #define REQUEST_ROOT_URL @"http://test.9dxz.com/"
@@ -24,5 +27,6 @@
 /** cell的边框宽度 */
 #define StatusCellBorder 10
 
-// 7.常用的对象
+// 5.常用的对象
 #define NotificationCenter [NSNotificationCenter defaultCenter]
+

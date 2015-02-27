@@ -69,6 +69,7 @@
 		473902481A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902341A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m */; };
 		473902491A9EF3D4000ECF41 /* QSPPayForOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902371A9EF3D4000ECF41 /* QSPPayForOrderViewController.m */; };
 		4739024A1A9EF3D4000ECF41 /* QSPShoppingCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */; };
+		CE18BC0F1AA0764F00AB801F /* QSWCheckAppVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE18BC0E1AA0764F00AB801F /* QSWCheckAppVersionViewController.m */; };
 		CE1C081E1A9F1A4200BE9A99 /* QSWServiceTermViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
 		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
@@ -353,6 +354,8 @@
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE18BC0D1AA0764F00AB801F /* QSWCheckAppVersionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWCheckAppVersionViewController.h; sourceTree = "<group>"; };
+		CE18BC0E1AA0764F00AB801F /* QSWCheckAppVersionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWCheckAppVersionViewController.m; sourceTree = "<group>"; };
 		CE1C081C1A9F1A4200BE9A99 /* QSWServiceTermViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWServiceTermViewController.h; sourceTree = "<group>"; };
 		CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWServiceTermViewController.m; sourceTree = "<group>"; };
 		CE207AB61A90430000ACF741 /* QSWStoredCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWStoredCardViewController.h; sourceTree = "<group>"; };
@@ -1038,6 +1041,8 @@
 				CEEAC3CD1A8D0F7D009AC6AA /* QSWResetPswController.m */,
 				CE1C081C1A9F1A4200BE9A99 /* QSWServiceTermViewController.h */,
 				CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */,
+				CE18BC0D1AA0764F00AB801F /* QSWCheckAppVersionViewController.h */,
+				CE18BC0E1AA0764F00AB801F /* QSWCheckAppVersionViewController.m */,
 			);
 			path = MyInfo;
 			sourceTree = "<group>";
@@ -1734,10 +1739,7 @@
 				CEB630BC1A85BE0C00F64DEE /* QSWTextFieldItem.m in Sources */,
 				CE1C081E1A9F1A4200BE9A99 /* QSWServiceTermViewController.m in Sources */,
 				CEEAC38E1A8CA4EF009AC6AA /* QSDistrictDataModel.m in Sources */,
-				CEEAC3BB1A8CA517009AC6AA /* QSPOrderRemarkViewController.m in Sources */,
-				CEEAC3BA1A8CA517009AC6AA /* QSPOrderPaymentView.m in Sources */,
 				185344481A9EF1B000A83039 /* Order.m in Sources */,
-				CEEAC3BF1A8CA517009AC6AA /* QSPShoppingCarView.m in Sources */,
 				CE53415B1A7FA527002BA188 /* QSMapManager.m in Sources */,
 				CE571F071A84C92B00609788 /* QSWUserSettingViewController.m in Sources */,
 				CE571EF41A84AFB200609788 /* QSWSettingItem.m in Sources */,
@@ -1772,6 +1774,7 @@
 				1853443E1A9ED82C00A83039 /* base64.m in Sources */,
 				CEEAC3E41A8DA7DF009AC6AA /* MJRefreshFooterView.m in Sources */,
 				CE5341481A7FA4CE002BA188 /* QSMyinfoViewController.m in Sources */,
+				CE18BC0F1AA0764F00AB801F /* QSWCheckAppVersionViewController.m in Sources */,
 				CEEAC3931A8CA4EF009AC6AA /* QSBaseModel.m in Sources */,
 				4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,
@@ -1803,7 +1806,6 @@
 				185344441A9ED82C00A83039 /* RSADataSigner.m in Sources */,
 				185343CB1A9ED31000A83039 /* QSGoodsStapleFoodReturnData.m in Sources */,
 				CE5341A01A7FBFAA002BA188 /* NSString+Calculation.m in Sources */,
-				CEEAC3B31A8CA517009AC6AA /* QSPFoodCountControlView.m in Sources */,
 				1853443D1A9ED82C00A83039 /* QSAlixPayManager.m in Sources */,
 				473902461A9EF3D4000ECF41 /* QSPOrderSubmitedStateViewController.m in Sources */,
 				CE571F041A84C8E000609788 /* QSWLoginPswViewController.m in Sources */,
