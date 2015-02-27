@@ -37,6 +37,7 @@ typedef enum
     rRequestTypeAllGoods    =1050,          //!<所有菜品
     
     rRequestTypeLogin = 1002,               //!<登录
+    rRequestTypeReloadUserData = 1003,      //!<重新下载用户信息
     rRequestTypeRegister = 1102,            //!<注册
     
     rRequestTypeStoredCard = 1042,          //!<储值卡

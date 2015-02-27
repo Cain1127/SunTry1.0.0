@@ -184,6 +184,7 @@
     
         ///弹出登录框
         QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
+        loginVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:loginVC animated:YES];
     
     }
