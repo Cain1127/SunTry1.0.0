@@ -21,6 +21,11 @@
 #import "QSUserInfoDataModel.h"
 #import "QSPPayForOrderViewController.h"
 #import "QSWLoginViewController.h"
+#import "QSRequestManager.h"
+#import "QSUserCouponListReturnData.h"
+#import "MBProgressHUD.h"
+#import "QSAddOrderReturnData.h"
+#import "QSOrderInfoDataModel.h"
 
 #define ORDERVIEWCONTROLLER_SHIP_BT_BG_COLOR    [UIColor colorWithRed:0.709 green:0.653 blue:0.543 alpha:1.000]
 #define ORDERVIEWCONTROLLER_TITLE_FONT_SIZE     17.
@@ -47,6 +52,7 @@
 @property (nonatomic, strong) QSLabel *specialOfferTotalUnitTip;
 
 @property (nonatomic, strong) UIView  *remarkFrameView;
+@property (nonatomic, strong) QSLabel *remarkLabel;
 @property (nonatomic, strong) QSPOrderPaymentView *paymentView;
 
 @property (nonatomic, strong) QSPShoppingCarView *shoppingCarView;
@@ -54,6 +60,8 @@
 @property (nonatomic, strong) NSString *orderName;      //下单名字
 @property (nonatomic, strong) NSString *orderAddress;   // 地址
 @property (nonatomic, strong) NSString *orderPhone;     //下单电话
+
+@property (nonatomic, strong) NSArray  *couponList;
 
 @end
 
@@ -63,6 +71,10 @@
     
     [super loadView];
     
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:KEY_ORDER_USER_REMARK_INFO];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    self.couponList = [NSArray array];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     QSBlockButtonStyleModel *backButtonStyle = [[QSBlockButtonStyleModel alloc] init];
     [backButtonStyle setImagesNormal:IMAGE_NAVIGATIONBAR_BACK_NORMAL];
@@ -233,12 +245,12 @@
     [remarkBt addSubview:remarkArrowMarkView];
     [_remarkFrameView addSubview:remarkBt];
     
-    QSLabel *remarkLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, (remarkBt.frame.size.height-17)/2, remarkBt.frame.size.width-32, 17)];
-    [remarkLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_SPECIAL_CELL_TITLE_FONT_SIZE]];
-    [remarkLabel setBackgroundColor:[UIColor clearColor]];
-    [remarkLabel setText:@"备注信息"];
-    [remarkLabel setTextColor:ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR];
-    [remarkBt addSubview:remarkLabel];
+    self.remarkLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, (remarkBt.frame.size.height-17)/2, remarkBt.frame.size.width-32, 17)];
+    [self.remarkLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_SPECIAL_CELL_TITLE_FONT_SIZE]];
+    [self.remarkLabel setBackgroundColor:[UIColor clearColor]];
+//    [self.remarkLabel setText:@"暂无备注"];
+    [self.remarkLabel setTextColor:ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR];
+    [remarkBt addSubview:self.remarkLabel];
     
     UIView *remarkLineButtomView = [[UIView alloc] initWithFrame:CGRectMake(12, remarkBt.frame.origin.y+remarkBt.frame.size.height-1, SIZE_DEVICE_WIDTH-24, 1)];
     [remarkLineButtomView setBackgroundColor:ORDERVIEWCONTROLLER_LINE_COLOR];
@@ -375,7 +387,7 @@
 {
     
     //计算宽度
-    NSString* specialOfferTotalCountStr = [NSString stringWithFormat:@"%ld",(long)8];
+    NSString* specialOfferTotalCountStr = [NSString stringWithFormat:@"%ld",(long)0];
     CGFloat specialOfferTotalCountStrWidth = [specialOfferTotalCountStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDERVIEWCONTROLLER_TITLE_FONT_SIZE]+4;
     [_specialOfferTotalCountTip setFrame:CGRectMake(_specialOfferTotalCountTip.frame.origin.x, _specialOfferTotalCountTip.frame.origin.y, specialOfferTotalCountStrWidth, _specialOfferTotalCountTip.frame.size.height)];
     [_specialOfferTotalCountTip setText:specialOfferTotalCountStr];
@@ -398,7 +410,10 @@
     [_specialOfferFrameView setFrame:tempFrame];
     
     //TODO: 用户的优惠券设置
-    NSArray *specialOfferList = [NSArray array];//[NSArray arrayWithObjects:@"", nil];
+    NSArray *specialOfferList = self.couponList;//[NSArray arrayWithObjects:@"", nil];
+    if (!specialOfferList) {
+        specialOfferList = [NSArray array];
+    }
     
     for (UIView *view in [_specialOfferFrameView subviews]) {
         if (view.tag>=8000&&view.tag<8009) {
@@ -425,7 +440,7 @@
         QSLabel *scNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, (specialOfferBt.frame.size.height-17)/2, specialOfferBt.frame.size.width-26, 17)];
         [scNameLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_SPECIAL_CELL_TITLE_FONT_SIZE]];
         [scNameLabel setBackgroundColor:[UIColor clearColor]];
-        [scNameLabel setText:@"超级业界良心劲爆奖赏新人红包8元恭喜发财大优惠"];
+        [scNameLabel setText:[[specialOfferList objectAtIndex:i] objectForKey:@"goods_name "]];
         [scNameLabel setTextColor:ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR];
         [specialOfferBt addSubview:scNameLabel];
         
@@ -463,8 +478,16 @@
             
         };
         [self.navigationController pushViewController:loginVC animated:YES];
-        
+        return;
     }
+    
+    NSString *remarkStr = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_ORDER_USER_REMARK_INFO];
+    if (!remarkStr || [remarkStr isEqualToString:@""]) {
+        [self.remarkLabel setText:@"暂无备注"];
+    }else{
+        [self.remarkLabel setText:remarkStr];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -504,26 +527,165 @@
     
     if ([self checkOrder]) {
         
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        
         PaymentType selectedPayment = [_paymentView getSelectedPayment];
+        
+        //提交订单所需参数
+        NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
+        /**
+         *  user_id 用户id
+         *  name 下订名字
+         *  address 地址
+         *  phone 电话
+         *  expand_4 （必传参数，支付类型，3，储蓄卡支付；1在线支付，2餐到付款 ）
+         *  mer_id 商家id
+         *  total_money 总价
+         *  get_time 要求获取的时间,字符串
+         *  ortherPhone 其他电话
+         *  desc 描述
+         *  diet 菜牌的数量 array() or json
+         *  promotion 优惠数组 array() or json
+         *  coupon 优惠卷 array() or json
+         *  status 状态
+         *  source_type 来源类型 1 为后台，2为ios手机端，3为android手机端，4为网站端
+         *  latitude 经度，（可选）
+         *  longitude 纬度（可选）
+         *  diet_num 菜品总数
+         *  pay_type是否已支付，必传参数，默认传0
+         *  run_id 用户id
+         *  run_type 操作类型，1代表为后台下单，2代表为线上下单
+         */
+        
+        ///用户信息模型
+        QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+        
+        // user_id用户ID
+        [tempParams setObject:userModel.userID forKey:@"user_id"];
+        // name 下订名字
+        [tempParams setObject:self.orderName forKey:@"name"];
+        // address 下单地址
+        [tempParams setObject:self.orderAddress forKey:@"address"];
+        // expand_4 （必传参数，支付类型，3，储蓄卡支付；1在线支付，2餐到付款 ）
+        [tempParams setObject:@"" forKey:@"expand_4"];
+        // phone 下单电话
+        [tempParams setObject:self.orderPhone forKey:@"phone"];
+        // mer_id 商家ID
+        [tempParams setObject:@"1" forKey:@"mer_id"];
+        // total_money 总价
+        [tempParams setObject:[NSString stringWithFormat:@"%f",[QSPShoppingCarData getTotalPrice]] forKey:@"total_money"];
+        // get_time 获取的时间,字符串
+        [tempParams setObject:[NSString stringWithFormat:@"%ld", (long)[[NSDate  date] timeIntervalSince1970]] forKey:@"get_time"];
+        // ortherPhone 其他电话
+        [tempParams setObject:@"" forKey:@"ortherPhone"];
+        // desc 描述，备注信息
+        [tempParams setObject:[self.remarkLabel text] forKey:@"desc"];
+        // diet 菜牌的数量 array() or json promotion
+        [tempParams setObject:[QSPShoppingCarData getShoppingCarDataList] forKey:@"diet"];
+        // promotion 优惠数组 array() or json
+        [tempParams setObject:[NSArray array] forKey:@"promotion"];
+        // coupon 优惠卷 array() or json
+        if (!_couponList) {
+            _couponList = [NSArray array];
+        }
+        [tempParams setObject:_couponList forKey:@"coupon"];
+        // status 状态
+        [tempParams setObject:@"" forKey:@"status"];
+        // source_type 来源类型 1 为后台，2为ios手机端，3为android手机端，4为网站端
+        [tempParams setObject:@"2" forKey:@"source_type"];
+        // latitude 经度，（可选）
+        [tempParams setObject:@"" forKey:@"latitude"];
+        // longitude 纬度（可选）
+        [tempParams setObject:@"" forKey:@"longitude"];
+        // diet_num 菜品总数
+        [tempParams setObject:[NSString stringWithFormat:@"%ld",(long)[QSPShoppingCarData getTotalFoodCount]] forKey:@"diet_num"];
+        // pay_type是否已支付，必传参数，默认传0
+        [tempParams setObject:@"0" forKey:@"pay_type"];
+        // run_id 用户id
+        [tempParams setObject:userModel.userID forKey:@"run_id"];
+        // run_type 操作类型，1代表为后台下单，2代表为线上下单
+        [tempParams setObject:@"2" forKey:@"run_type"];
         
         switch (selectedPayment) {
             case PaymentTypePayForAfter:
-                {
-                    QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
-                    [ossVc setPaymentSate:YES];
-                    [self.navigationController pushViewController:ossVc animated:YES];
-                    
-                }
+                //支付类型 2餐到付款
+                [tempParams setObject:@"2" forKey:@"expand_4"];
                 break;
             case PaymentTypeAlipay:
-                
+                //支付类型 1在线支付
+                [tempParams setObject:@"1" forKey:@"expand_4"];
                 break;
             case PaymentTypePayCrads:
-                
+                //支付类型 3，储蓄卡支付
+                [tempParams setObject:@"3" forKey:@"expand_4"];
                 break;
             default:
                 break;
         }
+        
+        ///生成订单
+        [QSRequestManager requestDataWithType:rRequestTypeAddOrder andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///隐藏HUD
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            ///订单生成成功
+            if (rRequestResultTypeSuccess == resultStatus) {
+                
+                ///设置参数
+                QSAddOrderReturnData *tempReturnModel = resultData;
+                
+                QSOrderInfoDataModel *orderFormModel = tempReturnModel.orderInfoList[0];
+                NSLog(@"订单ID :%@ 订单号：%@ 提交成功！",orderFormModel.order_id,orderFormModel.order_num);
+                
+                switch (selectedPayment) {
+                    case PaymentTypePayForAfter:
+                    {
+                        QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+                        [ossVc setPaymentSate:YES];
+                        [self.navigationController pushViewController:ossVc animated:YES];
+                        //支付类型 2餐到付款
+                    }
+                        break;
+                    case PaymentTypeAlipay:
+                        //支付类型 1在线支付
+                        
+                        break;
+                    case PaymentTypePayCrads:
+                        //支付类型 3，储蓄卡支付
+                        
+                        break;
+                    default:
+                        break;
+                }
+                
+            } else {
+                
+                switch (selectedPayment) {
+                    case PaymentTypePayForAfter:
+                    {
+                        QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+                        [ossVc setPaymentSate:NO];
+                        [self.navigationController pushViewController:ossVc animated:YES];
+                        //支付类型 2餐到付款
+                    }
+                        break;
+                    case PaymentTypeAlipay:
+                        //支付类型 1在线支付
+                        
+                        break;
+                    case PaymentTypePayCrads:
+                        //支付类型 3，储蓄卡支付
+                        
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+            
+        }];
+        
     }
     
 }
@@ -589,6 +751,39 @@
     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
     [_shipToAddress setText:self.orderAddress];
 }
+
+
+#pragma mark - 请求优惠券列表
+///获取个人优惠券列表
+- (void)getUserCouponList
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    ///请求第一页数据
+    [QSRequestManager requestDataWithType:rRequestTypeUserCouponList andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///获取成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///清空原数据
+            self.couponList = [NSArray array];
+            
+            ///转换模型
+            QSUserCouponListReturnData *couponData = resultData;
+            
+            if ([couponData.couponListHeader.couponList count] > 0) {
+                
+                self.couponList = [NSArray arrayWithArray:couponData.couponListHeader.couponList];
+                [self updateSpecialOfferCount];
+                
+            }
+            
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+    }];
+    
+}
+
 
 /*
 #pragma mark - Navigation

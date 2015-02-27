@@ -35,6 +35,10 @@
 
 + (void)clearShoopingCar;
 
++ (CGFloat)getTotalPrice;
+
++ (NSInteger)getTotalFoodCount;
+
 @end
 
 

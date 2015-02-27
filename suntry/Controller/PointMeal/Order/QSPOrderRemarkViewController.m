@@ -59,13 +59,20 @@
     [self.contentTextView.layer setCornerRadius:5.];
     [self.view addSubview:self.contentTextView];
     
-    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, SIZE_DEVICE_WIDTH-32, 32)];
+    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 2, SIZE_DEVICE_WIDTH-32, 32)];
     [self.placeholderLabel setBackgroundColor:[UIColor clearColor]];
     [self.placeholderLabel setText:@"给我们留言，可输入口味，时间，要求等"];
     [self.placeholderLabel setNumberOfLines:2];
     [self.placeholderLabel setFont:[UIFont systemFontOfSize:ORDER_REMARK_VIEW_CONTROLLER_TEXT_FONT_SIZE]];
     [self.placeholderLabel setTextColor:ORDER_REMARK_VIEW_CONTROLLER_PLACEHOLDER_TEXT_COLOR];
     [self.contentTextView addSubview:self.placeholderLabel];
+    
+    
+    NSString *remarkStr = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_ORDER_USER_REMARK_INFO];
+    if (remarkStr && ![remarkStr isEqualToString:@""]) {
+        [self.contentTextView setText:remarkStr];
+        [self.placeholderLabel setHidden:YES];
+    }
     
     //确定按钮
     QSBlockButtonStyleModel *submitBtStyleModel = [QSBlockButtonStyleModel alloc];
@@ -76,12 +83,23 @@
     UIButton *submitBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, self.contentTextView.frame.origin.y+self.contentTextView.frame.size.height+10, self.view.frame.size.width-12*2, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
         
         NSLog(@"submitBtl");
+        
+//        if ([self.contentTextView text]&&![[self.contentTextView text] isEqualToString:@""]) {
+    
+            [[NSUserDefaults standardUserDefaults] setObject:[self.contentTextView text] forKey:KEY_ORDER_USER_REMARK_INFO];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+//        }else{
+//            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"请输入你的备注要求！"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//            [av show];
+//            return ;
+//        }
+        
         [self.navigationController popViewControllerAnimated:YES];
         
     }];
     [self.view addSubview:submitBt];
 
-    
 }
 
 - (void)viewDidLoad {

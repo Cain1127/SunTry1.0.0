@@ -359,6 +359,29 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (CGFloat)getTotalPrice
+{
+    CGFloat totalPrice = 0.;
+    NSArray *foodArray = [self getShoppingCarDataList];
+    for (NSDictionary *item in foodArray) {
+        NSString *countStr = [item objectForKey:@"num"];
+        NSString *perPriceStr = [item objectForKey:@"sale_money"];
+        totalPrice += (perPriceStr.floatValue * countStr.intValue);
+    }
+    return totalPrice;
+}
+
++ (NSInteger)getTotalFoodCount
+{
+    NSInteger totalCount = 0;
+    NSArray *foodArray = [self getShoppingCarDataList];
+    for (NSDictionary *item in foodArray) {
+        NSString *countStr = [item objectForKey:@"num"];
+        totalCount += countStr.intValue;
+    }
+    return totalCount;
+}
+
 @end
 
 

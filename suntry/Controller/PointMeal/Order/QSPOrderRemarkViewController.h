@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define KEY_ORDER_USER_REMARK_INFO    @"order_user_remark_info"
+
 @interface QSPOrderRemarkViewController : UIViewController<UITextViewDelegate>
 
 @end

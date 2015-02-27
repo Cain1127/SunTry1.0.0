@@ -49,11 +49,19 @@
     if (!addNewAddressView) {
         
         addNewAddressView = [[QSPOrderAddNewAddressView alloc] initAddNewAddressView];
-        
     }
     
+    [addNewAddressView clearContent];
     return addNewAddressView;
     
+}
+
+- (void)clearContent
+{
+    [self.nameTextField setText:@""];
+    [self.telephoneTextField setText:@""];
+    [self.addressTextField setText:@""];
+    [self.companyTextField setText:@""];
 }
 
 - (instancetype)initAddNewAddressView
