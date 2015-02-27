@@ -21,6 +21,6 @@
  *
  *  @since              1.0.0
  */
-- (instancetype)initWithID:(NSString *)storeCarID;
+- (instancetype)initWithID:(NSString *)storeCarID andNSIndexPath:(NSString *)indexPathrow;
 
 @end

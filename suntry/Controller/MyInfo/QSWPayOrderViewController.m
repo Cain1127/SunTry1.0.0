@@ -45,7 +45,7 @@
  *
  *  @since              1.0.0
  */
-- (instancetype)initWithID:(NSString *)storeCarID
+- (instancetype)initWithID:(NSString *)storeCarID andNSIndexPath:(NSString *)indexPathrow
 {
     
     if (self = [super init]) {
@@ -54,6 +54,13 @@
         if (storeCarID) {
             
             self.selectedID = storeCarID;
+            
+        }
+        
+        ///保存上界面选择的储值卡序号
+        if (indexPathrow) {
+            
+            self.selectedIndex=(int)indexPathrow;
             
         }
         
@@ -253,6 +260,8 @@
     bgView.layer.cornerRadius = 6.0f;
     cell.selectedBackgroundView = bgView;
     
+    [collectionView selectItemAtIndexPath:[NSIndexPath indexPathWithIndex:self.selectedIndex]  animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+    
     ///判断是否第一行
     if (0 == indexPath.row && !(self.selectedID)) {
         
@@ -260,7 +269,7 @@
         
     } else if (self.selectedID && ([self.selectedID intValue] == [tempModel.goodsID intValue])) {
         
-        [collectionView selectItemAtIndexPath:[NSIndexPath indexPathWithIndex:indexPath.row] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+        [collectionView selectItemAtIndexPath:[NSIndexPath indexPathWithIndex:self.selectedIndex] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
     }
     
@@ -420,6 +429,20 @@
     self.selectedID = tempModel.goodsID;
     self.selectedIndex = (int)indexPath.row;
 
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    self.selectedIndex = (int)indexPath.row;
+    
+}
+
+-(BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    return YES;
+    
 }
 
 #pragma mark - 返回事件

@@ -13,6 +13,7 @@
 #import "QSWSettingArrowItem.h"
 #import "DeviceSizeHeader.h"
 #import "QSWTheSuntryView.h"
+#import "QSWServiceTermViewController.h"
 
 @interface QSWUserSettingViewController ()
 
@@ -53,7 +54,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"服务条款" destVcClass:nil];
+    QSWSettingArrowItem *item = [QSWSettingArrowItem itemWithIcon:nil title:@"服务条款" destVcClass:[QSWServiceTermViewController class]];
     group.items = @[item];
     
 }

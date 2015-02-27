@@ -223,9 +223,6 @@
 ///确认添加地址
 -(void)gotoNextVC
 {
-    
-    ///用户ID
-    
 
     ///姓名
     UITextField *nameField = ((UITextField *)self.userNameItem.property);

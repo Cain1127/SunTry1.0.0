@@ -8,9 +8,16 @@
 
 #import "QSWTheSuntryView.h"
 #import "DeviceSizeHeader.h"
+#import "QSLabel.h"
+
+#define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
+#define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
+#define ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE     17.
 
 @interface QSWTheSuntryView ()
-@property(nonatomic,strong) UIImageView *suntryImage;
+@property(nonatomic,strong) UIImageView *suntryImage;  //!<关于香哉图片
+
+@property (nonatomic, strong) UIView *nodataView;      //!<图片与文字底部view
 
 @end
 
@@ -39,10 +46,25 @@
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
-    _suntryImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-64.0f-49.0f)];
-    _suntryImage.image=[UIImage imageNamed:@"myinfo_thesuntry"];
-    [self.view addSubview:_suntryImage];
+    ///图片加载
+    self.nodataView = [[UIView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:_nodataView];
     
+    UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_thesuntry"]];
+    [nodataImgView setCenter:self.view.center];
+    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 110/667.*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
+    [_nodataView addSubview:nodataImgView];
+    
+    QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(20, nodataImgView.frame.origin.y+nodataImgView.frame.size.height+5, SIZE_DEVICE_WIDTH-40, 50)];
+    [infoLabel setFont:[UIFont boldSystemFontOfSize:ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE]];
+    [infoLabel setBackgroundColor:[UIColor clearColor]];
+    [infoLabel setNumberOfLines:2];
+    [infoLabel setTextAlignment:NSTextAlignmentCenter];
+    [infoLabel setText:@"香哉客户端IOS版_v1.0"];
+    [infoLabel setTextColor:ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR];
+    [_nodataView addSubview:infoLabel];
+    
+    self.view.backgroundColor=[UIColor whiteColor];
 }
 
 #pragma mark - 返回事件

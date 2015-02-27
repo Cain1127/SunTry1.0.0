@@ -192,10 +192,12 @@
     footterButton1.frame = CGRectMake(footterButton1X, footterButton1Y, footterButton1W, footterButton1H);
     
     // 背景和文字
-    footterButton1.backgroundColor=[UIColor colorWithRed:247.0f / 255.0f green:243.0f / 255.0f blue:245.0f / 255.0f alpha:1.0f];
+//    footterButton1.backgroundColor=[UIColor colorWithRed:247.0f / 255.0f green:243.0f / 255.0f blue:245.0f / 255.0f alpha:1.0f];
+    footterButton1.backgroundColor=[UIColor brownColor];
     [footterButton1 setTitle:@"删除送餐地址" forState:UIControlStateNormal];
     footterButton1.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    footterButton1.layer.cornerRadius=6.0f;
     
     [footer addSubview:footterButton1];
     [footterButton1 addTarget:self action:@selector(gotoNextVC1) forControlEvents:UIControlEventTouchUpInside];

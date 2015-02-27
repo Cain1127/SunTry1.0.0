@@ -154,6 +154,8 @@
         if (arrowItem.destVcClass) {
             UIViewController *destVc = [[arrowItem.destVcClass alloc] init];
             destVc.title = arrowItem.title;
+            ///隐藏tabbar
+            destVc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:destVc animated:YES];
         }
         
