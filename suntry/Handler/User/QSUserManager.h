@@ -18,7 +18,7 @@
  *
  *  @since  1.0.0
  */
-- (void)updateUserData:(void(^)(BOOL flag))callBack;
++ (void)updateUserData:(void(^)(BOOL flag))callBack;
 
 /**
  *  @author yangshengmeng, 15-02-27 12:02:39

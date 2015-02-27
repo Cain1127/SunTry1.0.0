@@ -21,7 +21,7 @@
  *
  *  @since  1.0.0
  */
-- (void)updateUserData:(void(^)(BOOL flag))callBack
++ (void)updateUserData:(void(^)(BOOL flag))callBack
 {
 
     [QSRequestManager requestDataWithType:rRequestTypeReloadUserData andParams:nil andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {

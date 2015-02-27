@@ -7,18 +7,24 @@
 //
 
 #import "QSWStoredCardViewController.h"
-#import "DeviceSizeHeader.h"
 #import "QSWStoredCardCell.h"
+
+#import "DeviceSizeHeader.h"
+#import "ColorHeader.h"
+
 #import "QSStoredCardDataModel.h"
 #import "QSUserStoredCardReturnData.h"
-#import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
+#import "QSUserInfoDataModel.h"
+
+#import "QSRequestManager.h"
+#import "QSUserManager.h"
+
 #import "MJRefresh.h"
-#import "ColorHeader.h"
+#import "MBProgressHUD.h"
+
 #import "QSWResetPswController.h"
 #import "QSWPayOrderViewController.h"
-
-#import "MBProgressHUD.h"
 
 @interface QSWStoredCardViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -97,6 +103,10 @@
     _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH-60.0f-SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 60.0f, topViewH*1/4);
     
     _payPswLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _balanceLabel.frame.origin.y+_balanceLabel.frame.size.height, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, topViewH*1/4);
+    
+    ///显示当前用户的余额
+    QSUserInfoDataModel *userModel = [QSUserManager getCurrentUserData];
+    self.balanceCountLabel.text = [NSString stringWithFormat:@"￥%@",userModel.balance];
     
     ///加边框
     UIView *lineTopView = [[UIView alloc] initWithFrame:CGRectMake(_payPswLabel.frame.origin.x, _payPswLabel.frame.origin.y, _payPswLabel.frame.size.width, 0.5f)];
@@ -304,6 +314,17 @@
         if (flag) {
             
             [self getChargeRecordList];
+            [QSUserManager updateUserData:^(BOOL flag) {
+                
+                ///更新用户信息成功
+                if (flag) {
+                    
+                    QSUserInfoDataModel *userModel = [QSUserManager getCurrentUserData];
+                    self.balanceCountLabel.text = [NSString stringWithFormat:@"￥%@",userModel.balance];
+                    
+                }
+                
+            }];
             
         }
     

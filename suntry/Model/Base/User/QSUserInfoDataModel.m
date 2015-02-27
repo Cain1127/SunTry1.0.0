@@ -61,7 +61,8 @@
                                   @"address_id" : @"addressID",
                                   @"address" : @"address",
                                   @"address_name" : @"receidName",
-                                  @"is_buy_card" : @"is_buy_card"};
+                                  @"is_buy_card" : @"is_buy_card",
+                                  @"balance" : @"balance"};
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
     return shared_mapping;
@@ -90,6 +91,7 @@
         self.address = [aDecoder decodeObjectForKey:@"address"];
         self.receidName = [aDecoder decodeObjectForKey:@"receidName"];
         self.is_buy_card = [aDecoder decodeObjectForKey:@"is_buy_card"];
+        self.balance = [aDecoder decodeObjectForKey:@"balance"];
         
     }
     
@@ -116,6 +118,7 @@
     [aCoder encodeObject:self.address forKey:@"address"];
     [aCoder encodeObject:self.receidName forKey:@"receidName"];
     [aCoder encodeObject:self.is_buy_card forKey:@"is_buy_card"];
+    [aCoder encodeObject:self.balance forKey:@"balance"];
     
 }
 

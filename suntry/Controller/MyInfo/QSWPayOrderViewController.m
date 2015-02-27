@@ -527,10 +527,23 @@
             userDataModel.is_buy_card = @"1";
             [userDataModel saveUserData];
             
-            ///返回储值卡页面
-            QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
-            storeCardVC.pageGap = 4;
-            [self.navigationController pushViewController:storeCardVC animated:YES];
+            ///返回储值卡页面:如果是第一次购买，则是创建页面
+            if (self.isTurnBack) {
+                
+                if (self.buyStoreCardCallBack) {
+                    
+                    self.buyStoreCardCallBack(YES);
+                    
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            } else {
+            
+                QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+                storeCardVC.pageGap = 4;
+                [self.navigationController pushViewController:storeCardVC animated:YES];
+            
+            }
             
         }];
         
@@ -558,10 +571,23 @@
             userDataModel.is_buy_card = @"1";
             [userDataModel saveUserData];
             
-            ///返回储值卡页面
-            QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
-            storeCardVC.pageGap = 4;
-            [self.navigationController pushViewController:storeCardVC animated:YES];
+            ///返回储值卡页面:如果是第一次购买，则是创建页面
+            if (self.isTurnBack) {
+                
+                if (self.buyStoreCardCallBack) {
+                    
+                    self.buyStoreCardCallBack(YES);
+                    
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            } else {
+                
+                QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+                storeCardVC.pageGap = 4;
+                [self.navigationController pushViewController:storeCardVC animated:YES];
+                
+            }
             
         }];
         
