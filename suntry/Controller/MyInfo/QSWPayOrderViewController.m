@@ -519,12 +519,14 @@
             ///移聊HUD
             [self.hud hide:YES];
             
-            ///发送储值卡购买通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"buyStoreCardSuccess" object:nil];
+            ///更新用户购买储值卡的状态
+            QSUserInfoDataModel *userDataModel = [QSUserInfoDataModel userDataModel];
+            userDataModel.is_buy_card = @"1";
+            [userDataModel saveUserData];
             
             ///返回储值卡页面
             QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
-            storeCardVC.pageGap = 3;
+            storeCardVC.pageGap = 4;
             [self.navigationController pushViewController:storeCardVC animated:YES];
             
         }];
@@ -548,12 +550,14 @@
             ///移聊HUD
             [self.hud hide:YES];
             
-            ///发送储值卡购买通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"buyStoreCardSuccess" object:nil];
+            ///更新用户购买储值卡的状态
+            QSUserInfoDataModel *userDataModel = [QSUserInfoDataModel userDataModel];
+            userDataModel.is_buy_card = @"1";
+            [userDataModel saveUserData];
             
             ///返回储值卡页面
             QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
-            storeCardVC.pageGap = 3;
+            storeCardVC.pageGap = 4;
             [self.navigationController pushViewController:storeCardVC animated:YES];
             
         }];

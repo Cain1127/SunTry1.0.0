@@ -190,7 +190,7 @@ typedef enum {
     [self setupSearchTabbleView];
     
     ///显示HUD
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud = [MBProgressHUD showHUDAddedTo:([UIApplication sharedApplication].keyWindow.rootViewController.view ? [UIApplication sharedApplication].keyWindow.rootViewController.view : (self.tabBarController.view ? self.tabBarController.view : (self.navigationController.view ? self.navigationController.view : self.view))) animated:YES];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         

@@ -174,8 +174,8 @@
 {
     
     ///判断数据
-    NSString *userName = ((UITextField *)self.userNameItem.property).text;
-    NSString *pwd = ((UITextField *)self.passWordItem.property).text;
+    __block NSString *userName = ((UITextField *)self.userNameItem.property).text;
+    __block NSString *pwd = ((UITextField *)self.passWordItem.property).text;
     
     ///回收键盘
     [((UITextField *)self.userNameItem.property) resignFirstResponder];
@@ -207,11 +207,12 @@
             self.hud.labelText = @"注册成功";
             [self.hud hide:YES afterDelay:1.5f];
             
-            ///转换模型
-            QSUserRegisterReturnData *tempModel = resultData;
-             NSLog(@"===========成功注册的用户名==========");
-             NSLog(@"%@",tempModel.RegisterList.userName);
-             NSLog(@"===========成功注册的用户名==========");
+            ///回调
+            if (self.registCallBack) {
+                
+                self.registCallBack(YES,userName,pwd);
+                
+            }
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
