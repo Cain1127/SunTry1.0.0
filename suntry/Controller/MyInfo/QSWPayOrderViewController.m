@@ -27,6 +27,7 @@
 
 @interface QSWPayOrderViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
+@property (nonatomic,assign) BOOL isTurnBack;                           //!<是否回退
 @property (nonatomic, strong) UIView *nodataView;                       //!<没有储值卡view
 @property (strong, nonatomic) UICollectionView *collectionView;         //!<每个充值按钮
 @property (nonatomic,retain)  NSMutableArray *storedCardDataSource;     //!<充值卡信息数据源
@@ -53,7 +54,7 @@
  *
  *  @since              1.0.0
  */
-- (instancetype)initWithID:(NSString *)storeCarID
+- (instancetype)initWithID:(NSString *)storeCarID isTurnBack:(BOOL)flag
 {
     
     if (self = [super init]) {
@@ -64,6 +65,8 @@
             self.selectedID = storeCarID;
             
         }
+        
+        self.isTurnBack = flag;
         
     }
     

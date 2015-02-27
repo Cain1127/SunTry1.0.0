@@ -175,7 +175,7 @@
 {
     
     QSGoodsDataModel *tempModel = self.storedCardDataSource[indexPath.row];
-    QSWPayOrderViewController *VC=[[QSWPayOrderViewController alloc] initWithID:tempModel.goodsID];
+    QSWPayOrderViewController *VC=[[QSWPayOrderViewController alloc] initWithID:tempModel.goodsID isTurnBack:NO];
     [self.navigationController pushViewController:VC animated:YES];
     
 }
