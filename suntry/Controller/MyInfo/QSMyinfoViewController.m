@@ -125,17 +125,55 @@
     
     ///背景和文字
     footterButton.backgroundColor = [UIColor colorWithRed:247.0f / 255.0f green:243.0f / 255.0f blue:245.0f / 255.0f alpha:1.0f];
-    [footterButton setTitle:@"   香哉客户服务热线:4006780022" forState:UIControlStateNormal];
+    [footterButton setTitle:@"   香哉客户服务热线:02037302282" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateNormal];
     footterButton.layer.cornerRadius = 6.0f;
+    [footterButton addTarget:self action:@selector(makeCall:) forControlEvents:UIControlEventTouchUpInside];
     
     ///footer
     UIView *footer = [[UIView alloc] init];
-    CGFloat footerH = footterButtonH + 20;
+    CGFloat footerH = footterButtonH + 20.0f;
     footer.frame = CGRectMake(0, 0, 0, footerH);
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
+    
+}
+
+#pragma mark-打电话事件
+- (void)makeCall:(NSString *)number
+{
+    
+    ///电话弹出框
+    __block UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"呼叫 %@",@"02037302282"] preferredStyle:UIAlertControllerStyleAlert];
+    
+    ///确认事件
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        
+        ///打电话
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",@"02037302282"]]];
+        
+        ///隐藏确认框
+        [alertVC dismissViewControllerAnimated:YES completion:nil];
+        
+    }];
+    
+    ///取消事件
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+        ///移聊提示
+        [alertVC dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+        
+    }];
+    
+    ///添加事件
+    [alertVC addAction:cancelAction];
+    [alertVC addAction:confirmAction];
+    
+    ///弹出说明框
+    [self presentViewController:alertVC animated:YES completion:^{}];
     
 }
 
