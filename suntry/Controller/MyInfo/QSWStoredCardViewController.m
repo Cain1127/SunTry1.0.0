@@ -96,13 +96,13 @@
 -(void)setupTopView
 {
 
-    CGFloat topViewH=SIZE_DEVICE_HEIGHT*240/667;
-    _topView.frame=CGRectMake(0, 0, SIZE_DEVICE_WIDTH, topViewH);
+    CGFloat topViewH = SIZE_DEVICE_HEIGHT * 240.0f / 667.0f;
+    _topView.frame=CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, topViewH);
     
-    _balanceLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 150.0f, _topView.frame.size.height*1/4);
-    _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH-60.0f-SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 60.0f, topViewH*1/4);
+    _balanceLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 150.0f, _topView.frame.size.height * 1.0f / 4.0f);
+    _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH - 60.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 60.0f, topViewH * 1.0f / 4.0f);
     
-    _payPswLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _balanceLabel.frame.origin.y+_balanceLabel.frame.size.height, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, topViewH*1/4);
+    _payPswLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _balanceLabel.frame.origin.y+_balanceLabel.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, topViewH * 1.0f / 4.0f);
     
     ///显示当前用户的余额
     QSUserInfoDataModel *userModel = [QSUserManager getCurrentUserData];
