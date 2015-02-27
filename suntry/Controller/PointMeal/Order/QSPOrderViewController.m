@@ -26,6 +26,8 @@
 #import "MBProgressHUD.h"
 #import "QSAddOrderReturnData.h"
 #import "QSOrderInfoDataModel.h"
+#import "QSAlixPayManager.h"
+
 
 #define ORDERVIEWCONTROLLER_SHIP_BT_BG_COLOR    [UIColor colorWithRed:0.709 green:0.653 blue:0.543 alpha:1.000]
 #define ORDERVIEWCONTROLLER_TITLE_FONT_SIZE     17.
@@ -649,7 +651,29 @@
                         break;
                     case PaymentTypeAlipay:
                         //支付类型 1在线支付
-                        
+                        {
+                            //订单标题
+                            orderFormModel.orderTitle = [NSString stringWithFormat:@"订单:%@",orderFormModel.order_num];
+
+                            //订单描述
+                            orderFormModel.des = [NSString stringWithFormat:@"在线支付订单:%@",orderFormModel.order_num];
+
+                            //支付金额
+                            orderFormModel.payPrice = [NSString stringWithFormat:@"%f",[QSPShoppingCarData getTotalPrice]];
+
+                            //回调
+                            __block NSString *orderID = orderFormModel.order_id;
+                            __weak QSPOrderViewController *weakSelf = self;
+                            orderFormModel.alixpayCallBack = ^(NSString *payCode,NSString *payInfo){
+                                
+                                //处理支付宝的回调结果
+                                [weakSelf checkPayResultWithCode:payCode andPayResultInfo:payInfo andOrderID:orderID];
+                                
+                            };
+
+                            //进入支付宝
+                            [[QSAlixPayManager shareAlixPayManager] startAlixPay:orderFormModel];
+                        }
                         break;
                     case PaymentTypePayCrads:
                         //支付类型 3，储蓄卡支付
@@ -658,6 +682,7 @@
                     default:
                         break;
                 }
+                [QSPShoppingCarData clearShoopingCar];
                 
             } else {
                 
@@ -781,6 +806,93 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         
     }];
+    
+}
+
+
+#pragma mark - 支付宝支付时的回调处理
+/**
+ *  @author         yangshengmeng, 15-02-26 14:02:38
+ *
+ *  @brief          支付宝支付时的回调处理
+ *
+ *  @param payCode  支付结果的编码
+ *  @param payInfo  支付结果说明
+ *
+ *  @since          1.0.0
+ */
+- (void)checkPayResultWithCode:(NSString *)payCode andPayResultInfo:(NSString *)payInfo andOrderID:(NSString *)orderID
+{
+    
+    ///将支付回调的代码，转换为整数代码
+    int resultCode = [payCode intValue];
+    
+    /**
+     *                  9000---订单支付成功
+     *                  8000---正在处理中
+     *                  4000---订单支付失败
+     *                  6001---用户中途取消
+     *                  6002---网络连接出错
+     */
+    
+    ///支付成功回调：进入支付成功页面
+    if (resultCode == 9000) {
+        
+        ///确认参数
+        NSDictionary *tempParams = @{@"id" : orderID,
+                                     @"type" : @"1",
+                                     @"is_pay" : @"1",
+                                     @"desc" : @"点餐下单支付确认"};
+        
+        ///回调服务端确认支付
+        [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///移聊HUD
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+            [ossVc setPaymentSate:YES];
+            [self.navigationController pushViewController:ossVc animated:YES];
+            
+        }];
+        
+        return;
+        
+    }
+    
+    ///支付回调：正在处理中
+    if (resultCode == 8000) {
+        
+        ///确认参数
+        NSDictionary *tempParams = @{@"id" : orderID,
+                                     @"type" : @"1",
+                                     @"is_pay" : @"0",
+                                     @"desc" : @"点餐下单支付确认"};
+        
+        ///回调服务端确认支付
+        [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///移聊HUD
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+            [ossVc setPaymentSate:YES];
+            [self.navigationController pushViewController:ossVc animated:YES];
+
+            
+        }];
+        
+        return;
+        
+    }
+    
+    ///移聊HUD
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+    ///支付失败
+    QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+    [ossVc setPaymentSate:NO];
+    [self.navigationController pushViewController:ossVc animated:YES];
     
 }
 

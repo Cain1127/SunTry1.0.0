@@ -97,7 +97,12 @@
     UIButton *goonOrderBt = [UIButton createBlockButtonWithFrame:CGRectMake((375-30)/375.*SIZE_DEVICE_WIDTH-checkOrderBt.frame.size.width, checkOrderBt.frame.origin.y, checkOrderBt.frame.size.width, checkOrderBt.frame.size.height) andButtonStyle:goonOrderBtStyleModel andCallBack:^(UIButton *button) {
         
         NSLog(@"goonOrderBtl");
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        if (paymentSate)
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }else{
+            [self.navigationController popViewControllerAnimated:YES];
+        }
         
     }];
     [self.view addSubview:goonOrderBt];
