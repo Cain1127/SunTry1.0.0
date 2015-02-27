@@ -16,6 +16,9 @@
 
 @interface QSWResetPswController ()
 
+@property (nonatomic,retain) QSWSettingItem *passWordItem;   //!<新的密码
+@property (nonatomic,retain) QSWSettingItem *passWordItem1;  //!<二次输入新的密码
+
 @end
 
 @implementation QSWResetPswController
@@ -25,8 +28,8 @@
     [super viewDidLoad];
     
     ///标题
-    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 30.0f)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17.0f]];
     [navTitle setTextColor:[UIColor whiteColor]];
     [navTitle setBackgroundColor:[UIColor clearColor]];
     [navTitle setTextAlignment:NSTextAlignmentCenter];
@@ -53,11 +56,16 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"输入您的新密码"];
+    self.passWordItem = [QSWTextFieldItem itemWithTitle:@"输入您新的密码"];
     
+    group.items = @[self.passWordItem];
     
-    group.items = @[item];
-    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        ///密码密文输入
+        ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
+        
+    });
 }
 
 -(void)setupGroup1
@@ -65,10 +73,16 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    QSWTextFieldItem *item = [QSWTextFieldItem itemWithTitle:@"再次确认您的新密码"];
+    self.passWordItem1 = [QSWTextFieldItem itemWithTitle:@"再次确认您的新密码"];
     
+    group.items = @[self.passWordItem1];
     
-    group.items = @[item];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        ///密码密文输入
+        ((UITextField *)self.passWordItem1.property).secureTextEntry=YES;
+        
+    });
     
 }
 
@@ -106,7 +120,7 @@
     
 }
 
-///进入注册按钮事件
+///点击提交按钮事件
 -(void)gotoNextVC
 {
     

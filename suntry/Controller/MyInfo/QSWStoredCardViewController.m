@@ -91,16 +91,16 @@
     
 }
 
-#pragma mark--控件加载
+#pragma mark - 控件加载
 ///加载顶部view
 -(void)setupTopView
 {
 
-    CGFloat topViewH = SIZE_DEVICE_HEIGHT * 240.0f / 667.0f;
+    CGFloat topViewH = 176.0f;
     _topView.frame=CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, topViewH);
     
-    _balanceLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 150.0f, _topView.frame.size.height * 1.0f / 4.0f);
-    _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH - 60.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, 60.0f, topViewH * 1.0f / 4.0f);
+    _balanceLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 150.0f, _topView.frame.size.height * 1.0f / 4.0f);
+    _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH - 60.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 60.0f, topViewH * 1.0f / 4.0f);
     
     _payPswLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _balanceLabel.frame.origin.y+_balanceLabel.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, topViewH * 1.0f / 4.0f);
     
@@ -118,7 +118,7 @@
     [_topView addSubview:lineBottomView];
     lineBottomView.backgroundColor=[UIColor lightGrayColor];
     
-    _chargeButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height+topViewH*1/8,(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5, 44.0f);
+    _chargeButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height+topViewH*1.0f/8.0f,(SIZE_DEVICE_WIDTH-3.0f*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5f, 44.0f);
     _chargeButton.backgroundColor=COLOR_CHARACTERS_RED;
     _chargeButton.layer.cornerRadius=6.0f;
     
@@ -235,7 +235,7 @@
         ///加载暂无记录提示
         UILabel *tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 14.0f, SIZE_DEFAULT_MAX_WIDTH, 30.0f)];
         tipsLabel.text = @"暂无记录";
-        tipsLabel.font = [UIFont boldSystemFontOfSize:24.0f];
+        tipsLabel.font = [UIFont boldSystemFontOfSize:20.0f];
         tipsLabel.textAlignment = NSTextAlignmentCenter;
         tipsLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
         [cellNoRecord.contentView addSubview:tipsLabel];
@@ -346,6 +346,12 @@
 - (IBAction)chargeRecord:(id)sender
 {
     
+    if (_chargeRecord.selected) {
+        
+        return;
+        
+    }
+    
     _chargeRecord.selected = YES;
     _consumeRecord.selected = NO;
     [self.collectionView addHeaderWithTarget:self action:@selector(getChargeRecordList)];
@@ -360,6 +366,12 @@
 ///点击消费记录
 - (IBAction)consumeRecord:(id)sender
 {
+    
+    if (_consumeRecord.selected) {
+        
+        return;
+        
+    }
     
     _consumeRecord.selected = YES;
     _chargeRecord.selected = NO;

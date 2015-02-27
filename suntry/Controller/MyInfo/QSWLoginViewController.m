@@ -75,9 +75,15 @@
     
     QSWSettingGroup *group = [self addGroup];
     self.passWordItem = [QSWTextFieldItem itemWithTitle:@"输入您的登录密码" andDelegate:self];
-    ///密码密文输入
-    ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
+    
     group.items = @[self.passWordItem];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        ///密码密文输入
+        ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
+        
+    });
     
 }
 

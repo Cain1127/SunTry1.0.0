@@ -77,6 +77,13 @@
     
     group.items = @[self.passWordItem];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        ///密码密文输入
+        ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
+        
+    });
+    
 }
 
 - (void)setupFooter

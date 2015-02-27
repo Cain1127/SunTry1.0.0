@@ -67,6 +67,13 @@
     self.originalPwdItem = [QSWTextFieldItem itemWithTitle:@"您当前的登录密码"];
     group.items = @[self.originalPwdItem];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        ///密码密文输入
+        ((UITextField *)self.originalPwdItem.property).secureTextEntry=YES;
+        
+    });
+    
 }
 
 -(void)setupGroup1
@@ -76,6 +83,13 @@
     self.resetPwdItem = [QSWTextFieldItem itemWithTitle:@"新的登录密码"];
     group.items = @[self.resetPwdItem];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        ///密码密文输入
+        ((UITextField *)self.resetPwdItem.property).secureTextEntry=YES;
+        
+    });
+    
 }
 
 -(void)setupGroup2
@@ -84,6 +98,13 @@
     QSWSettingGroup *group = [self addGroup];
     self.confirmPwdItem = [QSWTextFieldItem itemWithTitle:@"再次确认您的登录密码"];
     group.items = @[self.confirmPwdItem];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        ///密码密文输入
+        ((UITextField *)self.confirmPwdItem.property).secureTextEntry=YES;
+        
+    });
     
 }
 

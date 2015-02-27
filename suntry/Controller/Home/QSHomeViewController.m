@@ -498,7 +498,7 @@ typedef enum {
         
         ///保存数据
         QSSearchHistoryDataModel *tempModel = [[QSSearchHistoryDataModel alloc] init];
-        QSSelectDataModel *selectedModel = self.districtList[indexPath.row];
+        QSSelectDataModel *selectedModel = self.districtStreetList[indexPath.row];
         tempModel.title = selectedModel.streetName;
         tempModel.key = selectedModel.streetID;
         [self addSearchHistoryData:tempModel];
