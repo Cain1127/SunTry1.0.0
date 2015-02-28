@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18018AFE1AA190D400F35DEB /* QRCodeGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 18018AFD1AA190D400F35DEB /* QRCodeGenerator.m */; };
 		183673FF1A7F8FA800BCCF39 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 183673FE1A7F8FA800BCCF39 /* Foundation.framework */; };
 		183674011A7F8FA800BCCF39 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 183674001A7F8FA800BCCF39 /* CoreGraphics.framework */; };
 		183674031A7F8FA800BCCF39 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 183674021A7F8FA800BCCF39 /* UIKit.framework */; };
@@ -53,6 +54,11 @@
 		1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */; };
 		1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */; };
 		1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */; };
+		18B955761AA1930400006B4C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955751AA1930400006B4C /* AVFoundation.framework */; };
+		18B955781AA1931400006B4C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955771AA1931400006B4C /* CoreMedia.framework */; };
+		18B9557A1AA1932000006B4C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955791AA1932000006B4C /* CoreVideo.framework */; };
+		18B9557C1AA1932F00006B4C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B9557B1AA1932F00006B4C /* QuartzCore.framework */; };
+		18B9557E1AA1934000006B4C /* libiconv.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B9557D1AA1934000006B4C /* libiconv.2.4.0.dylib */; };
 		4739023B1A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902171A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m */; };
 		4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902191A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m */; };
 		4739023D1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739021B1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m */; };
@@ -169,6 +175,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		18018AFC1AA190D400F35DEB /* QRCodeGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeGenerator.h; sourceTree = "<group>"; };
+		18018AFD1AA190D400F35DEB /* QRCodeGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeGenerator.m; sourceTree = "<group>"; };
 		183673FB1A7F8FA800BCCF39 /* suntry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = suntry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		183673FE1A7F8FA800BCCF39 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		183674001A7F8FA800BCCF39 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -323,6 +331,11 @@
 		1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSUserManager.m; path = User/QSUserManager.m; sourceTree = "<group>"; };
 		1878D4C01A9043B200AF68A4 /* QSSearchHistoryDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSSearchHistoryDataModel.h; path = Search/QSSearchHistoryDataModel.h; sourceTree = "<group>"; };
 		1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSSearchHistoryDataModel.m; path = Search/QSSearchHistoryDataModel.m; sourceTree = "<group>"; };
+		18B955751AA1930400006B4C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		18B955771AA1931400006B4C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		18B955791AA1932000006B4C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		18B9557B1AA1932F00006B4C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		18B9557D1AA1934000006B4C /* libiconv.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.4.0.dylib; path = usr/lib/libiconv.2.4.0.dylib; sourceTree = SDKROOT; };
 		473902161A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodInfoListTableViewCell.h; sourceTree = "<group>"; };
 		473902171A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodInfoListTableViewCell.m; sourceTree = "<group>"; };
 		473902181A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodPackageItemGridView.h; sourceTree = "<group>"; };
@@ -536,6 +549,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18B9557E1AA1934000006B4C /* libiconv.2.4.0.dylib in Frameworks */,
+				18B9557C1AA1932F00006B4C /* QuartzCore.framework in Frameworks */,
+				18B9557A1AA1932000006B4C /* CoreVideo.framework in Frameworks */,
+				18B955781AA1931400006B4C /* CoreMedia.framework in Frameworks */,
+				18B955761AA1930400006B4C /* AVFoundation.framework in Frameworks */,
 				1853443A1A9ED82C00A83039 /* libssl.a in Frameworks */,
 				CEF7D8721A80BEE700E14730 /* SystemConfiguration.framework in Frameworks */,
 				185344381A9ED82C00A83039 /* AlipaySDK.framework in Frameworks */,
@@ -562,6 +580,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18018AFB1AA190D400F35DEB /* libqrencode */ = {
+			isa = PBXGroup;
+			children = (
+				18018AFC1AA190D400F35DEB /* QRCodeGenerator.h */,
+				18018AFD1AA190D400F35DEB /* QRCodeGenerator.m */,
+			);
+			path = libqrencode;
+			sourceTree = "<group>";
+		};
 		183673F21A7F8FA800BCCF39 = {
 			isa = PBXGroup;
 			children = (
@@ -585,6 +612,11 @@
 		183673FD1A7F8FA800BCCF39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				18B9557D1AA1934000006B4C /* libiconv.2.4.0.dylib */,
+				18B9557B1AA1932F00006B4C /* QuartzCore.framework */,
+				18B955791AA1932000006B4C /* CoreVideo.framework */,
+				18B955771AA1931400006B4C /* CoreMedia.framework */,
+				18B955751AA1930400006B4C /* AVFoundation.framework */,
 				CEF7D8711A80BEE700E14730 /* SystemConfiguration.framework */,
 				CEF7D86F1A80B09B00E14730 /* CoreLocation.framework */,
 				CE5342011A808042002BA188 /* MapKit.framework */,
@@ -1482,6 +1514,7 @@
 		CEEAC3CF1A8DA7DF009AC6AA /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				18018AFB1AA190D400F35DEB /* libqrencode */,
 				185343CC1A9ED82C00A83039 /* AlixPaySDK */,
 				184AE06E1A90730F007A8CBD /* PinYin */,
 				CEEAC3D01A8DA7DF009AC6AA /* MJRefresh */,
@@ -1735,6 +1768,7 @@
 				1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */,
 				CE7946BD1A8B705600C0113B /* QSHomeViewController.m in Sources */,
 				473902481A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m in Sources */,
+				18018AFE1AA190D400F35DEB /* QRCodeGenerator.m in Sources */,
 				184AE07C1A90730F007A8CBD /* ChineseToPinyinResource.m in Sources */,
 				CE5341A21A7FBFAA002BA188 /* QSImageView+Block.m in Sources */,
 				CEEAC3F21A8DA845009AC6AA /* QSUserAddressListReturnData.m in Sources */,
