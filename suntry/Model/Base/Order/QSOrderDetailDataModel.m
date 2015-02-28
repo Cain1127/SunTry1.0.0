@@ -30,7 +30,8 @@
                                   @"desc" : @"order_desc",
                                   @"expand_4" : @"order_payment",
                                   @"diet_num" : @"diet_num",
-                                  @"is_pay" : @"is_pay"
+                                  @"is_pay" : @"is_pay",
+                                  @"verification" : @"verification"
                                   };
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     

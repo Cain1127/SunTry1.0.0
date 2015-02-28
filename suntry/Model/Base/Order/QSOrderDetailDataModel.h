@@ -24,6 +24,7 @@
 @property (nonatomic,copy) NSString *order_payment; //!<支付方式 3，余额支付；1在线支付，2餐到付款 ,5 储蓄卡购买的支付类型
 @property (nonatomic,copy) NSString *diet_num;      //!<菜品数量
 @property (nonatomic,copy) NSString *is_pay;        //!<是否已经支付 支付状态。。 0未支付，1支付成功
+@property (nonatomic,copy) NSString *verification;   //验证码
 
 @property (nonatomic,copy) NSArray  *goods_list;    //!<菜品数据列表
 

@@ -17,6 +17,7 @@
 #import "QSUserInfoDataModel.h"
 #import "QSOrderDetailReturnData.h"
 #import "QSOrderDetailDataModel.h"
+#import "NSString+Calculation.h"
 
 #import "QRCodeGenerator.h"
 
@@ -47,7 +48,7 @@
 @property (nonatomic, strong) UIView *lineAddressView;
 @property (nonatomic, strong) QSLabel *remarkTipLabel;
 @property (nonatomic, strong) UIView *lineRemarkView;
-@property (nonatomic, strong) QSLabel *remarkLabel;
+@property (nonatomic, strong) UILabel *remarkLabel;
 
 @property (nonatomic, strong) UIView  *payInfoFrameView;
 @property (nonatomic, strong) QSLabel *payStateLabel;
@@ -110,7 +111,7 @@
     
     ///二维码
     self.orderQRCodeImgView = [[UIImageView alloc] initWithFrame:CGRectMake((SIZE_DEVICE_WIDTH-ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE)/2, self.orderNumLabel.frame.origin.y+self.orderNumLabel.frame.size.height+4, ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE, ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE)];
-    UIImage *image = [QRCodeGenerator qrImageForString:self.orderData.order_num imageSize:120];
+    UIImage *image = [QRCodeGenerator qrImageForString:self.orderData.verification imageSize:120];
     self.orderQRCodeImgView.image = image;
     [topView addSubview:self.orderQRCodeImgView];
     
@@ -119,7 +120,7 @@
     [self.shippingStateLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE ]];
     if (orderData) {
         
-        [self.shippingStateLabel setText:@"未配送（未配送无法查看车车在哪里儿）"];
+//        [self.shippingStateLabel setText:@"未配送（未配送无法查看车车在哪儿）"];
         
     }
     [self.shippingStateLabel setBackgroundColor:[UIColor clearColor]];
@@ -244,13 +245,14 @@
     [self.remarkTipLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [_shippingInfoFrameView addSubview:self.remarkTipLabel];
     
-    self.remarkLabel = [[QSLabel alloc] initWithFrame:CGRectMake(self.remarkTipLabel.frame.origin.x+50, self.remarkTipLabel.frame.origin.y, self.remarkTipLabel.frame.size.width-50, self.remarkTipLabel.frame.size.height)];
+    self.remarkLabel = [[UILabel
+                         alloc] initWithFrame:CGRectMake(self.remarkTipLabel.frame.origin.x+50, self.remarkTipLabel.frame.origin.y, self.remarkTipLabel.frame.size.width-50, self.remarkTipLabel.frame.size.height)];
     [self.remarkLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
     if (orderData) {
         [self.remarkLabel setText:orderData.order_desc];
     }
     [self.remarkLabel setTextAlignment:NSTextAlignmentRight];
-    [self.remarkLabel setNumberOfLines:2];
+    [self.remarkLabel setNumberOfLines:0];
     [self.remarkLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [_shippingInfoFrameView addSubview:self.remarkLabel];
     
@@ -318,35 +320,21 @@
     [linePaymentView setBackgroundColor:ORDER_DETAIL_TOP_VIEW_LINE_COLOR];
     [_payInfoFrameView addSubview:linePaymentView];
     
-    QSLabel *couponTipLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 44+45, SIZE_DEVICE_WIDTH-24, 44)];
-    [couponTipLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-    [couponTipLabel setText:@"使用优惠："];
-    [couponTipLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
-    [_payInfoFrameView addSubview:couponTipLabel];
-    
-    QSLabel *couponLabel = [[QSLabel alloc] initWithFrame:couponTipLabel.frame];
-    [couponLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-    [couponLabel setText:@"会员优惠30元现金券"];
-    [couponLabel setTextAlignment:NSTextAlignmentRight];
-    [couponLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
-    [_payInfoFrameView addSubview:couponLabel];
-    
-    UIView *lineCouponView = [[UIView alloc] initWithFrame:CGRectMake(12, couponLabel.frame.origin.y+couponLabel.frame.size.height, SIZE_DEVICE_WIDTH-24, 1)];
-    [lineCouponView setBackgroundColor:ORDER_DETAIL_TOP_VIEW_LINE_COLOR];
-    [_payInfoFrameView addSubview:lineCouponView];
-    
-    
-    self.totalPriceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 44+2*45, SIZE_DEVICE_WIDTH-24, 44)];
+
+    self.totalPriceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 44+45, SIZE_DEVICE_WIDTH-24, 44)];
     [self.totalPriceLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_TOTAL_PRICE_TEXT_FONT_SIZE]];
     [self.totalPriceLabel setTextAlignment:NSTextAlignmentRight];
     [self.totalPriceLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [_payInfoFrameView addSubview:self.totalPriceLabel];
-//    NSString *totalPriceStr = @"98";
-//    NSMutableAttributedString *totalPriceString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"总计 ￥%@",totalPriceStr]];
-//    [totalPriceString addAttribute:NSForegroundColorAttributeName value:ORDER_DETAIL_TOP_VIEW_NUMBER_TEXT_COLOR range:NSMakeRange(4,totalPriceStr.length)];
-//    [totalPriceString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE] range:NSMakeRange(4, totalPriceStr.length)];
-//    [self.totalPriceLabel setAttributedText:totalPriceString];
-    
+    if (orderData) {
+        
+        NSString *totalPriceStr = orderData.total_money;
+        NSMutableAttributedString *totalPriceString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"总计 ￥%@",totalPriceStr]];
+        [totalPriceString addAttribute:NSForegroundColorAttributeName value:ORDER_DETAIL_TOP_VIEW_NUMBER_TEXT_COLOR range:NSMakeRange(4,totalPriceStr.length)];
+        [totalPriceString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE] range:NSMakeRange(4, totalPriceStr.length)];
+        [self.totalPriceLabel setAttributedText:totalPriceString];
+
+    }
     
     [_payInfoFrameView setFrame:CGRectMake(_payInfoFrameView.frame.origin.x, _payInfoFrameView.frame.origin.y, _payInfoFrameView.frame.size.width, self.totalPriceLabel.frame.origin.y+self.totalPriceLabel.frame.size.height)];
     
@@ -398,21 +386,26 @@
     [self.payBt setHidden:YES];
     
     if (orderData) {
+        
+        BOOL supportPayOnline = NO;
         NSString *paymentCode = orderData.order_payment;
         //3，余额支付；1在线支付，2餐到付款 ,5 储蓄卡购买的支付类型
         NSString *paymentStr = @"";
         if ([paymentCode isEqualToString:@"1"])
         {
             paymentStr = @"在线支付";
+            supportPayOnline = YES;
         }else if ([paymentCode isEqualToString:@"2"])
         {
             paymentStr = @"餐到付款";
         }else if ([paymentCode isEqualToString:@"3"])
         {
             paymentStr = @"余额支付";
+            supportPayOnline = YES;
         }else if ([paymentCode isEqualToString:@"5"])
         {
             paymentStr = @"储蓄卡购买";
+            supportPayOnline = YES;
         }
         [self.paymentLabel setText:paymentStr];
         
@@ -420,16 +413,70 @@
         NSString *payStateStr = @"";
         if ([ispayCode isEqualToString:@"0"])
         {
-            payStateStr = @"未付款";
-            [self.payBt setHidden:NO];
+            payStateStr = @"(未付款)";
+            if (supportPayOnline) {
+                [self.payBt setHidden:NO];
+            }
         }else if ([ispayCode isEqualToString:@"1"])
         {
-            payStateStr = @"已付款";
-            [self.payBt setHidden:YES];
+            payStateStr = @"(已付款)";
         }
+        
         [self.payStateLabel setText:payStateStr];
+        
+        NSString *totalPriceStr = orderData.total_money;
+        NSMutableAttributedString *totalPriceString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"总计 ￥%@",totalPriceStr]];
+        [totalPriceString addAttribute:NSForegroundColorAttributeName value:ORDER_DETAIL_TOP_VIEW_NUMBER_TEXT_COLOR range:NSMakeRange(4,totalPriceStr.length)];
+        [totalPriceString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE] range:NSMakeRange(4, totalPriceStr.length)];
+        [self.totalPriceLabel setAttributedText:totalPriceString];
+        
+        //TODO: 优惠券数据
+        NSArray *couponList = [NSArray array];
+        CGFloat nextItemY = self.paymentLabel.frame.origin.y+self.paymentLabel.frame.size.height+1;
+        if ([couponList count]>0) {
+            
+            QSLabel *couponTipLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, nextItemY, SIZE_DEVICE_WIDTH-24, 44)];
+            [couponTipLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
+            [couponTipLabel setText:@"使用优惠："];
+            [couponTipLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
+            [_payInfoFrameView addSubview:couponTipLabel];
+            
+            for (int i=0; i<[couponList count]; i++) {
+                
+                QSLabel *couponLabel = [[QSLabel alloc] initWithFrame:CGRectMake(couponTipLabel.frame.origin.x, nextItemY, couponTipLabel.frame.size.width, couponTipLabel.frame.size.height)];
+                [couponLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
+                [couponLabel setText:@"会员优惠30元现金券"];
+                [couponLabel setTextAlignment:NSTextAlignmentRight];
+                [couponLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
+                [_payInfoFrameView addSubview:couponLabel];
+                
+                NSString *infoStr = @"(优惠减扣:￥30元)";
+                
+                if (infoStr&&![infoStr isEqualToString:@""]) {
+                    
+                    QSLabel *couponInfoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(couponLabel.frame.origin.x, couponLabel.frame.origin.y+18, couponLabel.frame.size.width, couponLabel.frame.size.height)];
+                    [couponInfoLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
+                    [couponInfoLabel setText:infoStr];
+                    [couponInfoLabel setTextAlignment:NSTextAlignmentRight];
+                    [couponInfoLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
+                    [_payInfoFrameView addSubview:couponInfoLabel];
+                }
+                nextItemY = couponLabel.frame.origin.y + couponLabel.frame.size.height;
+                if ([couponList count]-1==i) {
+                    nextItemY += 20;
+                }
+            }
+            
+            UIView *lineCouponView = [[UIView alloc] initWithFrame:CGRectMake(12, nextItemY, SIZE_DEVICE_WIDTH-24, 1)];
+            [lineCouponView setBackgroundColor:ORDER_DETAIL_TOP_VIEW_LINE_COLOR];
+            [_payInfoFrameView addSubview:lineCouponView];
+            
+            [_totalPriceLabel setFrame:CGRectMake(_totalPriceLabel.frame.origin.x, lineCouponView.frame.origin.y+lineCouponView.frame.size.height, _totalPriceLabel.frame.size.width, _totalPriceLabel.frame.size.height)];
+            
+            [_payInfoFrameView setFrame:CGRectMake(_payInfoFrameView.frame.origin.x, _payInfoFrameView.frame.origin.y, _payInfoFrameView.frame.size.width, _totalPriceLabel.frame.origin.y+_totalPriceLabel.frame.size.height)];
+        }
     }
-    
+
     [_payInfoFrameView setFrame:CGRectMake(_payInfoFrameView.frame.origin.x, _shippingInfoFrameView.frame.origin.y+_shippingInfoFrameView.frame.size.height, _payInfoFrameView.frame.size.width, _payInfoFrameView.frame.size.height)];
     
     [_payBt setFrame:CGRectMake(12, _payInfoFrameView.frame.origin.y+_payInfoFrameView.frame.size.height+30, SIZE_DEVICE_WIDTH-12*2, 44)];
@@ -461,25 +508,39 @@
     
     [self.remarkTipLabel setFrame:CGRectMake(self.remarkTipLabel.frame.origin.x, self.lineAddressView.frame.origin.y+self.lineAddressView.frame.size.height, self.remarkTipLabel.frame.size.width, self.remarkTipLabel.frame.size.height)];
     
-    [self.remarkLabel setFrame:CGRectMake(self.remarkLabel.frame.origin.x, self.remarkTipLabel.frame.origin.y, self.remarkLabel.frame.size.width, self.remarkLabel.frame.size.height)];
+    [self.remarkLabel setFrame:CGRectMake(self.remarkLabel.frame.origin.x, self.remarkTipLabel.frame.origin.y+12, self.remarkLabel.frame.size.width, 18)];
     
     [self.lineRemarkView setFrame:CGRectMake(self.lineRemarkView.frame.origin.x, self.remarkLabel.frame.origin.y+self.remarkLabel.frame.size.height, self.lineRemarkView.frame.size.width, self.lineRemarkView.frame.size.height)];
     
     [_shippingInfoFrameView setFrame:CGRectMake(_shippingInfoFrameView.frame.origin.x, _shippingInfoFrameView.frame.origin.y, _shippingInfoFrameView.frame.size.width, self.lineRemarkView.frame.origin.y+self.lineRemarkView.frame.size.height)];
     
-    NSString *remarkStr = @"无备注信息";
-    [self.remarkLabel setText:remarkStr];
-    
-    [_shippingInfoFrameView setFrame:CGRectMake(_shippingInfoFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height, _shippingInfoFrameView.frame.size.width, _shippingInfoFrameView.frame.size.height)];
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _shippingInfoFrameView.frame.origin.y+_shippingInfoFrameView.frame.size.height)];
-    
+    [self.remarkLabel setText:@""];
     
     if (orderData) {
         [self.userNameLabel setText:orderData.order_name];
         [self.phoneLabel setText:orderData.order_phone];
         [self.addressLabel setText:orderData.order_address];
-        [self.remarkLabel setText:orderData.order_desc];
+        
+        NSString *remarkStr = orderData.order_desc;
+        CGFloat strHeight = [remarkStr calculateStringDisplayHeightByFixedWidth:self.remarkLabel.frame.size.width andFontSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE];
+        
+        if (strHeight < self.remarkLabel.frame.size.height) {
+            strHeight = self.remarkLabel.frame.size.height;
+            [self.remarkLabel setTextAlignment:NSTextAlignmentRight];
+        }else{
+            [self.remarkLabel setTextAlignment:NSTextAlignmentLeft];
+        }
+        
+        [self.remarkLabel setFrame:CGRectMake(self.remarkLabel.frame.origin.x, self.remarkTipLabel.frame.origin.y+12, self.remarkLabel.frame.size.width, strHeight)];
+        
+        [self.remarkLabel setText:remarkStr];
+        [self.lineRemarkView setFrame:CGRectMake(self.lineRemarkView.frame.origin.x, self.remarkLabel.frame.origin.y+self.remarkLabel.frame.size.height+12, self.lineRemarkView.frame.size.width, self.lineRemarkView.frame.size.height)];
+        
+        [_shippingInfoFrameView setFrame:CGRectMake(_shippingInfoFrameView.frame.origin.x, _shippingInfoFrameView.frame.origin.y, _shippingInfoFrameView.frame.size.width, self.lineRemarkView.frame.origin.y+self.lineRemarkView.frame.size.height)];
     }
+    
+    [_shippingInfoFrameView setFrame:CGRectMake(_shippingInfoFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height, _shippingInfoFrameView.frame.size.width, _shippingInfoFrameView.frame.size.height)];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _shippingInfoFrameView.frame.origin.y+_shippingInfoFrameView.frame.size.height)];
     
 }
 
@@ -519,9 +580,8 @@
                 [foodNameLabel setTag:countTag++];
                 [_hadOrderFrameView addSubview:foodNameLabel];
                 
-                BOOL isPackage = NO;
-                if (isPackage) {
-                    NSArray *subFoodList = food.subFoodList;
+                NSArray *subFoodList = food.subFoodList;
+                if (subFoodList&&[subFoodList isKindOfClass:[NSArray class]]) {
                     for (int j=0; j<[subFoodList count]; j++) {
                         QSOrderDetailGoodsDataSubModel *subItem = [subFoodList objectAtIndex:j];
                         if (subItem) {
