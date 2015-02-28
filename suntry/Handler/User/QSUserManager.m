@@ -24,7 +24,10 @@
 + (void)updateUserData:(void(^)(BOOL flag))callBack
 {
 
-    [QSRequestManager requestDataWithType:rRequestTypeReloadUserData andParams:nil andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+    ///参数
+    NSDictionary *params = @{@"type" : @"1"};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeReloadUserData andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///下载成功
         if (rRequestResultTypeSuccess == resultStatus) {

@@ -15,6 +15,11 @@
 #import "QSPAddNewAddressTextField.h"
 #import "QSWForgetPswController.h"
 #import "QSPOrderSubmitedStateViewController.h"
+#import "QSUserInfoDataModel.h"
+#import "QSPShoppingCarView.h"
+#import <CommonCrypto/CommonDigest.h>
+#import "QSRequestManager.h"
+#import "MBProgressHUD.h"
 
 #define PAY_FOR_ORDER_TITLE_FONT_SIZE       15.
 #define PAY_FOR_ORDER_TEXT_COLOR            [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -32,6 +37,7 @@
 @end
 
 @implementation QSPPayForOrderViewController
+@synthesize orderFormModel;
 
 - (void)loadView{
     [super loadView];
@@ -67,7 +73,7 @@
     self.foodCounLabel = [[QSLabel alloc] initWithFrame:CGRectMake(foodCountLabel.frame.origin.x, foodCountLabel.frame.origin.y, foodCountLabel.frame.size.width-20, foodCountLabel.frame.size.height)];
     [self.foodCounLabel setFont:[UIFont boldSystemFontOfSize:PAY_FOR_ORDER_TITLE_FONT_SIZE]];
     [self.foodCounLabel setBackgroundColor:[UIColor clearColor]];
-    [self.foodCounLabel setText:@"5"];
+    [self.foodCounLabel setText:[NSString stringWithFormat:@"%ld",(long)[QSPShoppingCarData getTotalFoodCount]]];
     [self.foodCounLabel setTextAlignment:NSTextAlignmentRight];
     [self.foodCounLabel setTextColor:PAY_FOR_ORDER_COUNT_TEXT_COLOR];
     [self.view addSubview:self.foodCounLabel];
@@ -99,7 +105,7 @@
     [self.view addSubview:self.orderPriceLabel];
     
     //TODO: 订单价格
-    NSString *price = @"68";
+    NSString *price = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
     NSMutableAttributedString *priceString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",price]];
     [priceString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0,1)];
     [priceString addAttribute:NSForegroundColorAttributeName value:PAY_FOR_ORDER_COUNT_TEXT_COLOR range:NSMakeRange(1,price.length)];
@@ -125,7 +131,9 @@
     [self.userBalanceLabel setTextAlignment:NSTextAlignmentRight];
     [self.view addSubview:self.userBalanceLabel];
     
-    NSString *balance = @"208";
+    ///用户信息模型
+    QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+    NSString *balance = userModel.balance;
     NSMutableAttributedString *balanceString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",balance]];
     [balanceString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0,1)];
     [balanceString addAttribute:NSForegroundColorAttributeName value:PAY_FOR_ORDER_COUNT_TEXT_COLOR range:NSMakeRange(1,balance.length)];
@@ -140,6 +148,7 @@
     self.payCardPassTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(foodCountLabel.frame.origin.x, lineView3.frame.origin.y+lineView3.frame.size.height+12, foodCountLabel.frame.size.width, 44)];
     [self.payCardPassTextField setPlaceholder:@"请输入您的储值卡支付密码"];
     [self.payCardPassTextField setDelegate:self];
+    [self.payCardPassTextField setSecureTextEntry:YES];
     [self.view addSubview:self.payCardPassTextField];
 
     //忘记支付密码按钮
@@ -166,12 +175,46 @@
     submitBtStyleModel.cornerRadio = 6.;
     UIButton *submitBt = [UIButton createBlockButtonWithFrame:CGRectMake(lineView1.frame.origin.x, forgetPassBt.frame.origin.y+forgetPassBt.frame.size.height+20, SIZE_DEVICE_WIDTH-12*2, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
         
-        NSLog(@"submitBtl");
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
-        //TODO: 支付逻辑
-        QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
-        [ossVc setPaymentSate:YES];
-        [self.navigationController pushViewController:ossVc animated:YES];
+        NSLog(@"submitBtl");
+        NSString *pass = [self.payCardPassTextField text];
+        if (!pass || [pass isEqualToString:@""]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请输入储值卡支付密码" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [av show];
+            return ;
+        }
+        //提交支付所需参数
+        NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
+        [tempParams setObject:userModel.userID forKey:@"user_id"];
+        NSString *pay = [NSString stringWithFormat:@"%@%@",userModel.pay_salt,pass];
+        /*私有密钥+密码 进行 MD5加密*/
+        [tempParams setObject:[self paramsMD5Encryption:pay] forKey:@"pay"];
+        [tempParams setObject:balance forKey:@"balance"];
+        [tempParams setObject:orderFormModel.order_id forKey:@"order_id"];
+        
+        [QSRequestManager requestDataWithType:rRequestTypePayJudgeBalanceData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///隐藏HUD
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            ///支付成功
+            if (rRequestResultTypeSuccess == resultStatus) {
+                NSLog(@"订单：%@ 支付成功",orderFormModel.order_id);
+                //支付成功跳转：
+                QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+                [ossVc setPaymentSate:YES];
+                [self.navigationController pushViewController:ossVc animated:YES];
+                [QSPShoppingCarData clearShoopingCar];
+                
+            }else{
+                //支付失败跳转
+                NSLog(@"订单：%@ 支付失败",orderFormModel.order_id);
+                QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+                [ossVc setPaymentSate:NO];
+                [self.navigationController pushViewController:ossVc animated:YES];
+            }
+        }];
         
     }];
     [self.view addSubview:submitBt];
@@ -192,6 +235,24 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - MD5加密
+///MD5加密请求参数
+- (NSString *)paramsMD5Encryption:(NSString *)params
+{
+    
+    const char *cStr = [params UTF8String];
+    unsigned char result[16];
+    CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
+    
+    return [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+            result[0], result[1], result[2], result[3],
+            result[4], result[5], result[6], result[7],
+            result[8], result[9], result[10], result[11],
+            result[12], result[13], result[14], result[15]
+            ];
+    
 }
 
 /*
