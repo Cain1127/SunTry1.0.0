@@ -637,6 +637,16 @@
             case PaymentTypePayCrads:
                 //支付类型 3，储蓄卡支付
                 [tempParams setObject:@"3" forKey:@"expand_4"];
+                CGFloat totalPrice = [QSPShoppingCarData getTotalPrice];
+                CGFloat userBalance = userModel.balance.floatValue;
+                if (totalPrice > userBalance) {
+                    
+                    UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的储值卡余额不足以支付当前订单，请选择其他支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [alertview show];
+                    
+                    return;
+                }
+                
                 break;
             default:
                 break;

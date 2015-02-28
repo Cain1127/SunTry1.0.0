@@ -71,6 +71,8 @@
 		4739024A1A9EF3D4000ECF41 /* QSPShoppingCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */; };
 		47B211EF1AA0ADB200EEC787 /* QSOrderListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */; };
 		47B211F21AA0BE4800EEC787 /* QSOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F11AA0BE4800EEC787 /* QSOrderDetailViewController.m */; };
+		47B211F51AA1606300EEC787 /* QSOrderListItemDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F41AA1606300EEC787 /* QSOrderListItemDataModel.m */; };
+		47B211F81AA166BE00EEC787 /* QSOrderListReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F71AA166BE00EEC787 /* QSOrderListReturnData.m */; };
 		CE18BC0F1AA0764F00AB801F /* QSWCheckAppVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE18BC0E1AA0764F00AB801F /* QSWCheckAppVersionViewController.m */; };
 		CE1C081E1A9F1A4200BE9A99 /* QSWServiceTermViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
@@ -357,6 +359,10 @@
 		47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListTableViewCell.m; sourceTree = "<group>"; };
 		47B211F01AA0BE4800EEC787 /* QSOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderDetailViewController.h; sourceTree = "<group>"; };
 		47B211F11AA0BE4800EEC787 /* QSOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailViewController.m; sourceTree = "<group>"; };
+		47B211F31AA1606300EEC787 /* QSOrderListItemDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderListItemDataModel.h; sourceTree = "<group>"; };
+		47B211F41AA1606300EEC787 /* QSOrderListItemDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListItemDataModel.m; sourceTree = "<group>"; };
+		47B211F61AA166BE00EEC787 /* QSOrderListReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderListReturnData.h; sourceTree = "<group>"; };
+		47B211F71AA166BE00EEC787 /* QSOrderListReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListReturnData.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -703,6 +709,8 @@
 				185343C71A9ED31000A83039 /* QSAddOrderReturnData.m */,
 				185343C81A9ED31000A83039 /* QSGoodsStapleFoodReturnData.h */,
 				185343C91A9ED31000A83039 /* QSGoodsStapleFoodReturnData.m */,
+				47B211F61AA166BE00EEC787 /* QSOrderListReturnData.h */,
+				47B211F71AA166BE00EEC787 /* QSOrderListReturnData.m */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -1395,6 +1403,8 @@
 			children = (
 				185343BE1A9ED12300A83039 /* QSOrderInfoDataModel.h */,
 				185343BF1A9ED12300A83039 /* QSOrderInfoDataModel.m */,
+				47B211F31AA1606300EEC787 /* QSOrderListItemDataModel.h */,
+				47B211F41AA1606300EEC787 /* QSOrderListItemDataModel.m */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -1716,6 +1726,7 @@
 				CE7946C01A8B705600C0113B /* QSWMerchantIndexViewController.m in Sources */,
 				CEEAC3C21A8CCC72009AC6AA /* QSWEditSendAdsViewController.m in Sources */,
 				4739024A1A9EF3D4000ECF41 /* QSPShoppingCarView.m in Sources */,
+				47B211F81AA166BE00EEC787 /* QSOrderListReturnData.m in Sources */,
 				CE571EF31A84AFB200609788 /* QSWSettingArrowItem.m in Sources */,
 				1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */,
 				CE7946BD1A8B705600C0113B /* QSHomeViewController.m in Sources */,
@@ -1734,6 +1745,7 @@
 				4739023F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m in Sources */,
 				1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */,
 				473902401A9EF3D4000ECF41 /* QSPointMealViewController.m in Sources */,
+				47B211F51AA1606300EEC787 /* QSOrderListItemDataModel.m in Sources */,
 				185343B91A91D17B00A83039 /* QSCouponInfoDataModel.m in Sources */,
 				CE5341811A7FBCAC002BA188 /* UIImageView+CacheImage.m in Sources */,
 				184AE0801A90730F007A8CBD /* PinYinForObjc.m in Sources */,

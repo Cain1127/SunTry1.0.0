@@ -51,6 +51,7 @@ typedef enum
     rRequestTypeUserForgetPassword = 1105,  //!<忘记密码
     
     rRequestTypePayJudgeBalanceData = 1143,  //储值卡支付
+    rRequestTypeOrderListData = 1021,        //订单列表
     
     rRequestTypeMaxLimited = 99999          //!<最大值限制
     

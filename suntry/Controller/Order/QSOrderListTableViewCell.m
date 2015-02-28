@@ -10,6 +10,7 @@
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
 #import "NSString+Calculation.h"
+#import "QSOrderListItemDataModel.h"
 
 #define ORDER_LIST_CELL_LINEVIEW_BACKGROUND_COLOR       [UIColor colorWithRed:0.808 green:0.812 blue:0.816 alpha:1.000]
 #define ORDER_LIST_CELL_ORDER_NUM_STRING_COLOR          [UIColor colorWithRed:147/255.0 green:149/255.0 blue:151/255.0 alpha:1.]
@@ -101,21 +102,64 @@
 
 - (void)updateFoodData:(id)data
 {
+    [self.orderNumLabel setText:@""];
+    [self.totalPriceAndCountLabel setText:@""];
+    [self.orderStateLabel setText:@""];
+    [self.shippingStateLabel setText:@""];
+    if (data &&[data isKindOfClass:[QSOrderListItemDataModel class]]) {
+        QSOrderListItemDataModel *item = (QSOrderListItemDataModel*)data;
+        
+        [self.orderNumLabel setText:[NSString stringWithFormat:@"订单号:%@",item.order_num]];
+        
+        NSString *totalPriceStr = item.total_money;
+        NSString *totalCountStr = item.diet_num;
+        NSMutableAttributedString *totalString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"总价:￥%@元,共%@份餐品",totalPriceStr,totalCountStr]];
+        [totalString addAttribute:NSForegroundColorAttributeName value:ORDER_LIST_CELL_ORDER_NUM_COUNT_TEXT_COLOR range:NSMakeRange(4,totalPriceStr.length)];
+        [totalString addAttribute:NSForegroundColorAttributeName value:ORDER_LIST_CELL_ORDER_NUM_COUNT_TEXT_COLOR range:NSMakeRange(4+totalPriceStr.length+3,totalCountStr.length)];
+        [totalString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_LIST_CELL_ORDER_NUM_STRING_FONT_SIZE] range:NSMakeRange(4, totalPriceStr.length)];
+        [totalString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_LIST_CELL_ORDER_NUM_STRING_FONT_SIZE] range:NSMakeRange(4+totalPriceStr.length+3,totalCountStr.length)];
+        [self.totalPriceAndCountLabel setAttributedText:totalString];
+        
+//        NSString *stateCode = item.order_status;
+//        /**
+//         '-1'=>'删除',
+//         '0'=>'未确认',
+//         '1'=>'确认',
+//         '3'=>'送达',
+//         '4'=>'取消',
+//         */
+//        
+//        NSString *stateStr = @"";
+//        if ([stateCode isEqualToString:@"-1"]) {
+//            stateStr = @"删除";
+//        }else if ([stateCode isEqualToString:@"0"]) {
+//            stateStr = @"未确认";
+//        }else if ([stateCode isEqualToString:@"1"]) {
+//            stateStr = @"确认";
+//        }else if ([stateCode isEqualToString:@"3"]) {
+//            stateStr = @"送达";
+//        }else if ([stateCode isEqualToString:@"4"]) {
+//            stateStr = @"取消";
+//        }
+//
+        
+        NSString *ispayCode = item.is_pay;
+        NSString *payStateStr = @"";
+        if ([ispayCode isEqualToString:@"0"])
+        {
+            payStateStr = @"未付款";
+        }else if ([ispayCode isEqualToString:@"1"])
+        {
+            payStateStr = @"已付款";
+        }
+        
+        [self.orderStateLabel setText:payStateStr];
+//        [self.shippingStateLabel setText:@"一号餐车配送中"];
+        
+        
+    }
     
-    [self.orderNumLabel setText:@"订单号：123243253456"];
-    
-    NSString *totalPriceStr = @"8965";
-    NSString *totalCountStr = @"98645";
-    NSMutableAttributedString *totalString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"总价:￥%@元,共%@份餐品",totalPriceStr,totalCountStr]];
-    [totalString addAttribute:NSForegroundColorAttributeName value:ORDER_LIST_CELL_ORDER_NUM_COUNT_TEXT_COLOR range:NSMakeRange(4,totalPriceStr.length)];
-    [totalString addAttribute:NSForegroundColorAttributeName value:ORDER_LIST_CELL_ORDER_NUM_COUNT_TEXT_COLOR range:NSMakeRange(4+totalPriceStr.length+3,totalCountStr.length)];
-    [totalString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_LIST_CELL_ORDER_NUM_STRING_FONT_SIZE] range:NSMakeRange(4, totalPriceStr.length)];
-    [totalString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_LIST_CELL_ORDER_NUM_STRING_FONT_SIZE] range:NSMakeRange(4+totalPriceStr.length+3,totalCountStr.length)];
-    [self.totalPriceAndCountLabel setAttributedText:totalString];
-    
-    [self.orderStateLabel setText:@"已付款"];
-    [self.shippingStateLabel setText:@"一号餐车配送中"];
-    
+
     
 }
 
