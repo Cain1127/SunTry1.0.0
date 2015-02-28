@@ -16,6 +16,7 @@
 #import "QSGoodsListReturnData.h"
 #import "MJRefresh.h"
 #import "ColorHeader.h"
+#import "QSUserManager.h"
 
 #import "QSAlixPayManager.h"
 
@@ -283,8 +284,8 @@
 ///提交支付
 -(void)putPayButtonAction
 {
-
-
+    
+    
     /**
      *  user_id 用户id
      *  name 下订名字
@@ -311,27 +312,27 @@
     
     /**
      *  {
-            "user_id":"47",
-            "source_type":4,
-            "diet_num":1,
-            "total_money":"500",
-            "get_time":"",
-            "name":"充500送50",
-            "address":"地址",
-            "phone":"13430315807",
-            "expand_4":"5",
-            "mer_id":1,
-            "desc":"在线购买储蓄卡金额",
-            "diet":[{
-                        "goods_id":"94",
-                        "num":1,
-                        "sale_id":"",
-                        "sale_money":"500",
-                        "name":"充500送50"
-                    }],
-            "pay_type":0,
-            "run_id":"47",
-            "run_type":"1"
+     "user_id":"47",
+     "source_type":4,
+     "diet_num":1,
+     "total_money":"500",
+     "get_time":"",
+     "name":"充500送50",
+     "address":"地址",
+     "phone":"13430315807",
+     "expand_4":"5",
+     "mer_id":1,
+     "desc":"在线购买储蓄卡金额",
+     "diet":[{
+     "goods_id":"94",
+     "num":1,
+     "sale_id":"",
+     "sale_money":"500",
+     "name":"充500送50"
+     }],
+     "pay_type":0,
+     "run_id":"47",
+     "run_type":"1"
      *  }
      *
      */
@@ -448,10 +449,10 @@
             __block NSString *orderID = self.orderFormModel.order_id;
             __weak QSWPayOrderViewController *weakSelf = self;
             self.orderFormModel.alixpayCallBack = ^(NSString *payCode,NSString *payInfo){
-            
+                
                 ///处理支付宝的回调结果
                 [weakSelf checkPayResultWithCode:payCode andPayResultInfo:payInfo andOrderID:orderID];
-            
+                
             };
             
             ///进入支付宝
@@ -464,7 +465,7 @@
             
             ///重置订单模型
             self.orderFormModel = nil;
-        
+            
             ///订单生成失败
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"订单提交失败，请稍后再试……" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alertView show];
@@ -475,11 +476,11 @@
                 [alertView dismissWithClickedButtonIndex:0 animated:YES];
                 
             });
-        
+            
         }
         
     }];
-
+    
 }
 
 #pragma mark - 支付宝支付时的回调处理
@@ -519,31 +520,31 @@
         ///回调服务端确认支付
         [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
             
-            ///移聊HUD
-            [self.hud hide:YES];
-            
-            ///更新用户购买储值卡的状态
-            QSUserInfoDataModel *userDataModel = [QSUserInfoDataModel userDataModel];
-            userDataModel.is_buy_card = @"1";
-            [userDataModel saveUserData];
-            
-            ///返回储值卡页面:如果是第一次购买，则是创建页面
-            if (self.isTurnBack) {
+            ///更新用户信息
+            [QSUserManager updateUserData:^(BOOL flag) {
                 
-                if (self.buyStoreCardCallBack) {
+                ///移聊HUD
+                [self.hud hide:YES];
+                
+                ///返回储值卡页面:如果是第一次购买，则是创建页面
+                if (self.isTurnBack) {
                     
-                    self.buyStoreCardCallBack(YES);
+                    if (self.buyStoreCardCallBack) {
+                        
+                        self.buyStoreCardCallBack(YES);
+                        
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                } else {
+                    
+                    QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+                    storeCardVC.pageGap = 4;
+                    [self.navigationController pushViewController:storeCardVC animated:YES];
                     
                 }
-                [self.navigationController popViewControllerAnimated:YES];
                 
-            } else {
-            
-                QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
-                storeCardVC.pageGap = 4;
-                [self.navigationController pushViewController:storeCardVC animated:YES];
-            
-            }
+            }];
             
         }];
         
@@ -563,31 +564,36 @@
         ///回调服务端确认支付
         [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
             
-            ///移聊HUD
-            [self.hud hide:YES];
-            
-            ///更新用户购买储值卡的状态
-            QSUserInfoDataModel *userDataModel = [QSUserInfoDataModel userDataModel];
-            userDataModel.is_buy_card = @"1";
-            [userDataModel saveUserData];
-            
-            ///返回储值卡页面:如果是第一次购买，则是创建页面
-            if (self.isTurnBack) {
+            ///更新用户信息
+            [QSUserManager updateUserData:^(BOOL flag) {
                 
-                if (self.buyStoreCardCallBack) {
+                ///移聊HUD
+                [self.hud hide:YES];
+                
+                ///更新用户购买储值卡的状态
+                QSUserInfoDataModel *userDataModel = [QSUserInfoDataModel userDataModel];
+                userDataModel.is_buy_card = @"1";
+                [userDataModel saveUserData];
+                
+                ///返回储值卡页面:如果是第一次购买，则是创建页面
+                if (self.isTurnBack) {
                     
-                    self.buyStoreCardCallBack(YES);
+                    if (self.buyStoreCardCallBack) {
+                        
+                        self.buyStoreCardCallBack(YES);
+                        
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                } else {
+                    
+                    QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
+                    storeCardVC.pageGap = 4;
+                    [self.navigationController pushViewController:storeCardVC animated:YES];
                     
                 }
-                [self.navigationController popViewControllerAnimated:YES];
                 
-            } else {
-                
-                QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
-                storeCardVC.pageGap = 4;
-                [self.navigationController pushViewController:storeCardVC animated:YES];
-                
-            }
+            }];
             
         }];
         
@@ -615,7 +621,7 @@
 ///选择某一个储值卡时，字体颜色为白色
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     ///保存当前选择的储值卡
     QSGoodsDataModel *tempModel = self.storedCardDataSource[indexPath.row];
     
@@ -626,18 +632,18 @@
         self.selectedIndex = (int)indexPath.row;
         
     } else {
-    
+        
         self.selectedID = tempModel.goodsID;
         self.selectedIndex = (int)indexPath.row;
         self.orderFormModel = nil;
-    
+        
     }
-
+    
 }
 
 -(BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     return YES;
     
 }

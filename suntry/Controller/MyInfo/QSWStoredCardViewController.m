@@ -303,7 +303,7 @@
     
 }
 
-#pragma mark - 按钮事件
+#pragma mark - 点击充值
 ///点击充值储存卡
 - (IBAction)chargeButton:(id)sender
 {
@@ -314,17 +314,8 @@
         if (flag) {
             
             [self getChargeRecordList];
-            [QSUserManager updateUserData:^(BOOL flag) {
-                
-                ///更新用户信息成功
-                if (flag) {
-                    
-                    QSUserInfoDataModel *userModel = [QSUserManager getCurrentUserData];
-                    self.balanceCountLabel.text = [NSString stringWithFormat:@"￥%@",userModel.balance];
-                    
-                }
-                
-            }];
+            QSUserInfoDataModel *userModel = [QSUserManager getCurrentUserData];
+            self.balanceCountLabel.text = [NSString stringWithFormat:@"￥%@",userModel.balance];
             
         }
     
