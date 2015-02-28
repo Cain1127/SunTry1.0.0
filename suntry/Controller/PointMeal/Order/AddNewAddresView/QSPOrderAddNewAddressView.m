@@ -13,6 +13,11 @@
 #import "QSBlockButton.h"
 #import "QSPAddNewAddressTextField.h"
 
+#import "QSRequestManager.h"
+
+#import "QSUserManager.h"
+#import "QSUserInfoDataModel.h"
+
 #import "QSDatePickerViewController.h"
 #import "ASDepthModalViewController.h"
 
@@ -37,6 +42,8 @@
 @property(nonatomic,strong) QSPAddNewAddressTextField *telephoneTextField;
 @property(nonatomic,strong) QSLabel                   *sexLabel;
 @property(nonatomic,strong) QSDatePickerViewController *sexPickerView;
+
+@property (nonatomic,retain) QSUserInfoDataModel *userInfo;//!<当前用户信息
 
 @end
 
@@ -70,6 +77,9 @@
 {
     
     if (self = [super init]) {
+        
+        ///获取用户信息
+        self.userInfo = [QSUserManager getCurrentUserData];
         
         //半透明背景层
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];
@@ -140,6 +150,9 @@
                 return;
                 
             }
+            
+            ///保存送餐地址到个人送餐地址中
+            [self saveSendAddress];
 
             [self hideAddNewAddressView];
             [self removeFromSuperview];
@@ -172,9 +185,16 @@
     CGFloat scrollViewContentHight = 0.;
     CGFloat scrollViewMaxHeight = SIZE_DEVICE_HEIGHT - 150;
     
-
     self.nameTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, 10, _scrollView.frame.size.width, 44)];
-    [self.nameTextField setPlaceholder:@"请填写联系人姓名"];
+    if (self.userInfo.receidName && self.userInfo.receidName.length > 2) {
+        
+        self.nameTextField.text = self.userInfo.receidName;
+        
+    } else {
+    
+        [self.nameTextField setPlaceholder:@"请填写联系人姓名"];
+    
+    }
     [self.nameTextField setDelegate:self];
     [_scrollView addSubview:self.nameTextField];
     
@@ -194,7 +214,7 @@
         ///弹出性别选择窗口
         self.sexPickerView = [[QSDatePickerViewController alloc] init];
         self.sexPickerView.pickerType = kPickerType_Item;
-        self.sexPickerView.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女",@"男"]];
+        self.sexPickerView.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女士",@"先生"]];
         self.sexPickerView.onCancelButtonHandler = ^{
             
             [ASDepthModalViewController dismiss];
@@ -204,7 +224,6 @@
             
             ///更换标题
             weakSelf.sexLabel.text = item;
-            
             [ASDepthModalViewController dismiss];
             
         };
@@ -223,23 +242,58 @@
     [self.sexLabel setFont:[UIFont systemFontOfSize:ADD_NEW_ADDRESS_VIEW_TEXT_STRING_FONT_SIZE ]];
     [self.sexLabel setBackgroundColor:[UIColor clearColor]];
     [self.sexLabel setTextAlignment:NSTextAlignmentRight];
-    [self.sexLabel setText:@"男"];
+    [self.sexLabel setText:(self.userInfo.gender ? (([self.userInfo.gender intValue] == 0) ? @"先生" : @"女士") : @"先生")];
     [sexBt addSubview:self.sexLabel];
     
     [_scrollView addSubview:sexBt];
     
     self.addressTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.sexTextField.frame.origin.y+self.sexTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
     [self.addressTextField setDelegate:self];
-    [self.addressTextField setPlaceholder:@"送餐地址，请尽量填写详细"];
+    
+    if (self.userInfo.address && self.userInfo.address.length > 2) {
+        
+        self.addressTextField.text = self.userInfo.address;
+        
+    } else {
+    
+        [self.addressTextField setPlaceholder:@"送餐地址，请尽量填写详细"];
+    
+    }
+    
     [_scrollView addSubview:self.addressTextField];
     
     self.companyTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.addressTextField.frame.origin.y+self.addressTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
-    [self.companyTextField setPlaceholder:@"请输入公司名称"];
+    
+    if (self.userInfo.company && self.userInfo.company.length > 2) {
+        
+        self.companyTextField.text = self.userInfo.company;
+        
+    } else {
+    
+        [self.companyTextField setPlaceholder:@"请输入公司名称"];
+    
+    }
+    
     [self.companyTextField setDelegate:self];
     [_scrollView addSubview:self.companyTextField];
     
-    self.telephoneTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.companyTextField.frame.origin.y+self.companyTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
-    [self.telephoneTextField setPlaceholder:@"配送人员联系您的电话"];
+    self.telephoneTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.companyTextField.frame.origin.y + self.companyTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
+    
+    NSString *tempPhone = [self.userInfo.phone copy];
+    if (tempPhone && tempPhone.length == 11) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            self.telephoneTextField.text = self.userInfo.phone;
+            
+        });
+        
+    } else {
+    
+        [self.telephoneTextField setPlaceholder:@"配送人员联系您的电话"];
+    
+    }
+    
     [self.telephoneTextField setDelegate:self];
     [_scrollView addSubview:self.telephoneTextField];
     
@@ -453,6 +507,75 @@
         
     }
     
+}
+
+#pragma mark - 保存送餐地址到个人信息中
+- (void)saveSendAddress
+{
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        ///性别
+        NSString *genderString = self.sexLabel.text ? self.sexLabel.text : @"先生";
+        NSString *gender = ([genderString isEqualToString:@"先生"]) ? @"0" : @"1";
+        
+        ///地址
+        NSString *address = self.addressTextField.text;
+        
+        ///公司
+        NSString *company = self.companyTextField.text;
+        
+        ///电话
+        NSString *phone = self.telephoneTextField.text;
+        
+        ///是否默认配送地址
+        NSString *isMaster = @"1";
+        
+        ///用户名
+        NSString *name = self.nameTextField.text;
+        
+        ///生成参数
+        NSDictionary *params = @{@"name" : name,
+                                 @"sex" : gender,
+                                 @"address" : address,
+                                 @"company" : company,
+                                 @"phone" : phone,
+                                 @"master" : isMaster};
+        
+        ///发回服务端添加
+        [QSRequestManager requestDataWithType:rRequestTypeAddSendAddress andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///添加成功
+            if (rRequestResultTypeSuccess == resultStatus) {
+                
+                ///打印成功信息
+                NSLog(@"====================用户送餐地址添加成功====================");
+                
+                ///刷新当前用户数据
+                [QSUserManager updateUserData:^(BOOL flag) {
+                    
+                    if (flag) {
+                        
+                        NSLog(@"====================用户信息更新成功====================");
+                        
+                    } else {
+                    
+                        NSLog(@"====================用户信息更新失败====================");
+                    
+                    }
+                    
+                }];
+                
+            } else {
+                
+                NSLog(@"====================用户送餐地址添加失败====================");
+                
+            }
+            
+        }];
+        
+    });
+
 }
 
 @end

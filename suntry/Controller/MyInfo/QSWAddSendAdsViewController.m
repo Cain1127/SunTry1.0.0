@@ -97,19 +97,19 @@
 {
     
     ///性别默认信息
-    NSString *genderTitle = @"男";
+    NSString *genderTitle = @"先生";
     
     if (self.userInfo && self.userInfo.gender) {
         
         if ([self.userInfo.gender intValue] == 0) {
             
-            genderTitle = @"男";
+            genderTitle = @"先生";
             
         }
         
         if ([self.userInfo.gender intValue] == 1) {
             
-            genderTitle = @"女";
+            genderTitle = @"女士";
             
         }
         
@@ -221,7 +221,7 @@
 
 #pragma mark - 确认添加地址
 ///确认添加地址
--(void)gotoNextVC
+- (void)gotoNextVC
 {
 
     ///姓名
@@ -239,8 +239,8 @@
     ///性别
     UITextField *genderField = (UITextField *)self.genderItem.property;
     UILabel *genderLabel = [genderField.rightView subviews][0];
-    NSString *genderString = genderLabel.text ? genderLabel.text : @"男";
-    NSString *gender = ([genderString isEqualToString:@"男"]) ? @"0" : @"1";
+    NSString *genderString = genderLabel.text ? genderLabel.text : @"先生";
+    NSString *gender = ([genderString isEqualToString:@"先生"]) ? @"0" : @"1";
     
     ///地址
     UITextField *addressField = (UITextField *)self.addressItem.property;
@@ -335,7 +335,7 @@
 }
 
 
-#pragma mark--UItextFieldDelegate方法
+#pragma mark - UItextFieldDelegate方法
 ///开始编辑
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
@@ -351,7 +351,7 @@
         ///设置选择的VC
         self.pickerVC = [[QSDatePickerViewController alloc] init];
         self.pickerVC.pickerType = kPickerType_Item;
-        self.pickerVC.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女",@"男"]];
+        self.pickerVC.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女士",@"先生"]];
         self.pickerVC.onCancelButtonHandler = ^{
             
             [ASDepthModalViewController dismiss];
