@@ -155,6 +155,7 @@
 
 - (void)getMyOrderList
 {
+    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     //请求所需参数
     NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
@@ -168,10 +169,6 @@
      
     */
     
-    //用户信息模型
-    QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
-    //user_id 用户id 必填
-    [tempParams setObject:userModel.userID forKey:@"user_id"];
     //search_key 查找的关键字
     [tempParams setObject:@"" forKey:@"search_key"];
     //page_num 每页的数量 默认 10
