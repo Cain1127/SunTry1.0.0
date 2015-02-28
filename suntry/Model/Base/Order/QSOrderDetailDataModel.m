@@ -1,14 +1,14 @@
 //
-//  QSOrderListItemDataModel.m
+//  QSOrderDetailDataModel.m
 //  suntry
 //
 //  Created by CoolTea on 15/2/28.
 //  Copyright (c) 2015年 广州七升网络科技有限公司. All rights reserved.
 //
 
-#import "QSOrderListItemDataModel.h"
+#import "QSOrderDetailDataModel.h"
 
-@implementation QSOrderListItemDataModel
+@implementation QSOrderDetailDataModel
 
 + (RKObjectMapping *)objectMapping
 {
@@ -34,9 +34,9 @@
                                   };
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"goods_list" toKeyPath:@"goods_list" withMapping:[QSOrderDetailGoodsDataModel objectMapping]]];
+    
     return shared_mapping;
     
 }
-
-
 @end

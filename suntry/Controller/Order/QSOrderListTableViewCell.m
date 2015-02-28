@@ -10,7 +10,7 @@
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
 #import "NSString+Calculation.h"
-#import "QSOrderListItemDataModel.h"
+#import "QSOrderDetailDataModel.h"
 
 #define ORDER_LIST_CELL_LINEVIEW_BACKGROUND_COLOR       [UIColor colorWithRed:0.808 green:0.812 blue:0.816 alpha:1.000]
 #define ORDER_LIST_CELL_ORDER_NUM_STRING_COLOR          [UIColor colorWithRed:147/255.0 green:149/255.0 blue:151/255.0 alpha:1.]
@@ -106,8 +106,8 @@
     [self.totalPriceAndCountLabel setText:@""];
     [self.orderStateLabel setText:@""];
     [self.shippingStateLabel setText:@""];
-    if (data &&[data isKindOfClass:[QSOrderListItemDataModel class]]) {
-        QSOrderListItemDataModel *item = (QSOrderListItemDataModel*)data;
+    if (data &&[data isKindOfClass:[QSOrderDetailDataModel class]]) {
+        QSOrderDetailDataModel *item = (QSOrderDetailDataModel*)data;
         
         [self.orderNumLabel setText:[NSString stringWithFormat:@"订单号:%@",item.order_num]];
         

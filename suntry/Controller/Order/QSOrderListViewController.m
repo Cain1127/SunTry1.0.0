@@ -140,7 +140,7 @@
 {
     QSOrderDetailViewController *odvc = [[QSOrderDetailViewController alloc] init];
     id data = [_orderList objectAtIndex:indexPath.row];
-    if (data && [data isKindOfClass:[QSOrderListItemDataModel class]]) {
+    if (data && [data isKindOfClass:[QSOrderDetailDataModel class]]) {
         [odvc setOrderData:data];
     }
     [odvc setHidesBottomBarWhenPushed:YES];

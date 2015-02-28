@@ -71,9 +71,10 @@
 		4739024A1A9EF3D4000ECF41 /* QSPShoppingCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */; };
 		47B211EF1AA0ADB200EEC787 /* QSOrderListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */; };
 		47B211F21AA0BE4800EEC787 /* QSOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F11AA0BE4800EEC787 /* QSOrderDetailViewController.m */; };
-		47B211F51AA1606300EEC787 /* QSOrderListItemDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F41AA1606300EEC787 /* QSOrderListItemDataModel.m */; };
 		47B211F81AA166BE00EEC787 /* QSOrderListReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F71AA166BE00EEC787 /* QSOrderListReturnData.m */; };
-		CE18BC0F1AA0764F00AB801F /* QSWCheckAppVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE18BC0E1AA0764F00AB801F /* QSWCheckAppVersionViewController.m */; };
+		47B211FB1AA17A4500EEC787 /* QSOrderDetailDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211FA1AA17A4500EEC787 /* QSOrderDetailDataModel.m */; };
+		47B211FE1AA17C2500EEC787 /* QSOrderDetailReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211FD1AA17C2500EEC787 /* QSOrderDetailReturnData.m */; };
+		47B212011AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B212001AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m */; };
 		CE1C081E1A9F1A4200BE9A99 /* QSWServiceTermViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
 		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
@@ -359,10 +360,14 @@
 		47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListTableViewCell.m; sourceTree = "<group>"; };
 		47B211F01AA0BE4800EEC787 /* QSOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderDetailViewController.h; sourceTree = "<group>"; };
 		47B211F11AA0BE4800EEC787 /* QSOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailViewController.m; sourceTree = "<group>"; };
-		47B211F31AA1606300EEC787 /* QSOrderListItemDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderListItemDataModel.h; sourceTree = "<group>"; };
-		47B211F41AA1606300EEC787 /* QSOrderListItemDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListItemDataModel.m; sourceTree = "<group>"; };
 		47B211F61AA166BE00EEC787 /* QSOrderListReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderListReturnData.h; sourceTree = "<group>"; };
 		47B211F71AA166BE00EEC787 /* QSOrderListReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListReturnData.m; sourceTree = "<group>"; };
+		47B211F91AA17A4500EEC787 /* QSOrderDetailDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderDetailDataModel.h; sourceTree = "<group>"; };
+		47B211FA1AA17A4500EEC787 /* QSOrderDetailDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailDataModel.m; sourceTree = "<group>"; };
+		47B211FC1AA17C2500EEC787 /* QSOrderDetailReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderDetailReturnData.h; sourceTree = "<group>"; };
+		47B211FD1AA17C2500EEC787 /* QSOrderDetailReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailReturnData.m; sourceTree = "<group>"; };
+		47B211FF1AA1801400EEC787 /* QSOrderDetailGoodsDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderDetailGoodsDataModel.h; sourceTree = "<group>"; };
+		47B212001AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailGoodsDataModel.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -711,6 +716,8 @@
 				185343C91A9ED31000A83039 /* QSGoodsStapleFoodReturnData.m */,
 				47B211F61AA166BE00EEC787 /* QSOrderListReturnData.h */,
 				47B211F71AA166BE00EEC787 /* QSOrderListReturnData.m */,
+				47B211FC1AA17C2500EEC787 /* QSOrderDetailReturnData.h */,
+				47B211FD1AA17C2500EEC787 /* QSOrderDetailReturnData.m */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -1403,8 +1410,10 @@
 			children = (
 				185343BE1A9ED12300A83039 /* QSOrderInfoDataModel.h */,
 				185343BF1A9ED12300A83039 /* QSOrderInfoDataModel.m */,
-				47B211F31AA1606300EEC787 /* QSOrderListItemDataModel.h */,
-				47B211F41AA1606300EEC787 /* QSOrderListItemDataModel.m */,
+				47B211F91AA17A4500EEC787 /* QSOrderDetailDataModel.h */,
+				47B211FA1AA17A4500EEC787 /* QSOrderDetailDataModel.m */,
+				47B211FF1AA1801400EEC787 /* QSOrderDetailGoodsDataModel.h */,
+				47B212001AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -1708,6 +1717,7 @@
 			files = (
 				185344401A9ED82C00A83039 /* DataVerifier.m in Sources */,
 				CE5341801A7FBCAC002BA188 /* UIImage+Compressed.m in Sources */,
+				47B212011AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m in Sources */,
 				185344431A9ED82C00A83039 /* openssl_wrapper.m in Sources */,
 				185343CA1A9ED31000A83039 /* QSAddOrderReturnData.m in Sources */,
 				CE7946B01A8B6F2F00C0113B /* UIImageView+CacheImage.m in Sources */,
@@ -1745,8 +1755,8 @@
 				4739023F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m in Sources */,
 				1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */,
 				473902401A9EF3D4000ECF41 /* QSPointMealViewController.m in Sources */,
-				47B211F51AA1606300EEC787 /* QSOrderListItemDataModel.m in Sources */,
 				185343B91A91D17B00A83039 /* QSCouponInfoDataModel.m in Sources */,
+				47B211FE1AA17C2500EEC787 /* QSOrderDetailReturnData.m in Sources */,
 				CE5341811A7FBCAC002BA188 /* UIImageView+CacheImage.m in Sources */,
 				184AE0801A90730F007A8CBD /* PinYinForObjc.m in Sources */,
 				1836740F1A7F8FA800BCCF39 /* QSAppDelegate.m in Sources */,
@@ -1783,6 +1793,7 @@
 				CE571EF21A84AFB200609788 /* QSWSettingGroup.m in Sources */,
 				CEEAC3901A8CA4EF009AC6AA /* QSHeaderDataModel.m in Sources */,
 				CECCC32C1A8EE70B0079F224 /* QSRegisterDataModel.m in Sources */,
+				47B211FB1AA17A4500EEC787 /* QSOrderDetailDataModel.m in Sources */,
 				185343B11A91883800A83039 /* NSString+Format.m in Sources */,
 				CEEAC3CB1A8D0F36009AC6AA /* QSWForgetPswController.m in Sources */,
 				CE7946BF1A8B705600C0113B /* QSWMerchantIndexCell.m in Sources */,

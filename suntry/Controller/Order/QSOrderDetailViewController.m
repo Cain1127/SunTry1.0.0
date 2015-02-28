@@ -12,6 +12,11 @@
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
 #import "NSString+Calculation.h"
+#import "MBProgressHUD.h"
+#import "QSRequestManager.h"
+#import "QSUserInfoDataModel.h"
+#import "QSOrderDetailReturnData.h"
+#import "QSOrderDetailDataModel.h"
 
 #define ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE              140.
 #define ORDER_DETAIL_TOP_VIEW_LINE_COLOR                [UIColor colorWithRed:206/255. green:208/255. blue:210/255. alpha:1]
@@ -78,6 +83,7 @@
     
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
+    [_scrollView setShowsVerticalScrollIndicator:NO];
     [self.view addSubview:_scrollView];
     
     //顶部
@@ -362,6 +368,7 @@
         [self.payStateLabel setText:payStateStr];
     }
     
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _payBt.frame.origin.y+_payBt.frame.size.height+20)];
     
 //    [self updateView];
     
@@ -376,6 +383,42 @@
 
 - (void)updatePayInfoView
 {
+    [self.paymentLabel setText:@""];
+    [self.payStateLabel setText:@""];
+    [self.payBt setHidden:YES];
+    
+    if (orderData) {
+        NSString *paymentCode = orderData.order_payment;
+        //3，余额支付；1在线支付，2餐到付款 ,5 储蓄卡购买的支付类型
+        NSString *paymentStr = @"";
+        if ([paymentCode isEqualToString:@"1"])
+        {
+            paymentStr = @"在线支付";
+        }else if ([paymentCode isEqualToString:@"2"])
+        {
+            paymentStr = @"餐到付款";
+        }else if ([paymentCode isEqualToString:@"3"])
+        {
+            paymentStr = @"余额支付";
+        }else if ([paymentCode isEqualToString:@"5"])
+        {
+            paymentStr = @"储蓄卡购买";
+        }
+        [self.paymentLabel setText:paymentStr];
+        
+        NSString *ispayCode = orderData.is_pay;
+        NSString *payStateStr = @"";
+        if ([ispayCode isEqualToString:@"0"])
+        {
+            payStateStr = @"未付款";
+            [self.payBt setHidden:NO];
+        }else if ([ispayCode isEqualToString:@"1"])
+        {
+            payStateStr = @"已付款";
+            [self.payBt setHidden:YES];
+        }
+        [self.payStateLabel setText:payStateStr];
+    }
     
     [_payInfoFrameView setFrame:CGRectMake(_payInfoFrameView.frame.origin.x, _shippingInfoFrameView.frame.origin.y+_shippingInfoFrameView.frame.size.height, _payInfoFrameView.frame.size.width, _payInfoFrameView.frame.size.height)];
     
@@ -387,15 +430,15 @@
 - (void)updateShippingInfoView
 {
     
-    NSString *nameStr = @"测试先生";
+    NSString *nameStr = @"";
     [self.userNameLabel setText:nameStr];
-    NSString *phone = @"13888888888";
+    NSString *phone = @"";
     [self.phoneLabel setText:phone];
     
+    [self.addressLabel setText:@""];
     
-    NSString *addressStr = @"广州市天河区体育西路城建大厦";
-    NSString *company = @"七升网络科技有限公司";
-    [self.addressLabel setText:addressStr];
+    NSString *company = @"";
+    
     if (company && ![company isEqualToString:@""]) {
         [self.companyLabel setHidden:NO];
         [self.companyLabel setText:company];
@@ -420,6 +463,14 @@
     [_shippingInfoFrameView setFrame:CGRectMake(_shippingInfoFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height, _shippingInfoFrameView.frame.size.width, _shippingInfoFrameView.frame.size.height)];
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _shippingInfoFrameView.frame.origin.y+_shippingInfoFrameView.frame.size.height)];
     
+    
+    if (orderData) {
+        [self.userNameLabel setText:orderData.order_name];
+        [self.phoneLabel setText:orderData.order_phone];
+        [self.addressLabel setText:orderData.order_address];
+        [self.remarkLabel setText:orderData.order_desc];
+    }
+    
 }
 
 - (void)updateHadOrderView
@@ -431,52 +482,65 @@
     }
     [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, 45)];
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height)];
-    NSArray *foodList = [NSArray arrayWithObjects:@"",@"",@"", nil];
+    NSArray *foodList = [NSArray array];
+    if (orderData) {
+        foodList = orderData.goods_list;
+    }
+    if (!foodList) {
+        foodList = [NSArray array];
+    }
     NSInteger totalCount = 0;
     if ([foodList count]>0) {
         NSInteger countTag = 10001;
         for (int i=0; i<[foodList count]; i++) {
-            NSString *foodNameStr = @"番茄炒猪扒";
-            NSString *perPriceStr = @"12.3";
-            NSString *countStr = @"2";
-            totalCount += countStr.integerValue;
-            NSString *showNameStr = [NSString stringWithFormat:@"%@ x %@",foodNameStr,countStr];
-            CGFloat foodNameStrWidth = [showNameStr calculateStringDisplayWidthByFixedHeight:44. andFontSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]+4;
-            QSLabel *foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 44+i*45, foodNameStrWidth, 44)];
-            [foodNameLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-            [foodNameLabel setText:showNameStr];
-            [foodNameLabel setBackgroundColor:[UIColor clearColor]];
-            [foodNameLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
-            [foodNameLabel setTag:countTag++];
-            [_hadOrderFrameView addSubview:foodNameLabel];
-            
-            BOOL isPackage = NO;
-            if (isPackage) {
-                for (int j=0; j<2; j++) {
-                    QSLabel *subfoodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(foodNameLabel.frame.origin.x+foodNameLabel.frame.size.width+4, 44+i*45+2+j*20, (SIZE_DEVICE_WIDTH*0.7-foodNameStrWidth), 20)];
-                    [subfoodNameLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-                    [subfoodNameLabel setText:@"主食配菜"];
-                    [subfoodNameLabel setBackgroundColor:[UIColor clearColor]];
-                    [subfoodNameLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
-                    [subfoodNameLabel setTag:countTag++];
-                    [_hadOrderFrameView addSubview:subfoodNameLabel];
+            QSOrderDetailGoodsDataModel *food = [foodList objectAtIndex:i];
+            if (food) {
+                NSString *foodNameStr = food.goodsName;
+                NSString *perPriceStr = food.goodsPrice;
+                NSString *countStr = food.goodsCount;
+                totalCount += countStr.integerValue;
+                NSString *showNameStr = [NSString stringWithFormat:@"%@ x %@",foodNameStr,countStr];
+                CGFloat foodNameStrWidth = [showNameStr calculateStringDisplayWidthByFixedHeight:44. andFontSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]+4;
+                QSLabel *foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 44+i*45, foodNameStrWidth, 44)];
+                [foodNameLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
+                [foodNameLabel setText:showNameStr];
+                [foodNameLabel setBackgroundColor:[UIColor clearColor]];
+                [foodNameLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
+                [foodNameLabel setTag:countTag++];
+                [_hadOrderFrameView addSubview:foodNameLabel];
+                
+                BOOL isPackage = NO;
+                if (isPackage) {
+                    NSArray *subFoodList = food.subFoodList;
+                    for (int j=0; j<[subFoodList count]; j++) {
+                        QSOrderDetailGoodsDataSubModel *subItem = [subFoodList objectAtIndex:j];
+                        if (subItem) {
+                            QSLabel *subfoodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(foodNameLabel.frame.origin.x+foodNameLabel.frame.size.width+4, 44+i*45+2+j*20, (SIZE_DEVICE_WIDTH*0.7-foodNameStrWidth), 20)];
+                            [subfoodNameLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
+                            [subfoodNameLabel setText:subItem.goodsName];
+                            [subfoodNameLabel setBackgroundColor:[UIColor clearColor]];
+                            [subfoodNameLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
+                            [subfoodNameLabel setTag:countTag++];
+                            [_hadOrderFrameView addSubview:subfoodNameLabel];
+                        }
+                    }
                 }
+                
+                QSLabel *foodPerPriceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 44+i*45, SIZE_DEVICE_WIDTH-24, 44)];
+                [foodPerPriceLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
+                [foodPerPriceLabel setText:[NSString stringWithFormat:@"￥%@",perPriceStr]];
+                [foodPerPriceLabel setTextAlignment:NSTextAlignmentRight];
+                [foodPerPriceLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
+                [foodPerPriceLabel setTag:countTag++];
+                [_hadOrderFrameView addSubview:foodPerPriceLabel];
+                
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(12, foodNameLabel.frame.origin.y+foodNameLabel.frame.size.height, SIZE_DEVICE_WIDTH-24, 1)];
+                [lineView setBackgroundColor:ORDER_DETAIL_TOP_VIEW_LINE_COLOR];
+                [lineView setTag:countTag++];
+                [_hadOrderFrameView addSubview:lineView];
+                
+                [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, lineView.frame.origin.y+lineView.frame.size.height)];
             }
-            
-            QSLabel *foodPerPriceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 44+i*45, SIZE_DEVICE_WIDTH-24, 44)];
-            [foodPerPriceLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-            [foodPerPriceLabel setText:[NSString stringWithFormat:@"￥%@",perPriceStr]];
-            [foodPerPriceLabel setTextAlignment:NSTextAlignmentRight];
-            [foodPerPriceLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
-            [foodPerPriceLabel setTag:countTag++];
-            [_hadOrderFrameView addSubview:foodPerPriceLabel];
-            
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(12, foodNameLabel.frame.origin.y+foodNameLabel.frame.size.height, SIZE_DEVICE_WIDTH-24, 1)];
-            [lineView setBackgroundColor:ORDER_DETAIL_TOP_VIEW_LINE_COLOR];
-            [lineView setTag:countTag++];
-            [_hadOrderFrameView addSubview:lineView];
-            
-            [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, lineView.frame.origin.y+lineView.frame.size.height)];
         }
     }
     
@@ -492,12 +556,50 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self getDetailData];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+- (void)getDetailData
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    //请求所需参数
+    NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
+
+    //用户信息模型
+    QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+    //user_id 用户id 必填
+    [tempParams setObject:userModel.userID forKey:@"user_id"];
+    //id  订单id
+    [tempParams setObject:@"" forKey:@"id"];
+    if (orderData) {
+        [tempParams setObject:orderData.order_id forKey:@"id"];
+    }
+    
+    [QSRequestManager requestDataWithType:rRequestTypeOrderDetailData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        
+        //成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            QSOrderDetailReturnData *tempReturnModel = resultData;
+            orderData = tempReturnModel.orderDetailData;
+            NSLog(@"tempReturnModel %@",orderData);
+            
+            [self updateView];
+        }
+        
+        //隐藏HUD
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+}
+
 
 /*
 #pragma mark - Navigation

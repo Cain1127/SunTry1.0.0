@@ -31,8 +31,7 @@
     RKObjectMapping *shared_mapping = [super objectMapping];
     
     ///mapping字典
-    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"records" toKeyPath:@"orderList" withMapping:[QSOrderListItemDataModel objectMapping]]];
-//    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"total_num" toKeyPath:@"total_num" withMapping:[QSOrderListItemDataModel objectMapping]]];
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"records" toKeyPath:@"orderList" withMapping:[QSOrderDetailDataModel objectMapping]]];
     
     return shared_mapping;
     

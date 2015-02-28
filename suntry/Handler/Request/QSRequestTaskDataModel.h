@@ -52,6 +52,7 @@ typedef enum
     
     rRequestTypePayJudgeBalanceData = 1143,  //储值卡支付
     rRequestTypeOrderListData = 1021,        //订单列表
+    rRequestTypeOrderDetailData = 1122,      //订单详情
     
     rRequestTypeMaxLimited = 99999          //!<最大值限制
     
