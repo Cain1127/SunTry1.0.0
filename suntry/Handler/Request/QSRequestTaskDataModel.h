@@ -46,11 +46,14 @@ typedef enum
     
     rRequestTypeUserSendAddressList = 1100, //!<当前用户的送餐地址列表
     rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址
+    rRequestTypeDelSendAddress = 1055,      //!<删除送餐地址
+    
     rRequestTypeUserCouponList = 1103,      //!<个人优惠券列表
     rRequestTypeUserGetCoupon = 1104,       //!<根据key获取优惠券
     rRequestTypeUserForgetPassword = 1105,  //!<忘记密码
     
-    rRequestTypePayJudgeBalanceData = 1143, //储值卡支付
+    rRequestTypePayJudgeBalanceData = 1143,  //储值卡支付
+    rRequestTypeOrderListData = 1021,        //订单列表
     
     rRequestTypeMaxLimited = 99999          //!<最大值限制
     

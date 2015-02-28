@@ -14,6 +14,9 @@
 #import "QSOrderListTableViewCell.h"
 #import "QSOrderDetailViewController.h"
 #import "QSUserInfoDataModel.h"
+#import "QSRequestManager.h"
+#import "MBProgressHUD.h"
+#import "QSOrderListReturnData.h"
 
 #import "MJRefresh.h"
 
@@ -26,6 +29,7 @@
 @property (nonatomic, strong) UIView *nodataView;                   //!<暂无记录view
 @property(nonatomic,strong) UITableView     *orderListTableView;    //!<订单列表
 @property(nonatomic,strong) NSMutableArray  *orderList;             //!<订单列表数据源
+@property (nonatomic, assign) NSInteger pageNum;
 
 @end
 
@@ -37,6 +41,7 @@
     [super loadView];
     
     self.orderList = [NSMutableArray arrayWithCapacity:0];
+    _pageNum = 1;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -81,7 +86,7 @@
     
     //有数据显示
     [_nodataView setHidden:YES];
-    self.orderListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 24, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-24)];
+    self.orderListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-49)];
     [self.orderListTableView setDelegate:self];
     [self.orderListTableView setDataSource:self];
     [self.orderListTableView setShowsVerticalScrollIndicator:NO];
@@ -92,7 +97,7 @@
     [self.orderListTableView addHeaderWithTarget:self action:@selector(getUserOrderHeaderList)];
     [self.orderListTableView addFooterWithTarget:self action:@selector(getUserOrderFooterList)];
     
-    ///一开始就进行网络请求
+    ///开始就请求数据
     [self.orderListTableView headerBeginRefreshing];
     
 }
@@ -137,7 +142,8 @@
         [cell showTopLine:NO];
         
     }
-    [cell updateFoodData:nil];
+    
+    [cell updateFoodData:[_orderList objectAtIndex:indexPath.row]];
     
     return cell;
     
@@ -146,9 +152,14 @@
 #pragma mark - 点击某一个订单后进入订单详情
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    id data = [_orderList objectAtIndex:indexPath.row];
+
     QSOrderDetailViewController *odvc = [[QSOrderDetailViewController alloc] init];
+    id data = [_orderList objectAtIndex:indexPath.row];
+    if (data && [data isKindOfClass:[QSOrderListItemDataModel class]]) {
+        
+        [odvc setOrderData:data];
+        
+    }
     [odvc setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:odvc animated:YES];
     
@@ -156,26 +167,117 @@
 
 - (void)getUserOrderHeaderList
 {
+    
     //请求所需参数
     NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
     /*  user_id 用户id 必填
         search_key 查找的关键字
         page_num 每页的数量 默认 10 
         now_page 当前第几页 默认 1 
+        order 传 t.add_time desc
+        except 不读取到某些类型的,5是储蓄卡购买支付的类型，
         status 状态，对应的何种类型的订单
+     
     */
     
-    //用户信息模型
-    QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
-    //user_id 用户id 必填
-    [tempParams setObject:userModel.userID forKey:@"user_id"];
+    //search_key 查找的关键字
+    [tempParams setObject:@"" forKey:@"search_key"];
+    //page_num 每页的数量 默认 10
+    [tempParams setObject:@"20" forKey:@"page_num"];
+    //now_page 当前第几页 默认 1
+    NSString *pageNumStr = @"1";
+    [tempParams setObject:pageNumStr forKey:@"now_page"];
+    //status 状态，对应的何种类型的订单
+    [tempParams setObject:@"" forKey:@"status"];
+    //order 传 t.add_time desc
+    [tempParams setObject:@"t.add_time desc" forKey:@"order"];
+    //except 不读取到某些类型的,5是储蓄卡购买支付的类型，
+    [tempParams setObject:@"" forKey:@"except"];
     
+    [QSRequestManager requestDataWithType:rRequestTypeOrderListData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///更新页码
+        _pageNum = 1;
+        
+        //成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            QSOrderListReturnData *tempReturnModel = resultData;
+            
+            ///判断是否有数据
+            self.orderList = [NSMutableArray arrayWithArray:tempReturnModel.orderListData.orderList];
+            
+            if ([self.orderList count] <= 0) {
+                
+                ///显示无订单内容
+                _nodataView.hidden = NO;
+                _orderListTableView.hidden = YES;
+                
+            } else {
+                
+                [_orderListTableView reloadData];
+                
+            }
+            
+        } else {
+        
+            ///显示无订单内容
+            _nodataView.hidden = NO;
+            _orderListTableView.hidden = YES;
+        
+        }
+        
+    }];
+
 }
 
 - (void)getUserOrderFooterList
 {
 
+    //请求所需参数
+    NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
+    /*  user_id 用户id 必填
+     search_key 查找的关键字
+     page_num 每页的数量 默认 10
+     now_page 当前第几页 默认 1
+     order 传 t.add_time desc
+     except 不读取到某些类型的,5是储蓄卡购买支付的类型，
+     status 状态，对应的何种类型的订单
+     
+     */
     
+    //search_key 查找的关键字
+    [tempParams setObject:@"" forKey:@"search_key"];
+    //page_num 每页的数量 默认 10
+    [tempParams setObject:@"20" forKey:@"page_num"];
+    //now_page 当前第几页 默认 1
+    NSString *pageNumStr = [NSString stringWithFormat:@"%d",(int)_pageNum + 1];
+    [tempParams setObject:pageNumStr forKey:@"now_page"];
+    //status 状态，对应的何种类型的订单
+    [tempParams setObject:@"" forKey:@"status"];
+    //order 传 t.add_time desc
+    [tempParams setObject:@"t.add_time desc" forKey:@"order"];
+    //except 不读取到某些类型的,5是储蓄卡购买支付的类型，
+    [tempParams setObject:@"" forKey:@"except"];
+    
+    [QSRequestManager requestDataWithType:rRequestTypeOrderListData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        //成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///更新页码
+            _pageNum = _pageNum + 1;
+            
+            QSOrderListReturnData *tempReturnModel = resultData;
+            
+            NSLog(@"tempReturnModel:%@",tempReturnModel.orderListData.orderList);
+            self.orderList = [NSMutableArray arrayWithArray:tempReturnModel.orderListData.orderList];
+            
+            [_orderListTableView reloadData];
+            
+        }
+        
+    }];
 
 }
 

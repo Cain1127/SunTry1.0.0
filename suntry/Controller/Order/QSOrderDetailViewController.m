@@ -51,6 +51,7 @@
 @end
 
 @implementation QSOrderDetailViewController
+@synthesize orderData;
 
 - (void)loadView
 {
@@ -89,7 +90,9 @@
     self.orderNumLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, 12, SIZE_DEVICE_WIDTH, 20)];
     [self.orderNumLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [self.orderNumLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE ]];
-    [self.orderNumLabel setText:@"订单号：123243253456"];
+    if (orderData) {
+        [self.orderNumLabel setText:[NSString stringWithFormat:@"订单号:%@",orderData.order_num]];
+    }
     [self.orderNumLabel setBackgroundColor:[UIColor clearColor]];
     [self.orderNumLabel setTextAlignment:NSTextAlignmentCenter];
     [topView addSubview:self.orderNumLabel];
@@ -101,7 +104,9 @@
     self.shippingStateLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, self.orderQRCodeImgView.frame.origin.y+self.orderQRCodeImgView.frame.size.height+4, SIZE_DEVICE_WIDTH, 20)];
     [self.shippingStateLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [self.shippingStateLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE ]];
-    [self.shippingStateLabel setText:@"未配送（未配送无法查看车车在哪里儿）"];
+    if (orderData) {
+        [self.shippingStateLabel setText:@"未配送（未配送无法查看车车在哪里儿）"];
+    }
     [self.shippingStateLabel setBackgroundColor:[UIColor clearColor]];
     [self.shippingStateLabel setTextAlignment:NSTextAlignmentCenter];
     [topView addSubview:self.shippingStateLabel];
@@ -161,7 +166,9 @@
     self.userNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(userNameTipLabel.frame.origin.x+70, userNameTipLabel.frame.origin.y, userNameTipLabel.frame.size.width-70, userNameTipLabel.frame.size.height)];
     
     [self.userNameLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-//    [self.userNameLabel setText:@"李先生"];
+    if (orderData) {
+        [self.userNameLabel setText:orderData.order_name];
+    }
     [self.userNameLabel setTextAlignment:NSTextAlignmentRight];
     [self.userNameLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [_shippingInfoFrameView addSubview:self.userNameLabel];
@@ -178,7 +185,9 @@
     
     self.phoneLabel = [[QSLabel alloc] initWithFrame:CGRectMake(phoneTipLabel.frame.origin.x+70, phoneTipLabel.frame.origin.y, phoneTipLabel.frame.size.width-70, phoneTipLabel.frame.size.height)];
     [self.phoneLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-//    [self.phoneLabel setText:@"13812345678"];
+    if (orderData) {
+        [self.phoneLabel setText:orderData.order_phone];
+    }
     [self.phoneLabel setTextAlignment:NSTextAlignmentRight];
     [self.phoneLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [_shippingInfoFrameView addSubview:self.phoneLabel];
@@ -195,7 +204,9 @@
     
     self.addressLabel = [[QSLabel alloc] initWithFrame:CGRectMake(addressTipLabel.frame.origin.x+70, addressTipLabel.frame.origin.y, addressTipLabel.frame.size.width-70, addressTipLabel.frame.size.height)];
     [self.addressLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-//    [self.addressLabel setText:@"广州市天河区阿斯顿发送到法"];
+    if (orderData) {
+        [self.addressLabel setText:orderData.order_address];
+    }
     [self.addressLabel setTextAlignment:NSTextAlignmentRight];
     [self.addressLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [_shippingInfoFrameView addSubview:self.addressLabel];
@@ -221,6 +232,9 @@
     self.remarkLabel = [[QSLabel alloc] initWithFrame:CGRectMake(self.remarkTipLabel.frame.origin.x+50, self.remarkTipLabel.frame.origin.y, self.remarkTipLabel.frame.size.width-50, self.remarkTipLabel.frame.size.height)];
     [self.remarkLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
 //    [self.remarkLabel setText:@"无备注信息"];
+    if (orderData) {
+        [self.remarkLabel setText:orderData.order_desc];
+    }
     [self.remarkLabel setTextAlignment:NSTextAlignmentRight];
     [self.remarkLabel setNumberOfLines:2];
     [self.remarkLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
@@ -247,7 +261,6 @@
     
     self.payStateLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 0, SIZE_DEVICE_WIDTH-24, 44)];
     [self.payStateLabel setFont:[UIFont boldSystemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-//    [self.payStateLabel setText:@"（未付款）"];
     [self.payStateLabel setTextAlignment:NSTextAlignmentRight];
     [self.payStateLabel setTextColor:ORDER_DETAIL_TOP_VIEW_NUMBER_TEXT_COLOR];
     [_payInfoFrameView addSubview:self.payStateLabel];
@@ -264,7 +277,25 @@
     
     self.paymentLabel = [[QSLabel alloc] initWithFrame:paymentTipLabel.frame];
     [self.paymentLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-//    [self.paymentLabel setText:@"在线支付"];
+    if (orderData) {
+        NSString *paymentCode = orderData.order_payment;
+        //3，余额支付；1在线支付，2餐到付款 ,5 储蓄卡购买的支付类型
+        NSString *paymentStr = @"";
+        if ([paymentCode isEqualToString:@"1"])
+        {
+            paymentStr = @"在线支付";
+        }else if ([paymentCode isEqualToString:@"2"])
+        {
+            paymentStr = @"餐到付款";
+        }else if ([paymentCode isEqualToString:@"3"])
+        {
+            paymentStr = @"余额支付";
+        }else if ([paymentCode isEqualToString:@"5"])
+        {
+            paymentStr = @"储蓄卡购买";
+        }
+        [self.paymentLabel setText:paymentStr];
+    }
     [self.paymentLabel setTextAlignment:NSTextAlignmentRight];
     [self.paymentLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [_payInfoFrameView addSubview:self.paymentLabel];
@@ -318,9 +349,23 @@
     }];
     [_scrollView addSubview:self.payBt];
     
+    if (orderData) {
+        NSString *ispayCode = orderData.is_pay;
+        NSString *payStateStr = @"";
+        if ([ispayCode isEqualToString:@"0"])
+        {
+            payStateStr = @"未付款";
+            [self.payBt setHidden:NO];
+        }else if ([ispayCode isEqualToString:@"1"])
+        {
+            payStateStr = @"已付款";
+            [self.payBt setHidden:YES];
+        }
+        [self.payStateLabel setText:payStateStr];
+    }
     
-    [self updateView];
     
+//    [self updateView];
     
 }
 
