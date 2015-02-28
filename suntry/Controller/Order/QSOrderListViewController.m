@@ -18,28 +18,26 @@
 #import "MBProgressHUD.h"
 #import "QSOrderListReturnData.h"
 
+#import "MJRefresh.h"
+
 #define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE     17.
 
 @interface QSOrderListViewController ()
 
-@property (nonatomic, strong) UIView *nodataView;
-@property (nonatomic, strong) UITableView     *orderListTableView;
-@property (nonatomic, strong) NSMutableArray  *orderList;
-@property (nonatomic, assign) NSInteger pageNum;
-
+@property (nonatomic, strong) UIView *nodataView;                   //!<暂无记录view
+@property(nonatomic,strong) UITableView     *orderListTableView;    //!<订单列表
+@property(nonatomic,strong) QSOrderListReturnData  *orderListData;  //!<订单列表数据源
 
 @end
 
 @implementation QSOrderListViewController
 
-
+#pragma mark - UI搭建
 - (void)loadView{
     
     [super loadView];
-    _pageNum = 1;
-    self.orderList = [NSMutableArray arrayWithObjects:@"",@"",@"", nil];//[NSMutableArray arrayWithCapacity:0];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -91,32 +89,36 @@
     [self.orderListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.orderListTableView];
     
+    ///添加刷新事件
+    [self.orderListTableView addHeaderWithTarget:self action:@selector(getUserOrderHeaderList)];
+    [self.orderListTableView addFooterWithTarget:self action:@selector(getUserOrderFooterList)];
+    
+    ///开始就请求数据
+    [self.orderListTableView headerBeginRefreshing];
+    
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-//    [_nodataView setHidden:YES];
-    
-    [self getMyOrderList];
-}
-
+#pragma mark - 返回当前有多少个订单
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger count = 0;
-    count = [self.orderList count];
-    return count;
+    
+    return [self.orderListData.orderListData.orderList count];
+    
 }
 
+#pragma mark - 返回每一项cell的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     CGFloat height = ORDER_LIST_CELL_HEIGHT;
     return height;
+    
 }
 
+#pragma mark - 返回每一个订单的信息cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *foodTypeTableViewIdentifier = @"FoodTypeTableCell";
     QSOrderListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:foodTypeTableViewIdentifier];
     
@@ -126,36 +128,39 @@
         
     }
     if (indexPath.row==0) {
+        
         [cell showTopLine:YES];
-    }else{
+        
+    } else {
+        
         [cell showTopLine:NO];
+        
     }
     
-    [cell updateFoodData:[_orderList objectAtIndex:indexPath.row]];
+    [cell updateFoodData:[self.orderListData.orderListData.orderList objectAtIndex:indexPath.row]];
     
     return cell;
+    
 }
 
+#pragma mark - 点击某一个订单后进入订单详情
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     QSOrderDetailViewController *odvc = [[QSOrderDetailViewController alloc] init];
-    id data = [_orderList objectAtIndex:indexPath.row];
+    id data = [self.orderListData.orderListData.orderList objectAtIndex:indexPath.row];
     if (data && [data isKindOfClass:[QSOrderDetailDataModel class]]) {
         [odvc setOrderData:data];
+        
     }
     [odvc setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:odvc animated:YES];
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)getMyOrderList
+- (void)getUserOrderHeaderList
 {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     //请求所需参数
     NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
     /*  user_id 用户id 必填
@@ -168,16 +173,12 @@
      
     */
     
-    //用户信息模型
-    QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
-    //user_id 用户id 必填
-    [tempParams setObject:userModel.userID forKey:@"user_id"];
     //search_key 查找的关键字
     [tempParams setObject:@"" forKey:@"search_key"];
     //page_num 每页的数量 默认 10
     [tempParams setObject:@"20" forKey:@"page_num"];
     //now_page 当前第几页 默认 1
-    NSString *pageNumStr = @"1";//[NSString stringWithFormat:@"%ld",(long)_pageNum++]
+    NSString *pageNumStr = @"1";
     [tempParams setObject:pageNumStr forKey:@"now_page"];
     //status 状态，对应的何种类型的订单
     [tempParams setObject:@"" forKey:@"status"];
@@ -188,32 +189,133 @@
     
     [QSRequestManager requestDataWithType:rRequestTypeOrderListData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
+        //成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///判断是否有数据
+            self.orderListData = resultData;
+            
+            if ([self.orderListData.orderListData.orderList count] <= 0) {
+                
+                ///结束刷新动画
+                [self.orderListTableView footerEndRefreshing];
+                [self.orderListTableView headerEndRefreshing];
+                
+                ///显示无订单内容
+                _nodataView.hidden = NO;
+                _orderListTableView.hidden = YES;
+                
+            } else {
+                
+                _nodataView.hidden = YES;
+                _orderListTableView.hidden = NO;
+                [_orderListTableView reloadData];
+                
+                ///结束刷新动画
+                [self.orderListTableView footerEndRefreshing];
+                [self.orderListTableView headerEndRefreshing];
+                
+            }
+            
+        } else {
+        
+            ///显示无订单内容
+            _nodataView.hidden = NO;
+            _orderListTableView.hidden = YES;
+            
+            ///结束刷新动画
+            [self.orderListTableView footerEndRefreshing];
+            [self.orderListTableView headerEndRefreshing];
+        
+        }
+        
+    }];
+
+}
+
+- (void)getUserOrderFooterList
+{
+    
+    ///判断是否是最大页
+    if (self.orderListData.orderListData.total_page == self.orderListData.orderListData.per_page) {
+        
+        [self.orderListTableView footerEndRefreshing];
+        [self.orderListTableView headerEndRefreshing];
+        return;
+        
+    }
+
+    //请求所需参数
+    NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
+    /*  user_id 用户id 必填
+     search_key 查找的关键字
+     page_num 每页的数量 默认 10
+     now_page 当前第几页 默认 1
+     order 传 t.add_time desc
+     except 不读取到某些类型的,5是储蓄卡购买支付的类型，
+     status 状态，对应的何种类型的订单
+     
+     */
+    
+    //search_key 查找的关键字
+    [tempParams setObject:@"" forKey:@"search_key"];
+    //page_num 每页的数量 默认 10
+    [tempParams setObject:@"20" forKey:@"page_num"];
+    //now_page 当前第几页 默认 1
+    NSString *pageNumStr = self.orderListData.orderListData.next_page;
+    [tempParams setObject:pageNumStr forKey:@"now_page"];
+    //status 状态，对应的何种类型的订单
+    [tempParams setObject:@"" forKey:@"status"];
+    //order 传 t.add_time desc
+    [tempParams setObject:@"t.add_time desc" forKey:@"order"];
+    //except 不读取到某些类型的,5是储蓄卡购买支付的类型，
+    [tempParams setObject:@"" forKey:@"except"];
+    
+    [QSRequestManager requestDataWithType:rRequestTypeOrderListData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         //成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            QSOrderListReturnData *tempReturnModel = resultData;
+            ///模型转换
+            QSOrderListReturnData *tempModel = resultData;
             
-            NSLog(@"tempReturnModel:%@",tempReturnModel.orderListData.orderList);
-            self.orderList = [NSMutableArray arrayWithArray:tempReturnModel.orderListData.orderList];
+            ///判断是否有更多信息
+            if ([tempModel.orderListData.orderList count] > 0) {
+                
+                ///原来的数据源
+                NSMutableArray *localArray = [[NSMutableArray alloc] initWithArray:self.orderListData.orderListData.orderList];
+                
+                ///重置数据源
+                self.orderListData = resultData;
+                
+                ///重置列表数据
+                [localArray addObjectsFromArray:tempModel.orderListData.orderList];
+                
+                ///判断是否有更新
+                [_orderListTableView reloadData];
+                
+                ///结束刷新动画
+                [self.orderListTableView footerEndRefreshing];
+                [self.orderListTableView headerEndRefreshing];
+                
+            } else {
+                
+                ///结束刷新动画
+                [self.orderListTableView footerEndRefreshing];
+                [self.orderListTableView headerEndRefreshing];
+                
+            }
             
-            [_orderListTableView reloadData];
-            
+        } else {
+        
+            ///结束刷新动画
+            [self.orderListTableView footerEndRefreshing];
+            [self.orderListTableView headerEndRefreshing];
+        
         }
         
-        //隐藏HUD
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
-}
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
-*/
 
 @end

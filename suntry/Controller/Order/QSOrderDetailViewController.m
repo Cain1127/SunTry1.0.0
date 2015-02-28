@@ -18,6 +18,8 @@
 #import "QSOrderDetailReturnData.h"
 #import "QSOrderDetailDataModel.h"
 
+#import "QRCodeGenerator.h"
+
 #define ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE              140.
 #define ORDER_DETAIL_TOP_VIEW_LINE_COLOR                [UIColor colorWithRed:206/255. green:208/255. blue:210/255. alpha:1]
 #define ORDER_DETAIL_TOP_VIEW_BG_COLOR                  [UIColor colorWithRed:0.931 green:0.936 blue:0.936 alpha:1.000]
@@ -60,6 +62,7 @@
 
 - (void)loadView
 {
+    
     [super loadView];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -76,7 +79,9 @@
     [backButtonStyle setImagesHighted:IMAGE_NAVIGATIONBAR_MEINFO_HIGHLIGHTED];
     
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
-        [self.navigationController popViewControllerAnimated:YES];;
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        
     }];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -95,21 +100,27 @@
     [self.orderNumLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [self.orderNumLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE ]];
     if (orderData) {
+        
         [self.orderNumLabel setText:[NSString stringWithFormat:@"订单号:%@",orderData.order_num]];
+        
     }
     [self.orderNumLabel setBackgroundColor:[UIColor clearColor]];
     [self.orderNumLabel setTextAlignment:NSTextAlignmentCenter];
     [topView addSubview:self.orderNumLabel];
     
+    ///二维码
     self.orderQRCodeImgView = [[UIImageView alloc] initWithFrame:CGRectMake((SIZE_DEVICE_WIDTH-ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE)/2, self.orderNumLabel.frame.origin.y+self.orderNumLabel.frame.size.height+4, ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE, ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE)];
-    [self.orderQRCodeImgView setBackgroundColor:[UIColor clearColor]];
+    UIImage *image = [QRCodeGenerator qrImageForString:self.orderData.order_num imageSize:120];
+    self.orderQRCodeImgView.image = image;
     [topView addSubview:self.orderQRCodeImgView];
     
     self.shippingStateLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, self.orderQRCodeImgView.frame.origin.y+self.orderQRCodeImgView.frame.size.height+4, SIZE_DEVICE_WIDTH, 20)];
     [self.shippingStateLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [self.shippingStateLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE ]];
     if (orderData) {
+        
         [self.shippingStateLabel setText:@"未配送（未配送无法查看车车在哪里儿）"];
+        
     }
     [self.shippingStateLabel setBackgroundColor:[UIColor clearColor]];
     [self.shippingStateLabel setTextAlignment:NSTextAlignmentCenter];
@@ -129,7 +140,6 @@
     
     self.hadOrderTotalCountLabel = [[QSLabel alloc] initWithFrame:hadOrderTip.frame];
     [self.hadOrderTotalCountLabel setFont:[UIFont boldSystemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-//    [self.hadOrderTotalCountLabel setText:@"总共0份"];
     [self.hadOrderTotalCountLabel setTextAlignment:NSTextAlignmentRight];
     [self.hadOrderTotalCountLabel setTextColor:[UIColor blackColor]];
     [_hadOrderFrameView addSubview:self.hadOrderTotalCountLabel];
@@ -171,7 +181,9 @@
     
     [self.userNameLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
     if (orderData) {
+        
         [self.userNameLabel setText:orderData.order_name];
+        
     }
     [self.userNameLabel setTextAlignment:NSTextAlignmentRight];
     [self.userNameLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
@@ -217,7 +229,6 @@
     
     self.companyLabel = [[QSLabel alloc] initWithFrame:CGRectMake(self.addressLabel.frame.origin.x, self.addressLabel.frame.origin.y+18, self.addressLabel.frame.size.width, self.addressLabel.frame.size.height)];
     [self.companyLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-//    [self.companyLabel setText:@"七升"];
     [self.companyLabel setTextAlignment:NSTextAlignmentRight];
     [self.companyLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [_shippingInfoFrameView addSubview:self.companyLabel];
@@ -235,7 +246,6 @@
     
     self.remarkLabel = [[QSLabel alloc] initWithFrame:CGRectMake(self.remarkTipLabel.frame.origin.x+50, self.remarkTipLabel.frame.origin.y, self.remarkTipLabel.frame.size.width-50, self.remarkTipLabel.frame.size.height)];
     [self.remarkLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE]];
-//    [self.remarkLabel setText:@"无备注信息"];
     if (orderData) {
         [self.remarkLabel setText:orderData.order_desc];
     }

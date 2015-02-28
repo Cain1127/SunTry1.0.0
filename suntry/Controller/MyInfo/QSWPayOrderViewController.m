@@ -109,11 +109,15 @@
     userBanlaceLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:userBanlaceLabel];
     
-    UILabel *banlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH - 60.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 5.0f, 0.0f, 60.0f, 44.0f)];
-    banlaceLabel.text=@"￥0.0";
+    UILabel *banlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH - 100.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 5.0f, 0.0f, 100.0f, 44.0f)];
+    //banlaceLabel.text=@"￥0.0";
     banlaceLabel.textAlignment = NSTextAlignmentRight;
     banlaceLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:banlaceLabel];
+    
+    ///显示当前用户的余额
+    QSUserInfoDataModel *userModel = [QSUserManager getCurrentUserData];
+    banlaceLabel.text = [NSString stringWithFormat:@"￥%@",userModel.balance];
     
     ///分隔线
     UILabel *priceSepLabel = [[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, userBanlaceLabel.frame.origin.y + userBanlaceLabel.frame.size.height - 0.25f, SIZE_DEFAULT_MAX_WIDTH, 0.25f)];

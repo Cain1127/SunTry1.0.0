@@ -8,6 +8,7 @@
 
 #import "QSHeaderDataModel.h"
 #import "QSOrderDetailDataModel.h"
+#import "QSMSGModel.h"
 
 @class QSOrderListData;
 @interface QSOrderListReturnData : QSHeaderDataModel
@@ -16,7 +17,7 @@
 
 @end
 
-@interface QSOrderListData : QSHeaderDataModel
+@interface QSOrderListData : QSMSGModel
 
 @property (nonatomic,retain) NSArray    *orderList; //!<订单列表数据
 

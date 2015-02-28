@@ -32,7 +32,6 @@
     
     ///mapping字典
     [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"records" toKeyPath:@"orderList" withMapping:[QSOrderDetailDataModel objectMapping]]];
-    
     return shared_mapping;
     
 }

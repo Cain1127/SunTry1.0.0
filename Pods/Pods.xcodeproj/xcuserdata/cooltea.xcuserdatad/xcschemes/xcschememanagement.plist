@@ -39,6 +39,16 @@
 			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
+		<key>Pods-ZBarSDK.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
+		<key>Pods-libqrencode.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -47,7 +57,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>053AF164E5684AA0B736D9C3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1105E6E1811D6B9DF0CB11C6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>25A2B4554E0260B3655E8547</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -57,7 +77,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>33610DCCD42D89B18A8A92F1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>383DBFA08EC925E66C00234B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3A1FF9272E5FF8D35B85FBA8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3C9C688929ED767CE84F40AD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -73,6 +108,16 @@
 			<true/>
 		</dict>
 		<key>5EA5D1634ACBFC41DA2B478E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7B432EFEE1CCF165CC33ECFF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7FE161A69C6F7BDA167D1130</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -117,7 +162,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>E17EC0501144B808201985AA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>E7FA56378FB995F883B303B3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E86D41D6A68EEFF416BC3F48</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EFCDAEC247BEC2C7383607E6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
