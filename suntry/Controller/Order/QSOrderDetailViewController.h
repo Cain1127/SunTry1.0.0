@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSOrderListItemDataModel.h"
 
 @interface QSOrderDetailViewController : UIViewController
+
+@property (nonatomic, strong) QSOrderListItemDataModel *orderData;
 
 @end

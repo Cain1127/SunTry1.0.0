@@ -14,6 +14,9 @@
 #import "QSOrderListTableViewCell.h"
 #import "QSOrderDetailViewController.h"
 #import "QSUserInfoDataModel.h"
+#import "QSRequestManager.h"
+#import "MBProgressHUD.h"
+#import "QSOrderListReturnData.h"
 
 #define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -22,8 +25,10 @@
 @interface QSOrderListViewController ()
 
 @property (nonatomic, strong) UIView *nodataView;
-@property(nonatomic,strong) UITableView     *orderListTableView;
-@property(nonatomic,strong) NSMutableArray  *orderList;
+@property (nonatomic, strong) UITableView     *orderListTableView;
+@property (nonatomic, strong) NSMutableArray  *orderList;
+@property (nonatomic, assign) NSInteger pageNum;
+
 
 @end
 
@@ -33,7 +38,7 @@
 - (void)loadView{
     
     [super loadView];
-    
+    _pageNum = 1;
     self.orderList = [NSMutableArray arrayWithObjects:@"",@"",@"", nil];//[NSMutableArray arrayWithCapacity:0];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -79,7 +84,7 @@
     
     //有数据显示
     [_nodataView setHidden:YES];
-    self.orderListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 24, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-24)];
+    self.orderListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-49)];
     [self.orderListTableView setDelegate:self];
     [self.orderListTableView setDataSource:self];
     [self.orderListTableView setShowsVerticalScrollIndicator:NO];
@@ -94,7 +99,7 @@
     
 //    [_nodataView setHidden:YES];
     
-    
+    [self getMyOrderList];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -125,15 +130,19 @@
     }else{
         [cell showTopLine:NO];
     }
-    [cell updateFoodData:nil];
+    
+    [cell updateFoodData:[_orderList objectAtIndex:indexPath.row]];
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id data = [_orderList objectAtIndex:indexPath.row];
     QSOrderDetailViewController *odvc = [[QSOrderDetailViewController alloc] init];
+    id data = [_orderList objectAtIndex:indexPath.row];
+    if (data && [data isKindOfClass:[QSOrderListItemDataModel class]]) {
+        [odvc setOrderData:data];
+    }
     [odvc setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:odvc animated:YES];
     
@@ -146,21 +155,55 @@
 
 - (void)getMyOrderList
 {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     //请求所需参数
     NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
     /*  user_id 用户id 必填
         search_key 查找的关键字
         page_num 每页的数量 默认 10 
         now_page 当前第几页 默认 1 
+        order 传 t.add_time desc
+        except 不读取到某些类型的,5是储蓄卡购买支付的类型，
         status 状态，对应的何种类型的订单
+     
     */
     
     //用户信息模型
     QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
     //user_id 用户id 必填
     [tempParams setObject:userModel.userID forKey:@"user_id"];
+    //search_key 查找的关键字
+    [tempParams setObject:@"" forKey:@"search_key"];
+    //page_num 每页的数量 默认 10
+    [tempParams setObject:@"20" forKey:@"page_num"];
+    //now_page 当前第几页 默认 1
+    NSString *pageNumStr = @"1";//[NSString stringWithFormat:@"%ld",(long)_pageNum++]
+    [tempParams setObject:pageNumStr forKey:@"now_page"];
+    //status 状态，对应的何种类型的订单
+    [tempParams setObject:@"" forKey:@"status"];
+    //order 传 t.add_time desc
+    [tempParams setObject:@"t.add_time desc" forKey:@"order"];
+    //except 不读取到某些类型的,5是储蓄卡购买支付的类型，
+    [tempParams setObject:@"" forKey:@"except"];
     
-    
+    [QSRequestManager requestDataWithType:rRequestTypeOrderListData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        
+        //成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            QSOrderListReturnData *tempReturnModel = resultData;
+            
+            NSLog(@"tempReturnModel:%@",tempReturnModel.orderListData.orderList);
+            self.orderList = [NSMutableArray arrayWithArray:tempReturnModel.orderListData.orderList];
+            
+            [_orderListTableView reloadData];
+            
+        }
+        
+        //隐藏HUD
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
 }
 
 /*

@@ -112,7 +112,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     self.genderItem = [QSPickerViewItem itemWithTitle:@"性别" andDelegate:self];
-    [self.genderItem setValue:([self.addressModel.gender intValue] == 0) ? @"男" : @"女" forKey:@"rightTitle"];
+    [self.genderItem setValue:([self.addressModel.gender intValue] == 0) ? @"先生" : @"女士" forKey:@"rightTitle"];
     group.items = @[self.genderItem];
     
 }
@@ -192,7 +192,6 @@
     footterButton1.frame = CGRectMake(footterButton1X, footterButton1Y, footterButton1W, footterButton1H);
     
     // 背景和文字
-//    footterButton1.backgroundColor=[UIColor colorWithRed:247.0f / 255.0f green:243.0f / 255.0f blue:245.0f / 255.0f alpha:1.0f];
     footterButton1.backgroundColor=[UIColor brownColor];
     [footterButton1 setTitle:@"删除送餐地址" forState:UIControlStateNormal];
     footterButton1.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -232,8 +231,8 @@
     ///性别
     UITextField *genderField = (UITextField *)self.genderItem.property;
     UILabel *genderLabel = [genderField.rightView subviews][0];
-    NSString *genderString = genderLabel.text ? genderLabel.text : @"男";
-    NSString *gender = ([genderString isEqualToString:@"男"]) ? @"0" : @"1";
+    NSString *genderString = genderLabel.text ? genderLabel.text : @"先生";
+    NSString *gender = ([genderString isEqualToString:@"先生"]) ? @"0" : @"1";
     
     ///地址
     UITextField *addressField = (UITextField *)self.addressItem.property;

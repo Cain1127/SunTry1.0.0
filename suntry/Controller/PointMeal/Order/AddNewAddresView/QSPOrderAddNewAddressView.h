@@ -14,7 +14,7 @@
 
 @end
 
-@interface QSPOrderAddNewAddressView : UIView<UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface QSPOrderAddNewAddressView : UIView<UITextFieldDelegate>
 
 @property(nonatomic,assign) id<QSPOrderAddNewAddressViewDelegate> delegate;
 
