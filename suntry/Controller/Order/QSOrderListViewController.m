@@ -15,26 +15,28 @@
 #import "QSOrderDetailViewController.h"
 #import "QSUserInfoDataModel.h"
 
+#import "MJRefresh.h"
+
 #define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE     17.
 
 @interface QSOrderListViewController ()
 
-@property (nonatomic, strong) UIView *nodataView;
-@property(nonatomic,strong) UITableView     *orderListTableView;
-@property(nonatomic,strong) NSMutableArray  *orderList;
+@property (nonatomic, strong) UIView *nodataView;                   //!<暂无记录view
+@property(nonatomic,strong) UITableView     *orderListTableView;    //!<订单列表
+@property(nonatomic,strong) NSMutableArray  *orderList;             //!<订单列表数据源
 
 @end
 
 @implementation QSOrderListViewController
 
-
+#pragma mark - UI搭建
 - (void)loadView{
     
     [super loadView];
     
-    self.orderList = [NSMutableArray arrayWithObjects:@"",@"",@"", nil];//[NSMutableArray arrayWithCapacity:0];
+    self.orderList = [NSMutableArray arrayWithCapacity:0];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -86,32 +88,38 @@
     [self.orderListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.orderListTableView];
     
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    ///添加刷新事件
+    [self.orderListTableView addHeaderWithTarget:self action:@selector(getUserOrderHeaderList)];
+    [self.orderListTableView addFooterWithTarget:self action:@selector(getUserOrderFooterList)];
     
-//    [_nodataView setHidden:YES];
-    
+    ///一开始就进行网络请求
+    [self.orderListTableView headerBeginRefreshing];
     
 }
 
+#pragma mark - 返回当前有多少个订单
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    
     NSInteger count = 0;
     count = [self.orderList count];
     return count;
+    
 }
 
+#pragma mark - 返回每一项cell的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     CGFloat height = ORDER_LIST_CELL_HEIGHT;
     return height;
+    
 }
 
+#pragma mark - 返回每一个订单的信息cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *foodTypeTableViewIdentifier = @"FoodTypeTableCell";
     QSOrderListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:foodTypeTableViewIdentifier];
     
@@ -121,17 +129,24 @@
         
     }
     if (indexPath.row==0) {
+        
         [cell showTopLine:YES];
-    }else{
+        
+    } else {
+        
         [cell showTopLine:NO];
+        
     }
     [cell updateFoodData:nil];
     
     return cell;
+    
 }
 
+#pragma mark - 点击某一个订单后进入订单详情
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     id data = [_orderList objectAtIndex:indexPath.row];
     QSOrderDetailViewController *odvc = [[QSOrderDetailViewController alloc] init];
     [odvc setHidesBottomBarWhenPushed:YES];
@@ -139,12 +154,7 @@
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)getMyOrderList
+- (void)getUserOrderHeaderList
 {
     //请求所需参数
     NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
@@ -160,17 +170,13 @@
     //user_id 用户id 必填
     [tempParams setObject:userModel.userID forKey:@"user_id"];
     
+}
+
+- (void)getUserOrderFooterList
+{
+
     
-}
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
-*/
 
 @end
