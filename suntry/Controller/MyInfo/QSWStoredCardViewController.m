@@ -100,7 +100,8 @@
     _topView.frame=CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, topViewH);
     
     _balanceLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 150.0f, _topView.frame.size.height * 1.0f / 4.0f);
-    _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH - 60.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 60.0f, topViewH * 1.0f / 4.0f);
+    _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH - 100.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 100.0f, topViewH * 1.0f / 4.0f);
+    _balanceCountLabel.textAlignment=NSTextAlignmentRight ;
     
     _payPswLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _balanceLabel.frame.origin.y+_balanceLabel.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, topViewH * 1.0f / 4.0f);
     
@@ -171,7 +172,7 @@
     ///初始化collectionView
     self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _middleView.frame.origin.y + _middleView.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT - _middleView.frame.origin.y-_middleView.frame.size.height - 49.0f - 64.0f) collectionViewLayout:flowLayout];
     ///取消导航条
-    //self.collectionView.showsVerticalScrollIndicator=NO;
+    self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
@@ -258,7 +259,14 @@
         QSStoredCardDataModel *tempModel = self.storedCardDataSource[indexPath.row];
         
         cell.cTimeLabel.text=tempModel.createTime;
-        cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥%@",tempModel.amount];
+        if (_chargeRecord.selected){
+            
+             cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥+%@",tempModel.amount];
+        }
+        if (_consumeRecord.selected) {
+            cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥-%@",tempModel.amount];
+        }
+       
         //cell.cBalanceLabel.text=tempModel.remark;
         
         return cell;
@@ -340,7 +348,7 @@
             
             [self getChargeRecordList];
             QSUserInfoDataModel *userModel = [QSUserManager getCurrentUserData];
-            self.balanceCountLabel.text = [NSString stringWithFormat:@"￥%@",userModel.balance];
+            self.balanceCountLabel.text = [NSString stringWithFormat:@"￥ %@",userModel.balance];
             
         }
     
