@@ -18,7 +18,10 @@
 #import "QSOrderDetailReturnData.h"
 #import "QSOrderDetailDataModel.h"
 #import "NSString+Calculation.h"
-
+#import "QSPShoppingCarView.h"
+#import "QSPPayForOrderViewController.h"
+#import "QSAlixPayManager.h"
+#import "QSPOrderSubmitedStateViewController.h"
 #import "QRCodeGenerator.h"
 
 #define ORDER_DETAIL_TOP_VIEW_QR_CODE_SIZE              140.
@@ -119,9 +122,7 @@
     [self.shippingStateLabel setTextColor:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_COLOR];
     [self.shippingStateLabel setFont:[UIFont systemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE ]];
     if (orderData) {
-        
-//        [self.shippingStateLabel setText:@"未配送（未配送无法查看车车在哪儿）"];
-        
+        [self.shippingStateLabel setText:orderData.order_shippingState];
     }
     [self.shippingStateLabel setBackgroundColor:[UIColor clearColor]];
     [self.shippingStateLabel setTextAlignment:NSTextAlignmentCenter];
@@ -347,6 +348,7 @@
     self.payBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, _payInfoFrameView.frame.origin.y+_payInfoFrameView.frame.size.height+30, SIZE_DEVICE_WIDTH-12*2, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
         
         NSLog(@"payBt");
+        [self continueToPay];
         
     }];
     [_scrollView addSubview:self.payBt];
@@ -405,7 +407,7 @@
         }else if ([paymentCode isEqualToString:@"5"])
         {
             paymentStr = @"储蓄卡购买";
-            supportPayOnline = YES;
+//            supportPayOnline = YES;
         }
         [self.paymentLabel setText:paymentStr];
         
@@ -517,6 +519,7 @@
     [self.remarkLabel setText:@""];
     
     if (orderData) {
+        [self.shippingStateLabel setText:orderData.order_shippingState];
         [self.userNameLabel setText:orderData.order_name];
         [self.phoneLabel setText:orderData.order_phone];
         [self.addressLabel setText:orderData.order_address];
@@ -670,6 +673,163 @@
     }];
 }
 
+- (void)continueToPay
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    if (orderData) {
+
+        NSString *paymentCode = orderData.order_payment;
+        //3，余额支付；1在线支付，2餐到付款 ,5 储蓄卡购买的支付类型
+        NSString *paymentStr = @"";
+        if ([paymentCode isEqualToString:@"1"])
+        {
+            paymentStr = @"在线支付";//支付宝支付
+            
+            QSOrderInfoDataModel *orderInfoModel = [[QSOrderInfoDataModel alloc] init];
+            //订单标题
+            orderInfoModel.orderTitle = [NSString stringWithFormat:@"继续订单:%@",orderData.order_num];
+            //订单描述
+            orderInfoModel.des = [NSString stringWithFormat:@"继续支付订单:%@",orderData.order_num];
+            //支付金额
+            orderInfoModel.payPrice =  orderData.total_money;
+            
+            orderInfoModel.order_id = orderData.order_id;
+            orderInfoModel.bill_id = orderData.bill_id;
+            orderInfoModel.order_num = orderData.order_num;
+            orderInfoModel.bill_num = @"";//订单数据没这个字段。
+            
+            //回调
+            __block NSString *orderID = orderData.order_id;
+            __weak QSOrderDetailViewController *weakSelf = self;
+            orderInfoModel.alixpayCallBack = ^(NSString *payCode,NSString *payInfo){
+                
+                //处理支付宝的回调结果
+                [weakSelf checkPayResultWithCode:payCode andPayResultInfo:payInfo andOrderID:orderID];
+                
+            };
+            
+            //进入支付宝
+            [[QSAlixPayManager shareAlixPayManager] startAlixPay:orderInfoModel];
+            
+        }else if ([paymentCode isEqualToString:@"2"])
+        {
+            
+        }else if ([paymentCode isEqualToString:@"3"])
+        {
+            paymentStr = @"余额支付";//储值卡支付
+            
+            QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+            CGFloat totalPrice = [QSPShoppingCarData getTotalPrice];
+            CGFloat userBalance = userModel.balance.floatValue;
+            if (totalPrice > userBalance) {
+                
+                UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的储值卡余额不足以支付当前订单，请选择其他支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alertview show];
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                return;
+            }else{
+                
+                QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
+                QSOrderInfoDataModel *orderInfoModel = [[QSOrderInfoDataModel alloc] init];
+                orderInfoModel.order_id = orderData.order_id;
+                orderInfoModel.bill_id = orderData.bill_id;
+                orderInfoModel.order_num = orderData.order_num;
+                orderInfoModel.bill_num = @"";//订单数据没这个字段。
+                
+                [pfovc setOrderFormModel:orderInfoModel];
+                [pfovc setOrderTotalPrice:orderData.total_money];
+                [self.navigationController pushViewController:pfovc animated:YES];
+            }
+            
+        }
+    }
+}
+
+#pragma mark - 支付宝支付时的回调处理
+/**
+ *  @author         yangshengmeng, 15-02-26 14:02:38
+ *
+ *  @brief          支付宝支付时的回调处理
+ *
+ *  @param payCode  支付结果的编码
+ *  @param payInfo  支付结果说明
+ *
+ *  @since          1.0.0
+ */
+- (void)checkPayResultWithCode:(NSString *)payCode andPayResultInfo:(NSString *)payInfo andOrderID:(NSString *)orderID
+{
+    
+    ///将支付回调的代码，转换为整数代码
+    int resultCode = [payCode intValue];
+    
+    /**
+     *                  9000---订单支付成功
+     *                  8000---正在处理中
+     *                  4000---订单支付失败
+     *                  6001---用户中途取消
+     *                  6002---网络连接出错
+     */
+    
+    ///支付成功回调：进入支付成功页面
+    if (resultCode == 9000) {
+        
+        ///确认参数
+        NSDictionary *tempParams = @{@"id" : orderID,
+                                     @"type" : @"1",
+                                     @"is_pay" : @"1",
+                                     @"desc" : @"点餐下单支付确认"};
+        
+        ///回调服务端确认支付
+        [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///移聊HUD
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+            [ossVc setPaymentSate:YES];
+            [self.navigationController pushViewController:ossVc animated:YES];
+            
+        }];
+        
+        return;
+        
+    }
+    
+    ///支付回调：正在处理中
+    if (resultCode == 8000) {
+        
+        ///确认参数
+        NSDictionary *tempParams = @{@"id" : orderID,
+                                     @"type" : @"1",
+                                     @"is_pay" : @"0",
+                                     @"desc" : @"点餐下单支付确认"};
+        
+        ///回调服务端确认支付
+        [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///移聊HUD
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+            [ossVc setPaymentSate:YES];
+            [self.navigationController pushViewController:ossVc animated:YES];
+            
+            
+        }];
+        
+        return;
+        
+    }
+    
+    ///移聊HUD
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+    ///支付失败
+    QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+    [ossVc setPaymentSate:NO];
+    [self.navigationController pushViewController:ossVc animated:YES];
+    
+}
 
 /*
 #pragma mark - Navigation

@@ -185,7 +185,7 @@
     //order 传 t.add_time desc
     [tempParams setObject:@"t.add_time desc" forKey:@"order"];
     //except 不读取到某些类型的,5是储蓄卡购买支付的类型，
-    [tempParams setObject:@"" forKey:@"except"];
+    [tempParams setObject:@"5" forKey:@"except"];
     
     [QSRequestManager requestDataWithType:rRequestTypeOrderListData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         

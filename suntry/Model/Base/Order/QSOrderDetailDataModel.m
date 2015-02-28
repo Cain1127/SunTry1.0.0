@@ -31,7 +31,8 @@
                                   @"expand_4" : @"order_payment",
                                   @"diet_num" : @"diet_num",
                                   @"is_pay" : @"is_pay",
-                                  @"verification" : @"verification"
+                                  @"verification" : @"verification",
+                                  @"expand_3" : @"order_shippingState"
                                   };
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     

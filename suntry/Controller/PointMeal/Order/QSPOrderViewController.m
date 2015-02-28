@@ -710,6 +710,7 @@
                         {
                             QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
                             [pfovc setOrderFormModel:orderFormModel];
+                            [pfovc setOrderTotalPrice:[NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]]];
                             [self.navigationController pushViewController:pfovc animated:YES];
                             
                         }

@@ -37,7 +37,7 @@
 @end
 
 @implementation QSPPayForOrderViewController
-@synthesize orderFormModel;
+@synthesize orderFormModel,orderTotalPrice;
 
 - (void)loadView{
     [super loadView];
@@ -190,7 +190,7 @@
         NSString *pay = [NSString stringWithFormat:@"%@%@",userModel.pay_salt,pass];
         /*私有密钥+密码 进行 MD5加密*/
         [tempParams setObject:[self paramsMD5Encryption:pay] forKey:@"pay"];
-        [tempParams setObject:balance forKey:@"balance"];
+        [tempParams setObject:orderTotalPrice forKey:@"balance"];
         [tempParams setObject:orderFormModel.order_id forKey:@"order_id"];
         
         [QSRequestManager requestDataWithType:rRequestTypePayJudgeBalanceData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {

@@ -120,29 +120,6 @@
         [totalString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_LIST_CELL_ORDER_NUM_STRING_FONT_SIZE] range:NSMakeRange(4+totalPriceStr.length+3,totalCountStr.length)];
         [self.totalPriceAndCountLabel setAttributedText:totalString];
         
-//        NSString *stateCode = item.order_status;
-//        /**
-//         '-1'=>'删除',
-//         '0'=>'未确认',
-//         '1'=>'确认',
-//         '3'=>'送达',
-//         '4'=>'取消',
-//         */
-//        
-//        NSString *stateStr = @"";
-//        if ([stateCode isEqualToString:@"-1"]) {
-//            stateStr = @"删除";
-//        }else if ([stateCode isEqualToString:@"0"]) {
-//            stateStr = @"未确认";
-//        }else if ([stateCode isEqualToString:@"1"]) {
-//            stateStr = @"确认";
-//        }else if ([stateCode isEqualToString:@"3"]) {
-//            stateStr = @"送达";
-//        }else if ([stateCode isEqualToString:@"4"]) {
-//            stateStr = @"取消";
-//        }
-//
-        
         NSString *ispayCode = item.is_pay;
         NSString *payStateStr = @"";
         if ([ispayCode isEqualToString:@"0"])
@@ -154,8 +131,8 @@
         }
         
         [self.orderStateLabel setText:payStateStr];
-//        [self.shippingStateLabel setText:@"一号餐车配送中"];
         
+        [self.shippingStateLabel setText:item.order_shippingState];
         
     }
     
