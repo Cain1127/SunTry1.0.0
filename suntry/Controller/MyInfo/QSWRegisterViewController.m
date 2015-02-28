@@ -23,6 +23,7 @@
 @property (nonatomic,retain) QSWSettingItem *userNameItem;  //!<用户账号
 @property (nonatomic,retain) QSWSettingItem *passWordItem;  //!<密码
 @property (nonatomic,retain) MBProgressHUD *hud;            //!<HUD
+@property (nonatomic,strong) UIImageView *selectImageView;  //!<服务协议图片
 
 @end
 
@@ -129,10 +130,15 @@
     [footer addSubview:activateButton];
     
     ///条款控件
-    UIImageView *selectImageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_select_normal"] highlightedImage:[UIImage imageNamed:@"myinfo_select_selected"]];
-    selectImageView.translatesAutoresizingMaskIntoConstraints=NO;
-    selectImageView.userInteractionEnabled=YES;
-    [footer addSubview:selectImageView];
+    self.selectImageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_select_normal"] highlightedImage:[UIImage imageNamed:@"myinfo_select_selected"]];
+    self.selectImageView.translatesAutoresizingMaskIntoConstraints=NO;
+    self.selectImageView.userInteractionEnabled=YES;
+    
+    //[selectImageView setTag:2];//带个参数过去
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickx:)];
+    [self.selectImageView addGestureRecognizer:singleTap];
+    
+    [footer addSubview:_selectImageView];
     
     UILabel *selectLabel=[[UILabel alloc] init];
     selectLabel.translatesAutoresizingMaskIntoConstraints=NO;
@@ -142,14 +148,14 @@
 
     ///4.添加VFL约束
     ///参数
-    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activateTextfield,activateButton,selectImageView,selectLabel,footterButton);
+    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activateTextfield,activateButton,_selectImageView,selectLabel,footterButton);
     NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
     
     ///约束
     NSString *___hVFL_activateTextfield = @"H:|-margin-[activateTextfield]-5-[activateButton(100)]-margin-|";
-    NSString *___hVFL_selectImageView=@"H:|-margin-[selectImageView(20)]-5-[selectLabel]-margin-|";
+    NSString *___hVFL_selectImageView=@"H:|-margin-[_selectImageView(20)]-5-[selectLabel]-margin-|";
     NSString *___hVFL_footterButton=@"H:|-margin-[footterButton]-margin-|";
-    NSString *___vVFL_all = @"V:|-margin-[activateTextfield(44)]-margin-[selectImageView(20)]-margin-[footterButton(44)]";
+    NSString *___vVFL_all = @"V:|-margin-[activateTextfield(44)]-margin-[_selectImageView(20)]-margin-[footterButton(44)]";
     NSString *___vVFL_activateButton=@"V:[activateButton(44)]";
     
     ///添加约束
@@ -158,6 +164,13 @@
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_footterButton options:0 metrics:___sizeVFL  views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all  options:0 metrics:___sizeVFL views:___viewsVFL]];
     [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activateButton options:0 metrics:___sizeVFL views:___viewsVFL]];
+    
+}
+
+- (void)clickx:(UITapGestureRecognizer *)tap
+{
+  
+    _selectImageView.highlighted=YES;
     
 }
 
