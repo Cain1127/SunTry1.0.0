@@ -330,6 +330,54 @@
 -(void)gotoNextVC1
 {
     
+    ///生成参数
+    NSDictionary *params = @{@"id" : self.addressModel.addressID
+                            };
+    
+    ///发回服务端添加
+    [QSRequestManager requestDataWithType:rRequestTypeDelSendAddress andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///删除成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"删除成功。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+                ///刷新送餐地址列表
+                if (self.editSendAddressCallBack) {
+                    
+                    self.editSendAddressCallBack(YES);
+                    
+                }
+                
+                ///返回上一页
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            });
+            
+        } else {
+            
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"删除送餐地址失败，请稍后再试。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
+            
+        }
+        
+    }];
+
     
 }
 
