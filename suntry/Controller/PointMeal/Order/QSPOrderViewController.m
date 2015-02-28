@@ -294,6 +294,7 @@
 
 - (void)updateAddress
 {
+    
     self.orderName = @"";
     self.orderAddress = @"";
     self.orderPhone = @"";
@@ -799,8 +800,9 @@
  }
  
  */
-- (void)AddNewAddressWithData:(NSDictionary*)data
+- (void)AddNewAddressWithData:(NSDictionary *)data
 {
+    
     NSLog(@"添加新地址：%@",data);
     
     self.orderName = [NSString stringWithFormat:@"%@%@",[data objectForKey:@"name"],[data objectForKey:@"sex"]];
@@ -808,6 +810,7 @@
     self.orderPhone = [data objectForKey:@"phone"];
     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
     [_shipToAddress setText:self.orderAddress];
+    
 }
 
 

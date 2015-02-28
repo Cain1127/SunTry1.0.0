@@ -13,6 +13,9 @@
 #import "QSBlockButton.h"
 #import "QSPAddNewAddressTextField.h"
 
+#import "QSDatePickerViewController.h"
+#import "ASDepthModalViewController.h"
+
 #define ADD_NEW_ADDRESS_VIEW_BACKGROUND_COLOR           [UIColor colorWithWhite:0 alpha:0.6]
 #define ADD_NEW_ADDRESS_LINEVIEW_BACKGROUND_COLOR       [UIColor colorWithRed:0.808 green:0.812 blue:0.816 alpha:1.000]
 #define ADD_NEW_ADDRESS_VIEW_TEXT_STRING_FONT_SIZE        17.
@@ -33,8 +36,7 @@
 @property(nonatomic,strong) QSPAddNewAddressTextField *companyTextField;
 @property(nonatomic,strong) QSPAddNewAddressTextField *telephoneTextField;
 @property(nonatomic,strong) QSLabel                   *sexLabel;
-@property(nonatomic,strong) UIPickerView              *sexPickerView;
-@property(nonatomic,strong) UIView                    *sexPickerBgView;
+@property(nonatomic,strong) QSDatePickerViewController *sexPickerView;
 
 @end
 
@@ -133,16 +135,18 @@
         submitBtStyleModel.cornerRadio = 6.;
         self.submitBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, buttomY, _contentBackgroundView.frame.size.width-12*2, 44) andButtonStyle:submitBtStyleModel andCallBack:^(UIButton *button) {
             
-            NSLog(@"submitBtl");
-            
             if (![self checkAddress]) {
+                
                 return;
+                
             }
 
             [self hideAddNewAddressView];
             [self removeFromSuperview];
             if (delegate) {
+                
                 [delegate AddNewAddressWithData:[self getAddressData]];
+                
             }
             
         }];
@@ -161,7 +165,8 @@
     
 }
 
-- (void)initTextField{
+- (void)initTextField
+{
     
     //地址输入框列表
     CGFloat scrollViewContentHight = 0.;
@@ -179,24 +184,34 @@
     [self.sexTextField setUserInteractionEnabled:NO];
     [_scrollView addSubview:self.sexTextField];
     
-    self.sexPickerBgView = [[UIView alloc] initWithFrame:self.frame];
-    [self.sexPickerBgView setBackgroundColor:ADD_NEW_ADDRESS_PICKERVIEW_BACKGROUND_COLOR];
-    self.sexPickerView = [[UIPickerView alloc] init];
-    [self.sexPickerView setDelegate:self];
-    [self.sexPickerView setDataSource:self];
-    [self.sexPickerView setBackgroundColor:[UIColor whiteColor]];
-    [self.sexPickerView setFrame:CGRectMake(self.sexPickerView.frame.origin.x, self.frame.size.height-self.sexPickerView.frame.size.height, self.sexPickerView.frame.size.width, self.sexPickerView.frame.size.height)];
-    [self.sexPickerBgView addSubview:self.sexPickerView];
-    [self.sexPickerBgView setHidden:YES];
-    [self addSubview:self.sexPickerBgView];
-    
+    ///性别选择按钮
     QSBlockButtonStyleModel *sexBtStyle = [[QSBlockButtonStyleModel alloc] init];
     [sexBtStyle setTitleNormalColor:PLACEHOLDER_TEXT_COLOR];
     [sexBtStyle setBgColor:[UIColor clearColor]];
+    __weak QSPOrderAddNewAddressView *weakSelf = self;
     UIButton *sexBt = [UIButton createBlockButtonWithFrame:_sexTextField.frame andButtonStyle:sexBtStyle andCallBack:^(UIButton *button) {
-        NSLog(@"sexBt");
-        [self hideKeybord];
-        [self.sexPickerBgView setHidden:NO];
+        
+        ///弹出性别选择窗口
+        self.sexPickerView = [[QSDatePickerViewController alloc] init];
+        self.sexPickerView.pickerType = kPickerType_Item;
+        self.sexPickerView.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女",@"男"]];
+        self.sexPickerView.onCancelButtonHandler = ^{
+            
+            [ASDepthModalViewController dismiss];
+            
+        };
+        self.sexPickerView.onItemConfirmButtonHandler = ^(NSInteger index, NSString *item){
+            
+            ///更换标题
+            weakSelf.sexLabel.text = item;
+            
+            [ASDepthModalViewController dismiss];
+            
+        };
+        
+        ///用动画弹框
+        [ASDepthModalViewController presentView:weakSelf.sexPickerView.view];
+        
     }];
 
     UIImageView *sexArrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
@@ -208,7 +223,7 @@
     [self.sexLabel setFont:[UIFont systemFontOfSize:ADD_NEW_ADDRESS_VIEW_TEXT_STRING_FONT_SIZE ]];
     [self.sexLabel setBackgroundColor:[UIColor clearColor]];
     [self.sexLabel setTextAlignment:NSTextAlignmentRight];
-    [self.sexLabel setText:@"先生"];
+    [self.sexLabel setText:@"男"];
     [sexBt addSubview:self.sexLabel];
     
     [_scrollView addSubview:sexBt];
@@ -240,34 +255,51 @@
 
 - (BOOL)checkAddress
 {
+    
     BOOL flag = YES;
     
     NSString *infoStr = @"";
     if (flag && [[self.nameTextField text] isEqualToString:@""]) {
+        
         flag = NO;
         infoStr= @"联系人姓名";
+        
     }
+    
     if (flag && [[self.addressTextField text] isEqualToString:@""]) {
+        
         flag = NO;
         infoStr= @"送餐地址";
+        
     }
+    
     if (flag && [[self.telephoneTextField text] isEqualToString:@""]) {
+        
         flag = NO;
         infoStr= @"联系电话";
+        
     }
+    
     if (flag && ![[self.telephoneTextField text] isEqualToString:@""]) {
+        
         if (![self isMobileNumberClassification:[self.telephoneTextField text]]) {
+            
             flag = NO;
             infoStr= @"正确的联系电话格式";
+            
         }
+        
     }
     
     if (!flag) {
+        
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"请输入%@",infoStr] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [av show];
+        
     }
     
     return flag;
+    
 }
 
 - (void)showAddNewAddressView
@@ -286,6 +318,7 @@
 
 - (NSDictionary*)getAddressData
 {
+    
     NSMutableDictionary *addressDic = [NSMutableDictionary dictionaryWithCapacity:0];
     
     [addressDic setObject:[self.nameTextField text] forKey:@"name"];
@@ -295,70 +328,49 @@
     [addressDic setObject:[self.companyTextField text] forKey:@"company"];
     
     return addressDic;
-}
-
-
-#pragma mark pickerview function
-
-/* return cor of pickerview*/
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-/*return row number*/
--(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return 2;
-}
-
-/*return component row str*/
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    NSArray *sexList = [NSArray arrayWithObjects:@"先生",@"小姐", nil];
-    return [sexList objectAtIndex:row];
-}
-
-/*choose com is component,row's function*/
--(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    // NSLog(@"font %@ is selected.",row);
-    NSArray *sexList = [NSArray arrayWithObjects:@"先生",@"小姐", nil];
-    NSString *sexStr = [sexList objectAtIndex:row];
-    [self.sexLabel setText:sexStr];
-    [self.sexPickerBgView setHidden:YES];
+    
 }
 
 - (void)hideKeybord
 {
+    
     [self.nameTextField resignFirstResponder];
     [self.sexTextField resignFirstResponder];
     [self.addressTextField resignFirstResponder];
     [self.companyTextField resignFirstResponder];
     [self.telephoneTextField resignFirstResponder];
     [self setFrame:self.contentFrame];
+    
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    
     [self hideKeybord];
     return YES;
+    
 }
 
 //在UITextField 编辑之前调用方法
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    
     [self animateTextField: textField];
+    
 }
 
 //在UITextField 编辑完成调用方法
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    
     [self animateTextField: textField];
+    
 }
 
 //视图上移的方法
 - (void) animateTextField: (UITextField *) textField
 {
+    
     UIWindow * window = [[[UIApplication sharedApplication] delegate] window];
     CGRect rect = [textField convertRect: textField.bounds toView:window];
     
@@ -376,10 +388,12 @@
     self.frame = CGRectOffset(self.frame, 0, movement);
     //设置动画结束
     [UIView commitAnimations];
+    
 }
 
-
-- (BOOL)isMobileNumberClassification:(NSString*)phoneStr{
+- (BOOL)isMobileNumberClassification:(NSString*)phoneStr
+{
+    
     /**
      * 手机号码
      * 移动：134[0-8],135,136,137,138,139,150,151,157,158,159,182,187,188,1705
@@ -404,7 +418,6 @@
      22         */
     NSString * CT = @"^1((33|53|8[09])\\d|349|700)\\d{7}$";
     
-    
     /**
      25         * 大陆地区固话及小灵通
      26         * 区号：010,020,021,022,023,024,025,027,028,029
@@ -424,20 +437,17 @@
         || ([regextestcu evaluateWithObject:phoneStr] == YES)
         || ([regextestphs evaluateWithObject:phoneStr] == YES))
     {
+        
         return YES;
+        
     }
     else
     {
+        
         return NO;
+        
     }
+    
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end
