@@ -20,8 +20,6 @@ typedef enum
 
 - (instancetype)initOrderItemView;
 
-- (void)setNeedToPayPrice:(CGFloat)payPrice;
-
 - (PaymentType)getSelectedPayment;
 
 @end

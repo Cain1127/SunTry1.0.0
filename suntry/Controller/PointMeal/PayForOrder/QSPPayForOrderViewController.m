@@ -20,6 +20,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "QSRequestManager.h"
 #import "MBProgressHUD.h"
+#import "QSWResetPswController.h"
 
 #define PAY_FOR_ORDER_TITLE_FONT_SIZE       15.
 #define PAY_FOR_ORDER_TEXT_COLOR            [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -226,6 +227,13 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self checkHadPayPassWord];
+}
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self.payCardPassTextField resignFirstResponder];
@@ -253,6 +261,16 @@
             result[12], result[13], result[14], result[15]
             ];
     
+}
+
+- (void)checkHadPayPassWord{
+    
+    QSUserInfoDataModel *userInfoData = [QSUserInfoDataModel userDataModel];
+    if (!userInfoData.pay_salt || [userInfoData.pay_salt isEqualToString:@""]) {
+        //没有支付密码
+        QSWResetPswController *VC=[[QSWResetPswController alloc] init];
+        [self.navigationController pushViewController:VC animated:YES];
+    }
 }
 
 /*

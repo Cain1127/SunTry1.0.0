@@ -120,12 +120,6 @@
     
 }
 
-- (void)setNeedToPayPrice:(CGFloat)payPrice
-{
-    
-    
-}
-
 - (PaymentType)getSelectedPayment
 {
     return _selectedPayment;

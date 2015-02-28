@@ -28,6 +28,7 @@
 #import "QSOrderInfoDataModel.h"
 #import "QSAlixPayManager.h"
 #import "QSUserAddressDataModel.h"
+#import "QSPOrderDeliveryTimeView.h"
 
 #define ORDERVIEWCONTROLLER_SHIP_BT_BG_COLOR    [UIColor colorWithRed:0.709 green:0.653 blue:0.543 alpha:1.000]
 #define ORDERVIEWCONTROLLER_TITLE_FONT_SIZE     17.
@@ -52,6 +53,8 @@
 @property (nonatomic, strong) QSLabel *specialOfferTotalCountTip;
 @property (nonatomic, strong) QSLabel *specialOfferTotalTip;
 @property (nonatomic, strong) QSLabel *specialOfferTotalUnitTip;
+
+@property (nonatomic, strong) QSPOrderDeliveryTimeView *deliveryTimeView;
 
 @property (nonatomic, strong) UIView  *remarkFrameView;
 @property (nonatomic, strong) QSLabel *remarkLabel;
@@ -217,9 +220,13 @@
     [_specialOfferTotalUnitTip setTextColor:[UIColor blackColor]];
     [_specialOfferFrameView addSubview:_specialOfferTotalUnitTip];
     
+    //送餐时间
+    self.deliveryTimeView = [[QSPOrderDeliveryTimeView alloc] initOrderDeliveryTimeView];
+    [self.deliveryTimeView setFrame:CGRectMake(0, _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height, self.deliveryTimeView.frame.size.width, self.deliveryTimeView.frame.size.height)];
+    [_scrollView addSubview:_deliveryTimeView];
     
     //备注信息
-    self.remarkFrameView = [[UIView alloc] initWithFrame:CGRectMake(0, _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height, SIZE_DEVICE_WIDTH, 0)];
+    self.remarkFrameView = [[UIView alloc] initWithFrame:CGRectMake(0, _deliveryTimeView.frame.origin.y+_deliveryTimeView.frame.size.height, SIZE_DEVICE_WIDTH, 0)];
     [_remarkFrameView setBackgroundColor:[UIColor clearColor]];
     [_remarkFrameView setClipsToBounds:YES];
     [_scrollView addSubview:_remarkFrameView];
@@ -280,9 +287,12 @@
     [self updateHadOrderCount];
     [self updateSpecialOfferCount];
     
+    [self.deliveryTimeView setFrame:CGRectMake(0, _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height, self.deliveryTimeView.frame.size.width, self.deliveryTimeView.frame.size.height)];
+    
     CGRect tempFrame = _remarkFrameView.frame;
-    tempFrame.origin.y = _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height;
+    tempFrame.origin.y = _deliveryTimeView.frame.origin.y+_deliveryTimeView.frame.size.height;
     [_remarkFrameView setFrame:tempFrame];
+    
     
     CGRect payFrame = _paymentView.frame;
     payFrame.origin.y = _remarkFrameView.frame.origin.y+_remarkFrameView.frame.size.height;
@@ -341,7 +351,7 @@
 
 - (void)updateHadOrderCount
 {
-    //FIXME: 逻辑需要根据购物车逻辑完善。
+    //!!!! : 逻辑需要根据购物车逻辑完善。
     NSInteger selectedTotalCount = 0;
 
     NSArray *array = [QSPShoppingCarData getShoppingCarDataList];
@@ -593,8 +603,39 @@
         [tempParams setObject:@"1" forKey:@"mer_id"];
         // total_money 总价
         [tempParams setObject:[NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]] forKey:@"total_money"];
-        // get_time 获取的时间,字符串
-        [tempParams setObject:[NSString stringWithFormat:@"%ld", (long)[[NSDate  date] timeIntervalSince1970]] forKey:@"get_time"];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        NSString *currentDateStr = @"";
+        
+        // get_time 送餐的时间,时间戳字符串  上午: 2015-02-28-12：00  下午 2015-02-28-18：00
+        DeliveryTimeType currentSelectTime = [self.deliveryTimeView getSelectedDeliveryTime];
+        switch (currentSelectTime) {
+            case DeliveryTimeTypeTodayAM:
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 12:00:00"];
+                currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+                break;
+            case DeliveryTimeTypeTodayPM:
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 18:00:00"];
+                currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+                break;
+            case DeliveryTimeTypeTomorrowAM:
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 12:00:00"];
+                currentDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:24*60*60]];
+                break;
+            case DeliveryTimeTypeTomorrowPM:
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 18:00:00"];
+                currentDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:24*60*60]];
+                break;
+            default:
+                currentDateStr = @"";
+                break;
+        }
+        [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+        NSDate* selectedDate = [dateFormatter dateFromString:currentDateStr];
+        NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[selectedDate timeIntervalSince1970]];
+        NSLog(@"timeSp:%@",timeSp); //时间戳的值
+        
+        [tempParams setObject:timeSp forKey:@"get_time"];
         // ortherPhone 其他电话
         [tempParams setObject:@"" forKey:@"ortherPhone"];
         // desc 描述，备注信息
@@ -777,21 +818,25 @@
         return flag;
     }
     
+    DeliveryTimeType currentSelectTime = [self.deliveryTimeView getSelectedDeliveryTime];
+    if (currentSelectTime == DeliveryTimeTypeNoSelected) {
+        
+        UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请选择送餐时间" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertview show];
+        flag = NO;
+        return flag;
+    }
+    
     PaymentType currentSelectPayment = [_paymentView getSelectedPayment];
     
     if (currentSelectPayment == PaymentTypeNoPayment) {
         
-        flag = NO;
-        
         UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请选择支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertview show];
+        flag = NO;
+        return flag;
         
     }
-//    else if (currentSelectPayment == PaymentTypePayCrads) {
-//        
-//        QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
-//        [self.navigationController pushViewController:pfovc animated:YES];
-//    }
     
     return flag;
     
