@@ -105,7 +105,7 @@
     [self.view addSubview:self.orderPriceLabel];
     
     //TODO: 订单价格
-    NSString *price = @"0.01";//= [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
+    NSString *price = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
     NSMutableAttributedString *priceString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",price]];
     [priceString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0,1)];
     [priceString addAttribute:NSForegroundColorAttributeName value:PAY_FOR_ORDER_COUNT_TEXT_COLOR range:NSMakeRange(1,price.length)];

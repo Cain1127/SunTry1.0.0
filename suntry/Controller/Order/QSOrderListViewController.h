@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QSOrderListViewController : UIViewController
+@interface QSOrderListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @end
