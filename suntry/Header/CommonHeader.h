@@ -1,6 +1,6 @@
 // 0.从appStore上获取最新的版本信息
-
-static NSString *const QSGetAppStoreVersion = @"http://itunes.apple.com/lookup?id=908958155";
+///检查更新版本
+#define REQUEST_VERSION_URL  @"site/GetVersion"
 
 ///数据请求根地址
 #define REQUEST_ROOT_URL @"http://test.9dxz.com/"

@@ -11,6 +11,9 @@
 #import "ImageHeader.h"
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
+#import "QSOrderListTableViewCell.h"
+#import "QSOrderDetailViewController.h"
+#import "QSUserInfoDataModel.h"
 
 #define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -19,6 +22,8 @@
 @interface QSOrderListViewController ()
 
 @property (nonatomic, strong) UIView *nodataView;
+@property(nonatomic,strong) UITableView     *orderListTableView;
+@property(nonatomic,strong) NSMutableArray  *orderList;
 
 @end
 
@@ -28,6 +33,8 @@
 - (void)loadView{
     
     [super loadView];
+    
+    self.orderList = [NSMutableArray arrayWithObjects:@"",@"",@"", nil];//[NSMutableArray arrayWithCapacity:0];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -71,9 +78,13 @@
     [_nodataView addSubview:submitBt];
     
     //有数据显示
-    
-    
-    
+    [_nodataView setHidden:YES];
+    self.orderListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 24, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-24)];
+    [self.orderListTableView setDelegate:self];
+    [self.orderListTableView setDataSource:self];
+    [self.orderListTableView setShowsVerticalScrollIndicator:NO];
+    [self.orderListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.view addSubview:self.orderListTableView];
     
 }
 
@@ -86,9 +97,70 @@
     
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger count = 0;
+    count = [self.orderList count];
+    return count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat height = ORDER_LIST_CELL_HEIGHT;
+    return height;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *foodTypeTableViewIdentifier = @"FoodTypeTableCell";
+    QSOrderListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:foodTypeTableViewIdentifier];
+    
+    if (cell == nil) {
+        
+        cell = [[QSOrderListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:foodTypeTableViewIdentifier];
+        
+    }
+    if (indexPath.row==0) {
+        [cell showTopLine:YES];
+    }else{
+        [cell showTopLine:NO];
+    }
+    [cell updateFoodData:nil];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id data = [_orderList objectAtIndex:indexPath.row];
+    QSOrderDetailViewController *odvc = [[QSOrderDetailViewController alloc] init];
+    [odvc setHidesBottomBarWhenPushed:YES];
+    [self.navigationController pushViewController:odvc animated:YES];
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)getMyOrderList
+{
+    //请求所需参数
+    NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
+    /*  user_id 用户id 必填
+        search_key 查找的关键字
+        page_num 每页的数量 默认 10 
+        now_page 当前第几页 默认 1 
+        status 状态，对应的何种类型的订单
+    */
+    
+    //用户信息模型
+    QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+    //user_id 用户id 必填
+    [tempParams setObject:userModel.userID forKey:@"user_id"];
+    
+    
 }
 
 /*

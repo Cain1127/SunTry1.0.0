@@ -355,7 +355,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     
-    [self animateTextField: textField];
+    [self animateTextField: textField witMoveUpOrDown:YES];
     
 }
 
@@ -363,12 +363,12 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     
-    [self animateTextField: textField];
+    [self animateTextField: textField witMoveUpOrDown:NO];
     
 }
 
 //视图上移的方法
-- (void) animateTextField: (UITextField *) textField
+- (void) animateTextField: (UITextField *) textField  witMoveUpOrDown:(BOOL)flag
 {
     
     UIWindow * window = [[[UIApplication sharedApplication] delegate] window];
@@ -378,6 +378,7 @@
     int movementDistance =(self.frame.size.height - 280) - (rect.origin.y+rect.size.height); // tweak as needed
     //三目运算，判定是否需要上移视图或者不变
     int movement = movementDistance<0?movementDistance:0;
+    
     //设置动画的名字
     [UIView beginAnimations: @"Animation" context: nil];
     //设置动画的开始移动位置
@@ -385,7 +386,11 @@
     //设置动画的间隔时间
     [UIView setAnimationDuration: 0.20];
     //设置视图移动的位移
-    self.frame = CGRectOffset(self.frame, 0, movement);
+    if (flag) {
+        self.frame = CGRectOffset(self.frame, 0, movement);
+    }else{
+        self.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    }
     //设置动画结束
     [UIView commitAnimations];
     

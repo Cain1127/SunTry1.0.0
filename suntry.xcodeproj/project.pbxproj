@@ -69,6 +69,8 @@
 		473902481A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902341A9EF3D4000ECF41 /* QSPOrderViewHadOrderCell.m */; };
 		473902491A9EF3D4000ECF41 /* QSPPayForOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902371A9EF3D4000ECF41 /* QSPPayForOrderViewController.m */; };
 		4739024A1A9EF3D4000ECF41 /* QSPShoppingCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */; };
+		47B211EF1AA0ADB200EEC787 /* QSOrderListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */; };
+		47B211F21AA0BE4800EEC787 /* QSOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F11AA0BE4800EEC787 /* QSOrderDetailViewController.m */; };
 		CE18BC0F1AA0764F00AB801F /* QSWCheckAppVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE18BC0E1AA0764F00AB801F /* QSWCheckAppVersionViewController.m */; };
 		CE1C081E1A9F1A4200BE9A99 /* QSWServiceTermViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
@@ -351,11 +353,13 @@
 		473902371A9EF3D4000ECF41 /* QSPPayForOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPPayForOrderViewController.m; sourceTree = "<group>"; };
 		473902391A9EF3D4000ECF41 /* QSPShoppingCarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPShoppingCarView.h; sourceTree = "<group>"; };
 		4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPShoppingCarView.m; sourceTree = "<group>"; };
+		47B211ED1AA0ADB200EEC787 /* QSOrderListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderListTableViewCell.h; sourceTree = "<group>"; };
+		47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListTableViewCell.m; sourceTree = "<group>"; };
+		47B211F01AA0BE4800EEC787 /* QSOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderDetailViewController.h; sourceTree = "<group>"; };
+		47B211F11AA0BE4800EEC787 /* QSOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailViewController.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE18BC0D1AA0764F00AB801F /* QSWCheckAppVersionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWCheckAppVersionViewController.h; sourceTree = "<group>"; };
-		CE18BC0E1AA0764F00AB801F /* QSWCheckAppVersionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWCheckAppVersionViewController.m; sourceTree = "<group>"; };
 		CE1C081C1A9F1A4200BE9A99 /* QSWServiceTermViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWServiceTermViewController.h; sourceTree = "<group>"; };
 		CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWServiceTermViewController.m; sourceTree = "<group>"; };
 		CE207AB61A90430000ACF741 /* QSWStoredCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWStoredCardViewController.h; sourceTree = "<group>"; };
@@ -1041,8 +1045,6 @@
 				CEEAC3CD1A8D0F7D009AC6AA /* QSWResetPswController.m */,
 				CE1C081C1A9F1A4200BE9A99 /* QSWServiceTermViewController.h */,
 				CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */,
-				CE18BC0D1AA0764F00AB801F /* QSWCheckAppVersionViewController.h */,
-				CE18BC0E1AA0764F00AB801F /* QSWCheckAppVersionViewController.m */,
 			);
 			path = MyInfo;
 			sourceTree = "<group>";
@@ -1052,6 +1054,10 @@
 			children = (
 				CE6ED5AC1A89EEF7009FF8A7 /* QSOrderListViewController.h */,
 				CE6ED5AD1A89EEF7009FF8A7 /* QSOrderListViewController.m */,
+				47B211ED1AA0ADB200EEC787 /* QSOrderListTableViewCell.h */,
+				47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */,
+				47B211F01AA0BE4800EEC787 /* QSOrderDetailViewController.h */,
+				47B211F11AA0BE4800EEC787 /* QSOrderDetailViewController.m */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -1704,6 +1710,7 @@
 				CE571EEB1A84AF7800609788 /* QSWSettingViewController.m in Sources */,
 				CE5341821A7FBCAC002BA188 /* QSImageView.m in Sources */,
 				185343BD1A91D29600A83039 /* QSUserCouponListReturnData.m in Sources */,
+				47B211F21AA0BE4800EEC787 /* QSOrderDetailViewController.m in Sources */,
 				CE53415D1A7FA527002BA188 /* QSRequestTaskDataModel.m in Sources */,
 				CE207ABD1A9073FE00ACF741 /* QSWStoredCardCell.m in Sources */,
 				CE7946C01A8B705600C0113B /* QSWMerchantIndexViewController.m in Sources */,
@@ -1756,6 +1763,7 @@
 				4739023E1A9EF3D4000ECF41 /* QSPFoodPackageView.m in Sources */,
 				CEEAC3E61A8DA7DF009AC6AA /* UIScrollView+MJExtension.m in Sources */,
 				CEEAC3CE1A8D0F7D009AC6AA /* QSWResetPswController.m in Sources */,
+				47B211EF1AA0ADB200EEC787 /* QSOrderListTableViewCell.m in Sources */,
 				185344421A9ED82C00A83039 /* NSDataEx.m in Sources */,
 				CEEAC3E21A8DA7DF009AC6AA /* MJRefreshBaseView.m in Sources */,
 				473902451A9EF3D4000ECF41 /* QSPOrderRemarkViewController.m in Sources */,
@@ -1774,7 +1782,6 @@
 				1853443E1A9ED82C00A83039 /* base64.m in Sources */,
 				CEEAC3E41A8DA7DF009AC6AA /* MJRefreshFooterView.m in Sources */,
 				CE5341481A7FA4CE002BA188 /* QSMyinfoViewController.m in Sources */,
-				CE18BC0F1AA0764F00AB801F /* QSWCheckAppVersionViewController.m in Sources */,
 				CEEAC3931A8CA4EF009AC6AA /* QSBaseModel.m in Sources */,
 				4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,

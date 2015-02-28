@@ -50,24 +50,24 @@
         for (int i=0; i<[paymentList count]; i++) {
             
             NSString *paymentName = paymentList[i];
-            QSLabel *payForAfterTip = [[QSLabel alloc] initWithFrame:CGRectMake(12, lineButtomView.frame.origin.y+lineButtomView.frame.size.height+i*45, SIZE_DEVICE_WIDTH-24, ORDER_PAYMENT_CELL_HEIGHT)];
-            [payForAfterTip setFont:[UIFont systemFontOfSize:ORDER_PAYMENT_TITLE_FONT_SIZE]];
-            [payForAfterTip setText:paymentName];
-            [payForAfterTip setTextColor:ORDER_PAYMENT_CONTENT_TEXT_COLOR];
-            [self addSubview:payForAfterTip];
+            QSLabel *paymentItemLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, lineButtomView.frame.origin.y+lineButtomView.frame.size.height+i*45, SIZE_DEVICE_WIDTH-24, ORDER_PAYMENT_CELL_HEIGHT)];
+            [paymentItemLabel setFont:[UIFont systemFontOfSize:ORDER_PAYMENT_TITLE_FONT_SIZE]];
+            [paymentItemLabel setText:paymentName];
+            [paymentItemLabel setTextColor:ORDER_PAYMENT_CONTENT_TEXT_COLOR];
+            [self addSubview:paymentItemLabel];
             
             if ([paymentName isEqualToString:@"储值卡支付"]) {
                 CGFloat nameWidth = [paymentName calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDER_PAYMENT_TITLE_FONT_SIZE]+4;
                 
-                CGRect paymentNameFrame = payForAfterTip.frame;
+                CGRect paymentNameFrame = paymentItemLabel.frame;
                 paymentNameFrame.size.width = nameWidth;
-                payForAfterTip.frame = paymentNameFrame;
+                paymentItemLabel.frame = paymentNameFrame;
                 
                 QSUserInfoDataModel *userData = [QSUserInfoDataModel userDataModel];
                 
                 if (userData && userData.balance) {
                     
-                    QSLabel *balanceTip = [[QSLabel alloc] initWithFrame:CGRectMake(payForAfterTip.frame.origin.x+payForAfterTip.frame.size.width, payForAfterTip.frame.origin.y, SIZE_DEVICE_WIDTH-24 -(payForAfterTip.frame.origin.x+payForAfterTip.frame.size.width), ORDER_PAYMENT_CELL_HEIGHT)];
+                    QSLabel *balanceTip = [[QSLabel alloc] initWithFrame:CGRectMake(paymentItemLabel.frame.origin.x+paymentItemLabel.frame.size.width, paymentItemLabel.frame.origin.y, SIZE_DEVICE_WIDTH-24 -(paymentItemLabel.frame.origin.x+paymentItemLabel.frame.size.width), ORDER_PAYMENT_CELL_HEIGHT)];
                     [balanceTip setFont:[UIFont systemFontOfSize:ORDER_PAYMENT_TITLE_FONT_SIZE]];
                     
                     [balanceTip setText:[NSString stringWithFormat:@"(余额：￥%@)",userData.balance]];
@@ -80,7 +80,13 @@
             QSBlockButtonStyleModel *selectedBtStyle = [[QSBlockButtonStyleModel alloc] init];
             [selectedBtStyle setImagesNormal:@"order_payment_normal_bt"];
             [selectedBtStyle setBgColor:[UIColor clearColor]];
-            UIButton *selectedBt = [UIButton createBlockButtonWithFrame:CGRectMake(SIZE_DEVICE_WIDTH-44-16, payForAfterTip.frame.origin.y, 44, 44) andButtonStyle:selectedBtStyle andCallBack:^(UIButton *button) {
+            UIButton *selectedBt = [UIButton createBlockButtonWithFrame:CGRectMake(SIZE_DEVICE_WIDTH-44-16, paymentItemLabel.frame.origin.y, 44, 44) andButtonStyle:selectedBtStyle andCallBack:^(UIButton *button) {
+            }];
+            [selectedBt setTag:8000+i];
+            [self addSubview:selectedBt];
+            
+            QSBlockButtonStyleModel *chlickBtStyle = [[QSBlockButtonStyleModel alloc] init];
+            UIButton *chlickBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, lineButtomView.frame.origin.y+lineButtomView.frame.size.height+i*45, SIZE_DEVICE_WIDTH-24, ORDER_PAYMENT_CELL_HEIGHT) andButtonStyle:chlickBtStyle andCallBack:^(UIButton *button) {
                 
                 for (UIView *view in [self subviews])
                 {
@@ -88,16 +94,18 @@
                         if (view.tag>=8000&&view.tag<=8009) {
                             UIButton *bt = (UIButton*)view;
                             [bt setImage:[UIImage imageNamed:@"order_payment_normal_bt"] forState:UIControlStateNormal];
+                            if (bt.tag%8000 == button.tag%9000) {
+                                [bt setImage:[UIImage imageNamed:@"order_payment_selected_bt"] forState:UIControlStateNormal];
+                                self.selectedPayment = button.tag%9000;
+                            }
                         }
                     }
                 }
-                [button setImage:[UIImage imageNamed:@"order_payment_selected_bt"] forState:UIControlStateNormal];
-                self.selectedPayment = button.tag%8000;
             }];
-            [selectedBt setTag:8000+i];
-            [self addSubview:selectedBt];
+            [chlickBt setTag:9000+i];
+            [self addSubview:chlickBt];
             
-            UIView *subLineButtomView = [[UIView alloc] initWithFrame:CGRectMake(12, payForAfterTip.frame.origin.y+payForAfterTip.frame.size.height, SIZE_DEVICE_WIDTH-24, 1)];
+            UIView *subLineButtomView = [[UIView alloc] initWithFrame:CGRectMake(12, paymentItemLabel.frame.origin.y+paymentItemLabel.frame.size.height, SIZE_DEVICE_WIDTH-24, 1)];
             [subLineButtomView setBackgroundColor:ORDER_PAYMENT_LINE_COLOR];
             [self addSubview:subLineButtomView];
             

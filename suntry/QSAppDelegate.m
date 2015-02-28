@@ -337,7 +337,9 @@
         NSString *appVersion = [infoDic objectForKey:@"CFBundleVersion"];
         
         ///获取appStore上的最新版本
-        NSData *versionData = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:QSGetAppStoreVersion]] returningResponse:nil error:nil];
+        NSURLRequest *tempRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",REQUEST_ROOT_URL,REQUEST_VERSION_URL]]];
+        NSData *versionData = [NSURLConnection sendSynchronousRequest:tempRequest
+                                returningResponse:nil error:nil];
         
         ///判断请求返回的数据
         if (nil == versionData || 0 >= [versionData length]) {
@@ -355,7 +357,7 @@
             
         }
         
-        NSDictionary *versionInfoDcit = [originalDict valueForKey:@"results"][0];
+        NSDictionary *versionInfoDcit = [originalDict valueForKey:@"msg"];
         
         ///判断版本信息字典是否有效
         if (nil == versionInfoDcit || 0 >= [versionInfoDcit count]) {
@@ -364,7 +366,7 @@
             
         }
         
-        NSString *appStoreVersion = [versionInfoDcit valueForKey:@"version"];
+        NSString *appStoreVersion = [[versionInfoDcit valueForKey:@"iosversion"] substringFromIndex:1];
         
         ///判断版本是否有效
         if (nil == appStoreVersion || 2 >= [appStoreVersion length]) {
@@ -386,6 +388,7 @@
         int intLastVersion = [lastVersion intValue];
         
         if (intLastVersion <= intLocalVersion) {
+            
             
             return;
             
@@ -425,6 +428,5 @@
     });
     
 }
-
 
 @end

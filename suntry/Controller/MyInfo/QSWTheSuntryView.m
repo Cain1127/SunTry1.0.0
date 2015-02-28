@@ -60,7 +60,7 @@
     [infoLabel setBackgroundColor:[UIColor clearColor]];
     [infoLabel setNumberOfLines:2];
     [infoLabel setTextAlignment:NSTextAlignmentCenter];
-    [infoLabel setText:@"香哉客户端IOS版_v1.0"];
+    [infoLabel setText:@"香哉客户端IOS版_v1.0.0"];
     [infoLabel setTextColor:ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR];
     [_nodataView addSubview:infoLabel];
     

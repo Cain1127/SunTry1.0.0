@@ -166,12 +166,12 @@
     CGFloat viewH = 44.0f;
     CGSize itemSize = CGSizeMake(viewW, viewH);
     flowLayout.itemSize = itemSize;
-    flowLayout.sectionInset = UIEdgeInsetsMake(0.0f, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
+    flowLayout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f,0.0f);
     
     ///初始化collectionView
     self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _middleView.frame.origin.y + _middleView.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT - _middleView.frame.origin.y-_middleView.frame.size.height - 49.0f - 64.0f) collectionViewLayout:flowLayout];
     ///取消导航条
-    self.collectionView.showsVerticalScrollIndicator=NO;
+    //self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
@@ -259,12 +259,14 @@
         
         cell.cTimeLabel.text=tempModel.createTime;
         cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥%@",tempModel.amount];
+        //cell.cBalanceLabel.text=tempModel.remark;
         
         return cell;
         
     }
     
 }
+
 
 //返回这个UICollectionView是否可以被选择
 -(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -274,6 +276,29 @@
     
 }
 
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//
+//{
+//    
+//    UICollectionReusableView *reusableview = nil;
+//    
+//    if (kind == UICollectionElementKindSectionHeader){
+//        
+//        RecipeCollectionHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
+//        
+//        NSString *title = [[NSString alloc] initWithFormat:@"Recipe Group #%i",indexPath.section +1];
+//        
+//        headerView.title.text = title;
+//        
+//        UIImage *headerImage = [UIImage imageNamed:@"header_banner.png"];
+//        
+//        headerView.backgroundImage.image = headerImage;
+//        
+//        reusableView = headerView;
+//        
+//    }
+//
+//}
 #pragma mark - 返回事件
 - (void)turnBackAction
 {
