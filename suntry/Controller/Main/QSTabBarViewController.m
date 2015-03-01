@@ -15,12 +15,31 @@
 #import "QSOrderListViewController.h"
 #import "CommonHeader.h"
 #import "QSWLoginViewController.h"
+#import "QSWMerchantIndexViewController.h"
 
 @interface QSTabBarViewController ()
+
+@property (nonatomic,copy) NSString *streetID;  //!<街道ID
+@property (nonatomic,copy) NSString *street;    //!<街道
 
 @end
 
 @implementation QSTabBarViewController
+
+#pragma mark - 初始化
+- (instancetype)initWithID:(NSString *)streetID andDistictName:(NSString *)street
+{
+
+    if (self = [super init]) {
+        
+        self.street = street ? street : @"体育西";
+        self.streetID = streetID ? streetID : @"299";
+        
+    }
+    
+    return self;
+
+}
 
 - (void)viewDidLoad {
     
@@ -38,10 +57,9 @@
     ///tabbar容器
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     
-    ///1.首页
-    QSHomeViewController *home=[[QSHomeViewController alloc] init];
-    [tempArray addObject:[self setupChildViewController:home title:@"首页" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"]];
-    [home.navigationController setNavigationBarHidden:YES];
+    QSWMerchantIndexViewController *home1=[[QSWMerchantIndexViewController alloc] initWithID:self.streetID andDistictName:self.street];
+    [tempArray addObject:[self setupChildViewController:home1 title:@"首页" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"]];
+    [home1.navigationController setNavigationBarHidden:YES];
     
     ///2.点餐
     QSPointMealViewController *pointmeal=[[QSPointMealViewController alloc]init];

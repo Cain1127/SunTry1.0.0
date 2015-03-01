@@ -15,6 +15,7 @@
 #import "QSBlockButton.h"
 #import "QSRequestManager.h"
 #import "MBProgressHUD.h"
+#import "QSTabBarViewController.h"
 
 #import "ChineseInclude.h"
 #import "PinYinForObjc.h"
@@ -61,7 +62,7 @@ typedef enum {
 #pragma mark - 初始化
 - (instancetype)init
 {
-
+    
     if (self = [super init]) {
         
         ///初始化数据
@@ -73,7 +74,7 @@ typedef enum {
     }
     
     return self;
-
+    
 }
 
 #pragma mark - 获取地区数组
@@ -472,6 +473,9 @@ typedef enum {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    ///修改
+    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isFirstLaunch"];
+    
     ///通过搜索结果进入
     if (self.isShowSearchStreetList) {
         
@@ -487,8 +491,7 @@ typedef enum {
         self.isShowSearchStreetList = NO;
         [self.searchListTableView reloadData];
         
-     QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self gotoMainHome:@"体育西路" andKey:@"299"];
         return;
         
     }
@@ -508,8 +511,7 @@ typedef enum {
         self.isShowSearchStreetList = NO;
         [self.searchListTableView reloadData];
         
-        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self gotoMainHome:@"体育西路" andKey:@"299"];
         return;
         
     }
@@ -521,10 +523,18 @@ typedef enum {
         
     } else {
         
-        QSWMerchantIndexViewController *VC=[[QSWMerchantIndexViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
-        [self.navigationController pushViewController:VC animated:YES];
+        [self gotoMainHome:@"体育西路" andKey:@"299"];
         
     }
+    
+}
+
+#pragma mark - 进入首页
+- (void)gotoMainHome:(NSString *)title andKey:(NSString *)key
+{
+    
+    QSTabBarViewController *VC=[[QSTabBarViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
+    [UIApplication sharedApplication].keyWindow.rootViewController = VC;
     
 }
 
@@ -532,11 +542,11 @@ typedef enum {
 ///进入搜索框时，列出所有可选区
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-
+    
     self.isShowDistrictStreetList = YES;
     [self.searchListTableView reloadData];
     return YES;
-
+    
 }
 
 ///点键键盘上的搜索按钮
@@ -550,11 +560,11 @@ typedef enum {
         return;
         
     } else {
-    
+        
         self.isShowDistrictStreetList = YES;
         self.isShowSearchStreetList = NO;
         [self.searchListTableView reloadData];
-    
+        
     }
     
 }
@@ -571,7 +581,7 @@ typedef enum {
 ///输入框的输入内容不断变化
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-
+    
     ///获取输入的关键字
     NSString *searchKey = searchText;
     
@@ -644,7 +654,7 @@ typedef enum {
 #pragma mark - 添加搜索历史
 - (void)addSearchHistoryData:(QSSearchHistoryDataModel *)model
 {
-
+    
     ///循环原数据，判断是否存在，已存在，则不再保存
     for (QSSearchHistoryDataModel *obj in self.searchHistoryList) {
         
@@ -667,7 +677,7 @@ typedef enum {
     ///首先转成data
     NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:self.searchHistoryList];
     [saveData writeToFile:path atomically:YES];
-
+    
 }
 
 @end

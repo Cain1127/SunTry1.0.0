@@ -15,6 +15,7 @@
 #import "QSSelectDataModel.h"
 #import "QSSelectReturnData.h"
 #import "CommonHeader.h"
+#import "QSHomeViewController.h"
 
 #import <AlipaySDK/AlipaySDK.h>
 
@@ -26,11 +27,26 @@
 {
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
     self.window.backgroundColor = [UIColor whiteColor];
     
-    QSTabBarViewController *main=[[QSTabBarViewController alloc]init];
-    [self.window setRootViewController:main];
+    ///是否第一次进入应用标识
+    NSString *isFirstLaunch = [[NSUserDefaults standardUserDefaults] valueForKey:@"isFirstLaunch"];
+    
+    ///1.首页
+    if (!isFirstLaunch) {
+        
+        QSHomeViewController *home=[[QSHomeViewController alloc] init];
+        [home setTitle:@"首页"];
+        [home.navigationController setNavigationBarHidden:YES];
+        [self.window setRootViewController:home];
+        
+    } else {
+        
+        QSTabBarViewController *main=[[QSTabBarViewController alloc]init];
+        [self.window setRootViewController:main];
+        
+    }
+    
     [self.window makeKeyAndVisible];
     
     ///检查版本

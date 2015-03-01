@@ -10,4 +10,6 @@
 
 @interface QSTabBarViewController : UITabBarController
 
+- (instancetype)initWithID:(NSString *)streetID andDistictName:(NSString *)street;
+
 @end
