@@ -86,7 +86,6 @@
     UIButton *checkOrderBt = [UIButton createBlockButtonWithFrame:CGRectMake(30/375.*SIZE_DEVICE_WIDTH, infoLabel.frame.origin.y+infoLabel.frame.size.height+16, 150/375.*SIZE_DEVICE_WIDTH, 45) andButtonStyle:checkOrderBtStyleModel andCallBack:^(UIButton *button) {
         
         NSLog(@"checkOrderBtl");
-        
         [self.tabBarController setSelectedIndex:2];
         
     }];

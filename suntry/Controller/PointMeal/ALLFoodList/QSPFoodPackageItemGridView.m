@@ -56,8 +56,8 @@
         
         //菜名元素
         NSString* foodNameStr = _foodData.goodsName;
-        CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
-        QSLabel *foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(contentImgView.frame.origin.x, self.frame.size.height-14-3, foodNameWidth, 14)];
+//        CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
+        QSLabel *foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(contentImgView.frame.origin.x, self.frame.size.height-14-3-8, contentImgView.frame.size.width+10, 22)];
         [foodNameLabel setTextColor:PACKAGE_VIEW_FOOD_NAME_TEXT_COLOR];
         [foodNameLabel setFont:[UIFont systemFontOfSize:PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE ]];
         [foodNameLabel setText:foodNameStr];

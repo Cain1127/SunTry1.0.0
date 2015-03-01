@@ -62,7 +62,7 @@
 @end
 
 @implementation QSOrderDetailViewController
-@synthesize orderData;
+@synthesize orderData, order_ID;
 
 - (void)loadView
 {
@@ -653,6 +653,21 @@
     [tempParams setObject:@"" forKey:@"id"];
     if (orderData) {
         [tempParams setObject:orderData.order_id forKey:@"id"];
+    }else if (order_ID) {
+        
+        [tempParams setObject:order_ID forKey:@"id"];
+    }else{
+        //
+        ///弹出提示
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取订单详情失败，请稍后再试。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        [alert show];
+        
+        ///显示1秒后移除提示
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [alert dismissWithClickedButtonIndex:0 animated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        });
     }
     
     [QSRequestManager requestDataWithType:rRequestTypeOrderDetailData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
@@ -726,6 +741,7 @@
                 UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的储值卡余额不足以支付当前订单，请选择其他支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [alertview show];
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
                 return;
             }else{
                 

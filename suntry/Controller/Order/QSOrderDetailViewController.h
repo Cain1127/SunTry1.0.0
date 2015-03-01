@@ -12,5 +12,6 @@
 @interface QSOrderDetailViewController : UIViewController
 
 @property (nonatomic, strong) QSOrderDetailDataModel *orderData;
+@property (nonatomic, strong) NSString *order_ID;
 
 @end

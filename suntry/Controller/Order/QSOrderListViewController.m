@@ -27,8 +27,8 @@
 @interface QSOrderListViewController ()
 
 @property (nonatomic, strong) UIView *nodataView;                   //!<暂无记录view
-@property(nonatomic,strong) UITableView     *orderListTableView;    //!<订单列表
-@property(nonatomic,strong) QSOrderListReturnData  *orderListData;  //!<订单列表数据源
+@property (nonatomic,strong) UITableView     *orderListTableView;    //!<订单列表
+@property (nonatomic,strong) QSOrderListReturnData  *orderListData;  //!<订单列表数据源
 
 @end
 
@@ -98,9 +98,12 @@
     [self.orderListTableView addHeaderWithTarget:self action:@selector(getUserOrderHeaderList)];
     [self.orderListTableView addFooterWithTarget:self action:@selector(getUserOrderFooterList)];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
     ///开始就请求数据
     [self.orderListTableView headerBeginRefreshing];
-    
 }
 
 #pragma mark - 返回当前有多少个订单
