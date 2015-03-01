@@ -753,7 +753,7 @@
                             [pfovc setOrderFormModel:orderFormModel];
                             [pfovc setOrderTotalPrice:[NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]]];
                             [self.navigationController pushViewController:pfovc animated:YES];
-                            
+                            [QSPShoppingCarData clearShoopingCar];
                         }
                         break;
                     default:

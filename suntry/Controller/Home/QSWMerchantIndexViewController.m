@@ -28,6 +28,8 @@
 
 #import <objc/runtime.h>
 
+#import "QSBlockButton.h"
+
 #define kCallAlertViewTag 111
 
 ///关联
@@ -50,6 +52,8 @@ static char titleLabelKey;//!<标题key
 @property (nonatomic,retain) NSMutableArray *specialDataSource;     //!<优惠信息数据源
 @property (nonatomic,retain) NSMutableArray *streetList;            //!<街道数据源
 @property (nonatomic,strong) QSDatePickerViewController *customPicker;    //!<选择器
+
+@property (nonatomic, strong) UIButton  *shakeView;     //摇一摇界面
 
 @end
 
@@ -138,9 +142,43 @@ static char titleLabelKey;//!<标题key
     ///加载头部view
     [self setupTopView];
     
+    [self initShakeView];
+    
     ///加载食品列表
     [self setupFoodListView];
     
+}
+
+/**
+ *  初始化摇一摇页面
+ */
+- (void)initShakeView
+{
+    //半透明背景层
+    QSBlockButtonStyleModel *shakeBtStyle = [[QSBlockButtonStyleModel alloc] init];
+    shakeBtStyle.bgColor = SHAKEVIEW_BACKGROUND_COLOR;
+    self.shakeView = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT) andButtonStyle:shakeBtStyle andCallBack:^(UIButton *button) {
+        
+        [button setHidden:YES];
+        
+    }];
+    [self.shakeView setTag:111];
+    [self.shakeView setHidden:YES];
+    [self.tabBarController.view addSubview:self.shakeView];
+    
+    UIImageView *iconImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home_shake_icon"]];
+    [iconImgView setCenter:CGPointMake(SIZE_DEVICE_WIDTH/2, iconImgView.frame.size.height/2)];
+    UILabel *titleLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, iconImgView.frame.origin.y+iconImgView.frame.size.height, SIZE_DEVICE_WIDTH, 30)];
+    [titleLabel setBackgroundColor:[UIColor clearColor]];
+    [titleLabel setTextColor:[UIColor whiteColor]];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [titleLabel setText:@"摇一摇查看推荐菜品"];
+    
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, iconImgView.frame.size.height+titleLabel.frame.size.height)];
+    [contentView addSubview:iconImgView];
+    [contentView addSubview:titleLabel];
+    [contentView setCenter:self.shakeView.center];
+    [self.shakeView addSubview:contentView];
 }
 
 ///加载顶部view
@@ -294,7 +332,6 @@ static char titleLabelKey;//!<标题key
     
     ///获取模型
     QSGoodsDataModel *tempModel = self.specialDataSource[indexPath.row];
-   
     cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
     cell.foodNameLabel.text= tempModel.goodsName;
     cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
@@ -329,9 +366,7 @@ static char titleLabelKey;//!<标题key
 ///点击摇一摇功能按钮
 - (IBAction)sharkButtonClick:(id)sender
 {
-    
-    [self getRandomGoods];
-    
+    [self.shakeView setHidden:NO];
 }
 
 #pragma mark - 优惠套餐按钮事件
@@ -411,10 +446,11 @@ static char titleLabelKey;//!<标题key
 ///摇一摇事件接收入口
 -(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
-    
     //FIXME: 需要完善逻辑，预防网络慢时同时触发调用的问题。
-    [self getRandomGoods];
-    
+    if (![self.shakeView isHidden]) {
+        NSLog(@"摇一摇");
+        [self getRandomGoods];
+    }
 }
 
 #pragma mark - 每日特价网络信息请求
@@ -465,7 +501,6 @@ static char titleLabelKey;//!<标题key
 ///随机菜品网络信息请求
 - (void)getRandomGoods
 {
-    
     //随机菜品信息请求参数
     NSDictionary *dict = @{@"num" : @"1"};
     
@@ -483,7 +518,8 @@ static char titleLabelKey;//!<标题key
                 
                 QSGoodsDataModel *goodsItem = array[0];
                 QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
-                [self.tabBarController.view addSubview:shakeFoodView];
+                [shakeFoodView setCurrentViewType:FoodDetailPopViewTypeShake];
+                [self.shakeView addSubview:shakeFoodView];
                 [shakeFoodView updateFoodData:goodsItem];
                 [shakeFoodView showShakeFoodView];
                 
@@ -491,7 +527,6 @@ static char titleLabelKey;//!<标题key
             
             
         } else {
-            
             NSLog(@"================随机菜品信息请求失败================");
             NSLog(@"error : %@",errorInfo);
         }

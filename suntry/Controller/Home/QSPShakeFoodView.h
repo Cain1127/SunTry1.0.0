@@ -8,15 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
+#define SHAKEVIEW_BACKGROUND_COLOR                  [UIColor colorWithWhite:0 alpha:0.6]
+
 @protocol QSPShakeFoodViewDelegate<NSObject>
 
 - (void)changedWithData:(id)foodData;
 
 @end
 
+typedef enum
+{
+    FoodDetailPopViewTypeNormal = 0,
+    FoodDetailPopViewTypeShake = 1,
+}FoodDetailPopViewType;
+
 @interface QSPShakeFoodView : UIView
 
 @property(nonatomic,assign) id<QSPShakeFoodViewDelegate> delegate;
+
+@property(nonatomic,assign) FoodDetailPopViewType currentViewType;
 
 + (instancetype)getShakeFoodView;
 
