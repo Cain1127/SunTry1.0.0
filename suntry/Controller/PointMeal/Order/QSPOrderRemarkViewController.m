@@ -48,8 +48,14 @@
     [navTitle setTextAlignment:NSTextAlignmentCenter];
     [navTitle setText:@"备注要求"];
     self.navigationItem.titleView = navTitle;
+
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    CGFloat offetY = 0;
+    if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+        offetY = 64;
+    }
     
-    self.contentTextView = [[UITextView alloc] initWithFrame:CGRectMake(16, 16, SIZE_DEVICE_WIDTH-32, 130)];
+    self.contentTextView = [[UITextView alloc] initWithFrame:CGRectMake(16, 16+offetY, SIZE_DEVICE_WIDTH-32, 130)];
     [self.contentTextView setBackgroundColor:[UIColor clearColor]];
     [self.contentTextView setFont:[UIFont systemFontOfSize:ORDER_REMARK_VIEW_CONTROLLER_TEXT_FONT_SIZE]];
     [self.contentTextView setDelegate:self];
@@ -59,10 +65,10 @@
     [self.contentTextView.layer setCornerRadius:5.];
     [self.view addSubview:self.contentTextView];
     
-    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 2, SIZE_DEVICE_WIDTH-32, 32)];
+    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 2, SIZE_DEVICE_WIDTH-32, 32*2)];
     [self.placeholderLabel setBackgroundColor:[UIColor clearColor]];
     [self.placeholderLabel setText:@"给我们留言，可输入口味，时间，要求等"];
-    [self.placeholderLabel setNumberOfLines:2];
+    [self.placeholderLabel setNumberOfLines:0];
     [self.placeholderLabel setFont:[UIFont systemFontOfSize:ORDER_REMARK_VIEW_CONTROLLER_TEXT_FONT_SIZE]];
     [self.placeholderLabel setTextColor:ORDER_REMARK_VIEW_CONTROLLER_PLACEHOLDER_TEXT_COLOR];
     [self.contentTextView addSubview:self.placeholderLabel];
@@ -84,27 +90,28 @@
         
         NSLog(@"submitBtl");
         
-//        if ([self.contentTextView text]&&![[self.contentTextView text] isEqualToString:@""]) {
-    
-            [[NSUserDefaults standardUserDefaults] setObject:[self.contentTextView text] forKey:KEY_ORDER_USER_REMARK_INFO];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-//        }else{
-//            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"请输入你的备注要求！"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//            [av show];
-//            return ;
-//        }
+        //        if ([self.contentTextView text]&&![[self.contentTextView text] isEqualToString:@""]) {
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[self.contentTextView text] forKey:KEY_ORDER_USER_REMARK_INFO];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        //        }else{
+        //            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"请输入你的备注要求！"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        //            [av show];
+        //            return ;
+        //        }
         
         [self.navigationController popViewControllerAnimated:YES];
         
     }];
     [self.view addSubview:submitBt];
-
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView;
