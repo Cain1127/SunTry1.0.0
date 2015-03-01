@@ -214,10 +214,11 @@
                 _orderListTableView.hidden = YES;
                 
             } else {
+
+                [_orderListTableView reloadData];
                 
                 _nodataView.hidden = YES;
                 _orderListTableView.hidden = NO;
-                [_orderListTableView reloadData];
                 
                 ///结束刷新动画
                 [self.orderListTableView footerEndRefreshing];
@@ -226,10 +227,6 @@
             }
             
         } else {
-        
-            ///显示无订单内容
-            _nodataView.hidden = NO;
-            _orderListTableView.hidden = YES;
             
             ///结束刷新动画
             [self.orderListTableView footerEndRefreshing];
@@ -277,7 +274,7 @@
     //order 传 t.add_time desc
     [tempParams setObject:@"t.add_time desc" forKey:@"order"];
     //except 不读取到某些类型的,5是储蓄卡购买支付的类型，
-    [tempParams setObject:@"" forKey:@"except"];
+    [tempParams setObject:@"5" forKey:@"except"];
     
     [QSRequestManager requestDataWithType:rRequestTypeOrderListData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
@@ -298,6 +295,8 @@
                 
                 ///重置列表数据
                 [localArray addObjectsFromArray:tempModel.orderListData.orderList];
+                
+                self.orderListData.orderListData.orderList = localArray;
                 
                 ///判断是否有更新
                 [_orderListTableView reloadData];
