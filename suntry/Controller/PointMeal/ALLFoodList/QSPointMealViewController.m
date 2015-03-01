@@ -41,7 +41,7 @@ typedef enum {
     FoodTypePackage     = 3,
 } FoodType;
 
-@interface QSPointMealViewController ()
+@interface QSPointMealViewController ()<QSPShakeFoodViewDelegate>
 
 @property(nonatomic,strong) UITableView     *foodTypeTableView;
 @property(nonatomic,strong) NSMutableArray  *foodTypeList;
@@ -513,6 +513,7 @@ typedef enum {
                         if ([itemData.goodsTypeID integerValue] == 1 || [itemData.goodsTypeID integerValue] == 5) {
                             
                             QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
+                            [shakeFoodView setDelegate:self];
                             [self.tabBarController.view addSubview:shakeFoodView];
                             [shakeFoodView updateFoodData:itemData];
                             [shakeFoodView showShakeFoodView];
@@ -683,6 +684,12 @@ typedef enum {
         }
         
     }
+}
+
+//QSPShakeFoodViewDelegate
+- (void)changedWithData:(id)foodData
+{
+    [_foodInfoListTableView reloadData];
 }
 
 /*

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSGoodsDataModel.h"
 
 /**
  *  购物车数据单例
@@ -39,12 +40,17 @@
 
 + (NSInteger)getTotalFoodCount;
 
++ (NSInteger)searchFoodCountInTheCar:(QSGoodsDataModel*)foodData;
+
+
 @end
 
 
 /**
  *  购物车视图
  */
+
+
 @protocol QSPShoppingCarViewDelegate<NSObject>
 
 - (void)orderWithData:(id)foodData;

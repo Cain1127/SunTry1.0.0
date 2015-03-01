@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol QSPShakeFoodViewDelegate<NSObject>
+
+- (void)changedWithData:(id)foodData;
+
+@end
+
 @interface QSPShakeFoodView : UIView
+
+@property(nonatomic,assign) id<QSPShakeFoodViewDelegate> delegate;
 
 + (instancetype)getShakeFoodView;
 

@@ -16,6 +16,7 @@
 #import "UIImageView+CacheImage.h"
 #import "QSGoodsDataModel.h"
 #import "ImageHeader.h"
+#import "QSPShoppingCarView.h"
 
 #define SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE        20.
 #define SHAKEVIEW_FOOD_NAME_STYLE_COLOR             COLOR_HEXCOLOR(0x94414D)
@@ -28,7 +29,7 @@
 #define SHAKEVIEW_FOOD_INSTOCK_FONT_SIZE            16.
 #define SHAKEVIEW_FOOD_INSTOCK_STRING_COLOR            [UIColor colorWithRed:147/255.0 green:149/255.0 blue:151/255.0 alpha:1.]
 
-@interface QSPShakeFoodView ()
+@interface QSPShakeFoodView ()<SPFoodCountControlViewDelegate>
 
 @property(nonatomic,strong) QSLabel     *foodTypeLabel;
 @property(nonatomic,strong) QSLabel     *foodNameLabel;
@@ -38,10 +39,13 @@
 @property(nonatomic,strong) QSLabel     *oldPriceLabel;
 @property(nonatomic,strong) QSLabel     *inStockCountLabel;
 @property(nonatomic,strong) QSPFoodCountControlView *foodCountControlView;
+@property(nonatomic,strong) QSGoodsDataModel *foodData;
+@property(nonatomic,strong) NSMutableDictionary *foodDataInCarListFormatDic;
 
 @end
 
 @implementation QSPShakeFoodView
+@synthesize delegate;
 
 + (instancetype)getShakeFoodView
 {
@@ -62,6 +66,8 @@
 {
     
     if (self = [super init]) {
+        
+        self.foodDataInCarListFormatDic = [NSMutableDictionary dictionaryWithCapacity:0];
         
         //半透明背景层
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];
@@ -127,6 +133,7 @@
         //增加减少菜品数量控件
         self.foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
         [self.foodCountControlView setMarginTopRight:CGPointMake(contentBackgroundView.frame.size.width-13, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height+4)];
+        [self.foodCountControlView setDelegate:self];
         [contentBackgroundView addSubview:self.foodCountControlView];
         
         //库存
@@ -148,21 +155,42 @@
 
 - (void)updateFoodData:(id)data
 {
+    
+    _foodData = nil;
+    self.foodDataInCarListFormatDic = [NSMutableDictionary dictionaryWithCapacity:0];
     if (![data isKindOfClass:[QSGoodsDataModel class]]) {
         NSLog(@"随机菜品数据格式错误！");
         return;
     }
+    _foodData = (QSGoodsDataModel*)data;
+    
+    [self.foodDataInCarListFormatDic setObject:_foodData.goodsID forKey:@"goods_id"];
+    [self.foodDataInCarListFormatDic setObject:_foodData.goodsName forKey:@"name"];
+    [self.foodDataInCarListFormatDic setObject:_foodData.shopkeeperID forKey:@"sale_id"];
+    [self.foodDataInCarListFormatDic setObject:[_foodData getOnsalePrice] forKey:@"sale_money"];
+    NSMutableArray *subFoodList = [NSMutableArray arrayWithCapacity:0];
+    if (_foodData.ingredientList) {
+        for (id subfood in _foodData.ingredientList) {
+            [subFoodList addObject:subfood];
+        }
+    }
+    if (_foodData.stapleFoodList) {
+        for (id subfood in _foodData.stapleFoodList) {
+            [subFoodList addObject:subfood];
+        }
+    }
+    [self.foodDataInCarListFormatDic setObject:subFoodList forKey:@"diet"];
+    
     [_contentImgView setImage:nil];
-    QSGoodsDataModel *goodsItem = data;
     [_foodCountControlView setHidden:YES];
     //菜类型
-    NSString* foodTypeStr = goodsItem.goodsTypeName;
+    NSString* foodTypeStr = _foodData.goodsTypeName;
     CGFloat foodTypeWidth = [foodTypeStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
     [self.foodTypeLabel setFrame:CGRectMake(self.foodTypeLabel.frame.origin.x, self.foodTypeLabel.frame.origin.y, foodTypeWidth, self.foodTypeLabel.frame.size.height)];
     [self.foodTypeLabel setText:foodTypeStr];
     
     //菜名
-    NSString* foodNameStr = goodsItem.goodsName;
+    NSString* foodNameStr = _foodData.goodsName;
     CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
     
     foodNameWidth = _foodTypeLabel.superview.frame.size.width - self.foodTypeLabel.frame.origin.x-self.foodTypeLabel.frame.size.width - 32;
@@ -171,17 +199,17 @@
     [self.foodNameLabel setText:foodNameStr];
     
     //菜展示图
-    [self.contentImgView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,goodsItem.goodsImageUrl]] placeholderImage:nil];
+    [self.contentImgView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,_foodData.goodsImageUrl]] placeholderImage:nil];
     
     [_pricemarkIconView setHidden:NO];
     //当前售卖价格
-    NSString* priceStr = [goodsItem getOnsalePrice];
+    NSString* priceStr = [_foodData getOnsalePrice];
     CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:SHAKEVIEW_FOOD_PRICE_ONSALE_FONT_SIZE]+4;
     [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
     [self.priceLabel setText:priceStr];
     
     //原价格
-    NSString* oldPriceStr = [NSString stringWithFormat:@"原价:￥%@",goodsItem.goodsPrice];
+    NSString* oldPriceStr = [NSString stringWithFormat:@"原价:￥%@",_foodData.goodsPrice];
     NSDictionary *subStrAttribute = @{
                                       NSForegroundColorAttributeName :SHAKEVIEW_FOOD_PRICE_OLD_STRING_COLOR,
                                       NSStrikethroughStyleAttributeName : @2
@@ -191,16 +219,21 @@
     [self.oldPriceLabel setAttributedText:attributedText];
     [self.oldPriceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x+self.priceLabel.frame.size.width, self.priceLabel.frame.origin.y, oldPriceWidth, 14)];
     //库存
-    NSString* inStockCountStr = [NSString stringWithFormat:@"现有库存：%@份",goodsItem.goodsInstockNum];
+    NSString* inStockCountStr = [NSString stringWithFormat:@"现有库存：%@份",_foodData.goodsInstockNum];
     [self.inStockCountLabel setText:inStockCountStr];
-    if (!goodsItem.goodsInstockNum || [goodsItem.goodsInstockNum isEqualToString:@""]) {
+    if (!_foodData.goodsInstockNum || [_foodData.goodsInstockNum isEqualToString:@""]) {
         [self.inStockCountLabel setHidden:YES];
     }else{
         [self.inStockCountLabel setHidden:NO];
     }
     
     //库存少于0时,或者套餐时隐藏添加减少控件
-    if ( 0<=[goodsItem.goodsInstockNum integerValue] && ![goodsItem.goodsTypeID isEqualToString:@"5"]) {
+    if ( 0<=[_foodData.goodsInstockNum integerValue] && ![_foodData.goodsTypeID isEqualToString:@"5"]) {
+       
+        NSInteger count = [QSPShoppingCarData searchFoodCountInTheCar:_foodData];
+        [_foodCountControlView setCount:count];
+        NSLog(@"[QSPShoppingCarData searchFoodCountInTheCar:_foodData]:%ld",(long)[QSPShoppingCarData searchFoodCountInTheCar:_foodData]);
+        
         [_foodCountControlView setHidden:NO];
     }
     
@@ -209,7 +242,7 @@
 - (id)getFoodData
 {
     
-    return nil;
+    return _foodData;
     
 }
 
@@ -225,6 +258,15 @@
     
     [self setHidden:YES];
     
+}
+
+- (void)changedCount:(NSInteger)count
+{
+    NSLog(@"changedCount:%ld",(long)count);
+    [QSPShoppingCarData setShoppingCarDataListWithData:_foodDataInCarListFormatDic withCount:count AddOrSetPackageData:NO];
+    if (delegate) {
+        [delegate changedWithData:_foodData];
+    }
 }
 
 /*

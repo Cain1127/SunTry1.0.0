@@ -12,6 +12,7 @@
 #import "NSString+Calculation.h"
 #import "QSBlockButton.h"
 #import "QSGoodsDataModel.h"
+#import "QSPShoppingCarView.h"
 
 #define SHOPPING_CAR_VIEW_HEIGHT                        49.
 #define SHOPPING_CAR_VIEW_LEFTVIEW_BACKGROUND_COLOR    [UIColor colorWithRed:192/255. green:84/255. blue:100/255. alpha:1]
@@ -380,6 +381,92 @@
         totalCount += countStr.intValue;
     }
     return totalCount;
+}
+
++ (NSInteger)searchFoodCountInTheCar:(QSGoodsDataModel*)foodData
+{
+    //转换QSGoodsDataModel为购物车的菜品字典格式
+    NSMutableDictionary *foodDic = [NSMutableDictionary dictionaryWithCapacity:0];
+    [foodDic setObject:foodData.goodsID forKey:@"goods_id"];
+    [foodDic setObject:foodData.goodsName forKey:@"name"];
+    [foodDic setObject:foodData.shopkeeperID forKey:@"sale_id"];
+    [foodDic setObject:[foodData getOnsalePrice] forKey:@"sale_money"];
+    NSMutableArray *subFoodList = [NSMutableArray arrayWithCapacity:0];
+    if (foodData.ingredientList) {
+        for (id subfood in foodData.ingredientList) {
+            [subFoodList addObject:subfood];
+        }
+    }
+    if (foodData.stapleFoodList) {
+        for (id subfood in foodData.stapleFoodList) {
+            [subFoodList addObject:subfood];
+        }
+    }
+    [foodDic setObject:subFoodList forKey:@"diet"];
+    
+    
+    NSInteger count = 0;
+    BOOL hadGood = NO;
+    NSArray *goodListInShoppingCar = [self getShoppingCarDataList];
+
+    NSDictionary *tempDic;
+    for (int i=0; i<[goodListInShoppingCar count]; i++) {
+        tempDic = goodListInShoppingCar[i];
+        if (tempDic&&[tempDic isKindOfClass:[NSDictionary class]]) {
+            
+            NSString *subGoodID = [tempDic objectForKey:@"goods_id"];
+            NSString *currentGoodID = [foodDic objectForKey:@"goods_id"];
+            if (subGoodID && currentGoodID &&[currentGoodID isEqualToString:subGoodID]) {
+                
+                //判断是不是套餐数据
+                BOOL isPackage = NO;
+                id dietData = [tempDic objectForKey:@"diet"];
+                if (dietData && [dietData isKindOfClass:[NSArray class]]) {
+                    NSArray *dietList = (NSArray*)dietData;
+                    if ([dietList count]>0) {
+                        //套餐时
+                        isPackage = YES;
+                        id dietCurrentData = [foodDic objectForKey:@"diet"];
+                        if (dietCurrentData && [dietCurrentData isKindOfClass:[NSArray class]]) {
+                            NSArray *dietCurrentList = (NSArray*)dietCurrentData;
+                            if ([dietCurrentList count] == [dietList count]) {
+                                BOOL isTheSame = YES;
+                                for (int i=0; i<[dietList count]; i++) {
+                                    
+                                    NSString *tempGoodID = [dietCurrentList[i] objectForKey:@"goods_id"];
+                                    NSString *currentTempGoodID = [dietList[i] objectForKey:@"goods_id"];
+                                    
+                                    if (!tempGoodID || !currentTempGoodID ||![currentTempGoodID isEqualToString:tempGoodID]) {
+                                        isTheSame = NO;
+                                    }
+                                }
+                                
+                                if (isTheSame) {
+                                    hadGood = YES;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (!isPackage) {
+                    //单品
+                    hadGood = YES;
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (hadGood) {
+        NSString * countStr = [tempDic objectForKey:@"num"];
+        if (countStr&&[countStr isKindOfClass:[NSString class]]) {
+            count = countStr.integerValue;
+        }
+    }
+    
+    return count;
 }
 
 @end
