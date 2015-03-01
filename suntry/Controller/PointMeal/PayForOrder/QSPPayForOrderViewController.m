@@ -187,6 +187,7 @@
         if (!pass || [pass isEqualToString:@""]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请输入储值卡支付密码" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             return ;
         }
         //提交支付所需参数

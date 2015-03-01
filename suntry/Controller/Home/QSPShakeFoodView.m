@@ -75,6 +75,10 @@
         //背景关闭按钮
         QSBlockButtonStyleModel *bgBtStyleModel = [QSBlockButtonStyleModel alloc];
         UIButton *bgBt = [UIButton createBlockButtonWithFrame:self.frame andButtonStyle:bgBtStyleModel andCallBack:^(UIButton *button) {
+            if (self.superview.tag == 111) {
+                //隐藏摇一摇界面
+                [self.superview setHidden:YES];
+            }
             [self hideShakeFoodView];
         }];
         [self addSubview:bgBt];
@@ -277,10 +281,6 @@
 
 - (void)hideShakeFoodView
 {
-    if (self.superview.tag == 111) {
-        //隐藏摇一摇界面
-        [self.superview setHidden:YES];
-    }
     currentViewType = FoodDetailPopViewTypeNormal;
     [self setBackgroundColor:SHAKEVIEW_BACKGROUND_COLOR];
     [self setHidden:YES];

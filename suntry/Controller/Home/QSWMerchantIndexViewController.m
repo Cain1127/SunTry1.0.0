@@ -437,8 +437,11 @@ static char titleLabelKey;//!<标题key
 - (IBAction)sharkButtonClick:(id)sender
 {
     
+    UIView *shakeView = [self.tabBarController.view viewWithTag:111];
+    if (!shakeView) {
+        [self.tabBarController.view addSubview:self.shakeView];
+    }
     [self.shakeView setHidden:NO];
-    [self.view bringSubviewToFront:self.shakeView];
     
 }
 

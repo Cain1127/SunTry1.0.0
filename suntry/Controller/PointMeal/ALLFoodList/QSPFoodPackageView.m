@@ -15,7 +15,7 @@
 #import "QSGoodsDataModel.h"
 
 #define PACKAGE_VIEW_BACKGROUND_COLOR                  [UIColor colorWithWhite:0 alpha:0.6]
-#define PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE        20.
+#define PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE        15.
 #define PACKAGE_VIEW_FOOD_NAME_TEXT_COLOR             [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 
 
