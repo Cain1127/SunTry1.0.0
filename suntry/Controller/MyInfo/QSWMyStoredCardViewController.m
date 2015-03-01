@@ -37,6 +37,8 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    self.automaticallyAdjustsScrollViewInsets=NO;
     ///自定义返回按钮
     UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
     turnBackButton.tintColor = [UIColor whiteColor];
@@ -67,7 +69,7 @@
     
     UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_rmbmark"]];
     [nodataImgView setCenter:self.view.center];
-    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 110/667.*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
+    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 174.0f/667.0f*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
     [_nodataView addSubview:nodataImgView];
     
     QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(20, nodataImgView.frame.origin.y+nodataImgView.frame.size.height+5, SIZE_DEVICE_WIDTH-40, 50)];
@@ -91,7 +93,7 @@
     flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
     
     ///初始化collectionView
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, infoLabel.frame.origin.y+infoLabel.frame.size.height+10.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-infoLabel.frame.origin.y-infoLabel.frame.size.height-10.0f-49.0f-64.0f) collectionViewLayout:flowLayout];
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, infoLabel.frame.origin.y+infoLabel.frame.size.height+10.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT-infoLabel.frame.origin.y-infoLabel.frame.size.height-10.0f-49.0f) collectionViewLayout:flowLayout];
     ///取消导航条
     self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;

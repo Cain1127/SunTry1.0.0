@@ -37,7 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *resetPswButton;      //!<重置密码按钮
 @property (weak, nonatomic) IBOutlet UIButton *chargeRecord;        //!<充值记录按钮
 @property (weak, nonatomic) IBOutlet UIButton *consumeRecord;       //!<消费记录按钮
-@property (nonatomic, strong) UITableView *tabbleView;     //!<充值，消费记录view
+@property (nonatomic, strong) UITableView *tabbleView;              //!<充值，消费记录view
 @property (nonatomic, retain) NSMutableArray *storedCardDataSource; //!<充值卡信息数据源
 
 @property (nonatomic,retain) MBProgressHUD *hud;                    //!<HUD
@@ -65,6 +65,7 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     ///标题
     UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
@@ -97,7 +98,7 @@
 {
     
     CGFloat topViewH = 176.0f;
-    _topView.frame=CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, topViewH);
+    _topView.frame=CGRectMake(0.0f, 64.0f, SIZE_DEVICE_WIDTH, topViewH);
     
     _balanceLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 150.0f, _topView.frame.size.height * 1.0f / 4.0f);
     _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH - 100.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 100.0f, topViewH * 1.0f / 4.0f);
@@ -177,7 +178,11 @@
     [self.tabbleView addHeaderWithTarget:self action:@selector(getChargeRecordList)];
     
     ///开始就刷新
-    [self.tabbleView headerBeginRefreshing];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        [self.tabbleView headerBeginRefreshing];
+        
+    });
     
 }
 
@@ -238,7 +243,7 @@
         
         if (cell == nil) {
             
-            cell = [[QSWStoredCardCell alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
+            cell = [[QSWStoredCardCell alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_HOME_BANNAR_HEIGHT, 0.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
             
             
         }
@@ -246,13 +251,17 @@
         ///获取模型
         QSStoredCardDataModel *tempModel = self.storedCardDataSource[indexPath.row];
         
-        cell.cTimeLabel.text=tempModel.createTime;
+        cell.cTimeLabel.text = tempModel.createTime;
         if (_chargeRecord.selected){
             
             cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥+%@",tempModel.amount];
+            
         }
+        
         if (_consumeRecord.selected) {
+            
             cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥-%@",tempModel.amount];
+            
         }
         
         cell.cBalanceLabel.text=tempModel.historybalance;
@@ -442,7 +451,7 @@
             
             //设置页码：当前页码/最大页码
             
-            self.storedCardDataSource=[[NSMutableArray alloc]init];
+            self.storedCardDataSource = [[NSMutableArray alloc]init];
             //清空的数据源
             [self.storedCardDataSource removeAllObjects];
             
@@ -453,7 +462,11 @@
             [self.tabbleView headerEndRefreshing];
             
             ///reload数据
-            [self.tabbleView reloadData];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [self.tabbleView reloadData];
+                
+            });
             
         } else {
             

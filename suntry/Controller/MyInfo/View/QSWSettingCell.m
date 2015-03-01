@@ -158,7 +158,7 @@
 
 - (void)setFrame:(CGRect)frame
 {
-    if (iOS7) {
+    if (!iOS7) {
         
         frame.origin.x = 5;
         frame.size.width -= 10;

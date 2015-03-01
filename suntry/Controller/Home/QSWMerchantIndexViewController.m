@@ -20,6 +20,7 @@
 #import "UIImageView+CacheImage.h"
 #import "FontHeader.h"
 #import "MJRefresh.h"
+#import "CommonHeader.h"
 
 #import "QSDatePickerViewController.h"
 #import "ASDepthModalViewController.h"
@@ -33,7 +34,7 @@
 ///关联
 static char titleLabelKey;//!<标题key
 
-@interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+@interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *foodImageView;    //!<菜品图片
 @property (weak, nonatomic) IBOutlet UIButton *sharkButton;         //!<摇一摇按钮
@@ -50,6 +51,7 @@ static char titleLabelKey;//!<标题key
 @property (nonatomic,retain) NSMutableArray *specialDataSource;     //!<优惠信息数据源
 @property (nonatomic,retain) NSMutableArray *streetList;            //!<街道数据源
 @property (nonatomic,strong) QSDatePickerViewController *customPicker;    //!<选择器
+@property (nonatomic, copy) NSString *phoneNumber;                  //!<电话号码
 
 @end
 
@@ -59,7 +61,7 @@ static char titleLabelKey;//!<标题key
 ///初始化
 - (instancetype)initWithID:(NSString *)distictID andDistictName:(NSString *)districtName
 {
-
+    
     if (self = [super init]) {
         
         self.distictID=distictID;
@@ -74,7 +76,7 @@ static char titleLabelKey;//!<标题key
     }
     
     return self;
-
+    
 }
 
 #pragma mark - 获取本地位置的区信息
@@ -104,6 +106,9 @@ static char titleLabelKey;//!<标题key
     ///添加摇一摇功能
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
     [self becomeFirstResponder];
+    
+    ///加载食品列表
+    [self setupFoodListView];
     
     ///导航栏
     UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
@@ -135,51 +140,17 @@ static char titleLabelKey;//!<标题key
     [navRootView addSubview:districtButton];
     [districtButton addTarget:self action:@selector(showStreetPicker) forControlEvents:UIControlEventTouchUpInside];
     
-    ///加载头部view
-    [self setupTopView];
-    
-    ///加载食品列表
-    [self setupFoodListView];
-    
-}
-
-///加载顶部view
--(void)setupTopView
-{
-    
-    _foodImageView.frame=CGRectMake(0.0f, 64.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT);
-    
-    CGFloat buttonW = (SIZE_DEVICE_WIDTH - 5.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) / 4.0f;
-    CGFloat buttonH = buttonW * 74.0f / 78.0f;
-    CGFloat buttonY = 64.0f + SIZE_DEFAULT_HOME_BANNAR_HEIGHT + SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
-    
-    _sharkButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, buttonY, buttonW, buttonH);
-    _packageButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 2.0f + buttonW, buttonY, buttonW, buttonH);
-    _carButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 3.0f + 2.0f * buttonW, buttonY, buttonW, buttonH);
-     _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 4.0f + 3.0f * buttonW, buttonY, buttonW, buttonH);
-    _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 20.0f);
-    [_specialsLabel setFont:[UIFont systemFontOfSize:20.0f]];
-    
-    _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 20.0f);
-    
 }
 
 ///加载食品列表
 -(void)setupFoodListView
 {
-
+    
     //确定是水平滚动，还是垂直滚动
     UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     
-    ///设置
-    CGFloat viewW = (SIZE_DEVICE_WIDTH - 3.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) * 0.5;
-    CGFloat viewH = viewW * 289.0f / 335.0f;
-    CGSize itemSize = CGSizeMake(viewW, viewH);
-    flowLayout.itemSize = itemSize;
-    flowLayout.sectionInset = UIEdgeInsetsMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
-    
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, self.moreButton.frame.origin.y + 20.0f + 5.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - self.moreButton.frame.origin.y - 20.0f - 49.0f) collectionViewLayout:flowLayout];
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, 64.0f-SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 64.0f - 49.0f) collectionViewLayout:flowLayout];
     self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     
@@ -192,6 +163,9 @@ static char titleLabelKey;//!<标题key
     [self.collectionView headerBeginRefreshing];
     
     //注册Cell，必须要有
+    
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"HeaderCollectionViewCell"];
+    
     [self.collectionView registerClass:[QSWMerchantIndexCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
     [self.view addSubview:self.collectionView];
@@ -258,7 +232,7 @@ static char titleLabelKey;//!<标题key
     };
     
     [ASDepthModalViewController presentView:self.customPicker.view];
-
+    
 }
 
 #pragma mark - 当前特价总数
@@ -266,7 +240,7 @@ static char titleLabelKey;//!<标题key
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     
-    return [self.specialDataSource count];
+    return [self.specialDataSource count]+1;
     
 }
 
@@ -278,30 +252,98 @@ static char titleLabelKey;//!<标题key
     
 }
 
-#pragma mark - 返回每一个特价信息cell
+#pragma mark - 返回的第一行
 ///每个UICollectionView展示的内容
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * CellIdentifier = @"UICollectionViewCell";
     
-    QSWMerchantIndexCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    if (cell==nil) {
+    if (indexPath.row==0) {
+        static NSString * CellIdentifier = @"HeaderCollectionViewCell";
         
-        cell=[[QSWMerchantIndexCell alloc]init];
-    
+        UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        if (cell==nil) {
+            
+            cell=[[UICollectionViewCell alloc]init];
+            
+        }
+        
+        _foodImageView.frame=CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT);
+        
+        CGFloat buttonW = (SIZE_DEVICE_WIDTH - 5.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) / 4.0f;
+        CGFloat buttonH = buttonW * 74.0f / 78.0f;
+        CGFloat buttonY = SIZE_DEFAULT_HOME_BANNAR_HEIGHT + SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
+        
+        _sharkButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, buttonY, buttonW, buttonH);
+        _packageButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 2.0f + buttonW, buttonY, buttonW, buttonH);
+        _carButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 3.0f + 2.0f * buttonW, buttonY, buttonW, buttonH);
+        _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 4.0f + 3.0f * buttonW, buttonY, buttonW, buttonH);
+        _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 20.0f);
+        [_specialsLabel setFont:[UIFont systemFontOfSize:20.0f]];
+        
+        _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 20.0f);
+        
+        [cell.contentView addSubview:_foodImageView];
+        [cell.contentView addSubview:_sharkButton];
+        [cell.contentView addSubview:_packageButton];
+        [cell.contentView addSubview:_carButton];
+        [cell.contentView addSubview:_customButton];
+        [cell.contentView addSubview: _specialsLabel];
+        [cell.contentView addSubview:_moreButton];
+        cell.selected=NO;
+        return cell;
+        
+    }
+    else{
+        static NSString * CellIdentifier = @"UICollectionViewCell";
+        
+        QSWMerchantIndexCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        if (cell==nil) {
+            
+            cell=[[QSWMerchantIndexCell alloc] init];
+            
+        }
+        
+        ///获取模型
+        QSGoodsDataModel *tempModel = self.specialDataSource[indexPath.row-1];
+        
+        cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
+        cell.foodNameLabel.text= tempModel.goodsName;
+        cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
+        [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://admin.9dxz.com/files/%@",tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
+        cell.priceLabel.text= tempModel.goodsSpecialPrice;
+        return cell;
     }
     
-    ///获取模型
-    QSGoodsDataModel *tempModel = self.specialDataSource[indexPath.row];
-   
-    cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
-    cell.foodNameLabel.text= tempModel.goodsName;
-    cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
-    [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://admin.9dxz.com/files/%@",tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
-    cell.priceLabel.text= tempModel.goodsSpecialPrice;
-    return cell;
+    return nil;
     
+}
+
+#pragma mark --代理方法
+
+//定义每个Item 的大小
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0) {
+        
+        return CGSizeMake(SIZE_DEVICE_WIDTH, _moreButton.frame.origin.y+_moreButton.frame.size.height);
+        
+    }
+    
+    CGFloat viewW = (SIZE_DEVICE_WIDTH - 3.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) * 0.5;
+    CGFloat viewH = viewW * 289.0f / 335.0f;
+    CGSize itemSize = CGSizeMake(viewW, viewH);
+    
+    return itemSize;
+    
+}
+
+//定义每个UICollectionView 的 margin
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    
+    return UIEdgeInsetsMake(0, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT);
 }
 
 #pragma mark - 点击某一个特价，进入点餐页面
@@ -309,7 +351,13 @@ static char titleLabelKey;//!<标题key
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row];
+    if (indexPath.row==0) {
+        
+        return;
+        
+    }
+    
+    QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row - 1];
     QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
     [self.tabBarController.view addSubview:shakeFoodView];
     [shakeFoodView updateFoodData:goodsItem];
@@ -338,7 +386,7 @@ static char titleLabelKey;//!<标题key
 ///优惠套餐按钮事件
 - (IBAction)packageButtonClick:(id)sender
 {
-   
+    
     [self.tabBarController setSelectedIndex:1];
     
 }
@@ -364,6 +412,17 @@ static char titleLabelKey;//!<标题key
 
 - (void)makeCall:(NSString *)number
 {
+    
+    if (iOS7) {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                            message:[NSString stringWithFormat:@"呼叫 %@",number] delegate:self
+                                                  cancelButtonTitle:nil otherButtonTitles:@"取消",@"确定", nil];
+        alertView.tag = kCallAlertViewTag;
+        self.phoneNumber = number;
+        [alertView show];
+        
+    }
     
     ///电话弹出框
     __block UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"呼叫 %@",number] preferredStyle:UIAlertControllerStyleAlert];
@@ -398,12 +457,22 @@ static char titleLabelKey;//!<标题key
     
 }
 
+#pragma mark --IOS7打电话
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == kCallAlertViewTag) {
+        if (buttonIndex == 1) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.phoneNumber]]];
+        }
+    }
+}
+
 #pragma mark - 更多点餐信息
 ///更多点餐信息
 - (IBAction)moreButtonClick:(id)sender
 {
     
-     [self.tabBarController setSelectedIndex:1];
+    [self.tabBarController setSelectedIndex:1];
     
 }
 

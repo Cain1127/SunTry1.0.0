@@ -36,7 +36,9 @@
     
     [super viewDidLoad];
     
-    ///标题
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] init];
+    self.navigationItem.backBarButtonItem=backItem;
+    backItem.title=@"";
     UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
     [navTitle setTextColor:[UIColor whiteColor]];

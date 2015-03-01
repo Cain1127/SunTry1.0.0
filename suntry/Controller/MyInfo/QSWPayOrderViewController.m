@@ -81,6 +81,8 @@
     
     [super viewDidLoad];
     
+    self.automaticallyAdjustsScrollViewInsets=NO;
+    
     ///自定义返回按钮
     UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
     turnBackButton.tintColor = [UIColor whiteColor];
@@ -104,12 +106,12 @@
     ///加载储值卡数据
     [self getStoredCardList];
     
-    UILabel *userBanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,0.0f, 150.0f, 44.0f)];
+    UILabel *userBanlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,64.0f, 150.0f, 44.0f)];
     userBanlaceLabel.text=@"帐户余额";
     userBanlaceLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:userBanlaceLabel];
     
-    UILabel *banlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH - 100.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 5.0f, 0.0f, 100.0f, 44.0f)];
+    UILabel *banlaceLabel=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEVICE_WIDTH - 100.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 5.0f, 64.0f, 100.0f, 44.0f)];
     //banlaceLabel.text=@"￥0.0";
     banlaceLabel.textAlignment = NSTextAlignmentRight;
     banlaceLabel.textColor = [UIColor lightGrayColor];
@@ -124,7 +126,7 @@
     priceSepLabel.backgroundColor = COLOR_HEXCOLORH(0x000000, 0.5f);
     [self.view addSubview:priceSepLabel];
     
-    UILabel *storedCardPrice=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
+    UILabel *storedCardPrice=[[UILabel alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, userBanlaceLabel.frame.origin.y+userBanlaceLabel.frame.size.height, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
     
     storedCardPrice.text=@"储值卡金额";
     [self.view addSubview:storedCardPrice];
@@ -187,7 +189,7 @@
     [self.view addSubview:paySepLabel];
     
     ///提交支付
-    UIButton *putPayButton=[[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT - 64.0f - 44.0f - 49.0f - 10.0f, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
+    UIButton *putPayButton=[[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT - 44.0f - 49.0f - 10.0f, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 44.0f)];
     [putPayButton setTitle:@"提交支付" forState:UIControlStateNormal];
     [putPayButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     putPayButton.backgroundColor=COLOR_CHARACTERS_RED;

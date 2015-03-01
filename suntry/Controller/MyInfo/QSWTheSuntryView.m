@@ -27,6 +27,8 @@
     
     [super viewDidLoad];
     
+    self.automaticallyAdjustsScrollViewInsets=NO;
+    
     ///标题
     UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
@@ -52,7 +54,7 @@
     
     UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_thesuntry"]];
     [nodataImgView setCenter:self.view.center];
-    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 110/667.*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
+    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 174.0f/667.0f*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
     [_nodataView addSubview:nodataImgView];
     
     QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(20, nodataImgView.frame.origin.y+nodataImgView.frame.size.height+5, SIZE_DEVICE_WIDTH-40, 50)];

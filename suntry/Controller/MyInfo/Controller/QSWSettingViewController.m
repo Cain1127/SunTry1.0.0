@@ -65,6 +65,9 @@
     
     [super viewDidLoad];
     
+    ///取消自适应
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
     ///自身背景颜色
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -76,7 +79,7 @@
     
     if (iOS7) {
         
-        self.tableView.contentInset = UIEdgeInsetsMake(-20.0f, 0, 0, 0);
+        self.tableView.contentInset = UIEdgeInsetsMake(64.0f, 0, 0, 0);
         
     }
     

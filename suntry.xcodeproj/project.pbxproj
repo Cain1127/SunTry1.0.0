@@ -90,6 +90,7 @@
 		CE207AC41A91844900ACF741 /* QSStoredCardDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AC31A91844900ACF741 /* QSStoredCardDataModel.m */; };
 		CE207AC71A91D43000ACF741 /* QSWPayOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AC61A91D43000ACF741 /* QSWPayOrderViewController.m */; };
 		CE4D20CE1AA17FE400EF6FCA /* QSDelUserAddressDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4D20CD1AA17FE400EF6FCA /* QSDelUserAddressDataModel.m */; };
+		CE4D20D11AA2A74A00EF6FCA /* QSNoNetworkingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4D20D01AA2A74A00EF6FCA /* QSNoNetworkingViewController.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -403,6 +404,8 @@
 		CE207AC61A91D43000ACF741 /* QSWPayOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWPayOrderViewController.m; sourceTree = "<group>"; };
 		CE4D20CC1AA17FE400EF6FCA /* QSDelUserAddressDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSDelUserAddressDataModel.h; sourceTree = "<group>"; };
 		CE4D20CD1AA17FE400EF6FCA /* QSDelUserAddressDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSDelUserAddressDataModel.m; sourceTree = "<group>"; };
+		CE4D20CF1AA2A74A00EF6FCA /* QSNoNetworkingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSNoNetworkingViewController.h; sourceTree = "<group>"; };
+		CE4D20D01AA2A74A00EF6FCA /* QSNoNetworkingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSNoNetworkingViewController.m; sourceTree = "<group>"; };
 		CE5341311A7FA4CE002BA188 /* QSTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTabBarViewController.h; sourceTree = "<group>"; };
 		CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTabBarViewController.m; sourceTree = "<group>"; };
 		CE5341341A7FA4CE002BA188 /* QSAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAnnotation.h; sourceTree = "<group>"; };
@@ -652,6 +655,8 @@
 				CE53412C1A7FA4CE002BA188 /* Controller */,
 				1836740D1A7F8FA800BCCF39 /* QSAppDelegate.h */,
 				1836740E1A7F8FA800BCCF39 /* QSAppDelegate.m */,
+				CE4D20CF1AA2A74A00EF6FCA /* QSNoNetworkingViewController.h */,
+				CE4D20D01AA2A74A00EF6FCA /* QSNoNetworkingViewController.m */,
 				183674101A7F8FA800BCCF39 /* Images.xcassets */,
 				183674051A7F8FA800BCCF39 /* Supporting Files */,
 			);
@@ -1795,6 +1800,7 @@
 				CEB630BF1A85C21700F64DEE /* QSWAddSendAdsViewController.m in Sources */,
 				4739023D1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m in Sources */,
 				CEEAC3E51A8DA7DF009AC6AA /* MJRefreshHeaderView.m in Sources */,
+				CE4D20D11AA2A74A00EF6FCA /* QSNoNetworkingViewController.m in Sources */,
 				184AE07E1A90730F007A8CBD /* NSString+PinYin4Cocoa.m in Sources */,
 				CEEAC3951A8CA4EF009AC6AA /* QSGoodsListReturnData.m in Sources */,
 				4739023F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m in Sources */,

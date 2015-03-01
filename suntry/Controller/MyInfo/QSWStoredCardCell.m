@@ -15,26 +15,26 @@
 -(id)initWithFrame:(CGRect)frame
 {
 
-    self=[super initWithFrame:frame];
+    self = [super initWithFrame:frame];
     if (self) {
         
-        CGFloat viewW=SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
-        CGFloat viewH=44.0f;
+        CGFloat viewW = SIZE_DEFAULT_MAX_WIDTH;
+        CGFloat viewH = 44.0f;
         
-        _cTimeLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height,viewW*1/3, viewH)];
+        _cTimeLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, 0.0f,viewW * 1.0f / 3.0f, viewH)];
         _cTimeLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
-        _cTimeLabel.textAlignment=NSTextAlignmentCenter;
+        _cTimeLabel.textAlignment = NSTextAlignmentCenter;
         _cTimeLabel.font=[UIFont systemFontOfSize:16.0f];
         
-        _cPrcieLabel =[[UILabel alloc] initWithFrame:CGRectMake(viewW*1/3, self.frame.size.height, viewW*1/3, viewH)];
+        _cPrcieLabel =[[UILabel alloc] initWithFrame:CGRectMake(viewW * 1.0f / 3.0f, 0.0f, viewW * 1.0f / 3.0f, viewH)];
         _cPrcieLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
         _cPrcieLabel.textAlignment=NSTextAlignmentCenter;
         _cPrcieLabel.font=[UIFont systemFontOfSize:16.0f];
         
-        _cBalanceLabel =[[UILabel alloc] initWithFrame:CGRectMake(viewW*2/3, self.frame.size.height, viewW*1/3, viewH)];
+        _cBalanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewW * 2.0f / 3.0f, 0.0f, viewW * 1.0f / 3.0f, viewH)];
         _cBalanceLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
-        _cBalanceLabel.textAlignment=NSTextAlignmentCenter;
-        _cBalanceLabel.font=[UIFont systemFontOfSize:16.0f];
+        _cBalanceLabel.textAlignment = NSTextAlignmentCenter;
+        _cBalanceLabel.font = [UIFont systemFontOfSize:16.0f];
         
         self.backgroundColor=[UIColor clearColor];
         [self.contentView addSubview:_cTimeLabel];
