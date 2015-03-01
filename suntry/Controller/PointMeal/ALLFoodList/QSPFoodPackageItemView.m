@@ -36,7 +36,7 @@
         
         //菜品类型
         NSString* packageNameStr = [NSString stringWithFormat:@"请选择%@(1份)",typeName];
-        self.packageNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(10, 16, self.frame.size.width, 14)];
+        self.packageNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(10, 10, self.frame.size.width, 22)];
         [self.packageNameLabel setTextColor:PACKAGE_VIEW_FOOD_PACKAGE_NAME_TEXT_COLOR];
         [self.packageNameLabel setFont:[UIFont systemFontOfSize:PACKAGE_VIEW_FOOD_PACKAGE_NAME_STRING_FONT_SIZE ]];
         [self.packageNameLabel setText:packageNameStr];

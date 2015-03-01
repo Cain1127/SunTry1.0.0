@@ -91,7 +91,7 @@
         [self.rightInfoLabel setFont:[UIFont systemFontOfSize:SHOPPING_CAR_VIEW_TEXT_FONT_SIZE]];
         [self.rightView addSubview:self.rightInfoLabel];
         
-        [self.rightInfoLabel setText:@"￥24起配送"];
+//        [self.rightInfoLabel setText:@"￥24起配送"];
         
         self.rightButton = [UIButton createBlockButtonWithFrame:CGRectMake((_rightInfoLabel.frame.size.width-90)/2, (_rightInfoLabel.frame.size.height-44)/2, 90, 44) andButtonStyle:nil andCallBack:^(UIButton *button) {
             if (delegate) {
@@ -177,7 +177,7 @@
         [self.countLabel setHidden:YES];
         [self.leftInfoLabel setText:@"你的购物车是空的"];
         [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.f起配送",SHOPPING_CAR_VIEW_SHIPPING_PRICE]];
-        
+        [self.rightView setBackgroundColor:SHOPPING_CAR_VIEW_RIGHTVIEW_BACKGROUND_COLOR];
     }
     
     if (ProcessTypeOnSubmitOrder == _processType) {

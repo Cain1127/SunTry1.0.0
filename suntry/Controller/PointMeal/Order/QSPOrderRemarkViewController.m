@@ -49,10 +49,14 @@
     [navTitle setText:@"备注要求"];
     self.navigationItem.titleView = navTitle;
 
-    self.automaticallyAdjustsScrollViewInsets = NO;
     CGFloat offetY = 0;
+    CGFloat placeholderLabelY = 0;
     if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
         offetY = 64;
+        placeholderLabelY = 6;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }else{
+        placeholderLabelY = 14;
     }
     
     self.contentTextView = [[UITextView alloc] initWithFrame:CGRectMake(16, 16+offetY, SIZE_DEVICE_WIDTH-32, 130)];
@@ -65,7 +69,7 @@
     [self.contentTextView.layer setCornerRadius:5.];
     [self.view addSubview:self.contentTextView];
     
-    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 2, SIZE_DEVICE_WIDTH-32, 32*2)];
+    self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 2-placeholderLabelY, SIZE_DEVICE_WIDTH-32, 32*2)];
     [self.placeholderLabel setBackgroundColor:[UIColor clearColor]];
     [self.placeholderLabel setText:@"给我们留言，可输入口味，时间，要求等"];
     [self.placeholderLabel setNumberOfLines:0];

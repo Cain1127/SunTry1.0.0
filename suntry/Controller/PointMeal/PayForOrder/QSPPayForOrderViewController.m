@@ -57,12 +57,16 @@
     [backButtonStyle setImagesHighted:IMAGE_NAVIGATIONBAR_MEINFO_HIGHLIGHTED];
     
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        [QSPShoppingCarData clearShoopingCar];
     }];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     CGFloat offsetY = 3;
+    if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+        offsetY = 64+3;
+    }
     //菜单份数
     QSLabel *foodCountLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, offsetY+(44-17)/2, SIZE_DEVICE_WIDTH-24, 17)];
     [foodCountLabel setFont:[UIFont systemFontOfSize:PAY_FOR_ORDER_TITLE_FONT_SIZE]];
@@ -214,6 +218,7 @@
                 [ossVc setPaymentSate:NO];
                 [self.navigationController pushViewController:ossVc animated:YES];
             }
+            [QSPShoppingCarData clearShoopingCar];
         }];
         
     }];
