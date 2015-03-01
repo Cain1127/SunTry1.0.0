@@ -18,8 +18,8 @@
     self=[super initWithFrame:frame];
     if (self) {
         
-        CGFloat viewW=self.frame.size.width;
-        CGFloat viewH=self.frame.size.height;
+        CGFloat viewW=SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
+        CGFloat viewH=44.0f;
         
         _cTimeLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height,viewW*1/3, viewH)];
         _cTimeLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
@@ -35,17 +35,6 @@
         _cBalanceLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
         _cBalanceLabel.textAlignment=NSTextAlignmentCenter;
         _cBalanceLabel.font=[UIFont systemFontOfSize:16.0f];
-        
-        ///加边框
-            UIView *lineRootView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 43.5f, self.frame.size.width, 0.5f)];
-            //lineRootView.backgroundColor = [UIColor clearColor];
-            lineRootView.layer.borderColor = [[UIColor colorWithRed:194.0f / 255.0f green:181.0f / 255.0f blue:156.0f / 255.0f alpha:1.0f] CGColor];
-            lineRootView.layer.borderWidth = 0.5f;
-            //lineRootView.layer.cornerRadius = 6.0f;
-        
-        ///加载到content上
-        [self.contentView addSubview:lineRootView];
-        [self.contentView sendSubviewToBack:lineRootView];
         
         self.backgroundColor=[UIColor clearColor];
         [self.contentView addSubview:_cTimeLabel];

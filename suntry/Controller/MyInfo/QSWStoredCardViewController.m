@@ -26,7 +26,7 @@
 #import "QSWResetPswController.h"
 #import "QSWPayOrderViewController.h"
 
-@interface QSWStoredCardViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface QSWStoredCardViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *topView;               //!<顶部view
 @property (weak, nonatomic) IBOutlet UIView *middleView;            //!<中间view,放充值记录，消费记录按钮
@@ -37,7 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *resetPswButton;      //!<重置密码按钮
 @property (weak, nonatomic) IBOutlet UIButton *chargeRecord;        //!<充值记录按钮
 @property (weak, nonatomic) IBOutlet UIButton *consumeRecord;       //!<消费记录按钮
-@property (nonatomic, strong) UICollectionView *collectionView;     //!<充值，消费记录view
+@property (nonatomic, strong) UITableView *tabbleView;     //!<充值，消费记录view
 @property (nonatomic, retain) NSMutableArray *storedCardDataSource; //!<充值卡信息数据源
 
 @property (nonatomic,retain) MBProgressHUD *hud;                    //!<HUD
@@ -49,7 +49,7 @@
 #pragma mark - 初始化
 - (instancetype)init
 {
-
+    
     if (self = [super init]) {
         
         self.pageGap = 2;
@@ -57,7 +57,7 @@
     }
     
     return self;
-
+    
 }
 
 #pragma mark - UI搭建
@@ -95,7 +95,7 @@
 ///加载顶部view
 -(void)setupTopView
 {
-
+    
     CGFloat topViewH = 176.0f;
     _topView.frame=CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, topViewH);
     
@@ -111,13 +111,13 @@
     
     ///加边框
     UIView *lineTopView = [[UIView alloc] initWithFrame:CGRectMake(_payPswLabel.frame.origin.x, _payPswLabel.frame.origin.y, _payPswLabel.frame.size.width, 0.5f)];
-    lineTopView.backgroundColor=[UIColor lightGrayColor];
+    lineTopView.backgroundColor=COLOR_CHARACTERS_ROOTLINE;
     
     ///加边框
     UIView *lineBottomView = [[UIView alloc] initWithFrame:CGRectMake(_payPswLabel.frame.origin.x, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height, _payPswLabel.frame.size.width, 0.5f)];
     [_topView addSubview:lineTopView];
     [_topView addSubview:lineBottomView];
-    lineBottomView.backgroundColor=[UIColor lightGrayColor];
+    lineBottomView.backgroundColor=COLOR_CHARACTERS_ROOTLINE;
     
     _chargeButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height+topViewH*1.0f/8.0f,(SIZE_DEVICE_WIDTH-3.0f*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5f, 44.0f);
     _chargeButton.backgroundColor=COLOR_CHARACTERS_RED;
@@ -134,7 +134,7 @@
 {
     
     _middleView.frame=CGRectMake(0, _topView.frame.origin.y+_topView.frame.size.height, SIZE_DEVICE_WIDTH, 45.0f);
-        _middleView.backgroundColor=[UIColor whiteColor];
+    _middleView.backgroundColor=[UIColor whiteColor];
     
     _chargeRecord.frame=CGRectMake(0, 0, SIZE_DEVICE_WIDTH*0.5f, 45.0f);
     _chargeRecord.selected = YES;
@@ -151,56 +151,51 @@
     
     [_middleView addSubview:lineTopView];
     [_middleView addSubview:lineBottomView];
-
+    
 }
 
 ///加载底部collertionView
 -(void)setupBottomView
 {
     
-    //确定是水平滚动，还是垂直滚动
-    UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
-    [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+    ///初始化tabbleView
+    self.tabbleView=[[UITableView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _middleView.frame.origin.y + _middleView.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT - _middleView.frame.origin.y - _middleView.frame.size.height - 49.0f)];
     
-    ///设置每个cell大小与位置
-    CGFloat viewW = SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
-    CGFloat viewH = 44.0f;
-    CGSize itemSize = CGSizeMake(viewW, viewH);
-    flowLayout.itemSize = itemSize;
-    flowLayout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f,0.0f);
+    [self.view addSubview:self.tabbleView];
     
-    ///初始化collectionView
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _middleView.frame.origin.y + _middleView.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT - _middleView.frame.origin.y-_middleView.frame.size.height - 49.0f - 64.0f) collectionViewLayout:flowLayout];
-    ///取消导航条
-    self.collectionView.showsVerticalScrollIndicator=NO;
-    self.collectionView.showsHorizontalScrollIndicator = NO;
-    self.collectionView.dataSource=self;
-    self.collectionView.delegate=self;
-    self.collectionView.backgroundColor=[UIColor clearColor];
+    self.tabbleView.delegate=self;
+    self.tabbleView.dataSource=self;
     
-    ///注册Cell
-    [self.collectionView registerClass:[QSWStoredCardCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"noRecordCell"];
+    ///取消边线样式
+    //self.tabbleView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [self.view addSubview:self.collectionView];
+    ///取消滚动条
+    self.tabbleView.showsHorizontalScrollIndicator = NO;
+    self.tabbleView.showsVerticalScrollIndicator = NO;
     
     ///头部刷新
-    [self.collectionView addHeaderWithTarget:self action:@selector(getChargeRecordList)];
+    [self.tabbleView addHeaderWithTarget:self action:@selector(getChargeRecordList)];
     
     ///开始就刷新
-    [self.collectionView headerBeginRefreshing];
-
+    [self.tabbleView headerBeginRefreshing];
+    
 }
 
-#pragma mark - UICollectionViewDataSource数据源方法
-///定义展示的UICollectionViewCell的个数
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+#pragma mark - UItabbleViewDataSource数据源方法
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    return 44.0f;
+    
+}
 
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
     ///如果列表有数据，则显示数据个数，否则显示暂无记录
-    if ([self.storedCardDataSource count] > 0) {
+    if (self.storedCardDataSource.count > 0) {
         
-        return [self.storedCardDataSource count];
+        return self.storedCardDataSource.count;
         
     }
     
@@ -208,16 +203,7 @@
     
 }
 
-///定义展示的Section的个数
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    
-    return 1;
-    
-}
-
-///每个UICollectionView展示的内容
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     ///判断是否是显示暂无记录提示
@@ -225,7 +211,7 @@
         
         static NSString * noRecordCellName = @"noRecordCell";
         
-        UICollectionViewCell *cellNoRecord = [collectionView dequeueReusableCellWithReuseIdentifier:noRecordCellName forIndexPath:indexPath];
+        UITableViewCell *cellNoRecord= [tableView dequeueReusableCellWithIdentifier:noRecordCellName];
         
         if (cellNoRecord == nil) {
             
@@ -240,18 +226,20 @@
         tipsLabel.textAlignment = NSTextAlignmentCenter;
         tipsLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
         [cellNoRecord.contentView addSubview:tipsLabel];
+        cellNoRecord.selectionStyle=UITableViewScrollPositionNone;
         
         return cellNoRecord;
         
     } else {
         
-        static NSString * CellIdentifier = @"UICollectionViewCell";
+        static NSString * CellIdentifier = @"normalInfoCell";
         
-        QSWStoredCardCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        QSWStoredCardCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
         if (cell == nil) {
             
-            cell = [[QSWStoredCardCell alloc] init];
+            cell = [[QSWStoredCardCell alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
+            
             
         }
         
@@ -261,52 +249,79 @@
         cell.cTimeLabel.text=tempModel.createTime;
         if (_chargeRecord.selected){
             
-             cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥+%@",tempModel.amount];
+            cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥+%@",tempModel.amount];
         }
         if (_consumeRecord.selected) {
             cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥-%@",tempModel.amount];
         }
-       
-        //cell.cBalanceLabel.text=tempModel.remark;
         
+        cell.cBalanceLabel.text=tempModel.historybalance;
+        
+        ///取消选择样式
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
         
     }
     
 }
 
-
-//返回这个UICollectionView是否可以被选择
--(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     
-    return YES;
+    return 44.0f;
     
 }
 
-//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-//
-//{
-//    
-//    UICollectionReusableView *reusableview = nil;
-//    
-//    if (kind == UICollectionElementKindSectionHeader){
-//        
-//        RecipeCollectionHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
-//        
-//        NSString *title = [[NSString alloc] initWithFormat:@"Recipe Group #%i",indexPath.section +1];
-//        
-//        headerView.title.text = title;
-//        
-//        UIImage *headerImage = [UIImage imageNamed:@"header_banner.png"];
-//        
-//        headerView.backgroundImage.image = headerImage;
-//        
-//        reusableView = headerView;
-//        
-//    }
-//
-//}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    
+    CGFloat viewW=SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
+    CGFloat viewH=44.0f;
+    
+    UIView *headView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, viewW, viewH)];
+    headView.backgroundColor=[UIColor whiteColor];
+    
+    UILabel *cTimeLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, 0,viewW*1/3, viewH)];
+    cTimeLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
+    cTimeLabel.textAlignment=NSTextAlignmentCenter;
+    cTimeLabel.font=[UIFont systemFontOfSize:16.0f];
+    
+    UILabel *cPrcieLabel =[[UILabel alloc] initWithFrame:CGRectMake(viewW*1/3, 0, viewW*1/3, viewH)];
+    cPrcieLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
+    cPrcieLabel.textAlignment=NSTextAlignmentCenter;
+    cPrcieLabel.font=[UIFont systemFontOfSize:16.0f];
+    
+    UILabel *cBalanceLabel =[[UILabel alloc] initWithFrame:CGRectMake(viewW*2/3, 0, viewW*1/3, viewH)];
+    cBalanceLabel.textColor = COLOR_CHARACTERS_ROOTLINE;
+    cBalanceLabel.textAlignment=NSTextAlignmentCenter;
+    cBalanceLabel.font=[UIFont systemFontOfSize:16.0f];
+    
+    [headView addSubview:cTimeLabel];
+    [headView addSubview:cPrcieLabel];
+    [headView addSubview:cBalanceLabel];
+    
+    if (_chargeRecord.selected){
+        
+        cTimeLabel.text=@"充值时间";
+        cPrcieLabel.text=@"充值金额";
+    }
+    
+    if (_consumeRecord.selected) {
+        
+        cTimeLabel.text=@"消费时间";
+        cPrcieLabel.text=@"消费金额";
+        
+    }
+    
+    cBalanceLabel.text=@"余额";
+    
+    ///加边框
+    UIView *lineTopView = [[UIView alloc] initWithFrame:CGRectMake(0, 43.5f, headView.frame.size.width, 0.5f)];
+    lineTopView.backgroundColor=[UIColor lightGrayColor];
+    [headView addSubview:lineTopView];
+    return headView;
+}
+
 #pragma mark - 返回事件
 - (void)turnBackAction
 {
@@ -322,9 +337,9 @@
             [self.navigationController popToViewController:tempVC animated:YES];
             
         } else {
-        
+            
             [self.navigationController popToRootViewControllerAnimated:YES];
-        
+            
         }
         
         return;
@@ -343,7 +358,7 @@
     
     QSWPayOrderViewController *VC=[[QSWPayOrderViewController alloc] initWithID:nil isTurnBack:YES];
     VC.buyStoreCardCallBack = ^(BOOL flag){
-    
+        
         if (flag) {
             
             [self getChargeRecordList];
@@ -351,7 +366,7 @@
             self.balanceCountLabel.text = [NSString stringWithFormat:@"￥ %@",userModel.balance];
             
         }
-    
+        
     };
     [self.navigationController pushViewController:VC animated:YES];
     
@@ -378,12 +393,12 @@
     
     _chargeRecord.selected = YES;
     _consumeRecord.selected = NO;
-    [self.collectionView addHeaderWithTarget:self action:@selector(getChargeRecordList)];
+    [self.tabbleView addHeaderWithTarget:self action:@selector(getChargeRecordList)];
     
     ///显示HUD
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-     [self getChargeRecordList];
+    [self getChargeRecordList];
     
 }
 
@@ -399,7 +414,7 @@
     
     _consumeRecord.selected = YES;
     _chargeRecord.selected = NO;
-    [self.collectionView addHeaderWithTarget:self action:@selector(getConsumRecordList)];
+    [self.tabbleView addHeaderWithTarget:self action:@selector(getConsumRecordList)];
     
     ///显示HUD
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -424,7 +439,7 @@
             QSUserStoredCardReturnData *tempModel = resultData;
             NSArray *array = tempModel.storedCardListData.storedCardList;
             NSLog(@"QSStoredCardReturnData : %@",tempModel);
-           
+            
             //设置页码：当前页码/最大页码
             
             self.storedCardDataSource=[[NSMutableArray alloc]init];
@@ -435,16 +450,16 @@
             [self.storedCardDataSource addObjectsFromArray:array];
             
             ///结束刷新动画
-            [self.collectionView headerEndRefreshing];
+            [self.tabbleView headerEndRefreshing];
             
             ///reload数据
-            [self.collectionView reloadData];
+            [self.tabbleView reloadData];
             
         } else {
             
-            NSLog(@"================今日特价搜索信息请求失败================");
+            NSLog(@"================充值信息请求失败================");
             NSLog(@"error : %@",errorInfo);
-            NSLog(@"================今日特价搜索信息请求失败================");
+            NSLog(@"================充值信息请求失败================");
             
         }
         
@@ -481,23 +496,23 @@
             [self.storedCardDataSource addObjectsFromArray:array];
             
             ///结束刷新动画
-            [self.collectionView headerEndRefreshing];
+            [self.tabbleView headerEndRefreshing];
             
             ///reload数据
-            [self.collectionView reloadData];
+            [self.tabbleView reloadData];
             
         } else {
             
-            NSLog(@"================储值卡信息请求失败================");
+            NSLog(@"================消费信息请求失败================");
             NSLog(@"error : %@",errorInfo);
-            NSLog(@"================储值卡信息请求失败================");
+            NSLog(@"================消费信息请求失败================");
         }
         
         ///移除HUD
         [self.hud hide:YES afterDelay:1.0f];
         
     }];
-
+    
 }
 
 @end

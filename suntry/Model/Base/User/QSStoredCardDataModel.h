@@ -16,5 +16,6 @@
 @property (nonatomic, copy) NSString *createTime; //!<充值时间
 @property (nonatomic, copy) NSString *amount;     //!<充值金额
 @property (nonatomic, copy) NSString *type;       //!<类型
+@property (nonatomic, copy) NSString *historybalance;//!<历史余额
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QSWStoredCardCell : UICollectionViewCell
+@interface QSWStoredCardCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *cTimeLabel;                     //!<时间label
 @property (nonatomic, strong) UILabel *cPrcieLabel;                    //!<金额label

@@ -23,7 +23,8 @@
                                   @"amount" : @"amount",
                                   @"create_time" : @"createTime",
                                   @"mer_id" : @"merID",
-                                  @"type" : @"type"
+                                  @"type" : @"type",
+                                  @"historybalance" : @"historybalance"
                                   };
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
