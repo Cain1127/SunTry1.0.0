@@ -52,7 +52,12 @@
     [navTitle setText:@"支付订单"];
     self.navigationItem.titleView = navTitle;
     
-    QSLabel *stateLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, 80, SIZE_DEVICE_WIDTH, 24)];
+    CGFloat offetY = 0;
+    if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+        offetY = 64;
+    }
+    
+    QSLabel *stateLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, 80+offetY, SIZE_DEVICE_WIDTH, 24)];
     [stateLabel setTextColor:ORDER_SUBMITED_VIEWCONTROLLER_TITLE_COLOR];
     [stateLabel setTextAlignment:NSTextAlignmentCenter];
     [stateLabel setFont:[UIFont boldSystemFontOfSize:ORDER_SUBMITED_VIEWCONTROLLER_TITLE_FONT_SIZE]];

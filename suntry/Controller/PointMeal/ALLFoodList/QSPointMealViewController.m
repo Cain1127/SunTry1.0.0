@@ -76,8 +76,13 @@ typedef enum {
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
+    CGFloat offetY = 0;
+    if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+        offetY = 64;
+    }
+    
     self.shoppingCarView = [[QSPShoppingCarView alloc] initShakeFoodView];
-    [_shoppingCarView setFrame:CGRectMake(0, SIZE_DEVICE_HEIGHT-_shoppingCarView.frame.size.height-20-44, _shoppingCarView.frame.size.width, _shoppingCarView.frame.size.height)];
+    [_shoppingCarView setFrame:CGRectMake(0, SIZE_DEVICE_HEIGHT-_shoppingCarView.frame.size.height-20-44+offetY, _shoppingCarView.frame.size.width, _shoppingCarView.frame.size.height)];
     [_shoppingCarView setProcessType:ProcessTypeOnSelectedFood];
     [_shoppingCarView setDelegate:self];
     [_shoppingCarView updateShoppingCar];
@@ -86,7 +91,7 @@ typedef enum {
 //    self.foodInfoList = [NSArray arrayWithObjects:@"",@"",@"",@"",@"",@"", nil];
     self.foodTypeList = [NSMutableArray array];
     
-    self.foodTypeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, FOOD_TYPE_TABLEVIEW_WIDTH, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height)];
+    self.foodTypeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, offetY, FOOD_TYPE_TABLEVIEW_WIDTH, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height)];
     [self.foodTypeTableView setDelegate:self];
     [self.foodTypeTableView setDataSource:self];
     [self.foodTypeTableView setBounces:YES];
@@ -97,7 +102,7 @@ typedef enum {
     [self.foodTypeTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.foodTypeTableView];
     
-    self.foodInfoListTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.foodTypeTableView.frame.origin.x+self.foodTypeTableView.frame.size.width, 0, SIZE_DEVICE_WIDTH-self.foodTypeTableView.frame.size.width, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height)];
+    self.foodInfoListTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.foodTypeTableView.frame.origin.x+self.foodTypeTableView.frame.size.width, self.foodTypeTableView.frame.origin.y, SIZE_DEVICE_WIDTH-self.foodTypeTableView.frame.size.width, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height)];
     [self.foodInfoListTableView setDelegate:self];
     [self.foodInfoListTableView setDataSource:self];
     [self.foodInfoListTableView setBounces:YES];
@@ -690,6 +695,7 @@ typedef enum {
 - (void)changedWithData:(id)foodData
 {
     [_foodInfoListTableView reloadData];
+    [_shoppingCarView updateShoppingCar];
 }
 
 /*

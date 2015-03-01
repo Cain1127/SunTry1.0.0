@@ -50,13 +50,18 @@
     [navTitle setText:@"外卖订单"];
     self.navigationItem.titleView = navTitle;
     
+    CGFloat offetY = 0;
+    if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+        offetY = 64;
+    }
+    
     //没有数据时的显示
     self.nodataView = [[UIView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:_nodataView];
     
     UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"order_list_no_data_logo"]];
     [nodataImgView setCenter:self.view.center];
-    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 110/667.*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
+    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 110/667.*SIZE_DEVICE_HEIGHT + offetY, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
     [_nodataView addSubview:nodataImgView];
     
     QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(20, nodataImgView.frame.origin.y+nodataImgView.frame.size.height+5, SIZE_DEVICE_WIDTH-40, 50)];
@@ -82,7 +87,7 @@
     
     //有数据显示
     [_nodataView setHidden:YES];
-    self.orderListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-49)];
+    self.orderListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, offetY, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-49)];
     [self.orderListTableView setDelegate:self];
     [self.orderListTableView setDataSource:self];
     [self.orderListTableView setShowsVerticalScrollIndicator:NO];

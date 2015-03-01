@@ -93,7 +93,7 @@
         
         [self.rightInfoLabel setText:@"￥24起配送"];
         
-        self.rightButton = [UIButton createBlockButtonWithFrame:CGRectMake((_rightInfoLabel.frame.size.width-80)/2, (_rightInfoLabel.frame.size.height-44)/2, 80, 44) andButtonStyle:nil andCallBack:^(UIButton *button) {
+        self.rightButton = [UIButton createBlockButtonWithFrame:CGRectMake((_rightInfoLabel.frame.size.width-90)/2, (_rightInfoLabel.frame.size.height-44)/2, 90, 44) andButtonStyle:nil andCallBack:^(UIButton *button) {
             if (delegate) {
                 [delegate orderWithData:[QSPShoppingCarData getShoppingCarDataList]];
             }

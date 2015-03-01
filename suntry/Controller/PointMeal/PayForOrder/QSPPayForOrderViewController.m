@@ -206,7 +206,6 @@
                 QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
                 [ossVc setPaymentSate:YES];
                 [self.navigationController pushViewController:ossVc animated:YES];
-                [QSPShoppingCarData clearShoopingCar];
                 
             }else{
                 //支付失败跳转

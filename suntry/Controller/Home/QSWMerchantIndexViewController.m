@@ -29,6 +29,8 @@
 
 #import <objc/runtime.h>
 
+#import "QSBlockButton.h"
+
 #define kCallAlertViewTag 111
 
 ///关联
@@ -51,7 +53,10 @@ static char titleLabelKey;//!<标题key
 @property (nonatomic,retain) NSMutableArray *specialDataSource;     //!<优惠信息数据源
 @property (nonatomic,retain) NSMutableArray *streetList;            //!<街道数据源
 @property (nonatomic,strong) QSDatePickerViewController *customPicker;    //!<选择器
+
 @property (nonatomic, copy) NSString *phoneNumber;                  //!<电话号码
+
+@property (nonatomic, strong) UIButton  *shakeView;     //摇一摇界面
 
 @end
 
@@ -139,6 +144,67 @@ static char titleLabelKey;//!<标题key
     
     [navRootView addSubview:districtButton];
     [districtButton addTarget:self action:@selector(showStreetPicker) forControlEvents:UIControlEventTouchUpInside];
+    
+    ///加载头部view
+    [self setupTopView];
+    
+    [self initShakeView];
+    
+    ///加载食品列表
+    [self setupFoodListView];
+    
+}
+
+/**
+ *  初始化摇一摇页面
+ */
+- (void)initShakeView
+{
+    //半透明背景层
+    QSBlockButtonStyleModel *shakeBtStyle = [[QSBlockButtonStyleModel alloc] init];
+    shakeBtStyle.bgColor = SHAKEVIEW_BACKGROUND_COLOR;
+    self.shakeView = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT) andButtonStyle:shakeBtStyle andCallBack:^(UIButton *button) {
+        
+        [button setHidden:YES];
+        
+    }];
+    [self.shakeView setTag:111];
+    [self.shakeView setHidden:YES];
+    [self.tabBarController.view addSubview:self.shakeView];
+    
+    UIImageView *iconImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home_shake_icon"]];
+    [iconImgView setCenter:CGPointMake(SIZE_DEVICE_WIDTH/2, iconImgView.frame.size.height/2)];
+    UILabel *titleLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, iconImgView.frame.origin.y+iconImgView.frame.size.height, SIZE_DEVICE_WIDTH, 30)];
+    [titleLabel setBackgroundColor:[UIColor clearColor]];
+    [titleLabel setTextColor:[UIColor whiteColor]];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [titleLabel setText:@"摇一摇查看推荐菜品"];
+    
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, iconImgView.frame.size.height+titleLabel.frame.size.height)];
+    [contentView addSubview:iconImgView];
+    [contentView addSubview:titleLabel];
+    [contentView setCenter:self.shakeView.center];
+    [self.shakeView addSubview:contentView];
+}
+
+///加载顶部view
+-(void)setupTopView
+{
+    
+    _foodImageView.frame=CGRectMake(0.0f, 64.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT);
+    
+    CGFloat buttonW = (SIZE_DEVICE_WIDTH - 5.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) / 4.0f;
+    CGFloat buttonH = buttonW * 74.0f / 78.0f;
+    CGFloat buttonY = 64.0f + SIZE_DEFAULT_HOME_BANNAR_HEIGHT + SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
+    
+    _sharkButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, buttonY, buttonW, buttonH);
+    _packageButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 2.0f + buttonW, buttonY, buttonW, buttonH);
+    _carButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 3.0f + 2.0f * buttonW, buttonY, buttonW, buttonH);
+    _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 4.0f + 3.0f * buttonW, buttonY, buttonW, buttonH);
+    _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 20.0f);
+    [_specialsLabel setFont:[UIFont systemFontOfSize:20.0f]];
+    
+    _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 20.0f);
     
 }
 
@@ -290,7 +356,6 @@ static char titleLabelKey;//!<标题key
         [cell.contentView addSubview:_customButton];
         [cell.contentView addSubview: _specialsLabel];
         [cell.contentView addSubview:_moreButton];
-        cell.selected=NO;
         return cell;
         
     }
@@ -377,9 +442,7 @@ static char titleLabelKey;//!<标题key
 ///点击摇一摇功能按钮
 - (IBAction)sharkButtonClick:(id)sender
 {
-    
-    [self getRandomGoods];
-    
+    [self.shakeView setHidden:NO];
 }
 
 #pragma mark - 优惠套餐按钮事件
@@ -421,6 +484,7 @@ static char titleLabelKey;//!<标题key
         alertView.tag = kCallAlertViewTag;
         self.phoneNumber = number;
         [alertView show];
+        return;
         
     }
     
@@ -480,10 +544,11 @@ static char titleLabelKey;//!<标题key
 ///摇一摇事件接收入口
 -(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
-    
     //FIXME: 需要完善逻辑，预防网络慢时同时触发调用的问题。
-    [self getRandomGoods];
-    
+    if (![self.shakeView isHidden]) {
+        NSLog(@"摇一摇");
+        [self getRandomGoods];
+    }
 }
 
 #pragma mark - 每日特价网络信息请求
@@ -534,7 +599,6 @@ static char titleLabelKey;//!<标题key
 ///随机菜品网络信息请求
 - (void)getRandomGoods
 {
-    
     //随机菜品信息请求参数
     NSDictionary *dict = @{@"num" : @"1"};
     
@@ -552,7 +616,8 @@ static char titleLabelKey;//!<标题key
                 
                 QSGoodsDataModel *goodsItem = array[0];
                 QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
-                [self.tabBarController.view addSubview:shakeFoodView];
+                [shakeFoodView setCurrentViewType:FoodDetailPopViewTypeShake];
+                [self.shakeView addSubview:shakeFoodView];
                 [shakeFoodView updateFoodData:goodsItem];
                 [shakeFoodView showShakeFoodView];
                 
@@ -560,9 +625,18 @@ static char titleLabelKey;//!<标题key
             
             
         } else {
-            
             NSLog(@"================随机菜品信息请求失败================");
             NSLog(@"error : %@",errorInfo);
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取随机菜品失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
         }
         
     }];

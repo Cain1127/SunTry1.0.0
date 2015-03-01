@@ -100,13 +100,18 @@
     [navTitle setText:@"下单"];
     self.navigationItem.titleView = navTitle;
     
+    CGFloat offetY = 0;
+    if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+        offetY = 64;
+    }
+    
     self.shoppingCarView = [[QSPShoppingCarView alloc] initShakeFoodView];
-    [_shoppingCarView setFrame:CGRectMake(0, SIZE_DEVICE_HEIGHT-_shoppingCarView.frame.size.height-20-44, _shoppingCarView.frame.size.width, _shoppingCarView.frame.size.height)];
+    [_shoppingCarView setFrame:CGRectMake(0, SIZE_DEVICE_HEIGHT-_shoppingCarView.frame.size.height-20-44+offetY, _shoppingCarView.frame.size.width, _shoppingCarView.frame.size.height)];
     [_shoppingCarView setProcessType:ProcessTypeOnSubmitOrder];
     [_shoppingCarView setDelegate:self];
     [_shoppingCarView updateShoppingCar];
     
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20-_shoppingCarView.frame.size.height+offetY)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_scrollView];
     
@@ -753,7 +758,7 @@
                             [pfovc setOrderFormModel:orderFormModel];
                             [pfovc setOrderTotalPrice:[NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]]];
                             [self.navigationController pushViewController:pfovc animated:YES];
-                            
+                            [QSPShoppingCarData clearShoopingCar];
                         }
                         break;
                     default:
