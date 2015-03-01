@@ -33,17 +33,17 @@
     NSString *isFirstLaunch = [[NSUserDefaults standardUserDefaults] valueForKey:@"isFirstLaunch"];
     
     ///1.首页
-    if (!isFirstLaunch) {
+    if (isFirstLaunch) {
+        
+        QSTabBarViewController *main=[[QSTabBarViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
+        [self.window setRootViewController:main];
+        
+    } else {
         
         QSHomeViewController *home=[[QSHomeViewController alloc] init];
         [home setTitle:@"首页"];
         [home.navigationController setNavigationBarHidden:YES];
         [self.window setRootViewController:home];
-        
-    } else {
-        
-        QSTabBarViewController *main=[[QSTabBarViewController alloc]init];
-        [self.window setRootViewController:main];
         
     }
     
@@ -56,7 +56,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
         ///获取用户地理位置
-        QSMapManager *manager=[[QSMapManager alloc]init];
+        QSMapManager *manager=[[QSMapManager alloc] init];
         
         ///定位用户经纬度回调
         [manager startUserLocation:^(BOOL isLocalSuccess, double longitude, double latitude) {

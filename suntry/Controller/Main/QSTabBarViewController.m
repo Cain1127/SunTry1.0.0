@@ -32,7 +32,7 @@
 
     if (self = [super init]) {
         
-        self.street = street ? street : @"体育西";
+        self.street = street ? street : @"体育西路";
         self.streetID = streetID ? streetID : @"299";
         
     }
@@ -57,9 +57,9 @@
     ///tabbar容器
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     
-    QSWMerchantIndexViewController *home1=[[QSWMerchantIndexViewController alloc] initWithID:self.streetID andDistictName:self.street];
-    [tempArray addObject:[self setupChildViewController:home1 title:@"首页" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"]];
-    [home1.navigationController setNavigationBarHidden:YES];
+    QSWMerchantIndexViewController *home = [[QSWMerchantIndexViewController alloc] initWithID:self.streetID andDistictName:self.street];
+    [tempArray addObject:[self setupChildViewController:home title:@"首页" imageName:@"tab_home_normal" selectedImageName:@"tab_home_selected"]];
+    [home.navigationController setNavigationBarHidden:YES];
     
     ///2.点餐
     QSPointMealViewController *pointmeal=[[QSPointMealViewController alloc]init];

@@ -473,9 +473,6 @@ typedef enum {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    ///修改
-    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isFirstLaunch"];
-    
     ///通过搜索结果进入
     if (self.isShowSearchStreetList) {
         
@@ -533,7 +530,15 @@ typedef enum {
 - (void)gotoMainHome:(NSString *)title andKey:(NSString *)key
 {
     
-    QSTabBarViewController *VC=[[QSTabBarViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
+    ///修改
+    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isFirstLaunch"];
+    
+    QSTabBarViewController *VC = [[QSTabBarViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@"体育西路" forKey:@"street"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"299" forKey:@"streetID"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     [UIApplication sharedApplication].keyWindow.rootViewController = VC;
     
 }

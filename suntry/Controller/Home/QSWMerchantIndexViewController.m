@@ -69,8 +69,8 @@ static char titleLabelKey;//!<标题key
     
     if (self = [super init]) {
         
-        self.distictID=distictID;
-        self.distictName=districtName;
+        self.distictID = distictID ? distictID : ([[NSUserDefaults standardUserDefaults] objectForKey:@"streetID"] ? [[NSUserDefaults standardUserDefaults] objectForKey:@"streetID"] : @"299");
+        self.distictName = districtName ? districtName : ([[NSUserDefaults standardUserDefaults] objectForKey:@"street"] ? [[NSUserDefaults standardUserDefaults] objectForKey:@"street"] : @"体育西路");
         
         ///初始化数据源数组
         self.specialDataSource = [[NSMutableArray alloc] init];
@@ -145,13 +145,7 @@ static char titleLabelKey;//!<标题key
     [navRootView addSubview:districtButton];
     [districtButton addTarget:self action:@selector(showStreetPicker) forControlEvents:UIControlEventTouchUpInside];
     
-    ///加载头部view
-    [self setupTopView];
-    
     [self initShakeView];
-    
-    ///加载食品列表
-    [self setupFoodListView];
     
 }
 
@@ -442,7 +436,10 @@ static char titleLabelKey;//!<标题key
 ///点击摇一摇功能按钮
 - (IBAction)sharkButtonClick:(id)sender
 {
+    
     [self.shakeView setHidden:NO];
+    [self.view bringSubviewToFront:self.shakeView];
+    
 }
 
 #pragma mark - 优惠套餐按钮事件
