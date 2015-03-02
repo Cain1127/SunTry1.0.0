@@ -57,7 +57,7 @@
     ///起始坐标
     CGFloat ypoint = (iOS7 ? 72.0f : 8.0f);
     
-    if (self.userInfo.pay_salt) {
+    if (self.userInfo.pay_salt && [self.userInfo.pay_salt length] > 0) {
         
         ypoint = ypoint + 44.0f + 8.0f;
         

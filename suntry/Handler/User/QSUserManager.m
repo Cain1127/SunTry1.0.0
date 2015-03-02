@@ -38,11 +38,19 @@
             [newUserModel saveUserData];
             
             ///回调
-            callBack(YES);
+            if (callBack) {
+                
+                callBack(YES);
+                
+            }
             
         } else {
         
-            callBack(NO);
+            if (callBack) {
+                
+                callBack(NO);
+                
+            }
         
         }
         
