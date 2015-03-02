@@ -1700,7 +1700,7 @@
 				ORGANIZATIONNAME = "广州七升网络科技有限公司";
 				TargetAttributes = {
 					183673FA1A7F8FA800BCCF39 = {
-						DevelopmentTeam = EVE58S56QZ;
+						DevelopmentTeam = 8QVEW4E7SK;
 					};
 					183674151A7F8FA800BCCF39 = {
 						TestTargetID = 183673FA1A7F8FA800BCCF39;

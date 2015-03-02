@@ -18,6 +18,7 @@
 #import "MBProgressHUD.h"
 #import "QSRequestManager.h"
 #import "QSGoodsStapleFoodReturnData.h"
+#import "QSWLoginViewController.h"
 
 #define FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR  [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.]
 #define FOOD_INFOLIST_TABLEVIEW_BACKGROUND_COLOR  [UIColor whiteColor]
@@ -621,9 +622,20 @@ typedef enum {
     
     NSLog(@"orderWithData:%@",foodData);
 
-    QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
-    [self.navigationController pushViewController:orderVc animated:YES];
-    
+    int isLogin = [[[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"] intValue];
+    if (isLogin != 1 ) {
+        QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
+        loginVC.loginSuccessCallBack = ^(BOOL flag){
+            if (flag) {
+                
+            }
+        };
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }else{
+        QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
+        [self.navigationController pushViewController:orderVc animated:YES];
+    }
 }
 
 - (void)getGoodsData
