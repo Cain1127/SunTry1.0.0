@@ -29,14 +29,14 @@ typedef enum
 typedef enum
 {
     
-    rRequestTypeDefault = 998,              //!<默认无效请求
-    rRequestTypeDistrict = 999,             //!<地区选择
-    rRequestTypeSelect =1000,               //!<选择查询
-    rRequestTypeAspecial =1001,             //!<每日特价菜品
-    rRequestTypeRandom      =1036,          //!<随机菜品
-    rRequestTypeAllGoods    =1050,          //!<所有菜品
+    rRequestTypeDefault = 998,                  //!<默认无效请求
+    rRequestTypeDistrict = 999,                 //!<地区选择
+    rRequestTypeSelect =1000,                   //!<选择查询
+    rRequestTypeAspecial =1001,                 //!<每日特价菜品
+    rRequestTypeRandom      =1036,              //!<随机菜品
+    rRequestTypeAllGoods    =1050,              //!<所有菜品
     
-    rRequestTypeBanner = 1023,              //!添加首页广告
+    rRequestTypeBanner = 1023,                  //!添加首页广告
 
     rRequestTypeLogin = 1002,                   //!<登录
     rRequestTypeReloadUserData = 1003,          //!<重新下载用户信息
@@ -45,6 +45,7 @@ typedef enum
     rRequestTypeStoredCard = 1042,              //!<储值卡
     rRequestTypeAddOrder = 1043,                //!<添加订单
     rRequestTypeCommitOrderPayResult = 1044,    //!<确认订单支付结果
+    rRequestTypeEditStoredCardPsw = 1045,       //!<储值卡支付密码修改
     
     rRequestTypeUserSendAddressList = 1100,     //!<当前用户的送餐地址列表
     rRequestTypeAddSendAddress = 1101,          //!<添加送餐地址

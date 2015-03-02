@@ -69,10 +69,10 @@
     
     UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_rmbmark"]];
     [nodataImgView setCenter:self.view.center];
-    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, 174.0f/667.0f*SIZE_DEVICE_HEIGHT, nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
+    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, (iOS7 ? 64.0f: 60.0f), nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
     [_nodataView addSubview:nodataImgView];
     
-    QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(20, nodataImgView.frame.origin.y+nodataImgView.frame.size.height+5, SIZE_DEVICE_WIDTH-40, 50)];
+    QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(20, nodataImgView.frame.origin.y + nodataImgView.frame.size.height + 5.0f, SIZE_DEVICE_WIDTH-40, 50)];
     [infoLabel setFont:[UIFont boldSystemFontOfSize:ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE]];
     [infoLabel setBackgroundColor:[UIColor clearColor]];
     [infoLabel setNumberOfLines:2];

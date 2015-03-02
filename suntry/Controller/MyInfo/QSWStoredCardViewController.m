@@ -23,7 +23,7 @@
 #import "MJRefresh.h"
 #import "MBProgressHUD.h"
 
-#import "QSWResetPswController.h"
+#import "QSResetStoreCardPaypswViewController.h"
 #import "QSWPayOrderViewController.h"
 
 @interface QSWStoredCardViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -98,13 +98,13 @@
 {
     
     CGFloat topViewH = 176.0f;
-    _topView.frame=CGRectMake(0.0f, 64.0f, SIZE_DEVICE_WIDTH, topViewH);
+    _topView.frame = CGRectMake(0.0f, (iOS7 ? 64.0f : 0.0f), SIZE_DEVICE_WIDTH, topViewH);
     
-    _balanceLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 150.0f, _topView.frame.size.height * 1.0f / 4.0f);
-    _balanceCountLabel.frame=CGRectMake(SIZE_DEVICE_WIDTH - 100.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 100.0f, topViewH * 1.0f / 4.0f);
-    _balanceCountLabel.textAlignment=NSTextAlignmentRight ;
+    _balanceLabel.frame = CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 150.0f, _topView.frame.size.height * 1.0f / 4.0f);
+    _balanceCountLabel.frame = CGRectMake(SIZE_DEVICE_WIDTH - 100.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, 100.0f, topViewH * 1.0f / 4.0f);
+    _balanceCountLabel.textAlignment = NSTextAlignmentRight ;
     
-    _payPswLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _balanceLabel.frame.origin.y+_balanceLabel.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, topViewH * 1.0f / 4.0f);
+    _payPswLabel.frame = CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _balanceLabel.frame.origin.y+_balanceLabel.frame.size.height, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, topViewH * 1.0f / 4.0f);
     
     ///显示当前用户的余额
     QSUserInfoDataModel *userModel = [QSUserManager getCurrentUserData];
@@ -385,7 +385,7 @@
 - (IBAction)resetPswButton:(id)sender
 {
     
-    QSWResetPswController *VC=[[QSWResetPswController alloc] init];
+    QSResetStoreCardPaypswViewController *VC=[[QSResetStoreCardPaypswViewController alloc] init];
     [self.navigationController pushViewController:VC animated:YES];
     
 }
