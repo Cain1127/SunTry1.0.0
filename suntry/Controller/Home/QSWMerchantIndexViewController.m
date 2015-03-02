@@ -37,6 +37,8 @@
 
 #import "QSBlockButton.h"
 
+#import "QSNoNetworkingViewController.h"
+
 #define kCallAlertViewTag 111
 
 ///关联
@@ -504,6 +506,8 @@ static char titleLabelKey;//!<标题key
 {
     
     QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init];
+    
+    VC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:VC animated:YES];
     
 }
@@ -636,6 +640,9 @@ static char titleLabelKey;//!<标题key
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================今日特价搜索信息请求失败================");
             
+//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+//            [self.navigationController pushViewController:networkingErrorVC animated:YES];
+            
         }
         
     }];
@@ -722,6 +729,11 @@ static char titleLabelKey;//!<标题key
             NSLog(@"================今日特价搜索信息请求失败================");
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================今日特价搜索信息请求失败================");
+            
+            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+            networkingErrorVC.hidesBottomBarWhenPushed = YES;
+            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
+            [self.navigationController pushViewController:networkingErrorVC animated:YES];
             
         }
         

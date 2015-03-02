@@ -21,6 +21,8 @@
 
 #import "QSUserLoginReturnData.h"
 
+#import "QSNoNetworkingViewController.h"
+
 @implementation QSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -228,6 +230,18 @@
             NSLog(@"================区信息请求失败================");
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================区信息请求失败================");
+            
+            NSLog(@"error : %@",errorInfo);
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取区信息请求失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
             
         }
         
