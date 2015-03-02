@@ -54,6 +54,7 @@
 		1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1859F3AB1A8DFB2000EABC7D /* QSDatePickerViewController.xib */; };
 		1859F3B11A8DFE1B00EABC7D /* QSUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */; };
 		1878D4C21A9043B200AF68A4 /* QSSearchHistoryDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */; };
+		187CA8D81AA3F35400841A7E /* QSAutoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8D71AA3F35400841A7E /* QSAutoScrollView.m */; };
 		18B955761AA1930400006B4C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955751AA1930400006B4C /* AVFoundation.framework */; };
 		18B955781AA1931400006B4C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955771AA1931400006B4C /* CoreMedia.framework */; };
 		18B9557A1AA1932000006B4C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955791AA1932000006B4C /* CoreVideo.framework */; };
@@ -335,6 +336,8 @@
 		1859F3B01A8DFE1B00EABC7D /* QSUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSUserManager.m; path = User/QSUserManager.m; sourceTree = "<group>"; };
 		1878D4C01A9043B200AF68A4 /* QSSearchHistoryDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSSearchHistoryDataModel.h; path = Search/QSSearchHistoryDataModel.h; sourceTree = "<group>"; };
 		1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSSearchHistoryDataModel.m; path = Search/QSSearchHistoryDataModel.m; sourceTree = "<group>"; };
+		187CA8D61AA3F35400841A7E /* QSAutoScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAutoScrollView.h; sourceTree = "<group>"; };
+		187CA8D71AA3F35400841A7E /* QSAutoScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAutoScrollView.m; sourceTree = "<group>"; };
 		18B955751AA1930400006B4C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		18B955771AA1931400006B4C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		18B955791AA1932000006B4C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -922,6 +925,15 @@
 				1878D4C11A9043B200AF68A4 /* QSSearchHistoryDataModel.m */,
 			);
 			name = Search;
+			sourceTree = "<group>";
+		};
+		187CA8D51AA3F35400841A7E /* AutoScroll */ = {
+			isa = PBXGroup;
+			children = (
+				187CA8D61AA3F35400841A7E /* QSAutoScrollView.h */,
+				187CA8D71AA3F35400841A7E /* QSAutoScrollView.m */,
+			);
+			path = AutoScroll;
 			sourceTree = "<group>";
 		};
 		33C6DF1C30579CFE5CB10286 /* Pods */ = {
@@ -1534,6 +1546,7 @@
 		CEEAC3CF1A8DA7DF009AC6AA /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				187CA8D51AA3F35400841A7E /* AutoScroll */,
 				18018AFB1AA190D400F35DEB /* libqrencode */,
 				185343CC1A9ED82C00A83039 /* AlixPaySDK */,
 				184AE06E1A90730F007A8CBD /* PinYin */,
@@ -1855,6 +1868,7 @@
 				CE571EF71A84AFEE00609788 /* QSWSettingCell.m in Sources */,
 				1853443E1A9ED82C00A83039 /* base64.m in Sources */,
 				CEEAC3E41A8DA7DF009AC6AA /* MJRefreshFooterView.m in Sources */,
+				187CA8D81AA3F35400841A7E /* QSAutoScrollView.m in Sources */,
 				CE5341481A7FA4CE002BA188 /* QSMyinfoViewController.m in Sources */,
 				CEEAC3931A8CA4EF009AC6AA /* QSBaseModel.m in Sources */,
 				4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */,
