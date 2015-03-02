@@ -20,7 +20,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "QSRequestManager.h"
 #import "MBProgressHUD.h"
-#import "QSWResetPswController.h"
+#import "QSResetStoreCardPaypswViewController.h"
 
 #define PAY_FOR_ORDER_TITLE_FONT_SIZE       15.
 #define PAY_FOR_ORDER_TEXT_COLOR            [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -273,8 +273,8 @@
     QSUserInfoDataModel *userInfoData = [QSUserInfoDataModel userDataModel];
     if (!userInfoData.pay_salt || [userInfoData.pay_salt isEqualToString:@""]) {
         //没有支付密码
-        QSWResetPswController *VC=[[QSWResetPswController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+        QSResetStoreCardPaypswViewController *nopassVc=[[QSResetStoreCardPaypswViewController alloc] init];
+        [self.navigationController pushViewController:nopassVc animated:YES];
     }
 }
 
