@@ -17,6 +17,7 @@
 #import "QSRequestManager.h"
 #import "MBProgressHUD.h"
 #import "QSOrderListReturnData.h"
+#import "QSNoNetworkingViewController.h"
 
 #import "MJRefresh.h"
 
@@ -229,7 +230,11 @@
             ///结束刷新动画
             [self.orderListTableView footerEndRefreshing];
             [self.orderListTableView headerEndRefreshing];
-        
+            
+//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+//            networkingErrorVC.hidesBottomBarWhenPushed = YES;
+//            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
+//            [self.navigationController pushViewController:networkingErrorVC animated:YES];
         }
         
     }];
@@ -316,7 +321,11 @@
             ///结束刷新动画
             [self.orderListTableView footerEndRefreshing];
             [self.orderListTableView headerEndRefreshing];
-        
+            
+//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+//            networkingErrorVC.hidesBottomBarWhenPushed = YES;
+//            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
+//            [self.navigationController pushViewController:networkingErrorVC animated:YES];
         }
         
     }];

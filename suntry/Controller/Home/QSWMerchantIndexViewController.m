@@ -730,10 +730,10 @@ static char titleLabelKey;//!<标题key
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================今日特价搜索信息请求失败================");
             
-            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
-            networkingErrorVC.hidesBottomBarWhenPushed = YES;
-            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
-            [self.navigationController pushViewController:networkingErrorVC animated:YES];
+//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+//            networkingErrorVC.hidesBottomBarWhenPushed = YES;
+//            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
+//            [self.navigationController pushViewController:networkingErrorVC animated:YES];
             
         }
         
@@ -745,10 +745,28 @@ static char titleLabelKey;//!<标题key
 ///菜品详情弹出View改变菜品数量响应处理
 - (void)changedWithData:(id)foodData inView:(QSPShakeFoodView*)popFoodView
 {
-    
-    [self.tabBarController setSelectedIndex:1];
-    [popFoodView setHidden:YES];
-    
+    if (foodData&&[foodData isKindOfClass:[QSGoodsDataModel class]]) {
+        QSGoodsDataModel *food = (QSGoodsDataModel*)foodData;
+        if (food.goodsInstockNum.integerValue > 0) {
+            [self.tabBarController setSelectedIndex:1];
+            if (popFoodView.superview.tag == 111) {
+                //隐藏摇一摇界面
+                [popFoodView.superview setHidden:YES];
+            }
+
+            [popFoodView setHidden:YES];
+            [popFoodView removeFromSuperview];
+            return;
+        }
+    }
+    ///弹出提示
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"该菜品已售罄，请换一下口味吧！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    [alert show];
+    ///显示1秒后移除提示
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [alert dismissWithClickedButtonIndex:0 animated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    });
 }
 
 @end

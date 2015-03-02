@@ -40,7 +40,7 @@
         QSBlockButtonStyleModel *addBtStyleModel = [QSBlockButtonStyleModel alloc];
         addBtStyleModel.imagesNormal = @"food_count_add_normal_bt";
         addBtStyleModel.imagesHighted = @"food_count_add_down_bt";
-        self.addBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.frame.size.width-32, 0, 44, 44) andButtonStyle:addBtStyleModel andCallBack:^(UIButton *button) {
+        self.addBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.frame.size.width-46, 0, 44, 44) andButtonStyle:addBtStyleModel andCallBack:^(UIButton *button) {
             
             [self setCount:++self.countInt];
             
@@ -76,7 +76,6 @@
             }
             
         }];
-        
         [self addSubview:self.reduceBt];
         [self setCount:0];
         
@@ -135,13 +134,18 @@
     //当前添加的数量
     NSString *countStr = [NSString stringWithFormat:@"%ld",(long)self.countInt];
     //计算价格Label宽度
-    CGFloat countStrWidth = [countStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:FOOD_COUNT_FONT_SIZE];
+    CGFloat countStrWidth = [countStr calculateStringDisplayWidthByFixedHeight:self.countLabel.frame.size.height andFontSize:FOOD_COUNT_FONT_SIZE];
     if (countStrWidth < FOOD_COUNT_LABEL_NORMAL_HEIGHT) {
         countStrWidth = FOOD_COUNT_LABEL_NORMAL_HEIGHT;
     }
     [self.countLabel setText:countStr];
-    [self.countLabel setFrame:CGRectMake(self.addBt.frame.origin.x-countStrWidth+10, (self.frame.size.height-self.countLabel.frame.size.height)/2, countStrWidth, self.countLabel.frame.size.height)];
-    [self.reduceBt setFrame:CGRectMake(self.countLabel.frame.origin.x-self.countLabel.frame.size.width-10, self.reduceBt.frame.origin.y, self.reduceBt.frame.size.width, self.reduceBt.frame.size.height)];
+    [self.countLabel setFrame:CGRectMake(self.addBt.frame.origin.x-countStrWidth+6, (self.frame.size.height-self.countLabel.frame.size.height)/2, countStrWidth, self.countLabel.frame.size.height)];
+    
+    CGFloat offsetX = 0.;
+    if (countStr.length>=3) {
+        offsetX = 8*(countStr.length-2);
+    }
+    [self.reduceBt setFrame:CGRectMake(self.countLabel.frame.origin.x-self.countLabel.frame.size.width-16+offsetX, self.reduceBt.frame.origin.y, self.reduceBt.frame.size.width, self.reduceBt.frame.size.height)];
     
     if (_OnlyShowAddButton) {
         [_reduceBt setHidden:YES];

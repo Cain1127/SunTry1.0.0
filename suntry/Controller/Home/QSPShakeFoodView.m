@@ -141,7 +141,7 @@
         
         //增加减少菜品数量控件
         self.foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
-        [self.foodCountControlView setMarginTopRight:CGPointMake(contentBackgroundView.frame.size.width-17, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height)];
+        [self.foodCountControlView setMarginTopRight:CGPointMake(contentBackgroundView.frame.size.width-6, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height)];
         [self.foodCountControlView setDelegate:self];
         [self.foodCountControlView setOnlyShowAddButton:YES];
         [contentBackgroundView addSubview:self.foodCountControlView];
@@ -178,6 +178,7 @@
     [self.foodDataInCarListFormatDic setObject:_foodData.goodsName forKey:@"name"];
     [self.foodDataInCarListFormatDic setObject:_foodData.shopkeeperID forKey:@"sale_id"];
     [self.foodDataInCarListFormatDic setObject:[_foodData getOnsalePrice] forKey:@"sale_money"];
+    [self.foodDataInCarListFormatDic setObject:_foodData.goodsInstockNum forKey:@"num_instock"];
     NSMutableArray *subFoodList = [NSMutableArray arrayWithCapacity:0];
     if (_foodData.ingredientList) {
         for (id subfood in _foodData.ingredientList) {
@@ -299,7 +300,12 @@
 - (void)changedCount:(NSInteger)count
 {
     NSLog(@"changedCount:%ld",(long)count);
+    NSInteger instockNum = _foodData.goodsInstockNum.integerValue;
+    if (count > instockNum) {
+        count = instockNum;
+    }
     [QSPShoppingCarData setShoppingCarDataListWithData:_foodDataInCarListFormatDic withCount:count AddOrSetPackageData:NO];
+    [_foodCountControlView setCount:count];
     if (delegate) {
         [delegate changedWithData:_foodData inView:self];
     }

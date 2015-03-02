@@ -20,7 +20,8 @@
 
 @interface QSPOrderViewHadOrderCell ()
 
-@property(nonatomic,strong) NSDictionary        *foodData;
+@property (nonatomic, strong) NSDictionary        *foodData;
+@property (nonatomic, strong) QSPFoodCountControlView *foodCountControlView;
 
 @end
 
@@ -43,11 +44,11 @@
         self.foodData = (NSDictionary*)foodData;
         
         //增加减少菜品数量控件
-        QSPFoodCountControlView *foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
-        [foodCountControlView setMarginTopRight:CGPointMake(SIZE_DEVICE_WIDTH-10, (ORDER_VIEW_HADORDER_CELL_HEIGHT-foodCountControlView.frame.size.height)/2)];
-        [foodCountControlView setCount:count];
-        [foodCountControlView setDelegate:self];
-        [self addSubview:foodCountControlView];
+        self.foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
+        [self.foodCountControlView setMarginTopRight:CGPointMake(SIZE_DEVICE_WIDTH, (ORDER_VIEW_HADORDER_CELL_HEIGHT-self.foodCountControlView.frame.size.height)/2)];
+        [self.foodCountControlView setCount:count];
+        [self.foodCountControlView setDelegate:self];
+        [self addSubview:self.foodCountControlView];
         
         UIView *lineButtomView = [[UIView alloc] initWithFrame:CGRectMake(12, ORDER_VIEW_HADORDER_CELL_HEIGHT-1, SIZE_DEVICE_WIDTH-24, 1)];
         [lineButtomView setBackgroundColor:ORDER_VIEW_HADORDER_CELL_LINE_COLOR];
@@ -56,7 +57,7 @@
         
         NSString *priceStr = [NSString stringWithFormat:@"￥%@",[_foodData objectForKey:@"sale_money"]];
         CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDER_VIEW_HADORDER_CELL_TITLE_FONT_SIZE]+4;
-        QSLabel *priceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(foodCountControlView.frame.origin.x-priceStrWidth+18, (ORDER_VIEW_HADORDER_CELL_HEIGHT-17)/2, priceStrWidth, 17)];
+        QSLabel *priceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(self.foodCountControlView.frame.origin.x-priceStrWidth+12, (ORDER_VIEW_HADORDER_CELL_HEIGHT-17)/2, priceStrWidth, 17)];
         [priceLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_HADORDER_CELL_TITLE_FONT_SIZE]];
         [priceLabel setText:priceStr];
         [priceLabel setTextColor:ORDER_VIEW_HADORDER_CELL_FOOD_NAME_TEXT_COLOR];
@@ -65,6 +66,9 @@
         NSString *foodNameStr = [NSString stringWithFormat:@"%@",[_foodData objectForKey:@"name"]];
         CGFloat foodNameStrWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDER_VIEW_HADORDER_CELL_TITLE_FONT_SIZE]+4;
         
+        if (foodNameStrWidth > priceLabel.frame.origin.x-12) {
+            foodNameStrWidth = priceLabel.frame.origin.x-12;
+        }
         QSLabel *foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, priceLabel.frame.origin.y, foodNameStrWidth, 17)];
         [foodNameLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_HADORDER_CELL_TITLE_FONT_SIZE]];
         [foodNameLabel setText:[_foodData objectForKey:@"name"]];
@@ -107,7 +111,17 @@
 {
     
     if (delegate) {
-        
+        NSLog(@"changedCount:%ld withFoodData:%@",(long)count,_foodData);
+        if (_foodData&&[_foodData isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *food = (NSDictionary*)_foodData;
+            if ([food objectForKey:@"num_instock"]) {
+                NSString *numInstockStr = [food objectForKey:@"num_instock"];
+                if (count>numInstockStr.integerValue) {
+                    count = numInstockStr.integerValue;
+                    [self.foodCountControlView setCount:count];
+                }
+            }
+        }
         [delegate changedCount:count withFoodData:_foodData];
         
     }

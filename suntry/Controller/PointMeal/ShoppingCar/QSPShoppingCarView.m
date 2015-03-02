@@ -280,6 +280,9 @@
     
     if ([goodListInShoppingCar count] == 0) {
         
+        if (count==0) {
+            return;
+        }
         NSMutableDictionary *itemDic = [NSMutableDictionary dictionaryWithDictionary:foodData];
         [itemDic setObject:[NSString stringWithFormat:@"%ld",(long)count] forKey:@"num"];
         [goodListInShoppingCar addObject:itemDic];
@@ -397,6 +400,7 @@
     [foodDic setObject:foodData.goodsName forKey:@"name"];
     [foodDic setObject:foodData.shopkeeperID forKey:@"sale_id"];
     [foodDic setObject:[foodData getOnsalePrice] forKey:@"sale_money"];
+    [foodDic setObject:foodData.goodsInstockNum forKey:@"num_instock"];
     NSMutableArray *subFoodList = [NSMutableArray arrayWithCapacity:0];
     if (foodData.ingredientList) {
         for (id subfood in foodData.ingredientList) {

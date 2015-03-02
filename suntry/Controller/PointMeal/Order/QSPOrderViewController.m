@@ -608,6 +608,15 @@
 {
     
     NSLog(@"changedCount:%ld withFoodData:%@",(long)count,foodData);
+    if (foodData&&[foodData isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *food = (NSDictionary*)foodData;
+        if ([food objectForKey:@"num_instock"]) {
+            NSString *numInstockStr = [food objectForKey:@"num_instock"];
+            if (count>numInstockStr.integerValue) {
+                count = numInstockStr.integerValue;
+            }
+        }
+    }
 
     [QSPShoppingCarData setShoppingCarDataListWithData:foodData withCount:count AddOrSetPackageData:NO];
     
