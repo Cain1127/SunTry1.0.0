@@ -60,7 +60,6 @@ typedef enum
     
     rRequestTypeMaxLimited = 99999              //!<最大值限制
     
-    
 }REQUEST_TYPE;
 
 ///网络请求类型
