@@ -14,10 +14,21 @@
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
 
+#import "NSString+Format.h"
+
+#import "MBProgressHUD.h"
+
+#import "QSRequestManager.h"
+#import "QSUserManager.h"
+
+#import "QSUserInfoDataModel.h"
+#import "QSHeaderDataModel.h"
+
 @interface QSWResetPswController ()
 
-@property (nonatomic,retain) QSWSettingItem *passWordItem;   //!<新的密码
-@property (nonatomic,retain) QSWSettingItem *passWordItem1;  //!<二次输入新的密码
+@property (nonatomic,retain) QSWSettingItem *passWordItem;      //!<新的密码
+@property (nonatomic,retain) QSWSettingItem *passWordItem1;     //!<二次输入新的密码
+@property (nonatomic,retain) MBProgressHUD *hud;                //!<HUD
 
 @end
 
@@ -49,6 +60,7 @@
     [self setupGroup0];
     [self setupGroup1];
     [self setupFooter];
+    
 }
 
 -(void)setupGroup0
@@ -88,12 +100,13 @@
 
 - (void)setupFooter
 {
+    
     ///按钮
     UIButton *footterButton = [[UIButton alloc] init];
     CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
-    CGFloat footterButtonY = 10;
+    CGFloat footterButtonY = 10.0f;
     CGFloat footterButtonW = self.tableView.frame.size.width - 2 * footterButtonX;
-    CGFloat footterButtonH = 44;
+    CGFloat footterButtonH = 44.0f;
     footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
     
     ///背景和文字
@@ -110,6 +123,7 @@
     self.tableView.tableFooterView = footer;
     [footer addSubview:footterButton];
     [footterButton addTarget:self action:@selector(gotoNextVC) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 #pragma mark - 返回事件
@@ -120,19 +134,107 @@
     
 }
 
+#pragma mark - 点击提交开始重置密码
 ///点击提交按钮事件
 -(void)gotoNextVC
 {
     
+    ///获取输入内容
+    UITextField *newPswField = self.passWordItem.property;
+    NSString *newPsw = newPswField.text;
+    
+    UITextField *confirmField = self.passWordItem1.property;
+    NSString *confirmPsw = confirmField.text;
+    
+    ///验证
+    if (nil == newPsw || 0 >= [newPsw length]) {
+        
+        [newPswField becomeFirstResponder];
+        return;
+        
+    }
+    
+    if (nil == confirmPsw || 0 >= [confirmPsw length]) {
+        
+        [confirmField becomeFirstResponder];
+        return;
+        
+    }
+    
+    if (![newPsw isEqualToString:confirmPsw]) {
+        
+        ///提示
+        UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"两次输入的密码不一致" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        [aler show];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [aler dismissWithClickedButtonIndex:0 animated:YES];
+            
+        });
+        
+        return;
+        
+    }
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    ///获取改换密码的手机号
+    NSString *phone = [[NSUserDefaults standardUserDefaults] objectForKey:@"reset_psw_phone"];
+    NSString *vercode = [[NSUserDefaults standardUserDefaults] objectForKey:@"reset_psw_vercode"];
+    
+    ///封装参数
+    NSDictionary *params = @{@"phone" : phone,
+                             @"pwd" : newPsw,
+                             @"type" : @"1",
+                             @"vcode" : vercode};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeUserForgetPassword andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            [self.hud hide:YES];
+            
+            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"密码重置成功！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [aler show];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [aler dismissWithClickedButtonIndex:0 animated:YES];
+                
+                ///返回登录页面
+                NSInteger sumVC = [self.navigationController.viewControllers count];
+                UIViewController *tempVC = self.navigationController.viewControllers[sumVC - 3];
+                if (tempVC) {
+                    
+                    [self.navigationController popToViewController:tempVC animated:YES];
+                    
+                } else {
+                
+                    [self.navigationController popViewControllerAnimated:YES];
+                
+                }
+                
+            });
+            
+        } else {
+            
+            [self.hud hide:YES];
+        
+            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"密码重置失败！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [aler show];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [aler dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
+        
+        }
+        
+    }];
     
 }
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 @end

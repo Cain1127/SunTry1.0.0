@@ -2,6 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>1107</key>
+	<dict>
+		<key>url</key>
+		<string>message/sendVer</string>
+		<key>class</key>
+		<string>QSCommonStringReturnData</string>
+	</dict>
+	<key>1106</key>
+	<dict>
+		<key>url</key>
+		<string>user/forgetpassword</string>
+		<key>class</key>
+		<string>QSHeaderDataModel</string>
+	</dict>
 	<key>1045</key>
 	<dict>
 		<key>class</key>
@@ -61,7 +75,7 @@
 	<key>1105</key>
 	<dict>
 		<key>url</key>
-		<string>user/forgetpassword</string>
+		<string>user/ChangePsw</string>
 		<key>class</key>
 		<string>QSHeaderDataModel</string>
 	</dict>

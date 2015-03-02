@@ -18,17 +18,20 @@
 #import "MJRefresh.h"
 #import "QSWPayOrderViewController.h"
 
+#import "MBProgressHUD.h"
+
 #define ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE     17.
 
 @interface QSWMyStoredCardViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic, strong) UIView *nodataView;                    //!<没有储值卡view
-@property (strong, nonatomic) UILabel *priceLabel;                   //!<价钱label
-@property (strong, nonatomic) UILabel *specialLabel;                 //!<优惠label
-@property (strong, nonatomic) UICollectionView *collectionView;      //!<每个充值按钮
-@property (nonatomic,retain)  NSMutableArray *storedCardDataSource;  //!<充值卡信息数据源
+@property (nonatomic, strong) UIView *nodataView;                   //!<没有储值卡view
+@property (strong, nonatomic) UILabel *priceLabel;                  //!<价钱label
+@property (strong, nonatomic) UILabel *specialLabel;                //!<优惠label
+@property (strong, nonatomic) UICollectionView *collectionView;     //!<每个充值按钮
+@property (nonatomic,retain)  NSMutableArray *storedCardDataSource; //!<充值卡信息数据源
+@property (nonatomic,retain) MBProgressHUD *hud;                    //!<HUD
 
 @end
 
@@ -198,9 +201,13 @@
     
 }
 
-#pragma mark --获取网络数据
+#pragma mark - 获取网络数据
+///获取数据
 -(void)getStoredCardList
 {
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"11", @"key" : @"",@"goods_tag":@"",@"source":@"phone"};
@@ -210,13 +217,12 @@
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            //模型转换
+            ///模型转换
             QSGoodsListReturnData *tempModel = resultData;
             NSArray *array = tempModel.goodsListData.goodsList;
-            NSLog(@"QSAspecialReturnData : %@",tempModel);
             
             self.storedCardDataSource=[[NSMutableArray alloc]init];
-            //清空的数据源
+            ///清空的数据源
             [self.storedCardDataSource removeAllObjects];
             
             ///保存数据源
@@ -224,6 +230,9 @@
             
             ///结束刷新动画
             [self.collectionView headerEndRefreshing];
+            
+            ///隐藏HUD
+            [self.hud hide:YES];
             
             ///reload数据
             [self.collectionView reloadData];
@@ -233,6 +242,13 @@
             NSLog(@"================储值卡信息请求失败================");
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================储值卡信息请求失败================");
+            
+            ///隐藏HUD
+            self.hud.labelText = @"储值卡信息获取失败";
+            [self.hud hide:YES];
+            
+            ///返回上一页
+            [self.navigationController popViewControllerAnimated:YES];
             
         }
         

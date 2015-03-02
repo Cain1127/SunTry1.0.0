@@ -57,6 +57,7 @@
 		187CA8D81AA3F35400841A7E /* QSAutoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8D71AA3F35400841A7E /* QSAutoScrollView.m */; };
 		187CA8DB1AA3F82100841A7E /* QSResetStoreCardPaypswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8DA1AA3F82100841A7E /* QSResetStoreCardPaypswViewController.m */; };
 		187CA8DF1AA42A8600841A7E /* QSImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8DE1AA42A8600841A7E /* QSImageView.m */; };
+		187CA8E31AA4423E00841A7E /* QSCommonStringReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8E21AA4423E00841A7E /* QSCommonStringReturnData.m */; };
 		18B955761AA1930400006B4C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955751AA1930400006B4C /* AVFoundation.framework */; };
 		18B955781AA1931400006B4C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955771AA1931400006B4C /* CoreMedia.framework */; };
 		18B9557A1AA1932000006B4C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955791AA1932000006B4C /* CoreVideo.framework */; };
@@ -343,6 +344,8 @@
 		187CA8DA1AA3F82100841A7E /* QSResetStoreCardPaypswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSResetStoreCardPaypswViewController.m; sourceTree = "<group>"; };
 		187CA8DD1AA42A8600841A7E /* QSImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSImageView.h; sourceTree = "<group>"; };
 		187CA8DE1AA42A8600841A7E /* QSImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSImageView.m; sourceTree = "<group>"; };
+		187CA8E11AA4423E00841A7E /* QSCommonStringReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSCommonStringReturnData.h; path = Common/QSCommonStringReturnData.h; sourceTree = "<group>"; };
+		187CA8E21AA4423E00841A7E /* QSCommonStringReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSCommonStringReturnData.m; path = Common/QSCommonStringReturnData.m; sourceTree = "<group>"; };
 		18B955751AA1930400006B4C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		18B955771AA1931400006B4C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		18B955791AA1932000006B4C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -948,6 +951,15 @@
 			path = ImageView;
 			sourceTree = "<group>";
 		};
+		187CA8E01AA4420900841A7E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				187CA8E11AA4423E00841A7E /* QSCommonStringReturnData.h */,
+				187CA8E21AA4423E00841A7E /* QSCommonStringReturnData.m */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
 		33C6DF1C30579CFE5CB10286 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1324,6 +1336,7 @@
 		CE571ECC1A84798800609788 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				187CA8E01AA4420900841A7E /* Common */,
 				185343C51A9ED31000A83039 /* Order */,
 				CEEAC3EE1A8DA845009AC6AA /* User */,
 				CEEAC3751A8CA4EF009AC6AA /* Base */,
@@ -1800,6 +1813,7 @@
 				CEB630BF1A85C21700F64DEE /* QSWAddSendAdsViewController.m in Sources */,
 				4739023D1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m in Sources */,
 				CEEAC3E51A8DA7DF009AC6AA /* MJRefreshHeaderView.m in Sources */,
+				187CA8E31AA4423E00841A7E /* QSCommonStringReturnData.m in Sources */,
 				CE4D20D11AA2A74A00EF6FCA /* QSNoNetworkingViewController.m in Sources */,
 				184AE07E1A90730F007A8CBD /* NSString+PinYin4Cocoa.m in Sources */,
 				CEEAC3951A8CA4EF009AC6AA /* QSGoodsListReturnData.m in Sources */,

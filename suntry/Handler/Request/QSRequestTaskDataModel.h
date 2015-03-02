@@ -53,7 +53,9 @@ typedef enum
     
     rRequestTypeUserCouponList = 1103,          //!<个人优惠券列表
     rRequestTypeUserGetCoupon = 1104,           //!<根据key获取优惠券
-    rRequestTypeUserForgetPassword = 1105,      //!<忘记密码
+    rRequestTypeUserResetPassword = 1105,       //!<忘记密码
+    rRequestTypeUserForgetPassword = 1106,      //!<重置密码
+    rRequestTypeGetVertification = 1107,        //!<获取验证码
     
     rRequestTypePayJudgeBalanceData = 1143,     //储值卡支付
     rRequestTypeOrderListData = 1021,           //订单列表

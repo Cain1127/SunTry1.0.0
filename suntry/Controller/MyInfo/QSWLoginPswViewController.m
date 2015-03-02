@@ -191,10 +191,10 @@
     NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:@"phone"];
     
     ///封装参数
-    NSDictionary *params = @{@"phone" : phone,
-                             @"pwd" : newPwd,
-                             @"type" : @"1",
-                             @"vcode" : @"123456"};
+    NSDictionary *params = @{@"account" : phone,
+                             @"psw" : originalPwd,
+                             @"psw_new" : newPwd,
+                             @"type" : @"1"};
     
     [QSRequestManager requestDataWithType:rRequestTypeUserForgetPassword andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
