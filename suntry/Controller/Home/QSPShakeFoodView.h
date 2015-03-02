@@ -10,9 +10,12 @@
 
 #define SHAKEVIEW_BACKGROUND_COLOR                  [UIColor colorWithWhite:0 alpha:0.6]
 
+
+@class QSPShakeFoodView;
+
 @protocol QSPShakeFoodViewDelegate<NSObject>
 
-- (void)changedWithData:(id)foodData;
+- (void)changedWithData:(id)foodData inView:(QSPShakeFoodView*)popFoodView;
 
 @end
 

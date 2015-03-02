@@ -23,7 +23,7 @@
 
 #define SHOPPING_CAR_VIEW_RIGHTVIEW_FINAL_BACKGROUND_COLOR   [UIColor colorWithRed:189/255. green:180/255. blue:155/255. alpha:1]
 
-#define SHOPPING_CAR_VIEW_SHIPPING_PRICE                20.
+#define SHOPPING_CAR_VIEW_SHIPPING_PRICE                15.
 
 @interface QSPShoppingCarView ()
 
@@ -91,7 +91,7 @@
         [self.rightInfoLabel setFont:[UIFont systemFontOfSize:SHOPPING_CAR_VIEW_TEXT_FONT_SIZE]];
         [self.rightView addSubview:self.rightInfoLabel];
         
-//        [self.rightInfoLabel setText:@"￥24起配送"];
+//        [self.rightInfoLabel setText:@"￥20起配送"];
         
         self.rightButton = [UIButton createBlockButtonWithFrame:CGRectMake((_rightInfoLabel.frame.size.width-90)/2, (_rightInfoLabel.frame.size.height-44)/2, 90, 44) andButtonStyle:nil andCallBack:^(UIButton *button) {
             if (delegate) {

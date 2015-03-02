@@ -143,6 +143,7 @@
         self.foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
         [self.foodCountControlView setMarginTopRight:CGPointMake(contentBackgroundView.frame.size.width-13, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height+4)];
         [self.foodCountControlView setDelegate:self];
+        [self.foodCountControlView setOnlyShowAddButton:YES];
         [contentBackgroundView addSubview:self.foodCountControlView];
         
         //库存
@@ -292,7 +293,7 @@
     NSLog(@"changedCount:%ld",(long)count);
     [QSPShoppingCarData setShoppingCarDataListWithData:_foodDataInCarListFormatDic withCount:count AddOrSetPackageData:NO];
     if (delegate) {
-        [delegate changedWithData:_foodData];
+        [delegate changedWithData:_foodData inView:self];
     }
 }
 
