@@ -16,12 +16,12 @@
 		<key>class</key>
 		<string>QSHeaderDataModel</string>
 	</dict>
-	<key>1051</key>
+	<key>1060</key>
 	<dict>
 		<key>class</key>
 		<string>QSConfigInfoDataListReturnData</string>
 		<key>url</key>
-		<string>tag/config</string>
+		<string>tag/appconfig</string>
 	</dict>
 	<key>1045</key>
 	<dict>

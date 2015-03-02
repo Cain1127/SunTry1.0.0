@@ -40,8 +40,6 @@
     [super loadView];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
     UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [navTitle setFont:[UIFont boldSystemFontOfSize:ORDER_LIST_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE]];
     [navTitle setTextColor:[UIColor whiteColor]];

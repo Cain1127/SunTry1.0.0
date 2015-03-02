@@ -61,7 +61,7 @@ typedef enum
     rRequestTypeOrderListData = 1021,           //!<订单列表
     rRequestTypeOrderDetailData = 1122,         //!<订单详情
     
-    rRequestTypeConfigInfoDataList = 1051,      //!<配置信息
+    rRequestTypeConfigInfoDataList = 1060,      //!<配置信息
     
     rRequestTypeMaxLimited = 99999              //!<最大值限制
     

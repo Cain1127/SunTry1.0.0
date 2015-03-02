@@ -90,7 +90,12 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20)];
+    CGFloat offetY = 0;
+    if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+        offetY = 64;
+    }
+    
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-44-20+offetY)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [_scrollView setShowsVerticalScrollIndicator:NO];
     [self.view addSubview:_scrollView];

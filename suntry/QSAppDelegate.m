@@ -111,6 +111,9 @@
         
     });
     
+    //更新配置信息
+    [self updateConfigInfo];
+    
     return YES;
 }
 
@@ -472,6 +475,7 @@
             
             ///模型转换
             QSConfigInfoDataListReturnData *tempModel = resultData;
+            [tempModel.configListData saveConfigInfoData];
             NSLog(@"QSConfigInfoDataListReturnData:%@",tempModel);
         }
     }];

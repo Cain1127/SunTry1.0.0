@@ -141,7 +141,7 @@
         
         //增加减少菜品数量控件
         self.foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
-        [self.foodCountControlView setMarginTopRight:CGPointMake(contentBackgroundView.frame.size.width-13, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height+4)];
+        [self.foodCountControlView setMarginTopRight:CGPointMake(contentBackgroundView.frame.size.width-17, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height)];
         [self.foodCountControlView setDelegate:self];
         [self.foodCountControlView setOnlyShowAddButton:YES];
         [contentBackgroundView addSubview:self.foodCountControlView];
