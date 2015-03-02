@@ -69,7 +69,7 @@
     
     UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_rmbmark"]];
     [nodataImgView setCenter:self.view.center];
-    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, (iOS7 ? 64.0f: 60.0f), nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
+    [nodataImgView setFrame:CGRectMake(nodataImgView.frame.origin.x, (iOS7 ? 64.0f + 45.0f: 45.0f), nodataImgView.frame.size.width, nodataImgView.frame.size.height)];
     [_nodataView addSubview:nodataImgView];
     
     QSLabel *infoLabel = [[QSLabel alloc] initWithFrame:CGRectMake(20, nodataImgView.frame.origin.y + nodataImgView.frame.size.height + 5.0f, SIZE_DEVICE_WIDTH-40, 50)];
