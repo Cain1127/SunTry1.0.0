@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class QSPOrderAddNewAddressView;
 @protocol QSPOrderAddNewAddressViewDelegate<NSObject>
 
 - (void)AddNewAddressWithData:(id)data;
+
+- (void)closeAddNewAddressView;
 
 @end
 

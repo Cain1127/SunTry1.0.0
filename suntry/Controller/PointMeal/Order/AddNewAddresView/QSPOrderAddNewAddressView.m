@@ -103,6 +103,9 @@
         closeStyleModel.imagesNormal = @"close_button_normal_icon";
         closeStyleModel.imagesHighted = @"close_button_down_icon";
         UIButton *closeBt = [UIButton createBlockButtonWithFrame:CGRectMake(_contentBackgroundView.frame.size.width-32-8, 8, 32, 32) andButtonStyle:closeStyleModel andCallBack:^(UIButton *button) {
+            if (delegate) {
+                [delegate closeAddNewAddressView];
+            }
             [self hideAddNewAddressView];
             [self removeFromSuperview];
         }];
@@ -278,7 +281,7 @@
     [_scrollView addSubview:self.companyTextField];
     
     self.telephoneTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.companyTextField.frame.origin.y + self.companyTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
-    
+    [self.telephoneTextField setPlaceholder:@"配送人员联系您的电话"];
     NSString *tempPhone = [self.userInfo.phone copy];
     if (tempPhone && tempPhone.length == 11) {
         
@@ -288,10 +291,6 @@
             
         });
         
-    } else {
-    
-        [self.telephoneTextField setPlaceholder:@"配送人员联系您的电话"];
-    
     }
     
     [self.telephoneTextField setDelegate:self];

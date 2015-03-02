@@ -16,6 +16,7 @@
 #import "QSSelectReturnData.h"
 #import "CommonHeader.h"
 #import "QSHomeViewController.h"
+#import "QSConfigInfoDataListReturnData.h"
 
 #import <AlipaySDK/AlipaySDK.h>
 
@@ -456,6 +457,24 @@
         });
         
     });
+    
+}
+
+#pragma mark - 更新配置信息
+- (void)updateConfigInfo
+{
+    ///配置信息请求参数
+    NSDictionary *dict = @{@"parent" : @"0", @"key" : @""};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeConfigInfoDataList andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///模型转换
+            QSConfigInfoDataListReturnData *tempModel = resultData;
+            NSLog(@"QSConfigInfoDataListReturnData:%@",tempModel);
+        }
+    }];
     
 }
 

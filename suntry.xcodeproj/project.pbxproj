@@ -79,6 +79,9 @@
 		473902491A9EF3D4000ECF41 /* QSPPayForOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902371A9EF3D4000ECF41 /* QSPPayForOrderViewController.m */; };
 		4739024A1A9EF3D4000ECF41 /* QSPShoppingCarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */; };
 		475725AD1AA1D0E3008AF866 /* QSPOrderDeliveryTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 475725AC1AA1D0E3008AF866 /* QSPOrderDeliveryTimeView.m */; };
+		47A071A81AA436F200B53883 /* QSConfigInfoDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A071A71AA436F200B53883 /* QSConfigInfoDataModel.m */; };
+		47A071AB1AA43EC900B53883 /* QSConfigInfoDataListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A071AA1AA43EC900B53883 /* QSConfigInfoDataListModel.m */; };
+		47A071AE1AA4411600B53883 /* QSConfigInfoDataListReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A071AD1AA4411600B53883 /* QSConfigInfoDataListReturnData.m */; };
 		47B211EF1AA0ADB200EEC787 /* QSOrderListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */; };
 		47B211F21AA0BE4800EEC787 /* QSOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F11AA0BE4800EEC787 /* QSOrderDetailViewController.m */; };
 		47B211F81AA166BE00EEC787 /* QSOrderListReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211F71AA166BE00EEC787 /* QSOrderListReturnData.m */; };
@@ -382,6 +385,12 @@
 		4739023A1A9EF3D4000ECF41 /* QSPShoppingCarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPShoppingCarView.m; sourceTree = "<group>"; };
 		475725AB1AA1D0E3008AF866 /* QSPOrderDeliveryTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPOrderDeliveryTimeView.h; sourceTree = "<group>"; };
 		475725AC1AA1D0E3008AF866 /* QSPOrderDeliveryTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPOrderDeliveryTimeView.m; sourceTree = "<group>"; };
+		47A071A61AA436F200B53883 /* QSConfigInfoDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSConfigInfoDataModel.h; sourceTree = "<group>"; };
+		47A071A71AA436F200B53883 /* QSConfigInfoDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSConfigInfoDataModel.m; sourceTree = "<group>"; };
+		47A071A91AA43EC900B53883 /* QSConfigInfoDataListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSConfigInfoDataListModel.h; sourceTree = "<group>"; };
+		47A071AA1AA43EC900B53883 /* QSConfigInfoDataListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSConfigInfoDataListModel.m; sourceTree = "<group>"; };
+		47A071AC1AA4411600B53883 /* QSConfigInfoDataListReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSConfigInfoDataListReturnData.h; sourceTree = "<group>"; };
+		47A071AD1AA4411600B53883 /* QSConfigInfoDataListReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSConfigInfoDataListReturnData.m; sourceTree = "<group>"; };
 		47B211ED1AA0ADB200EEC787 /* QSOrderListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderListTableViewCell.h; sourceTree = "<group>"; };
 		47B211EE1AA0ADB200EEC787 /* QSOrderListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListTableViewCell.m; sourceTree = "<group>"; };
 		47B211F01AA0BE4800EEC787 /* QSOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderDetailViewController.h; sourceTree = "<group>"; };
@@ -1046,6 +1055,17 @@
 			path = ShoppingCar;
 			sourceTree = "<group>";
 		};
+		47A071A51AA436CE00B53883 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				47A071A61AA436F200B53883 /* QSConfigInfoDataModel.h */,
+				47A071A71AA436F200B53883 /* QSConfigInfoDataModel.m */,
+				47A071A91AA43EC900B53883 /* QSConfigInfoDataListModel.h */,
+				47A071AA1AA43EC900B53883 /* QSConfigInfoDataListModel.m */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		CE207ABE1A917FAD00ACF741 /* StoredCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -1463,6 +1483,7 @@
 		CEEAC3751A8CA4EF009AC6AA /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				47A071A51AA436CE00B53883 /* Config */,
 				185343B61A91D15D00A83039 /* Coupon */,
 				1878D4BF1A90438E00AF68A4 /* Search */,
 				CECCC3231A8DDCB00079F224 /* Order */,
@@ -1528,6 +1549,8 @@
 				CEEAC38A1A8CA4EF009AC6AA /* QSGoodsListReturnData.m */,
 				CEEAC38B1A8CA4EF009AC6AA /* QSSelectReturnData.h */,
 				CEEAC38C1A8CA4EF009AC6AA /* QSSelectReturnData.m */,
+				47A071AC1AA4411600B53883 /* QSConfigInfoDataListReturnData.h */,
+				47A071AD1AA4411600B53883 /* QSConfigInfoDataListReturnData.m */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -1793,6 +1816,7 @@
 				18018AFE1AA190D400F35DEB /* QRCodeGenerator.m in Sources */,
 				184AE07C1A90730F007A8CBD /* ChineseToPinyinResource.m in Sources */,
 				CE5341A21A7FBFAA002BA188 /* QSImageView+Block.m in Sources */,
+				47A071AE1AA4411600B53883 /* QSConfigInfoDataListReturnData.m in Sources */,
 				CEEAC3F21A8DA845009AC6AA /* QSUserAddressListReturnData.m in Sources */,
 				CEEAC3E81A8DA7DF009AC6AA /* UIView+MJExtension.m in Sources */,
 				CEEAC38F1A8CA4EF009AC6AA /* QSSelectDataModel.m in Sources */,
@@ -1863,6 +1887,7 @@
 				4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,
 				CE6ED5AE1A89EEF7009FF8A7 /* QSOrderListViewController.m in Sources */,
+				47A071AB1AA43EC900B53883 /* QSConfigInfoDataListModel.m in Sources */,
 				CEEAC3921A8CA4EF009AC6AA /* QSMSGModel.m in Sources */,
 				184AE07D1A90730F007A8CBD /* HanyuPinyinOutputFormat.m in Sources */,
 				CEB630CE1A88A01700F64DEE /* QSWTheSuntryView.m in Sources */,
@@ -1888,6 +1913,7 @@
 				CECCC3291A8EE6AC0079F224 /* QSUserRegisterReturnData.m in Sources */,
 				CE207AC41A91844900ACF741 /* QSStoredCardDataModel.m in Sources */,
 				CE53415A1A7FA527002BA188 /* QSDataMappingManager.m in Sources */,
+				47A071A81AA436F200B53883 /* QSConfigInfoDataModel.m in Sources */,
 				185344441A9ED82C00A83039 /* RSADataSigner.m in Sources */,
 				185343CB1A9ED31000A83039 /* QSGoodsStapleFoodReturnData.m in Sources */,
 				CE5341A01A7FBFAA002BA188 /* NSString+Calculation.m in Sources */,
@@ -2015,7 +2041,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Chengliang Lv (34JYBUKU5J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chengliang Lv (34JYBUKU5J)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2056,7 +2082,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Chengliang Lv (34JYBUKU5J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chengliang Lv (34JYBUKU5J)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -380,9 +380,13 @@
                 [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
                 [_shipToAddress setText:self.orderAddress];
                 return;
+            }else{
+                [self showAddNewAddressView];
             }
         }
         
+    }else{
+        [self showAddNewAddressView];
     }
 
 }
@@ -912,6 +916,9 @@
     
 }
 
+
+
+#pragma mark - QSPOrderAddNewAddressViewDelegate 响应处理
 /**
  *  接受添加地址信息
  *
@@ -937,6 +944,11 @@
     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
     [_shipToAddress setText:self.orderAddress];
     
+}
+
+- (void)closeAddNewAddressView
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
