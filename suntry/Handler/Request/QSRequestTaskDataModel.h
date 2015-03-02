@@ -37,28 +37,28 @@ typedef enum
     rRequestTypeAllGoods    =1050,          //!<所有菜品
     
     rRequestTypeBanner = 1023,              //!添加首页广告
+
+    rRequestTypeLogin = 1002,                   //!<登录
+    rRequestTypeReloadUserData = 1003,          //!<重新下载用户信息
+    rRequestTypeRegister = 1102,                //!<注册
     
-    rRequestTypeLogin = 1002,               //!<登录
-    rRequestTypeReloadUserData = 1003,      //!<重新下载用户信息
-    rRequestTypeRegister = 1102,            //!<注册
+    rRequestTypeStoredCard = 1042,              //!<储值卡
+    rRequestTypeAddOrder = 1043,                //!<添加订单
+    rRequestTypeCommitOrderPayResult = 1044,    //!<确认订单支付结果
     
-    rRequestTypeStoredCard = 1042,          //!<储值卡
-    rRequestTypeAddOrder = 1043,            //!<添加订单
-    rRequestTypeCommitOrderPayResult = 1044,//!<确认订单支付结果
+    rRequestTypeUserSendAddressList = 1100,     //!<当前用户的送餐地址列表
+    rRequestTypeAddSendAddress = 1101,          //!<添加送餐地址
+    rRequestTypeDelSendAddress = 1055,          //!<删除送餐地址
     
-    rRequestTypeUserSendAddressList = 1100, //!<当前用户的送餐地址列表
-    rRequestTypeAddSendAddress = 1101,      //!<添加送餐地址
-    rRequestTypeDelSendAddress = 1055,      //!<删除送餐地址
+    rRequestTypeUserCouponList = 1103,          //!<个人优惠券列表
+    rRequestTypeUserGetCoupon = 1104,           //!<根据key获取优惠券
+    rRequestTypeUserForgetPassword = 1105,      //!<忘记密码
     
-    rRequestTypeUserCouponList = 1103,      //!<个人优惠券列表
-    rRequestTypeUserGetCoupon = 1104,       //!<根据key获取优惠券
-    rRequestTypeUserForgetPassword = 1105,  //!<忘记密码
+    rRequestTypePayJudgeBalanceData = 1143,     //储值卡支付
+    rRequestTypeOrderListData = 1021,           //订单列表
+    rRequestTypeOrderDetailData = 1122,         //订单详情
     
-    rRequestTypePayJudgeBalanceData = 1143,  //储值卡支付
-    rRequestTypeOrderListData = 1021,        //订单列表
-    rRequestTypeOrderDetailData = 1122,      //订单详情
-    
-    rRequestTypeMaxLimited = 99999          //!<最大值限制
+    rRequestTypeMaxLimited = 99999              //!<最大值限制
     
     
 }REQUEST_TYPE;
