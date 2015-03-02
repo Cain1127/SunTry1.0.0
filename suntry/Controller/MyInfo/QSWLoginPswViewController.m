@@ -21,7 +21,7 @@
 @interface QSWLoginPswViewController ()
 
 @property (nonatomic,retain) QSWTextFieldItem *originalPwdItem; //!<原密码
-@property (nonatomic,retain) QSWTextFieldItem *resetPwdItem; //!<新密码
+@property (nonatomic,retain) QSWTextFieldItem *resetPwdItem;    //!<新密码
 @property (nonatomic,retain) QSWTextFieldItem *confirmPwdItem;  //!<确认密码
 
 @end
@@ -163,20 +163,20 @@
     }
     
     ///新密码和确认密码
-    UITextField *newPwdField = self.originalPwdItem.property;
-    UITextField *confirmPwdField = self.originalPwdItem.property;
+    UITextField *newPwdField = self.resetPwdItem.property;
+    UITextField *confirmPwdField = self.confirmPwdItem.property;
     
     NSString *newPwd = newPwdField.text;
     NSString *confirmPwd = confirmPwdField.text;
     
-    if (nil == newPwd || 0 >= newPwd) {
+    if (nil == newPwd || 0 >= [newPwd length]) {
         
         [newPwdField becomeFirstResponder];
         return;
         
     }
     
-    if (nil == confirmPwd || 0 >= confirmPwd) {
+    if (nil == confirmPwd || 0 >= [confirmPwd length]) {
         
         [confirmPwdField becomeFirstResponder];
         return;
@@ -196,7 +196,7 @@
                              @"psw_new" : newPwd,
                              @"type" : @"1"};
     
-    [QSRequestManager requestDataWithType:rRequestTypeUserForgetPassword andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+    [QSRequestManager requestDataWithType:rRequestTypeUserResetPassword andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///修改成功
         if (rRequestResultTypeSuccess == resultStatus) {
@@ -208,6 +208,10 @@
                 ///弹出提示
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"密码修改成功！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
                 [alert show];
+                
+                ///修改登录状态
+                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_login"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 ///显示1秒后移除提示
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
