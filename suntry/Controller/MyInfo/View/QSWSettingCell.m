@@ -89,7 +89,7 @@
 
     if (_labelView==nil) {
         
-        _labelView=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 60.0F, 30.0F)];
+        _labelView=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 60.0f, 30.0f)];
         _labelView.text=@"先生好";
     }
     

@@ -36,6 +36,8 @@ typedef enum
     rRequestTypeRandom      =1036,              //!<随机菜品
     rRequestTypeAllGoods    =1050,              //!<所有菜品
     
+    rRequestTypeCarPostion    =1006,              //!<餐车地址
+    
     rRequestTypeBanner = 1023,                  //!添加首页广告
 
     rRequestTypeLogin = 1002,                   //!<登录

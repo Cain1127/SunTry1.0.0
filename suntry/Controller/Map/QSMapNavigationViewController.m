@@ -15,17 +15,23 @@
 #import <MapKit/MapKit.h>
 #import <objc/runtime.h>
 
+#import "QSCarPostionDataModel.h"
+#import "QSCarPostionReturnData.h"
+#import "QSRequestManager.h"
+#import "QSRequestTaskDataModel.h"
+
+#import "QSNoNetworkingViewController.h"
+
 ///关联
 static char titleLabelKey;//!<标题关联
 
-@interface QSMapNavigationViewController ()<MKMapViewDelegate,CLLocationManagerDelegate>{
-    
-    MKMapView *_mapView;
-    
-}
+@interface QSMapNavigationViewController ()<MKMapViewDelegate,CLLocationManagerDelegate>
 
-@property (nonatomic,strong) CLLocationManager *locMgr;//!<定位服务管理
-@property (nonatomic,strong) CLGeocoder *geocoder;     //!<地理编码器
+@property (nonatomic,strong) MKMapView *mapView;
+@property (nonatomic,strong) CLLocationManager *locMgr;      //!<定位服务管理
+@property (nonatomic,strong) CLGeocoder *geocoder;           //!<地理编码器
+@property (nonatomic,retain) NSMutableArray *carPostionList; //!<餐车地址列表
+@property (nonatomic,copy) NSString *title;
 
 @end
 
@@ -48,6 +54,8 @@ static char titleLabelKey;//!<标题关联
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    [self getCarPostingInfo];
     
     ///导航栏
     UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
@@ -78,179 +86,169 @@ static char titleLabelKey;//!<标题关联
     
     ///初始化mapView
     _mapView=[[MKMapView alloc] init];
-    _mapView.frame=CGRectMake(0.0f, 64.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 64.0f - 49.0f);
+    _mapView.frame=CGRectMake(0.0f, 64.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 49.0f);
     
-    _mapView.delegate=self;
+    // 1.跟踪用户位置(显示用户的具体位置)
+    //self.mapView.userTrackingMode = MKUserTrackingModeFollow;
+    
+    // 2.设置地图类型
+    self.mapView.mapType = MKMapTypeStandard;
+    
+    // 3.设置代理
+    self.mapView.delegate = self;
+    
+    //    QSMapManager *mapManager=[[QSMapManager alloc] init];
+    //    [mapManager startUserLocation:^(BOOL isLocalSuccess, double longitude, double latitude) {
+    //
+    //        // 设置地图的显示范围
+    //        MKCoordinateSpan span = MKCoordinateSpanMake(0.021321, 0.019366);
+    //        MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(latitude, longitude), span);
+    //        [_mapView setRegion:region animated:YES];
+    //
+    //    }];
+    
     [self.view addSubview:_mapView];
     
-    ///获取用户位置
-    [self getUseLocation];
-    
-    ///导航
-    NSString *destinationPm=@"天河员村";
-    
-    QSMapManager *mapManamer=[[QSMapManager alloc]init];
-    [mapManamer getUserLocation:^(BOOL isLocalSuccess, NSString *placename) {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        ///起点为placename
-        NSLog(@"==============用户导航起点位置===============");
-        NSLog(@"%@",placename);
-        [self.geocoder geocodeAddressString:placename completionHandler:^(NSArray *placemarks, NSError *error) {
-            if (error) return;
-            
-                CLPlacemark *fromPm=[placemarks firstObject];
-            
-            [self.geocoder geocodeAddressString:destinationPm completionHandler:^(NSArray *placemarks, NSError *error) {
-                if (error) return ;
-            
-                CLPlacemark *toPm=[placemarks firstObject];
+        [self addAnnotations];
+        
+    });
+    
+    
+}
+
+#pragma mark --添加大头针
+
+- (void)addAnnotations {
+    
+    QSCarPostionDataModel *tempModel1=[[QSCarPostionDataModel alloc] init];
+    
+    for (int i=0; i<[self.carPostionList count]; i++) {
+        
+        tempModel1=self.carPostionList[i];
+        self.title=tempModel1.carName;
+        
+        QSCarPostionDataSubModel *carPostion=[[QSCarPostionDataSubModel alloc] init];
+        
+        carPostion=tempModel1.postionList;
+        CGFloat latitude= carPostion.latitude;
+        CGFloat longitude=carPostion.longitude;
+        
+        switch (i) {
+            case 0:
+            {
+                // 1.餐车1
+                QSAnnotation *anno0 = [[QSAnnotation alloc] init];
+                anno0.title = self.title;
+                anno0.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
                 
-                [self addLineFrom:fromPm to:toPm];
-            }];
-            
-        }];
-    }];
-    
-    [self countLineDistance];
-}
-
-/**
- *  添加导航的线路
- *
- *  @param fromPm 起始位置
- *  @param toPm   结束位置
- */
-- (void)addLineFrom:(CLPlacemark *)fromPm to:(CLPlacemark *)toPm
-{
-    // 1.添加2个大头针
-    QSAnnotation *fromAnno = [[QSAnnotation alloc] init];
-    fromAnno.coordinate = fromPm.location.coordinate;
-    fromAnno.title = fromPm.name;
-    [_mapView addAnnotation:fromAnno];
-    
-    QSAnnotation *toAnno = [[QSAnnotation alloc] init];
-    toAnno.coordinate = toPm.location.coordinate;
-    toAnno.title = toPm.name;
-    [_mapView addAnnotation:toAnno];
-    
-    /// 2.查找路线
-    
-    /// 方向请求
-    MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
-    /// 设置起点
-    MKPlacemark *sourcePm = [[MKPlacemark alloc] initWithPlacemark:fromPm];
-    request.source = [[MKMapItem alloc] initWithPlacemark:sourcePm];
-    
-    /// 设置终点
-    MKPlacemark *destinationPm = [[MKPlacemark alloc] initWithPlacemark:toPm];
-    request.destination = [[MKMapItem alloc] initWithPlacemark:destinationPm];
-    
-    /// 方向对象
-    MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
-    
-    /// 计算路线
-    [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) {
-        NSLog(@"总共%d条路线", response.routes.count);
-        
-        /// 遍历所有的路线
-        for (MKRoute *route in response.routes) {
-            /// 添加路线遮盖
-            [_mapView addOverlay:route.polyline];
+                // 设置地图的显示范围
+                MKCoordinateSpan span = MKCoordinateSpanMake(0.171321, 0.169366);
+                MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(latitude, longitude), span);
+                [_mapView setRegion:region animated:YES];
+                
+                [self.mapView addAnnotation:anno0];
+                
+            }
+                break;
+                
+            case 1:
+            {
+                // 2.餐车2
+                QSAnnotation *anno1 = [[QSAnnotation alloc] init];
+                anno1.title = self.title;
+                anno1.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+                [self.mapView addAnnotation:anno1];
+                
+            }
+                break;
+                
+            default:
+                break;
         }
-    }];
-}
-
-#pragma mark -获得当前用户位置
--(void)getUseLocation
-{
-    ///1.跟踪用户位置(显示用户的具体位置)
-    /// [self.locMgr startUpdatingLocation];
-    
-    ///关闭地图用户信息
-    _mapView.showsUserLocation=NO;
-    
-    ///跟踪用户信息
-    _mapView.userTrackingMode=MKUserTrackingModeFollow;
-    
-    ///地图显示用户信息
-    _mapView.showsUserLocation=YES;
-    
-    ///2.设置地图类型
-    _mapView.mapType=MKMapTypeStandard;//!<标准类型
+        
+        
+    }
     
 }
-#pragma mark -MKMapViewDelegate
-/*!
- *  @author wangshupeng, 15-01-30 15:01:08
- *
- *  @brief  监听用户位置信息
- *
- *  @param mapView   当前地图
- *  @param userLocation 用户位置信息
- *
- *  @since 1.0
- */
--(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    if (![annotation isKindOfClass:[QSAnnotation class]]) return nil;
+    
+    static NSString *ID = @"car";
+    // 从缓存池中取出可以循环利用的大头针view
+    MKAnnotationView *annoView = [mapView dequeueReusableAnnotationViewWithIdentifier:ID];
+    if (annoView == nil) {
+        annoView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:ID];
+        // 显示子标题和标题
+        annoView.canShowCallout = YES;
+        // 设置大头针描述的偏移量
+        annoView.calloutOffset = CGPointMake(0, -10);
+        
+    }
+    
+    // 传递模型
+    annoView.annotation = annotation;
+    
+    if (self.carPostionList[0]) {
+        
+        annoView.image = [UIImage imageNamed:@"home_carpostion1"];
+        
+    }
+    
+    annoView.image=[UIImage imageNamed:@"home_carpostion0"];
+    
+    return annoView;
+}
+
+#pragma mark - 餐车地址网络信息请求
+///餐车地址网络信息请求
+- (void)getCarPostingInfo
 {
     
-    userLocation.title=@"我的位置";
-    userLocation.subtitle=@"追香哉得鸡腿";
-    
-    ///设置用户坐标为中心点
-    CLLocationCoordinate2D center=userLocation.location.coordinate;
-    ///设置地图的中心点(以用户所在的位置为中心点)
-    [_mapView setCenterCoordinate:center animated:YES];
-    
-    NSLog(@"==============用户位置==================");
-    NSLog(@"%f %f",center.latitude,center.longitude);
-    NSLog(@"=======================================");
-    
-
-    
-    ///设置地图的显示范围
-    MKCoordinateSpan span=MKCoordinateSpanMake(0.021321, 0.019366);
-    MKCoordinateRegion region=MKCoordinateRegionMake(center, span);
-    [mapView setRegion:region animated:YES];
-    [_locMgr stopUpdatingLocation];
+    //餐车地址信息请求参数
+    NSDictionary *dict = @{@"mer_id" : @"1"};
+    [QSRequestManager requestDataWithType:rRequestTypeCarPostion andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
             
-}
-
-
-#pragma mark - MKMapViewDelegate
-///画导航线
-- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
-{
-    MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
-    renderer.strokeColor = [UIColor redColor];
-    return renderer;
-}
-
-///获取用户
-//- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
-//{
-//    NSLog(@"%f %f", mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
-//}
-
-/**
- *  计算2个经纬度之间的直线距离
- */
-- (void)countLineDistance
-{
-    /// 计算2个经纬度之间的直线距离
-    CLLocation *loc1 = [[CLLocation alloc] initWithLatitude:40 longitude:116];
-    CLLocation *loc2 = [[CLLocation alloc] initWithLatitude:41 longitude:116];
-    CLLocationDistance distance = [loc1 distanceFromLocation:loc2];
-    NSLog(@"%f", distance);
-}
-
-///定位服务代理方法
-#pragma mark - CLLocationManagerDelegate
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+            //模型转换
+            QSCarPostionReturnData *tempModel = resultData;
+            
+            if ([tempModel.carPostionList count] > 0) {
+                
+                //清空的数据源
+                [self.carPostionList removeAllObjects];
+                
+                self.carPostionList=[[NSMutableArray alloc] init];
+                
+                ///保存数据源
+                [self.carPostionList addObjectsFromArray:tempModel.carPostionList];
+                
+                ///reload数据
+                //[self.view reloadData];
+                
+            }
+            
+        } else {
+            
+            NSLog(@"================餐车地址信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================餐车地址信息请求失败================");
+            
+            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+            networkingErrorVC.hidesBottomBarWhenPushed = YES;
+            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
+            [self.navigationController pushViewController:networkingErrorVC animated:YES];
+            
+        }
+        
+    }];
     
 }
+
 
 @end

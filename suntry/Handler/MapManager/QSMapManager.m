@@ -121,13 +121,13 @@
     ///开启定位服务
     _locMgr=[[CLLocationManager alloc]init];
     
-//   if ([[[UIDevice currentDevice] systemVersion] doubleValue] > 8.0)
-//   {
-//        //设置定位权限 仅ios8有意义
-//        [_locMgr requestWhenInUseAuthorization];// 前台定位
-//        
-//        [_locMgr requestAlwaysAuthorization];// 前后台同时定位
-//    }
+   if ([[[UIDevice currentDevice] systemVersion] doubleValue] > 8.0)
+   {
+        //设置定位权限 仅ios8有意义
+        [_locMgr requestWhenInUseAuthorization];// 前台定位
+        
+        [_locMgr requestAlwaysAuthorization];// 前后台同时定位
+    }
    
     [self.locMgr startUpdatingLocation];
     self.locMgr.delegate = self;
