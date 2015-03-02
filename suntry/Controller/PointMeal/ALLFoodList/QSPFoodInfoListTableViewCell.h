@@ -19,13 +19,15 @@
  */
 - (void)changedCount:(NSInteger)count withFoodData:(id)foodData;
 
+- (void)clickFoodImgIndex:(NSInteger)index withFoodData:(id)foodData;
+
 @end
 
 @interface QSPFoodInfoListTableViewCell : UITableViewCell<SPFoodCountControlViewDelegate>
 
 @property(nonatomic,assign) id<QSPFoodInfoListTableViewCellDelegate> delegate;
 
-- (void)updateFoodData:(id)data;
+- (void)updateFoodData:(id)data withIndex:(NSInteger)index;
 
 - (id)getFoodData;
 

@@ -93,6 +93,7 @@
         
         self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(lineView.frame.origin.x, lineView.frame.origin.y+lineView.frame.size.height, lineView.frame.size.width, scrollViewContentHight)];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
+        [_scrollView setShowsVerticalScrollIndicator:NO];
         [_contentBackgroundView addSubview:_scrollView];
         
         buttomY = _scrollView.frame.origin.y+_scrollView.frame.size.height;
@@ -147,7 +148,7 @@
 
 - (void)updateFoodData:(id)data
 {
-    //TODO: 设置套餐数据
+    
     [self.packageSelectedFoodData removeAllObjects];
     
     [self.foodNameLabel setText:@""];

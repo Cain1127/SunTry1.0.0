@@ -42,7 +42,7 @@
 ///关联
 static char titleLabelKey;//!<标题key
 
-@interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIAlertViewDelegate,QSAutoScrollViewDelegate>
+@interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIAlertViewDelegate,QSPShakeFoodViewDelegate,QSAutoScrollViewDelegate>
 
 @property (nonatomic,strong) QSAutoScrollView *advertView;          //!<广告页
 @property (weak, nonatomic) IBOutlet UIButton *sharkButton;         //!<摇一摇按钮
@@ -412,10 +412,11 @@ static char titleLabelKey;//!<标题key
     }
     
     QSGoodsDataModel *goodsItem = _specialDataSource[indexPath.row - 1];
-    QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
-    [self.tabBarController.view addSubview:shakeFoodView];
-    [shakeFoodView updateFoodData:goodsItem];
-    [shakeFoodView showShakeFoodView];
+    QSPShakeFoodView *foodDetalPopView = [QSPShakeFoodView getShakeFoodView];
+    [foodDetalPopView setDelegate:self];
+    [self.tabBarController.view addSubview:foodDetalPopView];
+    [foodDetalPopView updateFoodData:goodsItem];
+    [foodDetalPopView showShakeFoodView];
     
 }
 
@@ -476,7 +477,12 @@ static char titleLabelKey;//!<标题key
 {
     
     UIView *shakeView = [self.tabBarController.view viewWithTag:111];
-    if (!shakeView) {
+    if (!shakeView)
+    {
+        if(!self.shakeView)
+        {
+            [self initShakeView];
+        }
         [self.tabBarController.view addSubview:self.shakeView];
     }
     [self.shakeView setHidden:NO];
@@ -658,6 +664,7 @@ static char titleLabelKey;//!<标题key
                 QSGoodsDataModel *goodsItem = array[0];
                 QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
                 [shakeFoodView setCurrentViewType:FoodDetailPopViewTypeShake];
+                [shakeFoodView setDelegate:self];
                 [self.shakeView addSubview:shakeFoodView];
                 [shakeFoodView updateFoodData:goodsItem];
                 [shakeFoodView showShakeFoodView];
@@ -722,5 +729,14 @@ static char titleLabelKey;//!<标题key
     
 }
 
+#pragma mark - QSPShakeFoodViewDelegate  菜品详情弹出View改变菜品数量响应处理
+///菜品详情弹出View改变菜品数量响应处理
+- (void)changedWithData:(id)foodData inView:(QSPShakeFoodView*)popFoodView
+{
+    
+    [self.tabBarController setSelectedIndex:1];
+    [popFoodView setHidden:YES];
+    
+}
 
 @end

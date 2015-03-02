@@ -18,6 +18,7 @@
 #import "MBProgressHUD.h"
 #import "QSRequestManager.h"
 #import "QSGoodsStapleFoodReturnData.h"
+#import "QSWLoginViewController.h"
 
 #define FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR  [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.]
 #define FOOD_INFOLIST_TABLEVIEW_BACKGROUND_COLOR  [UIColor whiteColor]
@@ -41,7 +42,7 @@ typedef enum {
     FoodTypePackage     = 3,
 } FoodType;
 
-@interface QSPointMealViewController ()<QSPShakeFoodViewDelegate>
+@interface QSPointMealViewController ()<QSPShakeFoodViewDelegate,UIAlertViewDelegate>
 
 @property(nonatomic,strong) UITableView     *foodTypeTableView;
 @property(nonatomic,strong) NSMutableArray  *foodTypeList;
@@ -71,7 +72,13 @@ typedef enum {
     [backButtonStyle setImagesHighted:IMAGE_NAVIGATIONBAR_MEINFO_HIGHLIGHTED];
  
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
-        [self.tabBarController setSelectedIndex:0];
+        
+        if ([QSPShoppingCarData getTotalFoodCount]==0) {
+            [self.tabBarController setSelectedIndex:0];
+            return ;
+        }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"是否清空购物车？" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+        [av show];
     }];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -425,7 +432,7 @@ typedef enum {
                 }
                 
                 if (tempArray){
-                    [cell updateFoodData:tempArray[indexPath.row]];
+                    [cell updateFoodData:tempArray[indexPath.row] withIndex:indexPath.row];
                 }
 
                 NSArray *selectedArray = [QSPShoppingCarData getShoppingCarDataList];
@@ -477,55 +484,55 @@ typedef enum {
             
         case FoodInfoListTable:
             {
-                NSArray *tempArray = nil;
-                
-                if (_allGoodsData) {
-                    
-                    switch (indexPath.section) {
-                        case 0:
-                            if (_allGoodsData.soupList&&[_allGoodsData.soupList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupList count]>indexPath.row)
-                            {
-                                tempArray = _allGoodsData.soupList;
-                            }
-                            break;
-                        case 1:
-                            if (_allGoodsData.healthyList&&[_allGoodsData.healthyList isKindOfClass:[NSArray class]]&&[_allGoodsData.healthyList count]>indexPath.row)
-                            {
-                                tempArray = _allGoodsData.healthyList;
-                            }
-                            break;
-                        case 2:
-                            if (_allGoodsData.soupList&&[_allGoodsData.soupList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupList count]>indexPath.row)
-                            {
-                                tempArray = _allGoodsData.soupList;
-                            }
-                            break;
-                        case 3:
-                            if (_allGoodsData.menuPackeList&&[_allGoodsData.menuPackeList isKindOfClass:[NSArray class]]&&[_allGoodsData.menuPackeList count]>indexPath.row)
-                            {
-                                tempArray = _allGoodsData.menuPackeList;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    
-                }
-                
-                if (tempArray){
-                    QSGoodsDataModel *itemData = tempArray[indexPath.row];
-                    if (itemData&&[itemData isKindOfClass:[QSGoodsDataModel class]]) {
-                        if ([itemData.goodsTypeID integerValue] == 1 || [itemData.goodsTypeID integerValue] == 5) {
-                            
-                            QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
-                            [shakeFoodView setDelegate:self];
-                            [self.tabBarController.view addSubview:shakeFoodView];
-                            [shakeFoodView updateFoodData:itemData];
-                            [shakeFoodView showShakeFoodView];
-                            
-                        }
-                    }
-                }
+//                NSArray *tempArray = nil;
+//                
+//                if (_allGoodsData) {
+//                    
+//                    switch (indexPath.section) {
+//                        case 0:
+//                            if (_allGoodsData.soupList&&[_allGoodsData.soupList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupList count]>indexPath.row)
+//                            {
+//                                tempArray = _allGoodsData.soupList;
+//                            }
+//                            break;
+//                        case 1:
+//                            if (_allGoodsData.healthyList&&[_allGoodsData.healthyList isKindOfClass:[NSArray class]]&&[_allGoodsData.healthyList count]>indexPath.row)
+//                            {
+//                                tempArray = _allGoodsData.healthyList;
+//                            }
+//                            break;
+//                        case 2:
+//                            if (_allGoodsData.soupList&&[_allGoodsData.soupList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupList count]>indexPath.row)
+//                            {
+//                                tempArray = _allGoodsData.soupList;
+//                            }
+//                            break;
+//                        case 3:
+//                            if (_allGoodsData.menuPackeList&&[_allGoodsData.menuPackeList isKindOfClass:[NSArray class]]&&[_allGoodsData.menuPackeList count]>indexPath.row)
+//                            {
+//                                tempArray = _allGoodsData.menuPackeList;
+//                            }
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                    
+//                }
+//                
+//                if (tempArray){
+//                    QSGoodsDataModel *itemData = tempArray[indexPath.row];
+//                    if (itemData&&[itemData isKindOfClass:[QSGoodsDataModel class]]) {
+//                        if ([itemData.goodsTypeID integerValue] == 1 || [itemData.goodsTypeID integerValue] == 5) {
+//                            
+//                            QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
+//                            [shakeFoodView setDelegate:self];
+//                            [self.tabBarController.view addSubview:shakeFoodView];
+//                            [shakeFoodView updateFoodData:itemData];
+//                            [shakeFoodView showShakeFoodView];
+//                            
+//                        }
+//                    }
+//                }
             }
             break;
         default:
@@ -615,9 +622,20 @@ typedef enum {
     
     NSLog(@"orderWithData:%@",foodData);
 
-    QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
-    [self.navigationController pushViewController:orderVc animated:YES];
-    
+    int isLogin = [[[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"] intValue];
+    if (isLogin != 1 ) {
+        QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
+        loginVC.loginSuccessCallBack = ^(BOOL flag){
+            if (flag) {
+                
+            }
+        };
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }else{
+        QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
+        [self.navigationController pushViewController:orderVc animated:YES];
+    }
 }
 
 - (void)getGoodsData
@@ -639,21 +657,42 @@ typedef enum {
             
             self.allGoodsData = tempModel.headerMSG;
             
-            NSLog(@"allGoodsData : %@",_allGoodsData);
-            
             [self.foodTypeList removeAllObjects];
             
-            if (_allGoodsData.specialList&&[_allGoodsData.specialList count]>0) {
-                [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeSPecial]];
+            if (self.allGoodsData)
+            {
+                
+                if (_allGoodsData.specialList&&[_allGoodsData.specialList count]>0)
+                {
+                    [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeSPecial]];
+                }
+                if (_allGoodsData.healthyList&&[_allGoodsData.healthyList count]>0)
+                {
+                    [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeHeathy]];
+                }
+                if (_allGoodsData.soupList&&[_allGoodsData.soupList count]>0)
+                {
+                    [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeSoup]];
+                }
+                if (_allGoodsData.menuPackeList&&[_allGoodsData.menuPackeList count]>0)
+                {
+                    [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypePackage]];
+                }
             }
-            if (_allGoodsData.healthyList&&[_allGoodsData.healthyList count]>0) {
-                [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeHeathy]];
-            }
-            if (_allGoodsData.soupList&&[_allGoodsData.soupList count]>0) {
-                [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeSoup]];
-            }
-            if (_allGoodsData.menuPackeList&&[_allGoodsData.menuPackeList count]>0) {
-                [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypePackage]];
+            
+            //最后一组添加空数据
+            if ([_allGoodsData.menuPackeList count]>0)
+            {
+                _allGoodsData.menuPackeList = [self addNullDataInTheList:_allGoodsData.menuPackeList];
+            }else if ([_allGoodsData.soupList count]>0)
+            {
+                _allGoodsData.soupList = [self addNullDataInTheList:_allGoodsData.soupList];
+            }else if ([_allGoodsData.healthyList count]>0)
+            {
+                _allGoodsData.healthyList = [self addNullDataInTheList:_allGoodsData.healthyList];
+            }else if ([_allGoodsData.specialList count]>0)
+            {
+                _allGoodsData.specialList = [self addNullDataInTheList:_allGoodsData.specialList];
             }
             
             [self.foodTypeTableView reloadData];
@@ -677,6 +716,28 @@ typedef enum {
     
 }
 
+/**
+ *  补全空数据以填充全屏
+ *
+ *  @param beAddedArray 被操作数组
+ *
+ *  @return 添加空数据后的数组
+ */
+- (NSArray*)addNullDataInTheList:(NSArray*)beAddedArray
+{
+    NSMutableArray *tempArray = [NSMutableArray arrayWithArray:beAddedArray];
+    if (beAddedArray&&[beAddedArray isKindOfClass:[NSArray class]]) {
+        NSInteger itemCountPerScreen = SIZE_DEVICE_HEIGHT/FOOD_INFOLIST_TABLEVIEW_CELL_HEIGHT-1;
+        if ([beAddedArray count]<itemCountPerScreen) {
+            for (int i=0; i<(itemCountPerScreen-[beAddedArray count]); i++) {
+                QSGoodsDataModel *nullData = [[QSGoodsDataModel alloc] init];
+                [tempArray addObject:nullData];
+            }
+        }
+    }
+    return tempArray;
+}
+
 - (void)submitPackageWithData:(id)data
 {
     
@@ -691,11 +752,35 @@ typedef enum {
     }
 }
 
-//QSPShakeFoodViewDelegate
-- (void)changedWithData:(id)foodData
+#pragma mark - QSPShakeFoodViewDelegate 菜品详情弹出View改变菜品数量响应处理
+///QSPShakeFoodViewDelegate 菜品详情弹出View改变菜品数量响应处理
+- (void)changedWithData:(id)foodData inView:(QSPShakeFoodView*)popFoodView
 {
     [_foodInfoListTableView reloadData];
     [_shoppingCarView updateShoppingCar];
+    [popFoodView setHidden:YES];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        [QSPShoppingCarData clearShoopingCar];
+    }
+    [self.tabBarController setSelectedIndex:0];
+}
+
+- (void)clickFoodImgIndex:(NSInteger)index withFoodData:(id)foodData
+{
+    if (foodData&&[foodData isKindOfClass:[QSGoodsDataModel class]]) {
+        QSGoodsDataModel *itemData = (QSGoodsDataModel*)foodData;
+        if ([itemData.goodsTypeID integerValue] == 1 || [itemData.goodsTypeID integerValue] == 5) {
+            QSPShakeFoodView *detailFoodView = [QSPShakeFoodView getShakeFoodView];
+            [detailFoodView setDelegate:self];
+            [self.tabBarController.view addSubview:detailFoodView];
+            [detailFoodView updateFoodData:itemData];
+            [detailFoodView showShakeFoodView];
+        }
+    }
 }
 
 /*

@@ -15,6 +15,7 @@
 #import "ColorHeader.h"
 #import "QSGoodsDataModel.h"
 #import "ImageHeader.h"
+#import "QSBlockButton.h"
 
 #define TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE        14.
 #define TABLEVIEW_FOOD_NAME_STRING_COLOR            COLOR_HEXCOLOR(0x94414D)
@@ -33,6 +34,7 @@
 @property(nonatomic,strong) QSPFoodCountControlView *foodCountControlView;
 @property(nonatomic,strong) QSGoodsDataModel        *foodData;
 @property(nonatomic,strong) UIImageView             *pricemarkIconView;
+@property(nonatomic,strong) UIButton                *foodImgButton;
 
 @end
 
@@ -58,6 +60,15 @@
         self.contentImgView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 10., 88/375.*SIZE_DEVICE_WIDTH, 60/667.*SIZE_DEVICE_HEIGHT)];
         [self.contentImgView setBackgroundColor:[UIColor clearColor]];
         [self.contentView addSubview:self.contentImgView];
+        
+        QSBlockButtonStyleModel *imgBtStyle = [[QSBlockButtonStyleModel alloc] init];
+        [imgBtStyle setBgColor:[UIColor clearColor]];
+        self.foodImgButton = [UIButton createBlockButtonWithFrame:self.contentImgView.frame andButtonStyle:imgBtStyle andCallBack:^(UIButton *button) {
+            if (delegate) {
+                [delegate clickFoodImgIndex:button.tag withFoodData:_foodData];
+            }
+        }];
+        [self.contentView addSubview:self.foodImgButton];
         
         //菜名元素
         NSString* foodNameStr = @"";
@@ -111,7 +122,7 @@
     
 }
 
-- (void)updateFoodData:(id)data
+- (void)updateFoodData:(id)data withIndex:(NSInteger)index
 {
     
     [_contentImgView setImage:nil];
@@ -121,6 +132,10 @@
     [self.priceLabel setText:@""];
     [_pricemarkIconView setHidden:YES];
     [_foodCountControlView setHidden:YES];
+    _foodData = nil;
+    [self.foodImgButton setTag:index];
+    
+    [self setHidden:YES];
     
     if (nil==data) {
         return;
@@ -129,7 +144,14 @@
         NSLog(@"菜品列表数据格式不对");
         return;
     }
+    
     self.foodData = data;
+    
+    if (!self.foodData.goodsID||[self.foodData.goodsID isEqualToString:@""]) {
+        return;
+    }
+    
+    [self setHidden:NO];
     
     [self.contentImgView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,_foodData.goodsImageUrl]] placeholderImage:nil];
     
@@ -142,13 +164,13 @@
     [self.specialMarkImgView setFrame:CGRectMake(self.foodNameLabel.frame.origin.x+self.foodNameLabel.frame.size.width+2, self.foodNameLabel.frame.origin.y+1, self.specialMarkImgView.frame.size.width, self.specialMarkImgView.frame.size.height)];
     
     //FIXME: 限时促销，特价字段需确认！
-    NSInteger randIdx = random();
-    [self.specialMarkImgView setImage:nil];
-    if (randIdx%3==0) {
-        [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_special_mark"]];
-    }else if (randIdx%3==1) {
-        [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_time_mark"]];
-    }
+//    NSInteger randIdx = random();
+//    [self.specialMarkImgView setImage:nil];
+//    if (randIdx%3==0) {
+//        [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_special_mark"]];
+//    }else if (randIdx%3==1) {
+//        [self.specialMarkImgView setImage:[UIImage imageNamed:@"food_time_mark"]];
+//    }
     
     //库存
     NSString* inStockCountStr = [NSString stringWithFormat:@"库存：%@份",_foodData.goodsInstockNum];

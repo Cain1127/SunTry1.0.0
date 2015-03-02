@@ -75,10 +75,10 @@
         //背景关闭按钮
         QSBlockButtonStyleModel *bgBtStyleModel = [QSBlockButtonStyleModel alloc];
         UIButton *bgBt = [UIButton createBlockButtonWithFrame:self.frame andButtonStyle:bgBtStyleModel andCallBack:^(UIButton *button) {
-            if (self.superview.tag == 111) {
-                //隐藏摇一摇界面
-                [self.superview setHidden:YES];
-            }
+//            if (self.superview.tag == 111) {
+//                //隐藏摇一摇界面
+//                [self.superview setHidden:YES];
+//            }
             [self hideShakeFoodView];
         }];
         [self addSubview:bgBt];
@@ -143,6 +143,7 @@
         self.foodCountControlView = [[QSPFoodCountControlView alloc] initControlView];
         [self.foodCountControlView setMarginTopRight:CGPointMake(contentBackgroundView.frame.size.width-13, self.contentImgView.frame.origin.y+self.contentImgView.frame.size.height+4)];
         [self.foodCountControlView setDelegate:self];
+        [self.foodCountControlView setOnlyShowAddButton:YES];
         [contentBackgroundView addSubview:self.foodCountControlView];
         
         //库存
@@ -265,12 +266,9 @@
     [self setHidden:NO];
     
     if (currentViewType == FoodDetailPopViewTypeNormal) {
-        currentViewType = FoodDetailPopViewTypeNormal;
         [self setBackgroundColor:SHAKEVIEW_BACKGROUND_COLOR];
     }else if (currentViewType == FoodDetailPopViewTypeShake) {
-        currentViewType = FoodDetailPopViewTypeNormal;
         [self setBackgroundColor:[UIColor clearColor]];
-        
         [UIView animateWithDuration:0.3 animations:^{
             [self setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
         }];
@@ -281,10 +279,21 @@
 
 - (void)hideShakeFoodView
 {
-    currentViewType = FoodDetailPopViewTypeNormal;
-    [self setBackgroundColor:SHAKEVIEW_BACKGROUND_COLOR];
-    [self setHidden:YES];
-    [self removeFromSuperview];
+    if (currentViewType == FoodDetailPopViewTypeNormal) {
+        [self setBackgroundColor:SHAKEVIEW_BACKGROUND_COLOR];
+        [self setHidden:YES];
+        [self removeFromSuperview];
+    }else if (currentViewType == FoodDetailPopViewTypeShake) {
+        currentViewType = FoodDetailPopViewTypeNormal;
+        [self setBackgroundColor:[UIColor clearColor]];
+        [UIView animateWithDuration:0.3 animations:^{
+            [self setFrame:CGRectMake(0, -SIZE_DEVICE_HEIGHT, self.frame.size.width, self.frame.size.height)];
+        } completion:^(BOOL finished) {
+            [self setBackgroundColor:SHAKEVIEW_BACKGROUND_COLOR];
+            [self setHidden:YES];
+            [self removeFromSuperview];
+        }];
+    }
 }
 
 - (void)changedCount:(NSInteger)count
@@ -292,7 +301,7 @@
     NSLog(@"changedCount:%ld",(long)count);
     [QSPShoppingCarData setShoppingCarDataListWithData:_foodDataInCarListFormatDic withCount:count AddOrSetPackageData:NO];
     if (delegate) {
-        [delegate changedWithData:_foodData];
+        [delegate changedWithData:_foodData inView:self];
     }
 }
 

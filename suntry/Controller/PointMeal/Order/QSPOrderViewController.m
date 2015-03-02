@@ -512,6 +512,8 @@
         };
         [self.navigationController pushViewController:loginVC animated:YES];
         return;
+    }else{
+        [self updateView];
     }
     
     NSString *remarkStr = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_ORDER_USER_REMARK_INFO];
