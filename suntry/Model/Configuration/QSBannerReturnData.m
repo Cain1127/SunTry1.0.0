@@ -7,7 +7,21 @@
 //
 
 #import "QSBannerReturnData.h"
+#import "QSBannerDataModel.h"
 
 @implementation QSBannerReturnData
+
++ (RKObjectMapping *)objectMapping
+{
+    
+    RKObjectMapping *shared_mapping = [super objectMapping];
+    
+    //mapping字典
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"msg" toKeyPath:@"bannerList" withMapping:[QSBannerDataModel objectMapping]]];
+    
+    
+    return shared_mapping;
+    
+}
 
 @end

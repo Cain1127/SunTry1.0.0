@@ -10,4 +10,6 @@
 
 @interface QSBannerReturnData : QSHeaderDataModel
 
+@property (nonatomic,retain) NSArray *bannerList;//!<所有广告图片数组
+
 @end
