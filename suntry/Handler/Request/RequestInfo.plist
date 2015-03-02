@@ -3,11 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>1023</key>
-	<dict/>
-	<key>url</key>
-	<string>common/Advertisement</string>
-	<key>class</key>
-	<string>QS</string>
+	<dict>
+		<key>class</key>
+		<string>QSBannerReturnData</string>
+		<key>url</key>
+		<string>common/Advertisement</string>
+	</dict>
 	<key>1122</key>
 	<dict>
 		<key>class</key>

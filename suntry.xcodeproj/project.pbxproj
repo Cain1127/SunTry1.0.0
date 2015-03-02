@@ -92,6 +92,7 @@
 		CE207AC71A91D43000ACF741 /* QSWPayOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AC61A91D43000ACF741 /* QSWPayOrderViewController.m */; };
 		CE4D20CE1AA17FE400EF6FCA /* QSDelUserAddressDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4D20CD1AA17FE400EF6FCA /* QSDelUserAddressDataModel.m */; };
 		CE4D20D11AA2A74A00EF6FCA /* QSNoNetworkingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4D20D01AA2A74A00EF6FCA /* QSNoNetworkingViewController.m */; };
+		CE4D20D41AA3F4BD00EF6FCA /* QSBannerReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4D20D31AA3F4BD00EF6FCA /* QSBannerReturnData.m */; };
 		CE5341451A7FA4CE002BA188 /* QSTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */; };
 		CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341351A7FA4CE002BA188 /* QSAnnotation.m */; };
 		CE5341471A7FA4CE002BA188 /* QSMapNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */; };
@@ -409,6 +410,8 @@
 		CE4D20CD1AA17FE400EF6FCA /* QSDelUserAddressDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSDelUserAddressDataModel.m; sourceTree = "<group>"; };
 		CE4D20CF1AA2A74A00EF6FCA /* QSNoNetworkingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSNoNetworkingViewController.h; sourceTree = "<group>"; };
 		CE4D20D01AA2A74A00EF6FCA /* QSNoNetworkingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSNoNetworkingViewController.m; sourceTree = "<group>"; };
+		CE4D20D21AA3F4BD00EF6FCA /* QSBannerReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSBannerReturnData.h; sourceTree = "<group>"; };
+		CE4D20D31AA3F4BD00EF6FCA /* QSBannerReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSBannerReturnData.m; sourceTree = "<group>"; };
 		CE5341311A7FA4CE002BA188 /* QSTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTabBarViewController.h; sourceTree = "<group>"; };
 		CE5341321A7FA4CE002BA188 /* QSTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTabBarViewController.m; sourceTree = "<group>"; };
 		CE5341341A7FA4CE002BA188 /* QSAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAnnotation.h; sourceTree = "<group>"; };
@@ -1533,6 +1536,8 @@
 		CEEAC3861A8CA4EF009AC6AA /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				CE4D20D21AA3F4BD00EF6FCA /* QSBannerReturnData.h */,
+				CE4D20D31AA3F4BD00EF6FCA /* QSBannerReturnData.m */,
 				CEEAC3871A8CA4EF009AC6AA /* QSDistrictReturnData.h */,
 				CEEAC3881A8CA4EF009AC6AA /* QSDistrictReturnData.m */,
 				CEEAC3891A8CA4EF009AC6AA /* QSGoodsListReturnData.h */,
@@ -1845,6 +1850,7 @@
 				4739023B1A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m in Sources */,
 				473902411A9EF3D4000ECF41 /* QSPFoodCountControlView.m in Sources */,
 				CE53415C1A7FA527002BA188 /* QSRequestManager.m in Sources */,
+				CE4D20D41AA3F4BD00EF6FCA /* QSBannerReturnData.m in Sources */,
 				CEEAC3E71A8DA7DF009AC6AA /* UIScrollView+MJRefresh.m in Sources */,
 				4739023E1A9EF3D4000ECF41 /* QSPFoodPackageView.m in Sources */,
 				CEEAC3E61A8DA7DF009AC6AA /* UIScrollView+MJExtension.m in Sources */,
