@@ -14,6 +14,7 @@
 #import "DeviceSizeHeader.h"
 #import "QSWTheSuntryView.h"
 #import "QSWServiceTermViewController.h"
+#import "ColorHeader.h"
 
 #import "MBProgressHUD.h"
 
@@ -50,6 +51,7 @@
     [self setupGroup0];
     [self setupGroup1];
     [self setupGroup2];
+    [self setupFooter];
     
 }
 
@@ -82,17 +84,72 @@
     
 }
 
+- (void)setupFooter
+{
+    
+    ///  退出登录按钮
+    UIButton *footterButton = [[UIButton alloc] init];
+    CGFloat footterButtonX = SIZE_DEFAULT_MARGIN_LEFT_RIGHT + 2;
+    CGFloat footterButtonY = 10;
+    CGFloat footterButtonW = self.tableView.frame.size.width - 2 * footterButtonX;
+    CGFloat footterButtonH = 44;
+    footterButton.frame = CGRectMake(footterButtonX, footterButtonY, footterButtonW, footterButtonH);
+    
+    /// 背景和文字
+    footterButton.backgroundColor=COLOR_CHARACTERS_RED;
+    [footterButton setTitle:@"退出登录" forState:UIControlStateNormal];
+    footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    footterButton.layer.cornerRadius = 6.0f;
+    
+    /// footer
+    UIView *footer = [[UIView alloc] init];
+    CGFloat footerH = footterButtonH + 20.0f + SIZE_DEFAULT_MARGIN_LEFT_RIGHT+30.0f;
+    footer.frame = CGRectMake(0, 0, 0, footerH);
+    self.tableView.tableFooterView = footer;
+    [footer addSubview:footterButton];
+    [footterButton addTarget:self action:@selector(gotoLogoutVC) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+}
+
+///退出登录
+-(void)gotoLogoutVC
+{
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    ///修改登录状态
+    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_login"];
+    
+    ///同步数据
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    ///返回上一页
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+    [self.navigationController popViewControllerAnimated:YES];
+        
+    });
+    
+    self.hud.labelText = @"成功退出";
+    [self.hud hide:YES afterDelay:1.0f];
+}
+
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     if (indexPath.section == 1) {
         
         [self checkAppVersion];
         
     } else {
-    
+        
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    
+        
     }
     
 }
