@@ -306,10 +306,12 @@
             paymentStr = @"餐到付款";
         }else if ([paymentCode isEqualToString:@"3"])
         {
-            paymentStr = @"余额支付";
+//            paymentStr = @"余额支付";
+            paymentStr = @"在线支付";
         }else if ([paymentCode isEqualToString:@"5"])
         {
-            paymentStr = @"储蓄卡购买";
+//            paymentStr = @"储蓄卡购买";
+            paymentStr = @"在线支付";
         }
         [self.paymentLabel setText:paymentStr];
     }
@@ -402,12 +404,12 @@
             paymentStr = @"餐到付款";
         }else if ([paymentCode isEqualToString:@"3"])
         {
-            paymentStr = @"余额支付";
-            supportPayOnline = YES;
+//            paymentStr = @"余额支付";
+            paymentStr = @"在线支付";
         }else if ([paymentCode isEqualToString:@"5"])
         {
-            paymentStr = @"储蓄卡购买";
-//            supportPayOnline = YES;
+//            paymentStr = @"储蓄卡购买";
+            paymentStr = @"在线支付";
         }
         [self.paymentLabel setText:paymentStr];
         

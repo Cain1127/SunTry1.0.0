@@ -16,10 +16,13 @@
 #import "QSSelectReturnData.h"
 #import "CommonHeader.h"
 #import "QSHomeViewController.h"
+#import "QSConfigInfoDataListReturnData.h"
 
 #import <AlipaySDK/AlipaySDK.h>
 
 #import "QSUserLoginReturnData.h"
+
+#import "QSNoNetworkingViewController.h"
 
 @implementation QSAppDelegate
 
@@ -228,6 +231,18 @@
             NSLog(@"================区信息请求失败================");
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================区信息请求失败================");
+            
+            NSLog(@"error : %@",errorInfo);
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取区信息请求失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
             
         }
         
@@ -442,6 +457,24 @@
         });
         
     });
+    
+}
+
+#pragma mark - 更新配置信息
+- (void)updateConfigInfo
+{
+    ///配置信息请求参数
+    NSDictionary *dict = @{@"parent" : @"0", @"key" : @""};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeConfigInfoDataList andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///模型转换
+            QSConfigInfoDataListReturnData *tempModel = resultData;
+            NSLog(@"QSConfigInfoDataListReturnData:%@",tempModel);
+        }
+    }];
     
 }
 
