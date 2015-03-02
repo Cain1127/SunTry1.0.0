@@ -17,7 +17,23 @@
     RKObjectMapping *shared_mapping = [super objectMapping];
     
     //mapping字典
-    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"msg" toKeyPath:@"bannerList" withMapping:[QSBannerDataModel objectMapping]]];
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"msg" toKeyPath:@"headerData" withMapping:[QSBannerHeaderData objectMapping]]];
+    
+    return shared_mapping;
+    
+}
+
+@end
+
+@implementation QSBannerHeaderData
+
++ (RKObjectMapping *)objectMapping
+{
+    
+    RKObjectMapping *shared_mapping = [super objectMapping];
+    
+    //mapping字典
+    [shared_mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"records" toKeyPath:@"bannerList" withMapping:[QSBannerDataModel objectMapping]]];
     
     
     return shared_mapping;

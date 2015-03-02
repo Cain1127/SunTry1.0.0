@@ -17,15 +17,21 @@
 #import "QSGoodsListReturnData.h"
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
+
 #import "UIImageView+CacheImage.h"
+
 #import "FontHeader.h"
 #import "MJRefresh.h"
 #import "CommonHeader.h"
+#import "ImageHeader.h"
 
 #import "QSDatePickerViewController.h"
 #import "ASDepthModalViewController.h"
 #import "QSSelectReturnData.h"
 #import "QSSelectDataModel.h"
+#import "QSBannerReturnData.h"
+#import "QSBannerDataModel.h"
+#import "QSAutoScrollView.h"
 
 #import <objc/runtime.h>
 
@@ -36,9 +42,9 @@
 ///关联
 static char titleLabelKey;//!<标题key
 
-@interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIAlertViewDelegate>
+@interface QSWMerchantIndexViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIAlertViewDelegate,QSAutoScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *foodImageView;    //!<菜品图片
+@property (nonatomic,strong) QSAutoScrollView *advertView;          //!<广告页
 @property (weak, nonatomic) IBOutlet UIButton *sharkButton;         //!<摇一摇按钮
 @property (weak, nonatomic) IBOutlet UIButton *packageButton;       //!<美味套餐按钮
 @property (weak, nonatomic) IBOutlet UIButton *carButton;           //!<车车在哪儿按钮
@@ -53,6 +59,9 @@ static char titleLabelKey;//!<标题key
 @property (nonatomic,retain) NSMutableArray *specialDataSource;     //!<优惠信息数据源
 @property (nonatomic,retain) NSMutableArray *streetList;            //!<街道数据源
 @property (nonatomic,strong) QSDatePickerViewController *customPicker;    //!<选择器
+
+@property (nonatomic,strong) NSMutableArray *BannerList;            //!<广告数据
+@property (nonatomic,strong) NSString *bannerImage;                 //!<广告图片
 
 @property (nonatomic, copy) NSString *phoneNumber;                  //!<电话号码
 
@@ -74,6 +83,7 @@ static char titleLabelKey;//!<标题key
         
         ///初始化数据源数组
         self.specialDataSource = [[NSMutableArray alloc] init];
+        self.BannerList = [[NSMutableArray alloc] init];
         
         ///初始化街道数据
         [self getDistrictStreetList];
@@ -179,27 +189,6 @@ static char titleLabelKey;//!<标题key
     [contentView addSubview:titleLabel];
     [contentView setCenter:self.shakeView.center];
     [self.shakeView addSubview:contentView];
-}
-
-///加载顶部view
--(void)setupTopView
-{
-    
-    _foodImageView.frame=CGRectMake(0.0f, 64.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT);
-    
-    CGFloat buttonW = (SIZE_DEVICE_WIDTH - 5.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) / 4.0f;
-    CGFloat buttonH = buttonW * 74.0f / 78.0f;
-    CGFloat buttonY = 64.0f + SIZE_DEFAULT_HOME_BANNAR_HEIGHT + SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
-    
-    _sharkButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, buttonY, buttonW, buttonH);
-    _packageButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 2.0f + buttonW, buttonY, buttonW, buttonH);
-    _carButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 3.0f + 2.0f * buttonW, buttonY, buttonW, buttonH);
-    _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 4.0f + 3.0f * buttonW, buttonY, buttonW, buttonH);
-    _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 20.0f);
-    [_specialsLabel setFont:[UIFont systemFontOfSize:20.0f]];
-    
-    _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 20.0f);
-    
 }
 
 ///加载食品列表
@@ -322,13 +311,20 @@ static char titleLabelKey;//!<标题key
         
         UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
-        if (cell==nil) {
+        if (cell == nil) {
             
-            cell=[[UICollectionViewCell alloc]init];
+            cell = [[UICollectionViewCell alloc]init];
             
         }
         
-        _foodImageView.frame=CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT);
+        ///创建广告页
+        _advertView = [[QSAutoScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT) andDelegate:self andScrollDirectionType:aAutoScrollDirectionTypeRightToLeft andShowPageIndex:NO andShowTime:3.0f andTapCallBack:^(id params) {
+            
+            ///点击事件
+            NSLog(@"=============%@=============",params);
+            
+        }];
+        [cell.contentView addSubview:_advertView];
         
         CGFloat buttonW = (SIZE_DEVICE_WIDTH - 5.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT) / 4.0f;
         CGFloat buttonH = buttonW * 74.0f / 78.0f;
@@ -343,17 +339,16 @@ static char titleLabelKey;//!<标题key
         
         _moreButton.frame=CGRectMake(SIZE_DEVICE_WIDTH-SIZE_DEFAULT_MARGIN_LEFT_RIGHT - 30.0f, buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 30.0f, 20.0f);
         
-        [cell.contentView addSubview:_foodImageView];
         [cell.contentView addSubview:_sharkButton];
         [cell.contentView addSubview:_packageButton];
         [cell.contentView addSubview:_carButton];
         [cell.contentView addSubview:_customButton];
         [cell.contentView addSubview: _specialsLabel];
         [cell.contentView addSubview:_moreButton];
+        
         return cell;
         
-    }
-    else{
+    } else {
         static NSString * CellIdentifier = @"UICollectionViewCell";
         
         QSWMerchantIndexCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
@@ -379,7 +374,7 @@ static char titleLabelKey;//!<标题key
     
 }
 
-#pragma mark --代理方法
+#pragma mark - 代理方法
 
 //定义每个Item 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -410,7 +405,7 @@ static char titleLabelKey;//!<标题key
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (indexPath.row==0) {
+    if (indexPath.row == 0) {
         
         return;
         
@@ -430,6 +425,49 @@ static char titleLabelKey;//!<标题key
     
     return YES;
     
+}
+
+#pragma mark - 广告页总页数
+- (int)numberOfScrollPage:(QSAutoScrollView *)autoScrollView
+{
+    
+    if (self.BannerList.count > 0) {
+        
+        return (int)[self.BannerList count];
+        
+    }
+    
+    return 1;
+
+}
+
+#pragma mark - 返回当前广告页
+- (UIView *)autoScrollViewShowView:(QSAutoScrollView *)autoScrollView viewForShowAtIndex:(int)index
+{
+    
+    if ([self.BannerList count] > 0) {
+        
+        QSBannerDataModel *tempModel = self.BannerList[index];
+        UIImageView *tempView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, autoScrollView.frame.size.width, autoScrollView.frame.size.height)];
+        [tempView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,tempModel.bannerUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
+        
+        return tempView;
+        
+    }
+
+    UIImageView *tempView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, autoScrollView.frame.size.width, autoScrollView.frame.size.height)];
+    tempView.image = [UIImage imageNamed:@"home_bannar"];
+    
+    return tempView;
+
+}
+
+#pragma mark - 点击广告栏时的回调参数
+- (id)autoScrollViewTapCallBackParams:(QSAutoScrollView *)autoScrollView viewForShowAtIndex:(int)index
+{
+
+    return @"test";
+
 }
 
 #pragma mark - 摇一摇
@@ -559,6 +597,9 @@ static char titleLabelKey;//!<标题key
     //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4"};
     
+    ///广告栏请求
+    [self getBannerInfo];
+    
     [QSRequestManager requestDataWithType:rRequestTypeAspecial andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///判断是否请求成功
@@ -642,5 +683,44 @@ static char titleLabelKey;//!<标题key
     }];
     
 }
+
+#pragma mark - 广告图片网络信息请求
+///随机菜品网络信息请求
+- (void)getBannerInfo
+{
+    
+    [QSRequestManager requestDataWithType:rRequestTypeBanner andParams:nil andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///判断是否请求成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            //模型转换
+            QSBannerReturnData *tempModel = resultData;
+            
+            if ([tempModel.headerData.bannerList count] > 0) {
+                
+                //清空的数据源
+                [self.BannerList removeAllObjects];
+                
+                ///保存数据源
+                [self.BannerList addObjectsFromArray:tempModel.headerData.bannerList];
+                
+                ///reload数据
+                [self.collectionView reloadData];
+                
+            }
+            
+        } else {
+            
+            NSLog(@"================今日特价搜索信息请求失败================");
+            NSLog(@"error : %@",errorInfo);
+            NSLog(@"================今日特价搜索信息请求失败================");
+            
+        }
+        
+    }];
+    
+}
+
 
 @end

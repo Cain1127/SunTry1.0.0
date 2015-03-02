@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
@@ -8,7 +9,6 @@
             <connections>
                 <outlet property="carButton" destination="65P-Qm-PRo" id="11B-fN-UGd"/>
                 <outlet property="customButton" destination="Z6w-kT-bNB" id="DKV-lb-CLW"/>
-                <outlet property="foodImageView" destination="jfY-eb-VSB" id="Xs4-Sg-sA0"/>
                 <outlet property="moreButton" destination="NIO-Dx-kN7" id="4Jq-kq-NJi"/>
                 <outlet property="packageButton" destination="jYE-AN-aIR" id="uLj-BW-cVk"/>
                 <outlet property="sharkButton" destination="Bl8-Zm-1j5" id="KUP-js-gsw"/>
@@ -21,10 +21,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_bannar" id="jfY-eb-VSB" userLabel="foodImageView">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Bl8-Zm-1j5" userLabel="sharkButton">
                     <rect key="frame" x="8" y="175" width="78" height="74"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -94,7 +90,6 @@
         </view>
     </objects>
     <resources>
-        <image name="home_bannar" width="375" height="200"/>
         <image name="home_car_normal" width="78" height="74"/>
         <image name="home_car_selected" width="78" height="74"/>
         <image name="home_custom_normal" width="78" height="74"/>

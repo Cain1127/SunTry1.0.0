@@ -7,8 +7,16 @@
 //
 
 #import "QSHeaderDataModel.h"
+#import "QSMSGModel.h"
 
+@class QSBannerHeaderData;
 @interface QSBannerReturnData : QSHeaderDataModel
+
+@property (nonatomic,retain) QSBannerHeaderData *headerData;//!<所有广告图片数组
+
+@end
+
+@interface QSBannerHeaderData : QSMSGModel
 
 @property (nonatomic,retain) NSArray *bannerList;//!<所有广告图片数组
 
