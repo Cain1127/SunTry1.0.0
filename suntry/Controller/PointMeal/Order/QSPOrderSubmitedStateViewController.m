@@ -12,6 +12,7 @@
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
 #import "QSOrderDetailViewController.h"
+#import "QSPointMealViewController.h"
 
 #define ORDER_SUBMITED_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_SUBMITED_VIEWCONTROLLER_TITLE_FONT_SIZE       28.
@@ -40,6 +41,7 @@
     
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
         [self.navigationController popToRootViewControllerAnimated:YES];
+        
     }];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -92,7 +94,6 @@
         [odvc setOrder_ID:orderData.order_id];
         [odvc setHidesBottomBarWhenPushed:YES];
         [self.navigationController pushViewController:odvc animated:YES];
-        
     }];
     
     [self.view addSubview:checkOrderBt];

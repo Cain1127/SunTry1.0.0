@@ -16,10 +16,21 @@ typedef enum
     PaymentTypePayCrads,
 }PaymentType;
 
+@class QSPOrderPaymentView;
+@protocol QSPOrderPaymentViewDelegate<NSObject>
+
+- (void)clickedItemWithType:(PaymentType)type WithOrderPaymentView:(QSPOrderPaymentView*)view;
+
+@end
+
 @interface QSPOrderPaymentView : UIView
+
+@property(nonatomic,assign) id<QSPOrderPaymentViewDelegate> delegate;
 
 - (instancetype)initOrderItemView;
 
 - (PaymentType)getSelectedPayment;
+
+- (void)setSelectedPayment:(PaymentType)selected;
 
 @end

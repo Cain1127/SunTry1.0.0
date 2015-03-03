@@ -11,6 +11,6 @@
 #import "QSPShoppingCarView.h"
 #import "QSPOrderAddNewAddressView.h"
 
-@interface QSPOrderViewController : UIViewController<QSPOrderViewHadOrderCellDelegate,QSPShoppingCarViewDelegate, QSPOrderAddNewAddressViewDelegate>
+@interface QSPOrderViewController : UIViewController
 
 @end

@@ -40,7 +40,7 @@
 #define ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR          [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 
 
-@interface QSPOrderViewController ()
+@interface QSPOrderViewController ()<QSPOrderViewHadOrderCellDelegate,QSPShoppingCarViewDelegate, QSPOrderAddNewAddressViewDelegate, QSPOrderPaymentViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) QSLabel *shipToPersonName;
@@ -313,6 +313,7 @@
     CGRect payFrame = _paymentView.frame;
     payFrame.origin.y = _remarkFrameView.frame.origin.y+_remarkFrameView.frame.size.height;
     _paymentView.frame = payFrame;
+    [_paymentView setDelegate:self];
     [_scrollView addSubview:_paymentView];
     
     [self.view addSubview:_shoppingCarView];
@@ -768,7 +769,8 @@
                     
                     UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的储值卡余额不足以支付当前订单，请选择其他支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                     [alertview show];
-                    
+                    ///隐藏HUD
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
                     return;
                 }
                 
@@ -1097,6 +1099,21 @@
     
 }
 
+#pragma mark - 选择支付方式响应
+- (void)clickedItemWithType:(PaymentType)type WithOrderPaymentView:(QSPOrderPaymentView*)view
+{
+    if (type==PaymentTypePayCrads) {
+        CGFloat totalPrice = [QSPShoppingCarData getTotalPrice];
+        ///用户信息模型
+        QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+        CGFloat userBalance = userModel.balance.floatValue;
+        if (totalPrice > userBalance) {
+            UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的储值卡余额不足以支付当前订单，请选择其他支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alertview show];
+            [view setSelectedPayment:PaymentTypeNoPayment];
+        }
+    }
+}
 
 /*
 #pragma mark - Navigation

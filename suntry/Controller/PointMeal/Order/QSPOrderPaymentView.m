@@ -27,6 +27,7 @@
 @end
 
 @implementation QSPOrderPaymentView
+@synthesize delegate;
 
 - (instancetype)initOrderItemView
 {
@@ -101,6 +102,9 @@
                         }
                     }
                 }
+                if (delegate) {
+                    [delegate clickedItemWithType:_selectedPayment WithOrderPaymentView:self];
+                }
             }];
             [chlickBt setTag:9000+i];
             [self addSubview:chlickBt];
@@ -124,6 +128,29 @@
 {
     return _selectedPayment;
     
+}
+
+- (void)setSelectedPayment:(PaymentType)selected
+{
+    _selectedPayment = selected;
+
+    for (UIView *view in [self subviews])
+    {
+        if ([view isKindOfClass:[UIButton class]]) {
+            if (view.tag>=8000&&view.tag<=8009) {
+                UIButton *bt = (UIButton*)view;
+                [bt setImage:[UIImage imageNamed:@"order_payment_normal_bt"] forState:UIControlStateNormal];
+                if (_selectedPayment != PaymentTypeNoPayment) {
+                    if (bt.tag%8000 == _selectedPayment) {
+                        [bt setImage:[UIImage imageNamed:@"order_payment_selected_bt"] forState:UIControlStateNormal];
+                    }
+                }
+            }
+        }
+    }
+    if (delegate) {
+        [delegate clickedItemWithType:_selectedPayment WithOrderPaymentView:self];
+    }
 }
 
 /*
