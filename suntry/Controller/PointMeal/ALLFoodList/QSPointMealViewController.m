@@ -719,6 +719,16 @@ typedef enum {
 //            networkingErrorVC.hidesBottomBarWhenPushed = YES;
 //            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
 //            [self.navigationController pushViewController:networkingErrorVC animated:YES];
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取菜品数据失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
