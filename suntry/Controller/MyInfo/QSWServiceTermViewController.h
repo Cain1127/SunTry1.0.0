@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSWSettingViewController.h"
 
 @interface QSWServiceTermViewController : UIViewController
 
