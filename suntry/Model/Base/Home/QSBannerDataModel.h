@@ -19,5 +19,6 @@
 @property (nonatomic,copy) NSString *beginTime;     //!<开始时间
 @property (nonatomic,copy) NSString *overTime;      //!<结束时间
 @property (nonatomic,copy) NSString *status;        //!<状态
+@property (nonatomic,copy) NSString *url;           //!<广告页的详情内容
 
 @end

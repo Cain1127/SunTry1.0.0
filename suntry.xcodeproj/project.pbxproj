@@ -60,6 +60,7 @@
 		187CA8E31AA4423E00841A7E /* QSCommonStringReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8E21AA4423E00841A7E /* QSCommonStringReturnData.m */; };
 		187CA8E61AA46B6900841A7E /* QSStoreCardForgetPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8E51AA46B6900841A7E /* QSStoreCardForgetPswViewController.m */; };
 		187CA8E91AA4784800841A7E /* QSStoreCardNewPswSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8E81AA4784800841A7E /* QSStoreCardNewPswSetViewController.m */; };
+		187CA8EC1AA57AC500841A7E /* QSAdvertDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8EB1AA57AC500841A7E /* QSAdvertDetailViewController.m */; };
 		18B955761AA1930400006B4C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955751AA1930400006B4C /* AVFoundation.framework */; };
 		18B955781AA1931400006B4C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955771AA1931400006B4C /* CoreMedia.framework */; };
 		18B9557A1AA1932000006B4C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955791AA1932000006B4C /* CoreVideo.framework */; };
@@ -357,6 +358,8 @@
 		187CA8E51AA46B6900841A7E /* QSStoreCardForgetPswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSStoreCardForgetPswViewController.m; sourceTree = "<group>"; };
 		187CA8E71AA4784800841A7E /* QSStoreCardNewPswSetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSStoreCardNewPswSetViewController.h; sourceTree = "<group>"; };
 		187CA8E81AA4784800841A7E /* QSStoreCardNewPswSetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSStoreCardNewPswSetViewController.m; sourceTree = "<group>"; };
+		187CA8EA1AA57AC500841A7E /* QSAdvertDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAdvertDetailViewController.h; sourceTree = "<group>"; };
+		187CA8EB1AA57AC500841A7E /* QSAdvertDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAdvertDetailViewController.m; sourceTree = "<group>"; };
 		18B955751AA1930400006B4C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		18B955771AA1931400006B4C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		18B955791AA1932000006B4C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -1486,6 +1489,8 @@
 				CE7946BA1A8B705600C0113B /* QSWMerchantIndexViewController.h */,
 				CE7946BB1A8B705600C0113B /* QSWMerchantIndexViewController.m */,
 				CE7946BC1A8B705600C0113B /* QSWMerchantIndexViewController.xib */,
+				187CA8EA1AA57AC500841A7E /* QSAdvertDetailViewController.h */,
+				187CA8EB1AA57AC500841A7E /* QSAdvertDetailViewController.m */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1914,6 +1919,7 @@
 				CEEAC3E61A8DA7DF009AC6AA /* UIScrollView+MJExtension.m in Sources */,
 				CEEAC3CE1A8D0F7D009AC6AA /* QSWResetPswController.m in Sources */,
 				47B211EF1AA0ADB200EEC787 /* QSOrderListTableViewCell.m in Sources */,
+				187CA8EC1AA57AC500841A7E /* QSAdvertDetailViewController.m in Sources */,
 				185344421A9ED82C00A83039 /* NSDataEx.m in Sources */,
 				CEEAC3E21A8DA7DF009AC6AA /* MJRefreshBaseView.m in Sources */,
 				187CA8DF1AA42A8600841A7E /* QSImageView.m in Sources */,

@@ -34,6 +34,7 @@
 #import "QSAutoScrollView.h"
 
 #import "QSHomeViewController.h"
+#import "QSAdvertDetailViewController.h"
 
 #import <objc/runtime.h>
 
@@ -288,8 +289,16 @@ static char titleLabelKey;//!<标题key
         ///创建广告页
         _advertView = [[QSAutoScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT) andDelegate:self andScrollDirectionType:aAutoScrollDirectionTypeRightToLeft andShowPageIndex:NO andShowTime:3.0f andTapCallBack:^(id params) {
             
-            ///点击事件
-            NSLog(@"=============%@=============",params);
+            ///判断是否是有效的广告地址
+            if ([params hasPrefix:@"http://"]) {
+                
+                ///进入广告详情页
+                QSAdvertDetailViewController *advertVC = [[QSAdvertDetailViewController alloc] initWithDetailURL:params];
+                advertVC.navigationController.navigationBar.hidden = YES;
+                advertVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:advertVC animated:YES];
+                
+            }
             
         }];
         [cell.contentView addSubview:_advertView];
@@ -343,7 +352,6 @@ static char titleLabelKey;//!<标题key
 }
 
 #pragma mark - 代理方法
-
 //定义每个Item 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -436,7 +444,9 @@ static char titleLabelKey;//!<标题key
 - (id)autoScrollViewTapCallBackParams:(QSAutoScrollView *)autoScrollView viewForShowAtIndex:(int)index
 {
 
-    return @"test";
+    ///获取当前广告模型
+    QSBannerDataModel *advertModel = self.BannerList[index];
+    return advertModel.url ? advertModel.url : @"";
 
 }
 
@@ -473,7 +483,6 @@ static char titleLabelKey;//!<标题key
 {
     
     QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init];
-    
     VC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:VC animated:YES];
     
@@ -680,7 +689,7 @@ static char titleLabelKey;//!<标题key
 - (void)getBannerInfo
 {
     
-    [QSRequestManager requestDataWithType:rRequestTypeBanner andParams:nil andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+    [QSRequestManager requestDataWithType:rRequestTypeBanner andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
@@ -718,7 +727,7 @@ static char titleLabelKey;//!<标题key
     
 }
 
-#pragma mark - QSPShakeFoodViewDelegate  菜品详情弹出View改变菜品数量响应处理
+#pragma mark - 菜品详情弹出View改变菜品数量响应处理
 ///菜品详情弹出View改变菜品数量响应处理
 - (void)changedWithData:(id)foodData inView:(QSPShakeFoodView*)popFoodView
 {

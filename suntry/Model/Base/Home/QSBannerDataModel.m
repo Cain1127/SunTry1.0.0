@@ -26,7 +26,8 @@
                                   @"type":@"type",
                                   @"begin_time":@"beginTime",
                                   @"over_time":@"overTime",
-                                  @"status":@"status"
+                                  @"status":@"status",
+                                  @"url" : @"url"
                                   };
     
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
