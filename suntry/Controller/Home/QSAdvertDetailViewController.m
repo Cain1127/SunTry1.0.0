@@ -78,7 +78,7 @@
     [navRootView addSubview:turnBackButton];
     
     ///广告webview
-    UIWebView *advertView = [[UIWebView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 64.0f, SIZE_DEFAULT_MAX_WIDTH, SIZE_DEVICE_HEIGHT - 69.0f)];
+    UIWebView *advertView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 64.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 69.0f)];
     advertView.backgroundColor = [UIColor whiteColor];
     advertView.scalesPageToFit = YES;
     

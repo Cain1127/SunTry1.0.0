@@ -9,6 +9,7 @@
 #import "QSWMyCouponViewController.h"
 #import "QSUserCouponTableViewCell.h"
 #import "MBProgressHUD.h"
+#import "QSBlockButton.h"
 
 #import "QSUserCouponListReturnData.h"
 #import "QSCouponInfoDataModel.h"
@@ -102,14 +103,18 @@
     [self.view addSubview:self.inputField];
     
     ///2.添加按钮
-    UIButton *addButton=[[UIButton alloc] initWithFrame:CGRectMake(self.inputField.frame.origin.x + self.inputField.frame.size.width + 5.0f, self.inputField.frame.origin.y, 44.0f, 44.0f)];
+    UIButton *addButton = [UIButton createBlockButtonWithFrame:CGRectMake(self.inputField.frame.origin.x + self.inputField.frame.size.width + 5.0f, self.inputField.frame.origin.y, 44.0f, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+        
+        ///校验编码
+        [self addButtonAction];
+        
+    }];
     addButton.layer.cornerRadius = 6.0f;
     [addButton setTitle:@"添加" forState:UIControlStateNormal];
     addButton.backgroundColor=COLOR_CHARACTERS_RED;
     [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [addButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateHighlighted];
     addButton.layer.cornerRadius=6.0f;
-    [addButton addTarget:self action:@selector(addButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:addButton];
     
 }
@@ -178,6 +183,7 @@
         
     }
     
+    ///回收键盘
     [self.inputField resignFirstResponder];
     
     ///显示HUD
