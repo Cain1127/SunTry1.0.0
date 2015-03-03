@@ -65,7 +65,7 @@
     self.dataSource = [[NSMutableArray alloc] init];
     
     ///优惠券列表
-    self.couponListView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 60.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 49.0f - 64.0f - 44.0f - 16.0f)];
+    self.couponListView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, (iOS7 ? 72.0f + 44.0f + 5.0f : 8.0f + 44.0f + 5.0f), SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 49.0f - 64.0f - 44.0f - 13.0f)];
     
     ///取消滚动条
     self.couponListView.showsHorizontalScrollIndicator = NO;
