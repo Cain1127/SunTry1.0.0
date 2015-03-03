@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define QSPFOOD_TYPE_TABLEVIEW_CELL_TITLE_FONT_SIZE     16.0f
+#define QSPFOOD_TYPE_TABLEVIEW_CELL_TITLE_FONT_SIZE     17.0f
 #define FOOD_TYPE_TABLEVIEW_WIDTH                       88/375.*SIZE_DEVICE_WIDTH
 #define FOODTYPE_TABLEVIEW_CELL_LINE_COLOR              [UIColor colorWithRed:206/255. green:208/255. blue:210/255. alpha:1]
 

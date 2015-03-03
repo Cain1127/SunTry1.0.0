@@ -55,7 +55,7 @@
     }
     
     //没有数据时的显示
-    self.nodataView = [[UIView alloc] initWithFrame:self.view.frame];
+    self.nodataView = [[UIView alloc] initWithFrame:CGRectMake(0, -offetY, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];
     [self.nodataView setBackgroundColor:[UIColor whiteColor]];
 //    [self.view addSubview:_nodataView];
     

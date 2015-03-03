@@ -15,16 +15,17 @@
 #import "QSGoodsDataModel.h"
 #import "ImageHeader.h"
 
-#define PACKAGE_VIEW_FOOD_PACKAGE_NAME_STRING_FONT_SIZE        17.
+#define PACKAGE_VIEW_FOOD_PACKAGE_NAME_STRING_FONT_SIZE        15.
 #define PACKAGE_VIEW_FOOD_PACKAGE_NAME_TEXT_COLOR             [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
-#define PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE                17.
+#define PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE                15.
 #define PACKAGE_VIEW_FOOD_NAME_TEXT_COLOR             [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 
 @interface QSPFoodPackageItemGridView ()
 
-@property(nonatomic,strong) QSGoodsDataSubModel    *foodData;
-@property(nonatomic,strong) QSLabel             *packageNameLabel;
-@property(nonatomic,strong) UIButton            *selectBt;
+@property(nonatomic,strong) QSGoodsDataSubModel     *foodData;
+@property(nonatomic,strong) QSLabel                 *packageNameLabel;
+@property(nonatomic,strong) UIButton                *selectBt;
+@property(nonatomic,strong) UIButton                *foodImgButton;
 
 @end
 
@@ -50,6 +51,8 @@
         //菜展示图
         UIImageView *contentImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 97/667.*SIZE_DEVICE_HEIGHT)];
         [contentImgView setBackgroundColor:[UIColor clearColor]];
+        [contentImgView setContentMode:UIViewContentModeScaleAspectFill];
+        [contentImgView setClipsToBounds:YES];
         [self addSubview:contentImgView];
         
         [contentImgView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,_foodData.goodsImageUrl]] placeholderImage:nil];
@@ -61,30 +64,23 @@
         [foodNameLabel setTextColor:PACKAGE_VIEW_FOOD_NAME_TEXT_COLOR];
         [foodNameLabel setFont:[UIFont systemFontOfSize:PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE ]];
         [foodNameLabel setText:foodNameStr];
+        [foodNameLabel setAdjustsFontSizeToFitWidth:YES];
         [self addSubview:foodNameLabel];
+        
+        QSBlockButtonStyleModel *imgBtStyle = [[QSBlockButtonStyleModel alloc] init];
+        [imgBtStyle setBgColor:[UIColor clearColor]];
+        self.foodImgButton = [UIButton createBlockButtonWithFrame:contentImgView.frame andButtonStyle:imgBtStyle andCallBack:^(UIButton *button) {
+            [self clickButton:button];
+        }];
+        [self addSubview:self.foodImgButton];
         
         //选择按钮
         QSBlockButtonStyleModel *selectStyleModel = [QSBlockButtonStyleModel alloc];
         selectStyleModel.imagesNormal = @"public_choose_normal";
         selectStyleModel.imagesSelected = @"public_choose_selected";
-        self.selectBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.frame.size.width-40+6, -6, 40, 40) andButtonStyle:selectStyleModel andCallBack:^(UIButton *button) {
-            
-            if (button.tag==0) {
-                
-                button.tag = 1;
-                [button setImage:[UIImage imageNamed:@"public_choose_selected"] forState:UIControlStateNormal];
-                
-            }else{
-                
-                button.tag = 0;
-                [button setImage:[UIImage imageNamed:@"public_choose_normal"] forState:UIControlStateNormal];
-                
-            }
-            
-            if (delegate) {
-                [delegate beSeleted:button withData:_foodData];
-            }
-            
+        selectStyleModel.bgColor = [UIColor clearColor];
+        self.selectBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.frame.size.width-40+2, -6, 44, 44) andButtonStyle:selectStyleModel andCallBack:^(UIButton *button) {
+            [self clickButton:button];
         }];
         
         [self addSubview:self.selectBt];
@@ -93,6 +89,18 @@
     
     return self;
     
+}
+
+- (void)clickButton:(UIButton*)button
+{
+    if (button.tag==0) {
+        [self setSelectState:YES];
+    }else{
+        [self setSelectState:NO];
+    }
+    if (delegate) {
+        [delegate beSeleted:button withData:_foodData];
+    }
 }
 
 - (BOOL)getSelectState
@@ -112,12 +120,12 @@
 {
     
     if (state) {
-        
+        _foodImgButton.tag = 1;
         _selectBt.tag = 1;
         [_selectBt setImage:[UIImage imageNamed:@"public_choose_selected"] forState:UIControlStateNormal];
         
     }else{
-        
+        _foodImgButton.tag = 0;
         _selectBt.tag = 0;
         [_selectBt setImage:[UIImage imageNamed:@"public_choose_normal"] forState:UIControlStateNormal];
         

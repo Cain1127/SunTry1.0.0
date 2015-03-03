@@ -343,7 +343,7 @@
     _paymentView.frame = payFrame;
     [_scrollView addSubview:_paymentView];
     
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _paymentView.frame.origin.y+_paymentView.frame.size.height+15)];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _paymentView.frame.origin.y+_paymentView.frame.size.height+45)];
 }
 
 - (void)updateAddress

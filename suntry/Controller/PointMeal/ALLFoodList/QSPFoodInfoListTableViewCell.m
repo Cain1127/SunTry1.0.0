@@ -57,8 +57,10 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
 
         //菜展示图
-        self.contentImgView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 10., 88/375.*SIZE_DEVICE_WIDTH, 60/667.*SIZE_DEVICE_HEIGHT)];
+        self.contentImgView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 10., 88/375.*SIZE_DEVICE_WIDTH, 60)];
         [self.contentImgView setBackgroundColor:[UIColor clearColor]];
+        [self.contentImgView setContentMode:UIViewContentModeScaleAspectFill];
+        [self.contentImgView setClipsToBounds:YES];
         [self.contentView addSubview:self.contentImgView];
         
         QSBlockButtonStyleModel *imgBtStyle = [[QSBlockButtonStyleModel alloc] init];

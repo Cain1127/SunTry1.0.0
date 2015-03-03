@@ -45,7 +45,7 @@
         [self.contentView addSubview:self.lineTopView];
         [self.contentView setUserInteractionEnabled:YES];
         
-        UIView *lineButtomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.typeNameLabel.frame.origin.y+self.typeNameLabel.frame.size.height, FOOD_TYPE_TABLEVIEW_WIDTH, 1)];
+        UIView *lineButtomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.typeNameLabel.frame.origin.y+self.typeNameLabel.frame.size.height-1, FOOD_TYPE_TABLEVIEW_WIDTH, 1)];
         [lineButtomView setBackgroundColor:FOODTYPE_TABLEVIEW_CELL_LINE_COLOR];
         [self.contentView addSubview:lineButtomView];
         [self.contentView setUserInteractionEnabled:YES];

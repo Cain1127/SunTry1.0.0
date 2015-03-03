@@ -29,7 +29,7 @@
 #define FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT          40.
 #define FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT    24.
 #define FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_COLOR     FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR
-
+#define FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_FONT_SIZE 17.
 
 enum TableViewType{
     FoodTypeTable = 1,
@@ -307,7 +307,7 @@ typedef enum {
     [headerView addSubview:titleBackgroundView];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, titleBackgroundView.frame.size.width, titleBackgroundView.frame.size.height)];
-    
+    [titleLabel setFont:[UIFont boldSystemFontOfSize:FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_FONT_SIZE]];
     [titleLabel setBackgroundColor:[UIColor clearColor]];
     if (_foodTypeList&&[_foodTypeList count]>0&&[_foodTypeList count]>section) {
         NSNumber *foodType = _foodTypeList[section];

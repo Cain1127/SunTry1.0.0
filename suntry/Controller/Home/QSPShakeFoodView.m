@@ -18,14 +18,14 @@
 #import "ImageHeader.h"
 #import "QSPShoppingCarView.h"
 
-#define SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE        20.
+#define SHAKEVIEW_FOOD_NAME_STRING_FONT_SIZE        17.
 #define SHAKEVIEW_FOOD_NAME_STYLE_COLOR             COLOR_HEXCOLOR(0x94414D)
 #define SHAKEVIEW_FOOD_NAME_STRING_COLOR            [UIColor colorWithRed:147/255.0 green:149/255.0 blue:151/255.0 alpha:1.]
 #define SHAKEVIEW_FOOD_PRICE_ONSALE_STRING_COLOR    COLOR_HEXCOLOR(0x94414D)
-#define SHAKEVIEW_FOOD_PRICE_ONSALE_FONT_SIZE       18.
+#define SHAKEVIEW_FOOD_PRICE_ONSALE_FONT_SIZE       17.
 #define SHAKEVIEW_FOOD_PRICE_OLD_FONT_SIZE          SHAKEVIEW_FOOD_PRICE_ONSALE_FONT_SIZE
 #define SHAKEVIEW_FOOD_PRICE_OLD_STRING_COLOR       [UIColor colorWithRed:147/255.0 green:149/255.0 blue:151/255.0 alpha:1.]
-#define SHAKEVIEW_FOOD_INSTOCK_FONT_SIZE            16.
+#define SHAKEVIEW_FOOD_INSTOCK_FONT_SIZE            15.
 #define SHAKEVIEW_FOOD_INSTOCK_STRING_COLOR            [UIColor colorWithRed:147/255.0 green:149/255.0 blue:151/255.0 alpha:1.]
 
 @interface QSPShakeFoodView ()<SPFoodCountControlViewDelegate>
@@ -118,6 +118,8 @@
         //菜展示图
         self.contentImgView = [[UIImageView alloc] initWithFrame:CGRectMake(13.0, self.foodTypeLabel.frame.origin.y+self.foodTypeLabel.frame.size.height+13, 318/375.*SIZE_DEVICE_WIDTH, 217/667.*SIZE_DEVICE_HEIGHT)];
         [self.contentImgView setBackgroundColor:[UIColor clearColor]];
+        [self.contentImgView setContentMode:UIViewContentModeScaleAspectFill];
+        [self.contentImgView setClipsToBounds:YES];
         [contentBackgroundView addSubview:self.contentImgView];
         
         //价格图标

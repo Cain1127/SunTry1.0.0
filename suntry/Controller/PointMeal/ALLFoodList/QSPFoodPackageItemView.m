@@ -12,7 +12,7 @@
 #import "DeviceSizeHeader.h"
 #import "QSGoodsDataModel.h"
 
-#define PACKAGE_VIEW_FOOD_PACKAGE_NAME_STRING_FONT_SIZE        20.
+#define PACKAGE_VIEW_FOOD_PACKAGE_NAME_STRING_FONT_SIZE        17.
 #define PACKAGE_VIEW_FOOD_PACKAGE_NAME_TEXT_COLOR             [UIColor colorWithRed:0.503 green:0.183 blue:0.236 alpha:1.000]
 
 
@@ -36,7 +36,7 @@
         
         //菜品类型
         NSString* packageNameStr = [NSString stringWithFormat:@"请选择%@(1份)",typeName];
-        self.packageNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(10, 10, self.frame.size.width, 22)];
+        self.packageNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, 10, self.frame.size.width, 22)];
         [self.packageNameLabel setTextColor:PACKAGE_VIEW_FOOD_PACKAGE_NAME_TEXT_COLOR];
         [self.packageNameLabel setFont:[UIFont systemFontOfSize:PACKAGE_VIEW_FOOD_PACKAGE_NAME_STRING_FONT_SIZE ]];
         [self.packageNameLabel setText:packageNameStr];
@@ -49,7 +49,7 @@
         for (int i=0; i<[_foodList count]; i++) {
             
             QSPFoodPackageItemGridView *gridView = [[QSPFoodPackageItemGridView alloc] initGridViewWithData:[_foodList objectAtIndex:i]];
-            [gridView setFrame:CGRectMake(self.packageNameLabel.frame.origin.x-4+(i%2)*(166/375.*SIZE_DEVICE_WIDTH), self.packageNameLabel.frame.origin.y+self.packageNameLabel.frame.size.height+12+(i/2)*(gridView.frame.size.height+12), gridView.frame.size.width, gridView.frame.size.height)];
+            [gridView setFrame:CGRectMake(self.packageNameLabel.frame.origin.x+3+(i%2)*(166/375.*SIZE_DEVICE_WIDTH), self.packageNameLabel.frame.origin.y+self.packageNameLabel.frame.size.height+12+(i/2)*(gridView.frame.size.height+12), gridView.frame.size.width, gridView.frame.size.height)];
             [gridView setDelegate:self];
             [self addSubview:gridView];
             

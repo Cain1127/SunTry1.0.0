@@ -15,7 +15,7 @@
 #import "QSGoodsDataModel.h"
 
 #define PACKAGE_VIEW_BACKGROUND_COLOR                  [UIColor colorWithWhite:0 alpha:0.6]
-#define PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE        15.
+#define PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE        17.
 #define PACKAGE_VIEW_FOOD_NAME_TEXT_COLOR             [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 
 
@@ -60,6 +60,14 @@
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];
         [self setBackgroundColor:PACKAGE_VIEW_BACKGROUND_COLOR];
         
+        //背景关闭按钮
+        QSBlockButtonStyleModel *bgBtStyleModel = [QSBlockButtonStyleModel alloc];
+        UIButton *bgBt = [UIButton createBlockButtonWithFrame:self.frame andButtonStyle:bgBtStyleModel andCallBack:^(UIButton *button) {
+            [self hidePackageView];
+            [self removeFromSuperview];
+        }];
+        [self addSubview:bgBt];
+        
         //中间内容区域层
         self.contentBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 345/375.*SIZE_DEVICE_WIDTH, 469/667.*SIZE_DEVICE_HEIGHT)];
         [_contentBackgroundView setBackgroundColor:[UIColor whiteColor]];
@@ -76,7 +84,7 @@
         QSBlockButtonStyleModel *closeStyleModel = [QSBlockButtonStyleModel alloc];
         closeStyleModel.imagesNormal = @"close_button_normal_icon";
         closeStyleModel.imagesHighted = @"close_button_down_icon";
-        UIButton *closeBt = [UIButton createBlockButtonWithFrame:CGRectMake(_contentBackgroundView.frame.size.width-32-8, 8, 32, 32) andButtonStyle:closeStyleModel andCallBack:^(UIButton *button) {
+        UIButton *closeBt = [UIButton createBlockButtonWithFrame:CGRectMake(_contentBackgroundView.frame.size.width-32-14, 5, 44, 44) andButtonStyle:closeStyleModel andCallBack:^(UIButton *button) {
             [self hidePackageView];
             [self removeFromSuperview];
         }];
@@ -91,7 +99,7 @@
         
         CGFloat scrollViewContentHight = 0.;
         
-        self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(lineView.frame.origin.x, lineView.frame.origin.y+lineView.frame.size.height, lineView.frame.size.width, scrollViewContentHight)];
+        self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, lineView.frame.origin.y+lineView.frame.size.height, _contentBackgroundView.frame.size.width, scrollViewContentHight)];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setShowsVerticalScrollIndicator:NO];
         [_contentBackgroundView addSubview:_scrollView];
@@ -184,7 +192,7 @@
         
         QSPFoodPackageItemView *foodPackageView = [[QSPFoodPackageItemView alloc] initItemViewWithData:foodData.stapleFoodList withTypeName:@"主食"];
         [foodPackageView setTag:101];
-        [foodPackageView setFrame:CGRectMake(0, scrollViewContentHight, foodPackageView.frame.size.width, foodPackageView.frame.size.height)];
+        [foodPackageView setFrame:CGRectMake(12, scrollViewContentHight, foodPackageView.frame.size.width, foodPackageView.frame.size.height)];
         [_scrollView addSubview:foodPackageView];
         scrollViewContentHight = foodPackageView.frame.origin.y + foodPackageView.frame.size.height;
         [_scrollView setFrame:CGRectMake(_scrollView.frame.origin.x, _scrollView.frame.origin.y, _scrollView.frame.size.width, scrollViewContentHight>scrollViewMaxHeight?scrollViewMaxHeight:scrollViewContentHight)];
@@ -195,7 +203,7 @@
         
         QSPFoodPackageItemView *foodPackageView = [[QSPFoodPackageItemView alloc] initItemViewWithData:foodData.ingredientList withTypeName:@"配汤、饮品"];
         [foodPackageView setTag:102];
-        [foodPackageView setFrame:CGRectMake(0, scrollViewContentHight, foodPackageView.frame.size.width, foodPackageView.frame.size.height)];
+        [foodPackageView setFrame:CGRectMake(12, scrollViewContentHight, foodPackageView.frame.size.width, foodPackageView.frame.size.height)];
         [_scrollView addSubview:foodPackageView];
         scrollViewContentHight = foodPackageView.frame.origin.y + foodPackageView.frame.size.height;
         [_scrollView setFrame:CGRectMake(_scrollView.frame.origin.x, _scrollView.frame.origin.y, _scrollView.frame.size.width, scrollViewContentHight>scrollViewMaxHeight?scrollViewMaxHeight:scrollViewContentHight)];
