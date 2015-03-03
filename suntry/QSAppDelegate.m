@@ -222,7 +222,6 @@
                 
                 QSDistrictDataModel *districtModel = tempModel.districtList[i];
                 
-                
                 NSLog(@"================区信息================");
                 NSLog(@"ID : %@     显示名 : %@",districtModel.districtID,districtModel.val);
                 NSLog(@"================区信息================");
@@ -261,6 +260,7 @@
     NSDictionary *dict = @{@"id" : @"3", @"key" : @"",@"status":@"0"};
     
     [QSRequestManager requestDataWithType:rRequestTypeSelect andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
@@ -270,6 +270,24 @@
             ///保存数据
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/selectData"];
+            
+            ///取出可配送的数据
+            NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+            for (int i = 0; i  < [tempModel.selectList count]; i++) {
+                
+                ///取出模型
+                QSSelectDataModel *obj = tempModel.selectList[i];
+                
+                if (1 == [obj.isSend intValue]) {
+                    
+                    [tempArray addObject:obj];
+                    
+                }
+                
+            }
+            
+            ///重置可选区的数据
+            tempModel.selectList = tempArray;
             
             ///首先转成data
             NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:tempModel];
@@ -287,19 +305,6 @@
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 NSLog(@"========天河区数据保存失败=======");
             }
-            
-            
-            for (int i = 0; i < [tempModel.selectList count]; i++) {
-                
-                QSSelectDataModel *selectModel = tempModel.selectList[i];
-                
-                
-                NSLog(@"================区信息================");
-                NSLog(@"街道ID : %@     街道名 : %@   是否可配送 : %@",selectModel.streetID,selectModel.streetName,selectModel.isSend);
-                NSLog(@"================区信息================");
-                
-            }
-            
             
         } else {
             
