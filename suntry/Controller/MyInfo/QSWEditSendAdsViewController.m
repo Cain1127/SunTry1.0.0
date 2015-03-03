@@ -355,6 +355,15 @@
                     
                 }
                 
+                ///清空原记录
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                    
+                    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+                    
+                }
+                
                 ///返回上一页
                 [self.navigationController popViewControllerAnimated:YES];
                 
@@ -442,7 +451,6 @@
             ///更换标题
             UILabel *titleLabel = [textField.rightView subviews][0];
             titleLabel.text = item;
-            
             [ASDepthModalViewController dismiss];
             
         };
@@ -455,6 +463,16 @@
     }
     
     return YES;
+    
+}
+
+#pragma mark - 将要显示时，设置tabbar隐藏
+///将要显示时，设置tabbar隐藏
+- (void)viewWillAppear:(BOOL)animated
+{
+    
+    self.tabBarController.tabBar.hidden = YES;
+    [super viewWillAppear:animated];
     
 }
 

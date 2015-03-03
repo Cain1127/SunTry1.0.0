@@ -1115,14 +1115,14 @@
     }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - 将要显示时，设置tabbar隐藏
+///将要显示时，设置tabbar隐藏
+- (void)viewWillAppear:(BOOL)animated
+{
+    
+    self.tabBarController.tabBar.hidden = YES;
+    [super viewWillAppear:animated];
+    
 }
-*/
 
 @end
