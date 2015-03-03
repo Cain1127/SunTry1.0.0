@@ -8,12 +8,14 @@
 
 #import "QSWPayOrderViewController.h"
 #import "QSWStoredCardViewController.h"
+#import "QSStoreCarInfoCollectionViewCell.h"
 
 #import "DeviceSizeHeader.h"
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
 #import "QSGoodsDataModel.h"
 #import "QSGoodsListReturnData.h"
+
 #import "MJRefresh.h"
 #import "ColorHeader.h"
 #import "QSUserManager.h"
@@ -158,7 +160,7 @@
     self.collectionView.backgroundColor=[UIColor clearColor];
     
     ///注册Cell
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
+    [self.collectionView registerClass:[QSStoreCarInfoCollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
     [self.view addSubview:self.collectionView];
     
@@ -224,61 +226,22 @@
     
     ///从复用队列中返回当前cell
     static NSString * CellIdentifier = @"UICollectionViewCell";
-    UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    ///清空原信息
-    for (id subView in cell.contentView.subviews) {
-        
-        [subView removeFromSuperview];
-        
-    }
+    QSStoreCarInfoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
     ///获取模型
     QSGoodsDataModel *tempModel = self.storedCardDataSource[indexPath.row];
-    
-    UILabel *priceLabel =[[UILabel alloc] initWithFrame:CGRectMake(0.0f, cell.frame.size.height * 0.25, cell.frame.size.width, cell.frame.size.height * 0.25)];
-    priceLabel.textColor = [UIColor brownColor];
-    priceLabel.textAlignment=NSTextAlignmentCenter;
-    priceLabel.text=[NSString stringWithFormat:@"￥%@",tempModel.goodsPrice];
-    priceLabel.font=[UIFont systemFontOfSize:20];
-    priceLabel.tag = 98;
-    
-    UILabel *specialLabel =[[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height*0.5+5.0f, cell.frame.size.width, cell.frame.size.height*0.2)];
-    specialLabel.textColor = [UIColor brownColor];
-    specialLabel.textAlignment=NSTextAlignmentCenter;
-    specialLabel.text=[NSString stringWithFormat:@"送￥%@",tempModel.presentPrice];
-    specialLabel.font=[UIFont systemFontOfSize:16];
-    specialLabel.tag = 99;
-    
-    ///加边框
-    UIView *lineRootView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, cell.frame.size.height)];
-    lineRootView.backgroundColor = [UIColor clearColor];
-    lineRootView.layer.borderColor = [[UIColor colorWithRed:194.0f / 255.0f green:181.0f / 255.0f blue:156.0f / 255.0f alpha:1.0f] CGColor];
-    lineRootView.layer.borderWidth = 0.5f;
-    lineRootView.layer.cornerRadius = 6.0f;
-    
-    ///加载到content上
-    [cell.contentView addSubview:lineRootView];
-    [cell.contentView sendSubviewToBack:lineRootView];
-    
-    cell.backgroundColor=[UIColor clearColor];
-    [cell.contentView addSubview:priceLabel];
-    [cell.contentView addSubview:specialLabel];
-    
-    ///选择状态时的背景
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, cell.frame.size.width, cell.frame.size.height)];
-    bgView.backgroundColor = COLOR_CHARACTERS_RED;
-    bgView.layer.cornerRadius = 6.0f;
-    cell.selectedBackgroundView = bgView;
+    [cell updateStoreCardInfoCellUI:tempModel];
     
     ///判断是否第一行
     if (0 == indexPath.row && !(self.selectedID)) {
         
-        [collectionView selectItemAtIndexPath:[NSIndexPath indexPathWithIndex:indexPath.row] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+        cell.selected = YES;
+        [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
     } else if (self.selectedID && ([self.selectedID intValue] == [tempModel.goodsID intValue])) {
         
-        [collectionView selectItemAtIndexPath:[NSIndexPath indexPathWithIndex:self.selectedIndex] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+        cell.selected = YES;
+        [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
     }
     
