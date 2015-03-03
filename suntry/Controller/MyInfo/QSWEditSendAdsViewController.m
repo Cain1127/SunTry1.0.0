@@ -331,8 +331,7 @@
 {
     
     ///生成参数
-    NSDictionary *params = @{@"id" : self.addressModel.addressID
-                            };
+    NSDictionary *params = @{@"id" : self.addressModel.addressID};
     
     ///发回服务端添加
     [QSRequestManager requestDataWithType:rRequestTypeDelSendAddress andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {

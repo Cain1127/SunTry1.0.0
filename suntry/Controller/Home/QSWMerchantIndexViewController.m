@@ -297,10 +297,10 @@ static char titleLabelKey;//!<标题key
         _advertView = [[QSAutoScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT) andDelegate:self andScrollDirectionType:aAutoScrollDirectionTypeRightToLeft andShowPageIndex:NO andShowTime:3.0f andTapCallBack:^(id params) {
             
             ///判断是否是有效的广告地址
-            if ([params hasPrefix:@"http://"]) {
+            if ([params valueForKey:@"url"]) {
                 
                 ///进入广告详情页
-                QSAdvertDetailViewController *advertVC = [[QSAdvertDetailViewController alloc] initWithDetailURL:params];
+                QSAdvertDetailViewController *advertVC = [[QSAdvertDetailViewController alloc] initWithDetailURL:[params valueForKey:@"url"] andTitle:[params valueForKey:@"title"]];
                 advertVC.navigationController.navigationBar.hidden = YES;
                 advertVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:advertVC animated:YES];
@@ -453,7 +453,8 @@ static char titleLabelKey;//!<标题key
 
     ///获取当前广告模型
     QSBannerDataModel *advertModel = self.BannerList[index];
-    return advertModel.url ? advertModel.url : @"";
+    NSDictionary *tempParams = advertModel.url ? @{@"url" : advertModel.url,@"title" : advertModel.goodsName} : nil;
+    return tempParams ? tempParams : @"";
 
 }
 

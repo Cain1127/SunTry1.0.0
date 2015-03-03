@@ -21,6 +21,6 @@
  *
  *  @since      1.0.0
  */
-- (instancetype)initWithDetailURL:(NSString *)url;
+- (instancetype)initWithDetailURL:(NSString *)url andTitle:(NSString *)title;
 
 @end

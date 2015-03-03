@@ -53,7 +53,6 @@
     ///设置返回按钮的颜色
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-    
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
     ///设置标题
@@ -256,6 +255,8 @@
         return;
         
     }
+    ///重新拼装送餐地址
+    address = [NSString stringWithFormat:@"广州市天河区%@",address];
     
     ///公司
     UITextField *companyField = (UITextField *)self.companyItem.property;

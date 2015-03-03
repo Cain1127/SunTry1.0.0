@@ -14,7 +14,8 @@
 
 @interface QSAdvertDetailViewController ()
 
-@property (nonatomic,copy) NSString *advertURL;//!<广告地址
+@property (nonatomic,copy) NSString *advertURL; //!<广告地址
+@property (nonatomic,copy) NSString *title;     //!<标题
 
 @end
 
@@ -32,12 +33,13 @@
  *
  *  @since      1.0.0
  */
-- (instancetype)initWithDetailURL:(NSString *)url
+- (instancetype)initWithDetailURL:(NSString *)url  andTitle:(NSString *)title
 {
 
     if (self = [super init]) {
         
         self.advertURL = url;
+        self.title = title;
         
     }
     
@@ -59,7 +61,7 @@
     
     ///标题
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(navRootView.frame.size.width / 2.0f - 60.0f, 27.0f, 120.0f, 30.0f)];
-    titleLabel.text = @"香哉";
+    titleLabel.text = self.title ? self.title : @"香哉";
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
