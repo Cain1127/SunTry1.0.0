@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 广州七升网络科技有限公司. All rights reserved.
 //
 
+#include <sys/types.h>
+#include <sys/sysctl.h>
 #import "QSPOrderRemarkViewController.h"
 #import "DeviceSizeHeader.h"
 #import "QSBlockButton.h"
@@ -56,7 +58,22 @@
         placeholderLabelY = 6;
         self.automaticallyAdjustsScrollViewInsets = NO;
     }else{
-        placeholderLabelY = 14;
+        
+        placeholderLabelY = 16;
+        
+        int mib[2];
+        size_t len;
+        char *machine;
+        mib[0] = CTL_HW;
+        mib[1] = HW_MACHINE;
+        sysctl(mib, 2, NULL, &len, NULL, 0);
+        machine = malloc(len);
+        sysctl(mib, 2, machine, &len, NULL, 0);
+        NSString *platform = [NSString stringWithCString:machine encoding:NSASCIIStringEncoding];
+        free(machine);
+        if ([platform hasPrefix:@"iPhone3"]||[platform hasPrefix:@"iPhone4"]||[platform hasPrefix:@"iPhone5"]||[platform hasPrefix:@"iPhone6"]) {
+            placeholderLabelY = 6;
+        }
     }
     
     self.contentTextView = [[UITextView alloc] initWithFrame:CGRectMake(16, 16+offetY, SIZE_DEVICE_WIDTH-32, 130)];

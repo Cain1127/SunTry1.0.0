@@ -92,6 +92,7 @@
 		47B211FB1AA17A4500EEC787 /* QSOrderDetailDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211FA1AA17A4500EEC787 /* QSOrderDetailDataModel.m */; };
 		47B211FE1AA17C2500EEC787 /* QSOrderDetailReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211FD1AA17C2500EEC787 /* QSOrderDetailReturnData.m */; };
 		47B212011AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B212001AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m */; };
+		47C89A4C1AA5AE54001CE933 /* QSPItemSelectePopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C89A4B1AA5AE54001CE933 /* QSPItemSelectePopView.m */; };
 		CE1C081E1A9F1A4200BE9A99 /* QSWServiceTermViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
 		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
@@ -417,6 +418,8 @@
 		47B211FD1AA17C2500EEC787 /* QSOrderDetailReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailReturnData.m; sourceTree = "<group>"; };
 		47B211FF1AA1801400EEC787 /* QSOrderDetailGoodsDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderDetailGoodsDataModel.h; sourceTree = "<group>"; };
 		47B212001AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailGoodsDataModel.m; sourceTree = "<group>"; };
+		47C89A4A1AA5AE54001CE933 /* QSPItemSelectePopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPItemSelectePopView.h; sourceTree = "<group>"; };
+		47C89A4B1AA5AE54001CE933 /* QSPItemSelectePopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPItemSelectePopView.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1060,6 +1063,8 @@
 				473902281A9EF3D4000ECF41 /* QSPAddNewAddressTextField.m */,
 				473902291A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.h */,
 				4739022A1A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.m */,
+				47C89A4A1AA5AE54001CE933 /* QSPItemSelectePopView.h */,
+				47C89A4B1AA5AE54001CE933 /* QSPItemSelectePopView.m */,
 			);
 			path = AddNewAddresView;
 			sourceTree = "<group>";
@@ -1973,6 +1978,7 @@
 				CECCC3291A8EE6AC0079F224 /* QSUserRegisterReturnData.m in Sources */,
 				CE207AC41A91844900ACF741 /* QSStoredCardDataModel.m in Sources */,
 				CE53415A1A7FA527002BA188 /* QSDataMappingManager.m in Sources */,
+				47C89A4C1AA5AE54001CE933 /* QSPItemSelectePopView.m in Sources */,
 				47A071A81AA436F200B53883 /* QSConfigInfoDataModel.m in Sources */,
 				185344441A9ED82C00A83039 /* RSADataSigner.m in Sources */,
 				185343CB1A9ED31000A83039 /* QSGoodsStapleFoodReturnData.m in Sources */,

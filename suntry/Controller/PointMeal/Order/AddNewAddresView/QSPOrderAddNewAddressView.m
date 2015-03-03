@@ -21,6 +21,10 @@
 #import "QSDatePickerViewController.h"
 #import "ASDepthModalViewController.h"
 
+#import "QSPItemSelectePopView.h"
+#import "QSDistrictReturnData.h"
+#import "QSDistrictDataModel.h"
+
 #define ADD_NEW_ADDRESS_VIEW_BACKGROUND_COLOR           [UIColor colorWithWhite:0 alpha:0.6]
 #define ADD_NEW_ADDRESS_LINEVIEW_BACKGROUND_COLOR       [UIColor colorWithRed:0.808 green:0.812 blue:0.816 alpha:1.000]
 #define ADD_NEW_ADDRESS_VIEW_TEXT_STRING_FONT_SIZE        17.
@@ -29,7 +33,7 @@
 #define ADD_NEW_ADDRESS_PICKERVIEW_BACKGROUND_COLOR           [UIColor colorWithWhite:1 alpha:0.6]
 
 
-@interface QSPOrderAddNewAddressView ()
+@interface QSPOrderAddNewAddressView ()<QSPItemSelectePopViewDelegate>
 
 @property(nonatomic,strong) UIView                    *contentBackgroundView;
 @property(nonatomic,assign) CGRect                    contentFrame;
@@ -37,6 +41,8 @@
 @property(nonatomic,strong) UIButton                  *submitBt;
 @property(nonatomic,strong) QSPAddNewAddressTextField *nameTextField;
 @property(nonatomic,strong) QSPAddNewAddressTextField *sexTextField;
+@property(nonatomic,strong) QSPAddNewAddressTextField *cityTextField;
+@property(nonatomic,strong) QSPAddNewAddressTextField *areaTextField;
 @property(nonatomic,strong) QSPAddNewAddressTextField *addressTextField;
 @property(nonatomic,strong) QSPAddNewAddressTextField *companyTextField;
 @property(nonatomic,strong) QSPAddNewAddressTextField *telephoneTextField;
@@ -227,6 +233,14 @@
     __weak QSPOrderAddNewAddressView *weakSelf = self;
     UIButton *sexBt = [UIButton createBlockButtonWithFrame:_sexTextField.frame andButtonStyle:sexBtStyle andCallBack:^(UIButton *button) {
         
+        if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+            //iOS7.0 使用ActionSheet
+            UIActionSheet *acs = [[UIActionSheet alloc] initWithTitle:@"请选择您的性别" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"先生",@"女士", nil];
+            [acs setDelegate:self];
+            [acs showInView:self];
+            return;
+        }
+
         ///弹出性别选择窗口
         self.sexPickerView = [[QSDatePickerViewController alloc] init];
         self.sexPickerView.pickerType = kPickerType_Item;
@@ -263,7 +277,72 @@
     
     [_scrollView addSubview:sexBt];
     
-    self.addressTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.sexTextField.frame.origin.y+self.sexTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
+    self.cityTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.sexTextField.frame.origin.y+self.sexTextField.frame.size.height+10, (_scrollView.frame.size.width-10)/2, 44)];
+    [self.cityTextField setPlaceholder:@"请选择城市"];
+    [self.cityTextField setDelegate:self];
+    [self.cityTextField setUserInteractionEnabled:NO];
+    [_scrollView addSubview:self.cityTextField];
+    
+    ///城市选择按钮
+    QSBlockButtonStyleModel *cityBtStyle = [[QSBlockButtonStyleModel alloc] init];
+    [cityBtStyle setTitleNormalColor:PLACEHOLDER_TEXT_COLOR];
+    [cityBtStyle setBgColor:[UIColor clearColor]];
+    UIButton *cityBt = [UIButton createBlockButtonWithFrame:self.cityTextField.frame andButtonStyle:cityBtStyle andCallBack:^(UIButton *button) {
+        NSLog(@"cityBT ");
+        [self hideKeybord];
+        QSPItemSelectePopView *selectView = [QSPItemSelectePopView getItemSelectePopView];
+        [self addSubview:selectView];
+        [selectView setDelegate:self];
+        [selectView setTag:110];
+        
+        //!!!! : 城市数组
+        NSArray *cityArray = [NSArray arrayWithObjects:@"广州", nil ];
+        [selectView updateSelectData:cityArray];
+        [selectView showItemSelectePopView];
+    }];
+    UIImageView *cityArrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
+    [cityArrowMarkView setFrame:CGRectMake(cityBt.frame.size.width-cityArrowMarkView.frame.size.width-6, (cityBt.frame.size.height-cityArrowMarkView.frame.size.height)/2, cityArrowMarkView.frame.size.width, cityArrowMarkView.frame.size.height)];
+    [cityBt addSubview:cityArrowMarkView];
+    [_scrollView addSubview:cityBt];
+    
+    self.areaTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(self.cityTextField.frame.origin.x+self.cityTextField.frame.size.width+10, self.sexTextField.frame.origin.y+self.sexTextField.frame.size.height+10, self.cityTextField.frame.size.width, 44)];
+    [self.areaTextField setPlaceholder:@"请选择区"];
+    [self.areaTextField setDelegate:self];
+    [self.areaTextField setUserInteractionEnabled:NO];
+    [_scrollView addSubview:self.areaTextField];
+    
+    ///区选择按钮
+    QSBlockButtonStyleModel *areaBtStyle = [[QSBlockButtonStyleModel alloc] init];
+    [areaBtStyle setTitleNormalColor:PLACEHOLDER_TEXT_COLOR];
+    [areaBtStyle setBgColor:[UIColor clearColor]];
+    UIButton *areaBt = [UIButton createBlockButtonWithFrame:self.areaTextField.frame andButtonStyle:areaBtStyle andCallBack:^(UIButton *button) {
+        NSLog(@"areaBT ");
+        [self hideKeybord];
+        QSPItemSelectePopView *selectView = [QSPItemSelectePopView getItemSelectePopView];
+        [self addSubview:selectView];
+        [selectView setDelegate:self];
+        [selectView setTag:111];
+        //FIXME: 区数组
+        
+        ///数据地址
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/districtData"];
+        ///首先转成data
+        NSData *saveData = [NSData dataWithContentsOfFile:path];
+        ///encode数据
+        QSDistrictReturnData *districtData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
+        
+        //FIXME: 城市数组
+        NSArray *areaArray = districtData.districtList;
+        [selectView updateSelectData:areaArray];
+        [selectView showItemSelectePopView];
+    }];
+    UIImageView *areaArrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
+    [areaArrowMarkView setFrame:CGRectMake(areaBt.frame.size.width-areaArrowMarkView.frame.size.width-6, (areaBt.frame.size.height-areaArrowMarkView.frame.size.height)/2, areaArrowMarkView.frame.size.width, areaArrowMarkView.frame.size.height)];
+    [areaBt addSubview:areaArrowMarkView];
+    [_scrollView addSubview:areaBt];
+    
+    self.addressTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, self.cityTextField.frame.origin.y+self.cityTextField.frame.size.height+10, _scrollView.frame.size.width, 44)];
     [self.addressTextField setDelegate:self];
     
     if (self.userInfo.address && self.userInfo.address.length > 2) {
@@ -317,6 +396,22 @@
     [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, _submitBt.frame.origin.y+_submitBt.frame.size.height+12)];
     [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
     
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            //先生
+            self.sexLabel.text = @"先生";
+            break;
+        case 1:
+            //女士
+            self.sexLabel.text = @"女士";
+            break;
+        default:
+            break;
+    }
 }
 
 - (BOOL)checkAddress
@@ -588,6 +683,24 @@
         
     });
 
+}
+
+#pragma mark -QSPItemSelectePopViewDelegate
+
+- (void)selectedItem:(id)data withIndex:(NSInteger)index inView:(QSPItemSelectePopView*)view
+{
+    if (view.tag == 110) {
+        //FIXME: 城市名字
+        NSString *cityName = @"";
+        if (data&&[data isKindOfClass:[NSString class]]) {
+            cityName = (NSString*)data;
+        }
+        [self.cityTextField setPlaceholder:cityName];
+    }else if (view.tag == 111) {
+        //FIXME: 区名字
+        NSString *areaName = @"";
+        [self.areaTextField setPlaceholder:areaName];
+    }
 }
 
 @end
