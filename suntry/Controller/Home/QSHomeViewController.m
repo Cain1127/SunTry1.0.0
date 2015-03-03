@@ -138,6 +138,7 @@ typedef enum {
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     ///导航栏
     UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
@@ -522,7 +523,9 @@ typedef enum {
         
     } else {
         
-        [self gotoMainHome:@"体育西路" andKey:@"299"];
+        ///获取点击的记录
+        QSSearchHistoryDataModel *tempModel = self.searchHistoryList[indexPath.row];
+        [self gotoMainHome:(tempModel.title ? tempModel.title : @"体育西路") andKey:(tempModel.key ? tempModel.key :@"299")];
         
     }
     
@@ -684,7 +687,6 @@ typedef enum {
         
         if ([obj.key isEqualToString:model.key]) {
             
-            break;
             return;
             
         }
