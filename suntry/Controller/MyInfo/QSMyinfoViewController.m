@@ -32,7 +32,14 @@
 #import "MJRefresh.h"
 #import "QSUserInfoDataModel.h"
 
+#define kCallAlertViewTag 111
+
+///关联ios7电话
+static char titleLabelKey;//!<标题key
+
 @interface QSMyinfoViewController ()
+
+@property (nonatomic, copy) NSString *phoneNumber;                  //!<电话号码
 
 @end
 
@@ -129,7 +136,7 @@
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [footterButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateNormal];
     footterButton.layer.cornerRadius = 6.0f;
-    [footterButton addTarget:self action:@selector(makeCall:) forControlEvents:UIControlEventTouchUpInside];
+    [footterButton addTarget:self action:@selector(customButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     ///footer
     UIView *footer = [[UIView alloc] init];
@@ -140,9 +147,32 @@
     
 }
 
+#pragma mark - 客服热线
+///客服热线
+- (void)customButtonClick:(id)sender
+{
+    
+    [self makeCall:@"02037302282"];
+    
+}
+
+
 #pragma mark - 打电话事件
 - (void)makeCall:(NSString *)number
 {
+    
+    
+    if (iOS7) {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                            message:[NSString stringWithFormat:@"呼叫 %@",number] delegate:self
+                                                  cancelButtonTitle:nil otherButtonTitles:@"取消",@"确定", nil];
+        alertView.tag = kCallAlertViewTag;
+        self.phoneNumber = number;
+        [alertView show];
+        return;
+        
+    }
     
     ///电话弹出框
     __block UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"呼叫 %@",@"02037302282"] preferredStyle:UIAlertControllerStyleAlert];
@@ -177,6 +207,21 @@
     
 }
 
+#pragma mark - IOS7打电话
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    if (alertView.tag == kCallAlertViewTag) {
+        
+        if (buttonIndex == 1) {
+            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.phoneNumber]]];
+            
+        }
+        
+    }
+    
+}
 
 #pragma mark - 点击某一行事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
