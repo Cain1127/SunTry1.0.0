@@ -350,6 +350,43 @@ typedef enum {
     
 }
 
+#pragma mark - 头标题高度
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+
+    if (self.isShowSearchStreetList) {
+     
+        return 44.0f;
+        
+    }
+    return 0.0f;
+
+}
+
+#pragma mark - 返回头标题
+///如果是搜索的时候，显示提示头信息
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+
+    if (self.isShowSearchStreetList) {
+        
+        ///提示信息
+        UILabel *tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 44.0f)];
+        NSString *tips = [self.tempStreetList count] > 0 ? @"可配送区域" : @"暂无记录";
+        tipsLabel.text = tips;
+        tipsLabel.textAlignment = NSTextAlignmentCenter;
+        tipsLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+        tipsLabel.textColor = COLOR_CHARACTERS_RED;
+        return tipsLabel;
+        
+    } else {
+    
+        return nil;
+    
+    }
+
+}
+
 #pragma mark - 返回搜索项内容
 ///返回搜索项内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -571,6 +608,7 @@ typedef enum {
 {
     
     self.isShowDistrictStreetList = YES;
+    self.isShowSearchStreetList = NO;
     [self.searchListTableView reloadData];
     return YES;
     
