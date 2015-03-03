@@ -34,7 +34,7 @@ typedef enum
     rRequestTypeSelect = 1000,                  //!<选择查询
     rRequestTypeAspecial = 1001,                //!<每日特价菜品
     rRequestTypeRandom = 1036,                  //!<随机菜品
-    rRequestTypeAllGoods = 1050,                //!<所有菜品
+    rRequestTypeAllGoods = 1050,                //!<所有菜品    旧需求接口
     
     rRequestTypeCarPostion =1006,               //!<餐车地址
     
@@ -65,6 +65,8 @@ typedef enum
     rRequestTypeOrderDetailData = 1122,         //!<订单详情
     
     rRequestTypeConfigInfoDataList = 1060,      //!<配置信息
+    
+    rRequestTypeAllGoodsData = 1133,            //!<所有菜品  2015-03-03需求修改
     
     rRequestTypeMaxLimited = 99999              //!<最大值限制
     

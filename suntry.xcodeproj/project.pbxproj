@@ -94,6 +94,8 @@
 		47B211FE1AA17C2500EEC787 /* QSOrderDetailReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B211FD1AA17C2500EEC787 /* QSOrderDetailReturnData.m */; };
 		47B212011AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47B212001AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m */; };
 		47C89A4C1AA5AE54001CE933 /* QSPItemSelectePopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C89A4B1AA5AE54001CE933 /* QSPItemSelectePopView.m */; };
+		47C89A4F1AA5E734001CE933 /* QSAllGoodsDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C89A4E1AA5E734001CE933 /* QSAllGoodsDataModel.m */; };
+		47C89A521AA5EEAE001CE933 /* QSAllGoodsReturnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C89A511AA5EEAE001CE933 /* QSAllGoodsReturnData.m */; };
 		CE1C081E1A9F1A4200BE9A99 /* QSWServiceTermViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1C081D1A9F1A4200BE9A99 /* QSWServiceTermViewController.m */; };
 		CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE207AB71A90430000ACF741 /* QSWStoredCardViewController.m */; };
 		CE207ABA1A90430000ACF741 /* QSWStoredCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE207AB81A90430000ACF741 /* QSWStoredCardViewController.xib */; };
@@ -423,6 +425,10 @@
 		47B212001AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderDetailGoodsDataModel.m; sourceTree = "<group>"; };
 		47C89A4A1AA5AE54001CE933 /* QSPItemSelectePopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPItemSelectePopView.h; sourceTree = "<group>"; };
 		47C89A4B1AA5AE54001CE933 /* QSPItemSelectePopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPItemSelectePopView.m; sourceTree = "<group>"; };
+		47C89A4D1AA5E734001CE933 /* QSAllGoodsDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAllGoodsDataModel.h; sourceTree = "<group>"; };
+		47C89A4E1AA5E734001CE933 /* QSAllGoodsDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAllGoodsDataModel.m; sourceTree = "<group>"; };
+		47C89A501AA5EEAE001CE933 /* QSAllGoodsReturnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAllGoodsReturnData.h; sourceTree = "<group>"; };
+		47C89A511AA5EEAE001CE933 /* QSAllGoodsReturnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAllGoodsReturnData.m; sourceTree = "<group>"; };
 		522151CC3B754FB3D8D94A4F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A8A22AA6E30509820033BFFD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AFE9B580549DCA38D48BB605 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -800,6 +806,8 @@
 				47B211F71AA166BE00EEC787 /* QSOrderListReturnData.m */,
 				47B211FC1AA17C2500EEC787 /* QSOrderDetailReturnData.h */,
 				47B211FD1AA17C2500EEC787 /* QSOrderDetailReturnData.m */,
+				47C89A501AA5EEAE001CE933 /* QSAllGoodsReturnData.h */,
+				47C89A511AA5EEAE001CE933 /* QSAllGoodsReturnData.m */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -1521,6 +1529,8 @@
 				47B211FA1AA17A4500EEC787 /* QSOrderDetailDataModel.m */,
 				47B211FF1AA1801400EEC787 /* QSOrderDetailGoodsDataModel.h */,
 				47B212001AA1801400EEC787 /* QSOrderDetailGoodsDataModel.m */,
+				47C89A4D1AA5E734001CE933 /* QSAllGoodsDataModel.h */,
+				47C89A4E1AA5E734001CE933 /* QSAllGoodsDataModel.m */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -1920,6 +1930,7 @@
 				185344451A9ED82C00A83039 /* RSADataVerifier.m in Sources */,
 				184AE07F1A90730F007A8CBD /* PinyinFormatter.m in Sources */,
 				CE207AB91A90430000ACF741 /* QSWStoredCardViewController.m in Sources */,
+				47C89A521AA5EEAE001CE933 /* QSAllGoodsReturnData.m in Sources */,
 				1859F3AC1A8DFB2000EABC7D /* QSDatePickerViewController.m in Sources */,
 				4739023B1A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m in Sources */,
 				473902411A9EF3D4000ECF41 /* QSPFoodCountControlView.m in Sources */,
@@ -1939,6 +1950,7 @@
 				CE4D20D71AA3F60200EF6FCA /* QSBannerDataModel.m in Sources */,
 				CE571EF21A84AFB200609788 /* QSWSettingGroup.m in Sources */,
 				CEEAC3901A8CA4EF009AC6AA /* QSHeaderDataModel.m in Sources */,
+				47C89A4F1AA5E734001CE933 /* QSAllGoodsDataModel.m in Sources */,
 				CECCC32C1A8EE70B0079F224 /* QSRegisterDataModel.m in Sources */,
 				47B211FB1AA17A4500EEC787 /* QSOrderDetailDataModel.m in Sources */,
 				185343B11A91883800A83039 /* NSString+Format.m in Sources */,

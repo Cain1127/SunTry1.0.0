@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>1133</key>
+	<dict>
+		<key>class</key>
+		<string>QSAllGoodsReturnData</string>
+		<key>url</key>
+		<string>site/AppGoodsList</string>
+	</dict>
 	<key>1055</key>
 	<dict>
 		<key>url</key>
@@ -138,7 +145,7 @@
 	<key>1050</key>
 	<dict>
 		<key>class</key>
-		<string>QSGoodsStapleFoodReturnData</string>
+		<string>QSAllGoodsReturnData</string>
 		<key>url</key>
 		<string>goods/AppGoodsList</string>
 	</dict>

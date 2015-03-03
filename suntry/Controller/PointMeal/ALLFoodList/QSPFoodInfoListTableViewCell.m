@@ -142,7 +142,7 @@
     if (nil==data) {
         return;
     }
-    if (![data isKindOfClass:[QSGoodsDataModel class]]) {
+    if (!([data isKindOfClass:[QSGoodsDataModel class]]|| [data isKindOfClass:[QSGoodsDataSubModel class]])) {
         NSLog(@"菜品列表数据格式不对");
         return;
     }
