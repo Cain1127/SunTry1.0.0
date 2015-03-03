@@ -20,6 +20,8 @@
 #import "QSRequestManager.h"
 #import "QSRequestTaskDataModel.h"
 
+#import "MBProgressHUD.h"
+
 #import "QSNoNetworkingViewController.h"
 
 ///关联
@@ -29,33 +31,18 @@ static char titleLabelKey;//!<标题关联
 
 @property (nonatomic,strong) MKMapView *mapView;
 @property (nonatomic,strong) CLLocationManager *locMgr;      //!<定位服务管理
-@property (nonatomic,strong) CLGeocoder *geocoder;           //!<地理编码器
 @property (nonatomic,retain) NSMutableArray *carPostionList; //!<餐车地址列表
-@property (nonatomic,copy) NSString *title;
+@property (nonatomic,copy) NSString *title;                  //!<餐车名称
+
+@property (nonatomic,retain) MBProgressHUD *hud;             //!<HUD
 
 @end
 
 @implementation QSMapNavigationViewController
 
--(CLGeocoder *)geocoder
-{
-    
-    if (!_geocoder) {
-        
-        self.geocoder=[[CLGeocoder alloc]init];
-        
-    }
-    
-    return _geocoder;
-    
-}
-
-
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
-    [self getCarPostingInfo];
     
     ///导航栏
     UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
@@ -92,7 +79,7 @@ static char titleLabelKey;//!<标题关联
     //self.mapView.userTrackingMode = MKUserTrackingModeFollow;
     
     // 2.设置地图类型
-    self.mapView.mapType = MKMapTypeStandard;
+    //self.mapView.mapType = MKMapTypeStandard;
     
     // 3.设置代理
     self.mapView.delegate = self;
@@ -109,12 +96,10 @@ static char titleLabelKey;//!<标题关联
     
     [self.view addSubview:_mapView];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        [self addAnnotations];
-        
-    });
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
+    [self getCarPostingInfo];
     
 }
 
@@ -173,6 +158,7 @@ static char titleLabelKey;//!<标题关联
     
 }
 
+#pragma mark--大头针代理方法
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
     if (![annotation isKindOfClass:[QSAnnotation class]]) return nil;
@@ -215,6 +201,8 @@ static char titleLabelKey;//!<标题关联
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
+            [self.hud hide:YES afterDelay:0.5];
+            
             //模型转换
             QSCarPostionReturnData *tempModel = resultData;
             
@@ -230,6 +218,12 @@ static char titleLabelKey;//!<标题关联
                 
                 ///reload数据
                 //[self.view reloadData];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    [self addAnnotations];
+                    
+                });
+                
                 
             }
             
@@ -239,7 +233,11 @@ static char titleLabelKey;//!<标题关联
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================餐车地址信息请求失败================");
             
-            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] initWithCallBack:^{
+                
+                
+                
+            }];
             networkingErrorVC.hidesBottomBarWhenPushed = YES;
             networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
             [self.navigationController pushViewController:networkingErrorVC animated:YES];

@@ -10,5 +10,7 @@
 
 @interface QSNoNetworkingViewController : UIViewController
 
+- (instancetype)initWithCallBack:(void(^)(void))callBack;
+
 @end
 

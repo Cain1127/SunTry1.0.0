@@ -30,10 +30,32 @@ static char titleLabelKey;//!<标题关联
 
 @property (nonatomic, strong) UIView *nodataView;      //!<图片与文字底部view
 
+@property (nonatomic,copy) void(^noNetworkingCallBack)(void);
+
 @end
 
 @implementation QSNoNetworkingViewController
 
+#pragma mark - 初始化
+- (instancetype)initWithCallBack:(void(^)(void))callBack
+{
+
+    if (self = [super init]) {
+        
+        ///保存回调
+        if (callBack) {
+            
+            self.noNetworkingCallBack = callBack;
+            
+        }
+        
+    }
+    
+    return self;
+
+}
+
+#pragma mark - UI搭建
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -57,6 +79,13 @@ static char titleLabelKey;//!<标题关联
     
     ///返回按钮
     UIButton *turnBackButton = [UIButton createBlockButtonWithFrame:CGRectMake(10.0f, navTitle.frame.origin.y, 30.0f, 30.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+        
+        ///判断是否需要回调
+        if (self.noNetworkingCallBack) {
+            
+            self.noNetworkingCallBack();
+            
+        }
         
         [self.navigationController popViewControllerAnimated:YES];
         
