@@ -33,6 +33,8 @@
 #import "QSBannerDataModel.h"
 #import "QSAutoScrollView.h"
 
+#import "QSHomeViewController.h"
+
 #import <objc/runtime.h>
 
 #import "QSBlockButton.h"
@@ -228,61 +230,25 @@ static char titleLabelKey;//!<标题key
 - (void)showStreetPicker
 {
     
-    ///标题
-    __block UILabel *titleLabel = objc_getAssociatedObject(self, &titleLabelKey);
+    ///弹出地区选择窗口
+    QSHomeViewController *districtPickVC = [[QSHomeViewController alloc] init];
+    districtPickVC.isFirstLaunch = 0;
+    [districtPickVC setTitle:@"首页"];
+    districtPickVC.districtPickedCallBack = ^(NSString *key,NSString *val){
     
-    ///创建选择框
-    self.customPicker = [[QSDatePickerViewController alloc] init];
-    self.customPicker.pickerType = kPickerType_Item;
-    
-    ///转换数据模型
-    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-    
-    if (nil == self.streetList || 0 >= self.streetList) {
-        
-        [self getDistrictStreetList];
-        
-    }
-    
-    for (int i = 0; i < [self.streetList count]; i++) {
-        
-        ///获取地区模型
-        QSSelectDataModel *streetModel = self.streetList[i];
-        
-        if ([streetModel.isSend intValue] == 1) {
-            
-            [tempArray addObject:streetModel.streetName];
-            
-        }
-        
-    }
-    
-    self.customPicker.dataSource = tempArray;
-    
-    ///点击取消时的回调
-    self.customPicker.onCancelButtonHandler = ^{
-        
-        [ASDepthModalViewController dismiss];
-        
-    };
-    
-    ///self的弱引用
-    __weak QSWMerchantIndexViewController *weakSelf = self;
-    
-    ///点击确认时的回调
-    self.customPicker.onItemConfirmButtonHandler = ^(NSInteger index,NSString *item){
-        
-        ///改变标题
-        titleLabel.text = item;
+        ///更新标题
+        UILabel *titleLabel = objc_getAssociatedObject(self, &titleLabelKey);
+        titleLabel.text = val;
+        self.distictID = key;
+        self.distictName = val;
         
         ///刷新数据
-        [weakSelf.collectionView headerBeginRefreshing];
-        
-        [ASDepthModalViewController dismiss];
-        
-    };
+        [self.collectionView headerBeginRefreshing];
     
-    [ASDepthModalViewController presentView:self.customPicker.view];
+    };
+    [self presentViewController:districtPickVC animated:YES completion:^{
+        
+    }];
     
 }
 
@@ -381,6 +347,7 @@ static char titleLabelKey;//!<标题key
 //定义每个Item 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if (indexPath.row == 0) {
         
         return CGSizeMake(SIZE_DEVICE_WIDTH, _moreButton.frame.origin.y+_moreButton.frame.size.height);
@@ -569,14 +536,20 @@ static char titleLabelKey;//!<标题key
     
 }
 
-#pragma mark --IOS7打电话
+#pragma mark - IOS7打电话
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    
     if (alertView.tag == kCallAlertViewTag) {
+        
         if (buttonIndex == 1) {
+            
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.phoneNumber]]];
+            
         }
+        
     }
+    
 }
 
 #pragma mark - 更多点餐信息
@@ -592,11 +565,15 @@ static char titleLabelKey;//!<标题key
 ///摇一摇事件接收入口
 -(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
+    
     //FIXME: 需要完善逻辑，预防网络慢时同时触发调用的问题。
     if (![self.shakeView isHidden]) {
+        
         NSLog(@"摇一摇");
         [self getRandomGoods];
+        
     }
+    
 }
 
 #pragma mark - 每日特价网络信息请求
@@ -605,7 +582,7 @@ static char titleLabelKey;//!<标题key
 {
     
     //每日特价信息请求参数
-    NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4"};
+    NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4",@"send_district_id" : self.distictID};
     
     ///广告栏请求
     [self getBannerInfo];

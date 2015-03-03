@@ -21,6 +21,8 @@
 #import "QSUserAddressListReturnData.h"
 
 #import "QSRequestManager.h"
+#import "QSUserManager.h"
+#import "QSUserInfoDataModel.h"
 
 @interface QSWMySendAdsViewController ()
 
@@ -67,7 +69,19 @@
     NSArray *tempList = [NSKeyedUnarchiver unarchiveObjectWithData:tempData];
     if (tempList && [tempList count] > 0) {
         
-        [self.dataSource addObjectsFromArray:tempList];
+        ///获取用户模型
+        QSUserInfoDataModel *userInfo = [QSUserManager getCurrentUserData];
+        
+        ///过滤数据
+        for (QSUserAddressDataModel *obj in tempList) {
+            
+            if ([obj.userID isEqualToString:userInfo.userID]) {
+                
+                [self.dataSource addObject:obj];
+                
+            }
+            
+        }
         
     }
     

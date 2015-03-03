@@ -38,13 +38,16 @@
     ///1.首页
     if (isFirstLaunch) {
         
-        QSTabBarViewController *main=[[QSTabBarViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
+        NSString *street = [[NSUserDefaults standardUserDefaults] objectForKey:@"street"];
+        NSString *streetID = [[NSUserDefaults standardUserDefaults] objectForKey:@"streetID"];
+        QSTabBarViewController *main=[[QSTabBarViewController alloc] initWithID:(streetID ? streetID : @"299") andDistictName:(street ? street : @"体育西路")];
         [self.window setRootViewController:main];
         
     } else {
         
         QSHomeViewController *home=[[QSHomeViewController alloc] init];
         [home setTitle:@"首页"];
+        home.isFirstLaunch = 1;
         [home.navigationController setNavigationBarHidden:YES];
         [self.window setRootViewController:home];
         

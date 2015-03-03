@@ -67,10 +67,12 @@
 
 - (void)clearContent
 {
+    
     [self.nameTextField setText:@""];
     [self.telephoneTextField setText:@""];
     [self.addressTextField setText:@""];
     [self.companyTextField setText:@""];
+    
 }
 
 - (instancetype)initAddNewAddressView
@@ -79,7 +81,7 @@
     if (self = [super init]) {
         
         ///获取用户信息
-        self.userInfo = [QSUserManager getCurrentUserData];
+        self.userInfo = nil;
         
         //半透明背景层
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];

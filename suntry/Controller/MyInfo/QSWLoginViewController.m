@@ -32,6 +32,7 @@
 
 @implementation QSWLoginViewController
 
+#pragma mark - UI搭建
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -88,7 +89,6 @@
     });
     
 }
-
 
 - (void)setupFooter
 {

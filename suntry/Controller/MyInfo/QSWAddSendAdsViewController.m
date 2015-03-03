@@ -22,6 +22,8 @@
 #import "NSString+Format.h"
 #import "ASDepthModalViewController.h"
 
+#import "MBProgressHUD.h"
+
 @interface QSWAddSendAdsViewController ()<UITextFieldDelegate>
 
 @property (nonatomic,retain) QSWTextFieldItem *userNameItem;        //!<用户名输入框模型
@@ -33,6 +35,8 @@
 
 @property (nonatomic,retain) QSUserInfoDataModel *userInfo;         //!<用户信息模型
 @property (nonatomic,strong) QSDatePickerViewController *pickerVC;  //!<选择器
+
+@property (nonatomic,retain) MBProgressHUD *hud;                    //!<HUD
 
 @end
 
@@ -62,7 +66,7 @@
     self.navigationItem.titleView = navTitle;
     
     ///获取用户数据
-    self.userInfo = [QSUserInfoDataModel userDataModel];
+    self.userInfo = nil;
     
     ///每个功能cell
     [self setupGroup0];
@@ -221,6 +225,9 @@
 ///确认添加地址
 - (void)gotoNextVC
 {
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     ///姓名
     UITextField *nameField = ((UITextField *)self.userNameItem.property);
@@ -291,14 +298,12 @@
         ///添加成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            ///弹出提示
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"添加成功。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
+            ///显示提示
+            self.hud.labelText = @"添加成功";
+            [self.hud hide:YES afterDelay:1.0f];
             
             ///显示1秒后移除提示
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
                 ///刷新送餐地址列表
                 if (self.addSendAddressCallBack) {
@@ -314,17 +319,9 @@
             
         } else {
         
-            NSLog(@"%@",errorInfo);
-            ///弹出提示
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"添加送餐地址失败，请稍后再试。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
-            
-            ///显示1秒后移除提示
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
-                
-            });
+            ///显示提示
+            self.hud.labelText = @"添加送餐地址失败，请稍后再试";
+            [self.hud hide:YES afterDelay:1.0f];
         
         }
         

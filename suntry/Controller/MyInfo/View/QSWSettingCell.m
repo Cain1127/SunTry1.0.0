@@ -30,6 +30,8 @@
 
 @implementation QSWSettingCell
 
+#pragma mark - 右侧箭头图片
+///右侧箭头图片
 - (UIImageView *)arrowView
 {
     
@@ -43,13 +45,14 @@
     
 }
 
+#pragma mark - 右侧按钮
+///右侧按钮
 - (UIImageView *)buttonView
 {
     
     if (_buttonView == nil) {
         
         _buttonView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_edit_normal"]];
-
         
     }
     
@@ -57,6 +60,8 @@
     
 }
 
+#pragma mark - 文字+箭头的view
+///文字+箭头的view
 - (UIView *)titleArrowView
 {
     
@@ -84,6 +89,8 @@
     
 }
 
+#pragma mark - 纯文字
+///纯文字
 -(UILabel *)labelView
 {
 
@@ -96,13 +103,15 @@
     return _labelView;
 }
 
+#pragma mark - 输入框
+///输入框
 -(UITextField *)textFieldView
 {
 
-    if (_textFieldView==nil) {
+    if (_textFieldView == nil) {
         
         ///1.添加textfield输入框控件
-        _textFieldView=[[UITextField alloc]initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, SIZE_DEVICE_WIDTH-2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.frame.size.height)];
+        _textFieldView=[[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.frame.size.height)];
 
         _textFieldView.translatesAutoresizingMaskIntoConstraints=NO;
         _textFieldView.returnKeyType=UIReturnKeyDone;
@@ -169,6 +178,7 @@
 
 - (void)setItem:(QSWSettingItem *)item
 {
+    
     _item = item;
     
     // 1.设置数据

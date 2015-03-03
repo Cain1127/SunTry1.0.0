@@ -490,7 +490,7 @@ typedef enum {
         self.isShowSearchStreetList = NO;
         [self.searchListTableView reloadData];
         
-        [self gotoMainHome:@"体育西路" andKey:@"299"];
+        [self gotoMainHome:selectedModel.streetName andKey:selectedModel.streetID];
         return;
         
     }
@@ -510,7 +510,7 @@ typedef enum {
         self.isShowSearchStreetList = NO;
         [self.searchListTableView reloadData];
         
-        [self gotoMainHome:@"体育西路" andKey:@"299"];
+        [self gotoMainHome:selectedModel.streetName andKey:selectedModel.streetID];
         return;
         
     }
@@ -532,15 +532,32 @@ typedef enum {
 - (void)gotoMainHome:(NSString *)title andKey:(NSString *)key
 {
     
-    ///修改
-    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isFirstLaunch"];
-    
-    QSTabBarViewController *VC = [[QSTabBarViewController alloc] initWithID:@"299" andDistictName:@"体育西路"];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:@"体育西路" forKey:@"street"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"299" forKey:@"streetID"];
+    ///保存当前选择项
+    [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"street"];
+    [[NSUserDefaults standardUserDefaults] setObject:key forKey:@"streetID"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    ///判断是否是从首页过来的
+    if (self.isFirstLaunch == 0) {
+        
+        ///回调
+        if (self.districtPickedCallBack) {
+            
+            self.districtPickedCallBack(key,title);
+            
+        }
+        
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+        return;
+        
+    }
+    
+    ///修改
+    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isFirstLaunch"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    QSTabBarViewController *VC = [[QSTabBarViewController alloc] initWithID:key andDistictName:title];
     [UIApplication sharedApplication].keyWindow.rootViewController = VC;
     
 }

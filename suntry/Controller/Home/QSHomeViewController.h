@@ -12,4 +12,8 @@
 
 @interface QSHomeViewController : UIViewController
 
+@property (nonatomic,assign) int isFirstLaunch;//!<是否从appdelegate进入
+///选择地区后的回调
+@property (nonatomic,copy) void(^districtPickedCallBack)(NSString *key,NSString *val);
+
 @end
