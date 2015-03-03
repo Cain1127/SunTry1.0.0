@@ -12,5 +12,6 @@
 
 @property (nonatomic,copy) NSString *districtID;//!<区的ID
 @property (nonatomic,copy) NSString *val;       //!<区的显示名字
+@property (nonatomic,copy) NSString *status;    //!<是否可配送1-可配送
 
 @end

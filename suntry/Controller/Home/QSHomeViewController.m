@@ -93,7 +93,20 @@ typedef enum {
     
     ///encode数据
     QSDistrictReturnData *districtData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
-    self.districtList = [[NSMutableArray alloc] initWithArray:districtData.districtList];
+    
+    ///遍历获取可配送区
+    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    for (QSDistrictDataModel *obj in districtData.districtList) {
+        
+        if ([obj.status intValue] == 1) {
+            
+            [tempArray addObject:obj];
+            
+        }
+        
+    }
+    
+    self.districtList = [[NSMutableArray alloc] initWithArray:tempArray];
     
 }
 
@@ -250,7 +263,7 @@ typedef enum {
         
     }
     
-    for (int i = 0; i < [self.districtList count] && i < 1; i++) {
+    for (int i = 0; i < [self.districtList count]; i++) {
         
         ///获取地区模型
         QSDistrictDataModel *districtModel = self.districtList[i];

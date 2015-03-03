@@ -110,7 +110,7 @@
 	<key>1104</key>
 	<dict>
 		<key>url</key>
-		<string>promotion/getCoupon</string>
+		<string>Promotion/GetCodeApply</string>
 		<key>class</key>
 		<string>QSHeaderDataModel</string>
 	</dict>

@@ -18,7 +18,7 @@
     shared_mapping = [RKObjectMapping mappingForClass:[self class]];
     
     //mapping字典
-    NSDictionary *mappingDict = @{@"id" : @"districtID", @"name" : @"val"};
+    NSDictionary *mappingDict = @{@"id" : @"districtID", @"name" : @"val",@"status" : @"status"};
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
         
     return shared_mapping;
@@ -33,6 +33,7 @@
         
         self.districtID = [aDecoder decodeObjectForKey:@"district"];
         self.val = [aDecoder decodeObjectForKey:@"val"];
+        self.status = [aDecoder decodeObjectForKey:@"status"];
         
     }
     
@@ -45,6 +46,7 @@
     
     [aCoder encodeObject:self.districtID forKey:@"district"];
     [aCoder encodeObject:self.val forKey:@"val"];
+    [aCoder encodeObject:self.status forKey:@"status"];
     
 }
 

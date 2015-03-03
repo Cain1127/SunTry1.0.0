@@ -191,7 +191,7 @@
     self.hud.labelText = @"正在添加……";
     
     ///封装参数
-    NSDictionary *params = @{@"coup_key" : couponKey};
+    NSDictionary *params = @{@"coup_code" : couponKey};
     
     ///请求优惠券
     [QSRequestManager requestDataWithType:rRequestTypeUserGetCoupon andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
@@ -209,6 +209,15 @@
             self.hud.labelText = @"添加成功！";
             [self.hud hide:YES afterDelay:1.0f];
             
+            ///刷新数据
+            [self.couponListView headerEndRefreshing];
+            
+        } else if (rRequestResultTypeFail == resultStatus) {
+        
+            ///领取失败
+            self.hud.labelText = @"领取失败！";
+            [self.hud hide:YES afterDelay:1.0f];
+        
         } else {
         
             ///结束HUD
