@@ -56,7 +56,8 @@
     
     //没有数据时的显示
     self.nodataView = [[UIView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:_nodataView];
+    [self.nodataView setBackgroundColor:[UIColor whiteColor]];
+//    [self.view addSubview:_nodataView];
     
     UIImageView *nodataImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"order_list_no_data_logo"]];
     [nodataImgView setCenter:self.view.center];
@@ -92,6 +93,8 @@
     [self.orderListTableView setShowsVerticalScrollIndicator:NO];
     [self.orderListTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.orderListTableView];
+    
+    [self.orderListTableView addSubview:self.nodataView];
     
     ///添加刷新事件
     [self.orderListTableView addHeaderWithTarget:self action:@selector(getUserOrderHeaderList)];
@@ -202,6 +205,7 @@
             ///判断是否有数据
             self.orderListData = resultData;
             
+            [_orderListTableView reloadData];
             if ([self.orderListData.orderListData.orderList count] <= 0) {
                 
                 ///结束刷新动画
@@ -210,14 +214,11 @@
                 
                 ///显示无订单内容
                 _nodataView.hidden = NO;
-                _orderListTableView.hidden = YES;
+                [self.orderListTableView bringSubviewToFront:_nodataView];
                 
             } else {
 
-                [_orderListTableView reloadData];
-                
                 _nodataView.hidden = YES;
-                _orderListTableView.hidden = NO;
                 
                 ///结束刷新动画
                 [self.orderListTableView footerEndRefreshing];

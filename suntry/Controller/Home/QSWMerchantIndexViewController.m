@@ -42,6 +42,8 @@
 
 #import "QSNoNetworkingViewController.h"
 
+#import "MBProgressHUD.h"
+
 #define kCallAlertViewTag 111
 
 ///关联
@@ -71,6 +73,8 @@ static char titleLabelKey;//!<标题key
 @property (nonatomic, copy) NSString *phoneNumber;                  //!<电话号码
 
 @property (nonatomic, strong) UIButton  *shakeView;     //摇一摇界面
+@property (nonatomic, assign) NSInteger  randRequestID;
+@property (nonatomic, assign) NSInteger  randResultID;
 
 @end
 
@@ -82,6 +86,9 @@ static char titleLabelKey;//!<标题key
 {
     
     if (self = [super init]) {
+        
+        _randRequestID = 0;
+        _randResultID = _randRequestID;
         
         self.distictID = distictID ? distictID : ([[NSUserDefaults standardUserDefaults] objectForKey:@"streetID"] ? [[NSUserDefaults standardUserDefaults] objectForKey:@"streetID"] : @"299");
         self.distictName = districtName ? districtName : ([[NSUserDefaults standardUserDefaults] objectForKey:@"street"] ? [[NSUserDefaults standardUserDefaults] objectForKey:@"street"] : @"体育西路");
@@ -639,11 +646,16 @@ static char titleLabelKey;//!<标题key
 ///随机菜品网络信息请求
 - (void)getRandomGoods
 {
+    _randRequestID++;
+    [MBProgressHUD showHUDAddedTo:_shakeView animated:YES];
     //随机菜品信息请求参数
     NSDictionary *dict = @{@"num" : @"1"};
     
     [QSRequestManager requestDataWithType:rRequestTypeRandom andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
-        
+        _randResultID++;
+        if (_randResultID != _randRequestID) {
+            return ;
+        }
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
@@ -679,7 +691,7 @@ static char titleLabelKey;//!<标题key
                 
             });
         }
-        
+        [MBProgressHUD hideHUDForView:_shakeView animated:YES];
     }];
     
 }
