@@ -31,12 +31,12 @@ typedef enum
     
     rRequestTypeDefault = 998,                  //!<默认无效请求
     rRequestTypeDistrict = 999,                 //!<地区选择
-    rRequestTypeSelect =1000,                   //!<选择查询
-    rRequestTypeAspecial =1001,                 //!<每日特价菜品
-    rRequestTypeRandom      =1036,              //!<随机菜品
-    rRequestTypeAllGoods    =1050,              //!<所有菜品
+    rRequestTypeSelect = 1000,                  //!<选择查询
+    rRequestTypeAspecial = 1001,                //!<每日特价菜品
+    rRequestTypeRandom = 1036,                  //!<随机菜品
+    rRequestTypeAllGoods = 1050,                //!<所有菜品
     
-    rRequestTypeCarPostion    =1006,              //!<餐车地址
+    rRequestTypeCarPostion =1006,               //!<餐车地址
     
     rRequestTypeBanner = 1023,                  //!添加首页广告
 

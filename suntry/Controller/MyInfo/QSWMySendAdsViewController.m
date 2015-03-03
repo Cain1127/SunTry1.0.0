@@ -291,6 +291,27 @@
                 
             }
             
+        } else {
+        
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
+            
+            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                
+                NSError *error = nil;
+                [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+                if (error) {
+                    
+                    NSLog(@"===============清空本地送餐地址失败=================");
+                    
+                } else {
+                
+                    NSLog(@"===============清空本地送餐地址成功=================");
+                
+                }
+                
+            }
+        
         }
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
