@@ -358,7 +358,6 @@
             ///更换标题
             UILabel *titleLabel = [textField.rightView subviews][0];
             titleLabel.text = item;
-            
             [ASDepthModalViewController dismiss];
             
         };
@@ -369,7 +368,6 @@
         return NO;
         
     }
-    
     
     ///如果是默认配送地址选择框，则弹出选择框
     if (textField == self.isMasterItem.property) {
@@ -427,6 +425,16 @@
     [((UITextField *)self.companyItem.property) resignFirstResponder];
     [((UITextField *)self.phoneItem.property) resignFirstResponder];
     
+}
+
+#pragma mark - 将要显示时，设置tabbar隐藏
+///将要显示时，设置tabbar隐藏
+- (void)viewWillAppear:(BOOL)animated
+{
+
+    self.tabBarController.tabBar.hidden = YES;
+    [super viewWillAppear:animated];
+
 }
 
 @end
