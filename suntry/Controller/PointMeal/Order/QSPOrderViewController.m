@@ -797,6 +797,10 @@
                     {
                         QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
                         [ossVc setPaymentSate:YES];
+                        QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+                        orderResultData.order_id = orderFormModel.order_id;
+                        orderResultData.order_desc = @"货到付款下单";
+                        [ossVc setOrderData:orderResultData];
                         [self.navigationController pushViewController:ossVc animated:YES];
                         //支付类型 2餐到付款
                         [QSPShoppingCarData clearShoopingCar];
@@ -834,9 +838,12 @@
                         //支付类型 3，储蓄卡支付
                         {
                             QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
+                            //支付金额
+                            orderFormModel.payPrice = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
+                            orderFormModel.diet_num = [NSString stringWithFormat:@"%ld",(long)[QSPShoppingCarData getTotalFoodCount]];
                             [pfovc setOrderFormModel:orderFormModel];
-                            [pfovc setOrderTotalPrice:[NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]]];
                             [self.navigationController pushViewController:pfovc animated:YES];
+                            [QSPShoppingCarData clearShoopingCar];
                         }
                         break;
                     default:
@@ -1034,6 +1041,10 @@
             
             QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
             [ossVc setPaymentSate:YES];
+            QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+            orderResultData.order_id = [tempParams objectForKey:@"id"];
+            orderResultData.order_desc = [tempParams objectForKey:@"desc"];
+            [ossVc setOrderData:orderResultData];
             [self.navigationController pushViewController:ossVc animated:YES];
             
         }];
@@ -1059,6 +1070,10 @@
             
             QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
             [ossVc setPaymentSate:YES];
+            QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+            orderResultData.order_id = [tempParams objectForKey:@"id"];
+            orderResultData.order_desc = [tempParams objectForKey:@"desc"];
+            [ossVc setOrderData:orderResultData];
             [self.navigationController pushViewController:ossVc animated:YES];
 
             
@@ -1074,6 +1089,10 @@
     ///支付失败
     QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
     [ossVc setPaymentSate:NO];
+    QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+    orderResultData.order_id = orderID;
+    orderResultData.order_desc = @"点餐下单支付确认";
+    [ossVc setOrderData:orderResultData];
     [self.navigationController pushViewController:ossVc animated:YES];
     
 }

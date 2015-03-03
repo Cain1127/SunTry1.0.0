@@ -308,11 +308,11 @@
             paymentStr = @"在线支付";
         }else if ([paymentCode isEqualToString:@"2"])
         {
-            paymentStr = @"餐到付款";
+            paymentStr = @"货到付款";
         }else if ([paymentCode isEqualToString:@"3"])
         {
 //            paymentStr = @"余额支付";
-            paymentStr = @"在线支付";
+            paymentStr = @"储值卡支付";
         }else if ([paymentCode isEqualToString:@"5"])
         {
 //            paymentStr = @"储蓄卡购买";
@@ -383,9 +383,21 @@
 
 - (void)updateView
 {
+    [self updateHeadView];
     [self updateHadOrderView];
     [self updateShippingInfoView];
     [self updatePayInfoView];
+}
+
+- (void)updateHeadView
+{
+    if (orderData) {
+        
+        [self.orderNumLabel setText:[NSString stringWithFormat:@"订单号:%@",orderData.order_num]];
+        UIImage *image = [QRCodeGenerator qrImageForString:self.orderData.verification imageSize:120];
+        self.orderQRCodeImgView.image = image;
+        [self.shippingStateLabel setText:orderData.order_shippingState];
+    }
 }
 
 - (void)updatePayInfoView
@@ -406,11 +418,12 @@
             supportPayOnline = YES;
         }else if ([paymentCode isEqualToString:@"2"])
         {
-            paymentStr = @"餐到付款";
+            paymentStr = @"货到付款";
         }else if ([paymentCode isEqualToString:@"3"])
         {
 //            paymentStr = @"余额支付";
-            paymentStr = @"在线支付";
+            paymentStr = @"储值卡支付";
+            supportPayOnline = YES;
         }else if ([paymentCode isEqualToString:@"5"])
         {
 //            paymentStr = @"储蓄卡购买";
@@ -661,7 +674,6 @@
     if (orderData) {
         [tempParams setObject:orderData.order_id forKey:@"id"];
     }else if (order_ID) {
-        
         [tempParams setObject:order_ID forKey:@"id"];
     }else{
         //
@@ -688,6 +700,17 @@
             NSLog(@"tempReturnModel %@",orderData);
             
             [self updateView];
+        }else{
+            ///弹出提示
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取订单详情失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            
+            ///显示1秒后移除提示
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+            });
         }
         
         //隐藏HUD
@@ -738,7 +761,7 @@
             
         }else if ([paymentCode isEqualToString:@"3"])
         {
-            paymentStr = @"余额支付";//储值卡支付
+            paymentStr = @"储值卡支付";//储值卡支付
             
             QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
             CGFloat totalPrice = [QSPShoppingCarData getTotalPrice];
@@ -758,9 +781,9 @@
                 orderInfoModel.bill_id = orderData.bill_id;
                 orderInfoModel.order_num = orderData.order_num;
                 orderInfoModel.bill_num = @"";//订单数据没这个字段。
-                
+                orderInfoModel.payPrice = orderData.total_money;
+                orderInfoModel.diet_num = orderData.diet_num;
                 [pfovc setOrderFormModel:orderInfoModel];
-                [pfovc setOrderTotalPrice:orderData.total_money];
                 [self.navigationController pushViewController:pfovc animated:YES];
             }
             
@@ -810,6 +833,10 @@
             
             QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
             [ossVc setPaymentSate:YES];
+            QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+            orderResultData.order_id = [tempParams objectForKey:@"id"];
+            orderResultData.order_desc = [tempParams objectForKey:@"desc"];
+            [ossVc setOrderData:orderResultData];
             [self.navigationController pushViewController:ossVc animated:YES];
             
         }];
@@ -835,6 +862,10 @@
             
             QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
             [ossVc setPaymentSate:YES];
+            QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+            orderResultData.order_id = [tempParams objectForKey:@"id"];
+            orderResultData.order_desc = [tempParams objectForKey:@"desc"];
+            [ossVc setOrderData:orderResultData];
             [self.navigationController pushViewController:ossVc animated:YES];
             
             
@@ -850,6 +881,10 @@
     ///支付失败
     QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
     [ossVc setPaymentSate:NO];
+    QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+    orderResultData.order_id = orderID;
+    orderResultData.order_desc = @"点餐下单支付确认";
+    [ossVc setOrderData:orderResultData];
     [self.navigationController pushViewController:ossVc animated:YES];
     
 }

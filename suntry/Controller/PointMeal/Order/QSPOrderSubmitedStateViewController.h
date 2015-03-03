@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QSOrderDetailDataModel.h"
 
 @interface QSPOrderSubmitedStateViewController : UIViewController
 
-@property (nonatomic, assign) BOOL paymentSate;//设置显示成功（YES）或者失败界面（NO）
+@property (nonatomic, assign) BOOL paymentSate;                 //设置显示成功（YES）或者失败界面（NO）
+@property (nonatomic, strong) QSOrderDetailDataModel *orderData; //订单ID
 
 @end

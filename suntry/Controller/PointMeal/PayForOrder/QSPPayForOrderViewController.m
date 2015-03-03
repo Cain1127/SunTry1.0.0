@@ -16,7 +16,6 @@
 #import "QSWForgetPswController.h"
 #import "QSPOrderSubmitedStateViewController.h"
 #import "QSUserInfoDataModel.h"
-#import "QSPShoppingCarView.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "QSRequestManager.h"
 #import "MBProgressHUD.h"
@@ -38,7 +37,7 @@
 @end
 
 @implementation QSPPayForOrderViewController
-@synthesize orderFormModel,orderTotalPrice;
+@synthesize orderFormModel;
 
 - (void)loadView{
     [super loadView];
@@ -58,7 +57,6 @@
     
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
         [self.navigationController popToRootViewControllerAnimated:YES];
-        [QSPShoppingCarData clearShoopingCar];
     }];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -78,7 +76,7 @@
     self.foodCounLabel = [[QSLabel alloc] initWithFrame:CGRectMake(foodCountLabel.frame.origin.x, foodCountLabel.frame.origin.y, foodCountLabel.frame.size.width-20, foodCountLabel.frame.size.height)];
     [self.foodCounLabel setFont:[UIFont boldSystemFontOfSize:PAY_FOR_ORDER_TITLE_FONT_SIZE]];
     [self.foodCounLabel setBackgroundColor:[UIColor clearColor]];
-    [self.foodCounLabel setText:[NSString stringWithFormat:@"%ld",(long)[QSPShoppingCarData getTotalFoodCount]]];
+    [self.foodCounLabel setText:orderFormModel.diet_num];
     [self.foodCounLabel setTextAlignment:NSTextAlignmentRight];
     [self.foodCounLabel setTextColor:PAY_FOR_ORDER_COUNT_TEXT_COLOR];
     [self.view addSubview:self.foodCounLabel];
@@ -110,7 +108,7 @@
     [self.view addSubview:self.orderPriceLabel];
     
     //TODO: 订单价格
-    NSString *price = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
+    NSString *price = orderFormModel.payPrice;
     NSMutableAttributedString *priceString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",price]];
     [priceString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0,1)];
     [priceString addAttribute:NSForegroundColorAttributeName value:PAY_FOR_ORDER_COUNT_TEXT_COLOR range:NSMakeRange(1,price.length)];
@@ -196,7 +194,7 @@
         NSString *pay = [NSString stringWithFormat:@"%@%@",userModel.pay_salt,pass];
         /*私有密钥+密码 进行 MD5加密*/
         [tempParams setObject:[self paramsMD5Encryption:pay] forKey:@"pay"];
-        [tempParams setObject:orderTotalPrice forKey:@"balance"];
+        [tempParams setObject:orderFormModel.payPrice forKey:@"balance"];
         [tempParams setObject:orderFormModel.order_id forKey:@"order_id"];
         
         [QSRequestManager requestDataWithType:rRequestTypePayJudgeBalanceData andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
@@ -210,6 +208,10 @@
                 //支付成功跳转：
                 QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
                 [ossVc setPaymentSate:YES];
+                QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+                orderResultData.order_id = orderFormModel.order_id;
+                orderResultData.order_desc = orderFormModel.des;
+                [ossVc setOrderData:orderResultData];
                 [self.navigationController pushViewController:ossVc animated:YES];
                 
             }else{
@@ -217,9 +219,12 @@
                 NSLog(@"订单：%@ 支付失败",orderFormModel.order_id);
                 QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
                 [ossVc setPaymentSate:NO];
+                QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+                orderResultData.order_id = orderFormModel.order_id;
+                orderResultData.order_desc = orderFormModel.des;
+                [ossVc setOrderData:orderResultData];
                 [self.navigationController pushViewController:ossVc animated:YES];
             }
-            [QSPShoppingCarData clearShoopingCar];
         }];
         
     }];

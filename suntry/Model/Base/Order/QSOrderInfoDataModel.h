@@ -40,4 +40,6 @@
 @property (nonatomic,copy) NSString *bill_num;  //!<账务使用的订单编码
 @property (nonatomic,copy) NSString *order_num; //!<订单编码
 
+@property (nonatomic,copy) NSString *diet_num;  //!<订单的菜品数量
+
 @end

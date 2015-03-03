@@ -11,6 +11,7 @@
 #import "ImageHeader.h"
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
+#import "QSOrderDetailViewController.h"
 
 #define ORDER_SUBMITED_VIEWCONTROLLER_NAV_TITLE_FONT_SIZE   17.
 #define ORDER_SUBMITED_VIEWCONTROLLER_TITLE_FONT_SIZE       28.
@@ -26,7 +27,7 @@
 
 @implementation QSPOrderSubmitedStateViewController
 
-@synthesize paymentSate;
+@synthesize paymentSate,orderData;
 
 - (void)loadView{
     
@@ -80,13 +81,17 @@
     //查看详情-左下按钮
     QSBlockButtonStyleModel *checkOrderBtStyleModel = [QSBlockButtonStyleModel alloc];
     checkOrderBtStyleModel.bgColor  = ORDER_SUBMITED_VIEWCONTROLLER_BUTTON_COLOR;
-    checkOrderBtStyleModel.title    = @"查看订单列表";
+    checkOrderBtStyleModel.title    = @"查看订单详情";
     checkOrderBtStyleModel.titleNormalColor = [UIColor whiteColor];
     checkOrderBtStyleModel.cornerRadio = 6.;
     UIButton *checkOrderBt = [UIButton createBlockButtonWithFrame:CGRectMake(30/375.*SIZE_DEVICE_WIDTH, infoLabel.frame.origin.y+infoLabel.frame.size.height+16, 150/375.*SIZE_DEVICE_WIDTH, 45) andButtonStyle:checkOrderBtStyleModel andCallBack:^(UIButton *button) {
         
-        NSLog(@"checkOrderBtl");
-        [self.tabBarController setSelectedIndex:2];
+//        NSLog(@"checkOrderBtl");
+//        [self.tabBarController setSelectedIndex:2];
+        QSOrderDetailViewController *odvc = [[QSOrderDetailViewController alloc] init];
+        [odvc setOrder_ID:orderData.order_id];
+        [odvc setHidesBottomBarWhenPushed:YES];
+        [self.navigationController pushViewController:odvc animated:YES];
         
     }];
     

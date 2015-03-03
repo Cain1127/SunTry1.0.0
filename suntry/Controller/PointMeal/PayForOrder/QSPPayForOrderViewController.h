@@ -12,6 +12,5 @@
 @interface QSPPayForOrderViewController : UIViewController
 
 @property(nonatomic,strong) QSOrderInfoDataModel *orderFormModel;
-@property(nonatomic,strong) NSString *orderTotalPrice;
 
 @end
