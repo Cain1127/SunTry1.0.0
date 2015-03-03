@@ -14,6 +14,7 @@
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
 #import "MBProgressHUD.h"
+#import "ColorHeader.h"
 
 #import "QSUserRegisterReturnData.h"
 #import "QSCommonStringReturnData.h"
@@ -24,11 +25,13 @@
 
 @interface QSWRegisterViewController ()<UITextFieldDelegate>
 
-@property (nonatomic,retain) QSWSettingItem *userNameItem;  //!<用户账号
-@property (nonatomic,retain) QSWSettingItem *passWordItem;  //!<密码
+@property (nonatomic,retain) QSWTextFieldItem *userNameItem;  //!<用户账号
+@property (nonatomic,retain) QSWTextFieldItem *passWordItem;  //!<密码
 @property (nonatomic,retain) MBProgressHUD *hud;            //!<HUD
 @property (nonatomic,strong) UIImageView *selectImageView;  //!<服务协议图片
 @property (nonatomic,strong) UITextField *activateTextfield;//!<验证码输入框
+@property (nonatomic,strong) UIButton *serviceButton;       //!<服务协议按钮
+@property (nonatomic,strong) UIButton *registerButton;      //!<提交注册按钮
 @property (nonatomic,copy) NSString *code;                  //!<验证码
 
 @end
@@ -46,16 +49,7 @@
     [navTitle setTextAlignment:NSTextAlignmentCenter];
     [navTitle setText:@"注册"];
     self.navigationItem.titleView = navTitle;
-    ///密码密文输入
-    ((UITextField *)self.passWordItem.property).secureTextEntry=YES;
-    [self setupGroup0];
-    [self setupGroup1];
-    [self setupFooter];
     
-}
-
--(void)setupGroup0
-{
     
     ///自定义返回按钮
     UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
@@ -66,11 +60,21 @@
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
     
     self.navigationItem.leftBarButtonItem = turnBackButton;
-
     
+    ///密码密文输入
+    //((UITextField *)self.passWordItem.property).secureTextEntry=YES;
+    [self setupGroup0];
+    [self setupGroup1];
+    [self setupFooter];
+    
+}
+
+-(void)setupGroup0
+{
+
     QSWSettingGroup *group = [self addGroup];
     
-    self.userNameItem = [QSWTextFieldItem itemWithTitle:@"请输入您的手机号码" andDelegate:self];
+    self.userNameItem = [QSWTextFieldItem itemWithTitle:@"请输入您的手机号码"];
     
     group.items = @[self.userNameItem];
     
@@ -81,7 +85,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     
-    self.passWordItem = [QSWTextFieldItem itemWithTitle:@"请输入您的登录密码" andDelegate:self];
+    self.passWordItem = [QSWTextFieldItem itemWithTitle:@"请输入您的登录密码"];
     group.items = @[self.passWordItem];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -96,27 +100,14 @@
 - (void)setupFooter
 {
     
-    ///提交注册按钮
-    UIButton *footterButton = [[UIButton alloc] init];
-    footterButton.translatesAutoresizingMaskIntoConstraints=NO;
-    
-    ///背景和文字
-    footterButton.backgroundColor=COLOR_CHARACTERS_RED;
-    [footterButton setTitle:@"提交注册" forState:UIControlStateNormal];
-    footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
-    [footterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    footterButton.layer.cornerRadius = 6.0f;
-    
-    // footer
+    // 脚部大view
     UIView *footer = [[UIView alloc] init];
-    CGFloat footerH = 120.0f + 20.0f +5.0f+44.0f+40.0f;
+    CGFloat footerH = 120.0f + 20.0f +44.0f+44.0f;
     footer.frame = CGRectMake(0, 0, 0, footerH);
     self.tableView.tableFooterView = footer;
-    [footer addSubview:footterButton];
-    [footterButton addTarget:self action:@selector(gotoRegister) forControlEvents:UIControlEventTouchUpInside];
     
     ///激活textfield
-    self.activateTextfield=[[UITextField alloc] init];
+    self.activateTextfield=[[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MAX_WIDTH-100.0f-5.0f, 44.0f)];
     self.activateTextfield.placeholder = @"激活码";
     self.activateTextfield.translatesAutoresizingMaskIntoConstraints=NO;
     self.activateTextfield.returnKeyType=UIReturnKeySearch;
@@ -126,57 +117,70 @@
     [footer addSubview:self.activateTextfield];
     
     ///获取激活码按钮
-    UIButton *activateButton=[[UIButton alloc] init];
-    activateButton.translatesAutoresizingMaskIntoConstraints=NO;
+    UIButton *activateButton=[[UIButton alloc] initWithFrame:CGRectMake(self.activateTextfield.frame.origin.x+self.activateTextfield.frame.size.width + 5.0f, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 100.0f, 44.0f)];
     [activateButton setTitle:@"获取激活码" forState:UIControlStateNormal];
-    [activateButton setBackgroundColor:[UIColor brownColor]];
+    activateButton.backgroundColor=COLOR_CHARACTERS_YELLOW;
     [activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     activateButton.layer.cornerRadius = 6.0f;
     [activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:activateButton];
     
-    ///条款控件
-    self.selectImageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myinfo_select_normal"] highlightedImage:[UIImage imageNamed:@"myinfo_select_selected"]];
-    self.selectImageView.translatesAutoresizingMaskIntoConstraints=NO;
-    self.selectImageView.userInteractionEnabled=YES;
     
-    //[selectImageView setTag:2];//带个参数过去
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickx:)];
-    [self.selectImageView addGestureRecognizer:singleTap];
+    ///服务协议按钮
+    self.serviceButton = [[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _activateTextfield.frame.origin.y+_activateTextfield.frame.size.height+1*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 300.0f, 20.0f+2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)];
     
-    [footer addSubview:_selectImageView];
+    _selectImageView=[[UIImageView alloc] initWithFrame:CGRectMake(0.0f, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 20.0f, 20.0f)];
+    _selectImageView.image=[UIImage imageNamed:@"myinfo_select_normal"];
+    _selectImageView.highlightedImage=[UIImage imageNamed:@"myinfo_select_selected"];
     
-    UILabel *selectLabel=[[UILabel alloc] init];
-    selectLabel.translatesAutoresizingMaskIntoConstraints=NO;
-    selectLabel.text=@"我已阅读并同意《用户服务协议》";
-    selectLabel.font=[UIFont systemFontOfSize:14.0f];
-    [footer addSubview:selectLabel];
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(_selectImageView.frame.origin.x+_selectImageView.frame.size.width+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 250.0f, 20.0f)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:16.0f]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentLeft];
+    [navTitle setText:@"我已阅读并同意《用户服务协议》"];
+    navTitle.textColor=COLOR_CHARACTERS_YELLOW;
 
-    ///4.添加VFL约束
-    ///参数
-    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(_activateTextfield,activateButton,_selectImageView,selectLabel,footterButton);
-    NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
+    [self.serviceButton addSubview:navTitle];
+    [self.serviceButton addSubview:_selectImageView];
+    [footer addSubview:self.serviceButton];
+    _selectImageView.highlighted = NO;
     
-    ///约束
-    NSString *___hVFL_activateTextfield = @"H:|-margin-[_activateTextfield]-5-[activateButton(100)]-margin-|";
-    NSString *___hVFL_selectImageView=@"H:|-margin-[_selectImageView(20)]-5-[selectLabel]-margin-|";
-    NSString *___hVFL_footterButton=@"H:|-margin-[footterButton]-margin-|";
-    NSString *___vVFL_all = @"V:|-margin-[_activateTextfield(44)]-margin-[_selectImageView(20)]-margin-[footterButton(44)]";
-    NSString *___vVFL_activateButton=@"V:[activateButton(44)]";
+    [self.serviceButton addTarget:self action:@selector(serviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    ///添加约束
-    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_activateTextfield options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
-    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_selectImageView options:NSLayoutFormatAlignAllCenterY metrics:___sizeVFL views:___viewsVFL]];
-    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___hVFL_footterButton options:0 metrics:___sizeVFL  views:___viewsVFL]];
-    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_all  options:0 metrics:___sizeVFL views:___viewsVFL]];
-    [footer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:___vVFL_activateButton options:0 metrics:___sizeVFL views:___viewsVFL]];
     
+    ///提交注册按钮
+    _registerButton = [[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,self.serviceButton.frame.origin.y+self.serviceButton.frame.size.height+2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
+    
+    ///背景和文字
+    _registerButton.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    [_registerButton setTitle:@"提交注册" forState:UIControlStateNormal];
+    _registerButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [_registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _registerButton.layer.cornerRadius = 6.0f;
+    [footer addSubview:_registerButton];
+    _registerButton.selected = NO;
+    [_registerButton addTarget:self action:@selector(gotoRegister) forControlEvents:UIControlEventTouchUpInside];
+
 }
 
-- (void)clickx:(UITapGestureRecognizer *)tap
+- (void)serviceButtonClick:(UIButton *)button
 {
-  
-    _selectImageView.highlighted=YES;
+    
+    if (button.selected) {
+        
+        button.selected = NO;
+        _selectImageView.highlighted = NO;
+        _registerButton.backgroundColor=COLOR_CHARACTERS_ROOTLINE;
+        _registerButton.selected = NO;
+        
+    } else {
+    
+        button.selected = YES;
+        _selectImageView.highlighted = YES;
+        _registerButton.backgroundColor=COLOR_CHARACTERS_RED;
+        _registerButton.selected = YES;
+    
+    }
     
 }
 
@@ -206,9 +210,19 @@
 -(void)gotoRegister
 {
     
+    ///判断是否可以注册
+    if (!self.registerButton.selected) {
+        
+        return;
+        
+    }
+    
+    UITextField *userNameField = (UITextField *)self.userNameItem.property;
+    UITextField *pswNameField = (UITextField *)self.passWordItem.property;
+    
     ///判断数据
-    __block NSString *userName = ((UITextField *)self.userNameItem.property).text;
-    __block NSString *pwd = ((UITextField *)self.passWordItem.property).text;
+    __block NSString *userName = userNameField.text;
+    __block NSString *pwd = pswNameField.text;
     
     ///回收键盘
     [((UITextField *)self.userNameItem.property) resignFirstResponder];
@@ -216,12 +230,14 @@
     
     if ((nil == userName) || (0 >= [userName length])) {
         
+        [userNameField becomeFirstResponder];
         return;
         
     }
     
     if ((nil == pwd) || (0 >= [pwd length])) {
         
+        [pswNameField becomeFirstResponder];
         return;
         
     }
@@ -240,6 +256,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             [alert dismissWithClickedButtonIndex:0 animated:YES];
+            [self.activateTextfield becomeFirstResponder];
             
         });
         return;

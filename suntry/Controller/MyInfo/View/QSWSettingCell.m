@@ -30,7 +30,7 @@
 
 @implementation QSWSettingCell
 
-#pragma mark - 右侧箭头图片
+#pragma mark - 右侧箭头图片cell
 ///右侧箭头图片
 - (UIImageView *)arrowView
 {
@@ -45,7 +45,7 @@
     
 }
 
-#pragma mark - 右侧按钮
+#pragma mark - 右侧是按钮cell
 ///右侧按钮
 - (UIImageView *)buttonView
 {
@@ -60,7 +60,7 @@
     
 }
 
-#pragma mark - 文字+箭头的view
+#pragma mark - 右侧文字+箭头的view
 ///文字+箭头的view
 - (UIView *)titleArrowView
 {
@@ -89,7 +89,7 @@
     
 }
 
-#pragma mark - 纯文字
+#pragma mark - 右侧纯文字cell
 ///纯文字
 -(UILabel *)labelView
 {
@@ -103,7 +103,7 @@
     return _labelView;
 }
 
-#pragma mark - 输入框
+#pragma mark - 输入框样式cell
 ///输入框
 -(UITextField *)textFieldView
 {
@@ -125,7 +125,7 @@
     
 }
 
-
+#pragma mark-初始化cell
 + (instancetype)cellWithTableView:(UITableView *)tableView
 {
     
@@ -143,6 +143,7 @@
     return cell;
 }
 
+#pragma mark--cell的风格样式
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -165,6 +166,7 @@
     
 }
 
+#pragma mark-cell的frame
 - (void)setFrame:(CGRect)frame
 {
     if (!iOS7) {
@@ -176,6 +178,7 @@
     [super setFrame:frame];
 }
 
+#pragma mark--设置cell
 - (void)setItem:(QSWSettingItem *)item
 {
     
@@ -197,7 +200,7 @@
     ///获取cell高度
     CGFloat height = 44.0f;
     
-    ///如果是优惠郑列表的cell时，高度为60.0f
+    ///如果是优惠列表的cell时，高度为60.0f
     if (item.subtitle) {
         
         height = 60.0f;
@@ -280,7 +283,7 @@
         self.accessoryView=self.arrowView;
         
     } else if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
-        
+
         if ([self.item isKindOfClass:[QSPickerViewItem class]]) {
             
             ///设置右标题
@@ -292,7 +295,6 @@
             self.textFieldView.rightView = self.titleArrowView;
             
         }
-        
         ///自定义textField样式cell
         [self.contentView addSubview:self.textFieldView];
         self.selectionStyle=UITableViewCellSelectionStyleNone;

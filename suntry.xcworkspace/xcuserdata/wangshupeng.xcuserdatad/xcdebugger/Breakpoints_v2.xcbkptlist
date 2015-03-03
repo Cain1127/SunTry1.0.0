@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "suntry/Controller/MyInfo/View/QSWSettingCell.m"
-            timestampString = "447048987.148339"
+            filePath = "suntry/Controller/MyInfo/QSWRegisterViewController.m"
+            timestampString = "447071604.638834"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "-initWithStyle:reuseIdentifier:"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
+            landmarkName = "-gotoRegister"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

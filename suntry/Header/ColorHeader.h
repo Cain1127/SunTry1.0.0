@@ -28,5 +28,7 @@
 
 ///边线颜色(银色)
 #define COLOR_CHARACTERS_ROOTLINE     [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
+///浅黄色
+#define COLOR_CHARACTERS_YELLOW   [UIColor colorWithRed:214.0f / 255.0f green:205.0f / 255.0f blue:188.0f / 255.0f alpha:1.0f]
 
 #endif

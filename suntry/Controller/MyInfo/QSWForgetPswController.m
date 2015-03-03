@@ -103,7 +103,7 @@
     [getVercodeButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateHighlighted];
     getVercodeButton.layer.cornerRadius = 6.0f;
     getVercodeButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    getVercodeButton.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    getVercodeButton.backgroundColor = COLOR_CHARACTERS_YELLOW;
     
     ///按钮
     UIButton *footterButton = [[UIButton alloc] init];
