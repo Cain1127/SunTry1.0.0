@@ -97,7 +97,14 @@
 {
     
     [self.packageSelectedFoodData removeAllObjects];
-
+    
+    for (UIView *view in [self.contentBackgroundView subviews]) {
+        if (view.tag >= 1000) {
+            [view removeFromSuperview];
+        }
+    }
+    [self.contentBackgroundView setContentSize:CGSizeMake(self.contentBackgroundView.frame.size.width, self.contentBackgroundView.frame.size.height)];
+    
     if (arrayData&&[arrayData isKindOfClass:[NSArray class]]) {
         for (int i=0;i<[arrayData count];i++) {
             
@@ -107,6 +114,7 @@
             UIView *itembgView = [[UIView alloc] initWithFrame:CGRectMake(2, 2+(44+2)*i, self.contentBackgroundView.frame.size.width-5, 44)];
             [itembgView setUserInteractionEnabled:YES];
             [self.contentBackgroundView addSubview:itembgView];
+            [itembgView setTag:1000+i];
             
             QSPAddNewAddressTextField *itemTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(0, 0, itembgView.frame.size.width, itembgView.frame.size.height)];
             [itemTextField setPlaceholder:itemName];

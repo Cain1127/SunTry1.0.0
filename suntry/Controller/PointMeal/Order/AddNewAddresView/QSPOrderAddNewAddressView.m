@@ -332,8 +332,16 @@
         ///encode数据
         QSDistrictReturnData *districtData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
         
-        //FIXME: 城市数组
-        NSArray *areaArray = districtData.districtList;
+        //FIXME: 区数组
+        NSMutableArray *areaArray = [NSMutableArray arrayWithCapacity:0];
+        for (QSDistrictDataModel *data in districtData.districtList) {
+            if (data&&[data isKindOfClass:[QSDistrictDataModel class]]) {
+                QSDistrictDataModel *areaData = (QSDistrictDataModel*)data;
+                if ([areaData.status isEqualToString:@"1"]) {
+                    [areaArray addObject:areaData.val];
+                }
+            }
+        }
         [selectView updateSelectData:areaArray];
         [selectView showItemSelectePopView];
     }];
@@ -699,6 +707,9 @@
     }else if (view.tag == 111) {
         //FIXME: 区名字
         NSString *areaName = @"";
+        if (data&&[data isKindOfClass:[NSString class]]) {
+            areaName = (NSString*)data;
+        }
         [self.areaTextField setPlaceholder:areaName];
     }
 }
