@@ -93,7 +93,7 @@
 {
 
     ///1.添加textfield输入框控件
-    self.inputField = [[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 8.0f, SIZE_DEFAULT_MAX_WIDTH - 49.0f, 44.0f)];
+    self.inputField = [[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, (iOS7 ? 72.0f : 8.0f), SIZE_DEFAULT_MAX_WIDTH - 49.0f, 44.0f)];
     self.inputField.placeholder = @"输入您的优惠编码";
     self.inputField.returnKeyType = UIReturnKeyDone;
     self.inputField.clearButtonMode = UITextFieldViewModeWhileEditing;
