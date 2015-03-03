@@ -11,10 +11,14 @@
 
 @interface QSConfigInfoDataListModel : QSMSGModel
 
-//+ (instancetype)ConfigInfoDataModel;
++ (instancetype)ConfigInfoDataModel;
 
 - (void)saveConfigInfoData;
 
-@property (nonatomic,retain) NSArray *configList;//!<配置信息数组
+- (CGFloat)getTabkeOutStartPrice;
+
+@property (nonatomic,retain) NSArray *syconfigList;         //!<折扣价格数组
+@property (nonatomic,retain) NSArray *orderConfigList;      //!<订单配送的信息数组
+@property (nonatomic,retain) NSArray *payconfigList;        //!<获取支付配置信息数组
 
 @end

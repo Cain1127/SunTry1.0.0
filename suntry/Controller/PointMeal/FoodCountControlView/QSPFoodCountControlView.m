@@ -12,7 +12,7 @@
 
 #define FOOD_COUNT_FONT_SIZE  18.
 #define FOOD_COUNT_LABEL_NORMAL_HEIGHT  22.
-#define FOOD_COUNT_MAX_COUNT  99
+#define FOOD_COUNT_MAX_COUNT  999
 
 @interface QSPFoodCountControlView ()
 
@@ -35,13 +35,12 @@
     if (self = [super init]) {
         _OnlyShowAddButton = NO;
         self.marginTopRight = CGPointZero;
-        [self setFrame:CGRectMake(0, 0, 104, 32)];
-        
+        [self setFrame:CGRectMake(0, 0, 104, 44)];
         //增加按钮
         QSBlockButtonStyleModel *addBtStyleModel = [QSBlockButtonStyleModel alloc];
         addBtStyleModel.imagesNormal = @"food_count_add_normal_bt";
         addBtStyleModel.imagesHighted = @"food_count_add_down_bt";
-        self.addBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.frame.size.width-32, 0, 32, 32) andButtonStyle:addBtStyleModel andCallBack:^(UIButton *button) {
+        self.addBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.frame.size.width-46, 0, 44, 44) andButtonStyle:addBtStyleModel andCallBack:^(UIButton *button) {
             
             [self setCount:++self.countInt];
             
@@ -52,9 +51,8 @@
             }
             
         }];
-        [self addSubview:self.addBt];
         
-        self.countLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.addBt.frame.origin.x-FOOD_COUNT_LABEL_NORMAL_HEIGHT+3, (self.frame.size.height-FOOD_COUNT_LABEL_NORMAL_HEIGHT)/2, 0, FOOD_COUNT_LABEL_NORMAL_HEIGHT)];
+        self.countLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.addBt.frame.origin.x-FOOD_COUNT_LABEL_NORMAL_HEIGHT, (self.frame.size.height-FOOD_COUNT_LABEL_NORMAL_HEIGHT)/2, 0, FOOD_COUNT_LABEL_NORMAL_HEIGHT)];
         [self.countLabel setTextColor:[UIColor blackColor]];
         [self.countLabel setFont:[UIFont systemFontOfSize:FOOD_COUNT_FONT_SIZE]];
         [[self.countLabel layer] setCornerRadius:self.countLabel.frame.size.height/2.];
@@ -62,12 +60,12 @@
         [self.countLabel setTextAlignment:NSTextAlignmentCenter];
         [self.countLabel setBackgroundColor:[UIColor colorWithRed:230/255. green:230/255. blue:230/255. alpha:1]];
         [self addSubview:self.countLabel];
-        
+        [self addSubview:self.addBt];
         //减少按钮
         QSBlockButtonStyleModel *reduceBtStyleModel = [QSBlockButtonStyleModel alloc];
         reduceBtStyleModel.imagesNormal = @"food_count_reduce_normal_bt";
         reduceBtStyleModel.imagesHighted = @"food_count_reduce_down_bt";
-        self.reduceBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.countLabel.frame.origin.x-self.countLabel.frame.size.width-6, 0, 32, 32) andButtonStyle:reduceBtStyleModel andCallBack:^(UIButton *button) {
+        self.reduceBt = [UIButton createBlockButtonWithFrame:CGRectMake(self.countLabel.frame.origin.x-self.countLabel.frame.size.width-6, 0, 44, 44) andButtonStyle:reduceBtStyleModel andCallBack:^(UIButton *button) {
             
             [self setCount:--self.countInt];
             
@@ -78,7 +76,6 @@
             }
             
         }];
-        
         [self addSubview:self.reduceBt];
         [self setCount:0];
         
@@ -137,13 +134,18 @@
     //当前添加的数量
     NSString *countStr = [NSString stringWithFormat:@"%ld",(long)self.countInt];
     //计算价格Label宽度
-    CGFloat countStrWidth = [countStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:FOOD_COUNT_FONT_SIZE];
+    CGFloat countStrWidth = [countStr calculateStringDisplayWidthByFixedHeight:self.countLabel.frame.size.height andFontSize:FOOD_COUNT_FONT_SIZE];
     if (countStrWidth < FOOD_COUNT_LABEL_NORMAL_HEIGHT) {
         countStrWidth = FOOD_COUNT_LABEL_NORMAL_HEIGHT;
     }
     [self.countLabel setText:countStr];
-    [self.countLabel setFrame:CGRectMake(self.addBt.frame.origin.x-countStrWidth+3, (self.frame.size.height-self.countLabel.frame.size.height)/2, countStrWidth, self.countLabel.frame.size.height)];
-    [self.reduceBt setFrame:CGRectMake(self.countLabel.frame.origin.x-self.countLabel.frame.size.width-6, self.reduceBt.frame.origin.y, self.reduceBt.frame.size.width, self.reduceBt.frame.size.height)];
+    [self.countLabel setFrame:CGRectMake(self.addBt.frame.origin.x-countStrWidth+6, (self.frame.size.height-self.countLabel.frame.size.height)/2, countStrWidth, self.countLabel.frame.size.height)];
+    
+    CGFloat offsetX = 0.;
+    if (countStr.length>=3) {
+        offsetX = 8*(countStr.length-2);
+    }
+    [self.reduceBt setFrame:CGRectMake(self.countLabel.frame.origin.x-self.countLabel.frame.size.width-16+offsetX, self.reduceBt.frame.origin.y, self.reduceBt.frame.size.width, self.reduceBt.frame.size.height)];
     
     if (_OnlyShowAddButton) {
         [_reduceBt setHidden:YES];

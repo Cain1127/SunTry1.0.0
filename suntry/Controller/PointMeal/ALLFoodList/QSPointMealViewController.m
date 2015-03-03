@@ -19,6 +19,7 @@
 #import "QSRequestManager.h"
 #import "QSGoodsStapleFoodReturnData.h"
 #import "QSWLoginViewController.h"
+#import "QSNoNetworkingViewController.h"
 
 #define FOOD_TYPE_TABLEVIEW_BACKGROUND_COLOR  [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.]
 #define FOOD_INFOLIST_TABLEVIEW_BACKGROUND_COLOR  [UIColor whiteColor]
@@ -452,7 +453,6 @@ typedef enum {
                         }
                     }
                 }
-                
                 return cell;
                 
             }
@@ -609,8 +609,13 @@ typedef enum {
         [foodDic setObject:food.goodsName forKey:@"name"];
         [foodDic setObject:food.shopkeeperID forKey:@"sale_id"];
         [foodDic setObject:[NSArray array] forKey:@"diet"];
+        [foodDic setObject:food.goodsInstockNum forKey:@"num_instock"];
         
         if (_shoppingCarView) {
+            NSInteger numInstock = food.goodsInstockNum.integerValue;
+            if (count>numInstock) {
+                count = numInstock;
+            }
             [_shoppingCarView changeGoods:foodDic withCount:count];
         }
     }
@@ -710,6 +715,10 @@ typedef enum {
             NSLog(@"================所有菜品数据请求失败================");
             NSLog(@"error : %@",errorInfo);
             
+//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+//            networkingErrorVC.hidesBottomBarWhenPushed = YES;
+//            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
+//            [self.navigationController pushViewController:networkingErrorVC animated:YES];
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];

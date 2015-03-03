@@ -528,4 +528,12 @@
     
 }
 
+#pragma mark - 页面出现时显示导航栏
+- (void)viewWillAppear:(BOOL)animated
+{
+
+    [self.navigationController setNavigationBarHidden:NO];
+
+}
+
 @end

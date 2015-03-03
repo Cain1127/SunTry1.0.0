@@ -14,9 +14,13 @@
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
 #import "MBProgressHUD.h"
+
 #import "QSUserRegisterReturnData.h"
+#import "QSCommonStringReturnData.h"
 #import "QSRegisterDataModel.h"
 #import "QSRequestManager.h"
+
+#import "NSString+Format.h"
 
 @interface QSWRegisterViewController ()<UITextFieldDelegate>
 
@@ -24,6 +28,8 @@
 @property (nonatomic,retain) QSWSettingItem *passWordItem;  //!<密码
 @property (nonatomic,retain) MBProgressHUD *hud;            //!<HUD
 @property (nonatomic,strong) UIImageView *selectImageView;  //!<服务协议图片
+@property (nonatomic,strong) UITextField *activateTextfield;//!<验证码输入框
+@property (nonatomic,copy) NSString *code;                  //!<验证码
 
 @end
 
@@ -45,10 +51,12 @@
     [self setupGroup0];
     [self setupGroup1];
     [self setupFooter];
+    
 }
 
 -(void)setupGroup0
 {
+    
     ///自定义返回按钮
     UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
     turnBackButton.tintColor = [UIColor whiteColor];
@@ -74,8 +82,6 @@
     QSWSettingGroup *group = [self addGroup];
     
     self.passWordItem = [QSWTextFieldItem itemWithTitle:@"请输入您的登录密码" andDelegate:self];
-    
-    
     group.items = @[self.passWordItem];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -89,11 +95,12 @@
 
 - (void)setupFooter
 {
-    // 提交注册按钮
-      UIButton *footterButton = [[UIButton alloc] init];
-      footterButton.translatesAutoresizingMaskIntoConstraints=NO;
     
-    // 背景和文字
+    ///提交注册按钮
+    UIButton *footterButton = [[UIButton alloc] init];
+    footterButton.translatesAutoresizingMaskIntoConstraints=NO;
+    
+    ///背景和文字
     footterButton.backgroundColor=COLOR_CHARACTERS_RED;
     [footterButton setTitle:@"提交注册" forState:UIControlStateNormal];
     footterButton.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -109,15 +116,14 @@
     [footterButton addTarget:self action:@selector(gotoRegister) forControlEvents:UIControlEventTouchUpInside];
     
     ///激活textfield
-    UITextField *activateTextfield=[[UITextField alloc] init];
-    activateTextfield.placeholder = @"激活码";
-    activateTextfield.translatesAutoresizingMaskIntoConstraints=NO;
-    activateTextfield.returnKeyType=UIReturnKeySearch;
-    activateTextfield.clearButtonMode=UITextFieldViewModeUnlessEditing;
-    activateTextfield.delegate=self;
-    activateTextfield.tag = 222;
-    activateTextfield.borderStyle = UITextBorderStyleRoundedRect;
-    [footer addSubview:activateTextfield];
+    self.activateTextfield=[[UITextField alloc] init];
+    self.activateTextfield.placeholder = @"激活码";
+    self.activateTextfield.translatesAutoresizingMaskIntoConstraints=NO;
+    self.activateTextfield.returnKeyType=UIReturnKeySearch;
+    self.activateTextfield.clearButtonMode=UITextFieldViewModeUnlessEditing;
+    self.activateTextfield.delegate=self;
+    self.activateTextfield.borderStyle = UITextBorderStyleRoundedRect;
+    [footer addSubview:self.activateTextfield];
     
     ///获取激活码按钮
     UIButton *activateButton=[[UIButton alloc] init];
@@ -148,14 +154,14 @@
 
     ///4.添加VFL约束
     ///参数
-    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(activateTextfield,activateButton,_selectImageView,selectLabel,footterButton);
+    NSDictionary *___viewsVFL=NSDictionaryOfVariableBindings(_activateTextfield,activateButton,_selectImageView,selectLabel,footterButton);
     NSDictionary *___sizeVFL = @{@"margin" : [NSString stringWithFormat:@"%.2f",SIZE_DEFAULT_MARGIN_LEFT_RIGHT]};
     
     ///约束
-    NSString *___hVFL_activateTextfield = @"H:|-margin-[activateTextfield]-5-[activateButton(100)]-margin-|";
+    NSString *___hVFL_activateTextfield = @"H:|-margin-[_activateTextfield]-5-[activateButton(100)]-margin-|";
     NSString *___hVFL_selectImageView=@"H:|-margin-[_selectImageView(20)]-5-[selectLabel]-margin-|";
     NSString *___hVFL_footterButton=@"H:|-margin-[footterButton]-margin-|";
-    NSString *___vVFL_all = @"V:|-margin-[activateTextfield(44)]-margin-[_selectImageView(20)]-margin-[footterButton(44)]";
+    NSString *___vVFL_all = @"V:|-margin-[_activateTextfield(44)]-margin-[_selectImageView(20)]-margin-[footterButton(44)]";
     NSString *___vVFL_activateButton=@"V:[activateButton(44)]";
     
     ///添加约束
@@ -186,6 +192,13 @@
 -(void)activateButtonAction
 {
 
+    UITextField *phoneField = self.userNameItem.property;
+    if ([NSString isValidateMobile:phoneField.text ]) {
+        
+        [self getVertificationCode:phoneField.text];
+        return;
+        
+    }
     
 }
 
@@ -209,6 +222,26 @@
     
     if ((nil == pwd) || (0 >= [pwd length])) {
         
+        return;
+        
+    }
+    
+    ///检测验证码
+    NSString *inputCode = self.activateTextfield.text;
+    if (!(inputCode &&
+          ([inputCode length] > 0) &&
+          (NSOrderedSame == [inputCode compare:self.code options:NSCaseInsensitiveSearch]))) {
+        
+        ///弹出提醒框
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"验证码有误，请确认后再注册。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        
+        [alert show];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [alert dismissWithClickedButtonIndex:0 animated:YES];
+            
+        });
         return;
         
     }
@@ -254,10 +287,33 @@
     
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - 获取验证码
+///获取验证码
+- (void)getVertificationCode:(NSString *)phone
+{
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:@{@"phone" : phone} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///发送成功
+        if (rRequestResultTypeSuccess == resultStatus) {
+            
+            QSCommonStringReturnData *tempModel = resultData;
+            self.code = tempModel.verticode;
+            self.hud.labelText = @"发送成功";
+            [self.hud hide:YES afterDelay:0.6f];
+            
+        } else {
+            
+            self.hud.labelText = @"手机验证码发送失败，请稍后再试……";
+            [self.hud hide:YES afterDelay:0.6f];
+            
+        }
+        
+    }];
+    
 }
 
 @end

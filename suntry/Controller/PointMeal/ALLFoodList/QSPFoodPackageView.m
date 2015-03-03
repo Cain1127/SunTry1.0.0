@@ -174,6 +174,7 @@
     [self.packageSelectedFoodData setObject:foodData.goodsName forKey:@"name"];
     [self.packageSelectedFoodData setObject:foodData.shopkeeperID forKey:@"sale_id"];
     [self.packageSelectedFoodData setObject:@"0" forKey:@"num"];
+    [self.packageSelectedFoodData setObject:foodData.goodsInstockNum forKey:@"num_instock"];
     
     //套餐列表
     CGFloat scrollViewContentHight = 0.;
@@ -250,6 +251,7 @@
                     [tempFoodData setObject:foodData.goodsName forKey:@"name"];
                     [tempFoodData setObject:foodData.shopkeeperID forKey:@"sale_id"];
                     [tempFoodData setObject:@"1" forKey:@"num"];
+                    [tempFoodData setObject:foodData.goodsInstockNum forKey:@"num_instock"];
                     [dietList addObject:tempFoodData];
                     
                 }else{
@@ -269,6 +271,7 @@
                     [tempFoodData setObject:foodData.goodsName forKey:@"name"];
                     [tempFoodData setObject:foodData.shopkeeperID forKey:@"sale_id"];
                     [tempFoodData setObject:@"1" forKey:@"num"];
+                    [tempFoodData setObject:foodData.goodsInstockNum forKey:@"num_instock"];
                     [dietList addObject:tempFoodData];
                     
                 }else{

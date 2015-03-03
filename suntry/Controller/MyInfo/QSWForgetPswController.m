@@ -163,7 +163,9 @@
         
     }
     
-    if (![self.code isEqualToString:inputVercode]) {
+    if (!(inputVercode &&
+          ([inputVercode length] > 0) &&
+          (NSOrderedSame == [inputVercode compare:self.code options:NSCaseInsensitiveSearch]))) {
         
         UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"验证码不正确，请核对后再提交！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
         [aler show];
@@ -199,7 +201,12 @@
         ///发送成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
+            QSCommonStringReturnData *tempModel = resultData;
+            self.code = tempModel.verticode;
             self.hud.labelText = @"发送成功";
+            NSLog(@"=================手机验证码====================");
+            NSLog(@"手机验证码：%@",self.code);
+            NSLog(@"=================手机验证码====================");
             [self.hud hide:YES afterDelay:0.6f];
             
         } else {

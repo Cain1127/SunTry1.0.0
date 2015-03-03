@@ -48,6 +48,7 @@ typedef enum
     rRequestTypeAddOrder = 1043,                //!<添加订单
     rRequestTypeCommitOrderPayResult = 1044,    //!<确认订单支付结果
     rRequestTypeEditStoredCardPsw = 1045,       //!<储值卡支付密码修改
+    rRequestTypeForgetStoredCardPsw = 1046,     //!<忘记储值卡密码后通过手机重置
     
     rRequestTypeUserSendAddressList = 1100,     //!<当前用户的送餐地址列表
     rRequestTypeAddSendAddress = 1101,          //!<添加送餐地址
@@ -63,7 +64,7 @@ typedef enum
     rRequestTypeOrderListData = 1021,           //!<订单列表
     rRequestTypeOrderDetailData = 1122,         //!<订单详情
     
-    rRequestTypeConfigInfoDataList = 1051,      //!<配置信息
+    rRequestTypeConfigInfoDataList = 1060,      //!<配置信息
     
     rRequestTypeMaxLimited = 99999              //!<最大值限制
     

@@ -85,6 +85,17 @@
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];
         [self setBackgroundColor:ADD_NEW_ADDRESS_VIEW_BACKGROUND_COLOR];
         
+        //背景关闭按钮
+        QSBlockButtonStyleModel *bgBtStyleModel = [QSBlockButtonStyleModel alloc];
+        UIButton *bgBt = [UIButton createBlockButtonWithFrame:self.frame andButtonStyle:bgBtStyleModel andCallBack:^(UIButton *button) {
+            if (delegate) {
+                [delegate closeAddNewAddressView];
+            }
+            [self hideAddNewAddressView];
+            [self removeFromSuperview];
+        }];
+        [self addSubview:bgBt];
+        
         //中间内容区域层
         self.contentBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 345/375.*SIZE_DEVICE_WIDTH, 469/667.*SIZE_DEVICE_HEIGHT)];
         [_contentBackgroundView setBackgroundColor:[UIColor whiteColor]];
