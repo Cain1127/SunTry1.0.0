@@ -354,7 +354,7 @@ typedef enum {
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 
-    if (self.isShowSearchStreetList) {
+    if (self.isShowSearchStreetList || self.isShowDistrictStreetList) {
      
         return 44.0f;
         
@@ -368,11 +368,12 @@ typedef enum {
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
 
-    if (self.isShowSearchStreetList) {
+    if (self.isShowSearchStreetList || self.isShowDistrictStreetList) {
         
         ///提示信息
         UILabel *tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 44.0f)];
-        NSString *tips = [self.tempStreetList count] > 0 ? @"可配送区域" : @"暂无记录";
+        NSArray *tempArray = self.isShowDistrictStreetList ? self.districtStreetList : (self.isShowSearchStreetList ? self.tempStreetList : nil);
+        NSString *tips = [tempArray count] > 0 ? @"可配送区域" : @"暂无记录";
         tipsLabel.text = tips;
         tipsLabel.textAlignment = NSTextAlignmentCenter;
         tipsLabel.font = [UIFont boldSystemFontOfSize:16.0f];
@@ -609,7 +610,20 @@ typedef enum {
     
     self.isShowDistrictStreetList = YES;
     self.isShowSearchStreetList = NO;
-    [self.searchListTableView reloadData];
+    
+    if (nil == self.districtStreetList) {
+        
+        ///先创建数据
+        [self getDistrictStreetList];
+        
+    }
+    
+    ///0.22秒后刷新数据
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        [self.searchListTableView reloadData];
+        
+    });
     return YES;
     
 }
@@ -664,7 +678,15 @@ typedef enum {
     self.isShowSearchStreetList = YES;
     self.isShowDistrictStreetList = NO;
     
-    self.tempStreetList = [[NSMutableArray alloc] init];
+    if (self.tempStreetList) {
+        
+        [self.tempStreetList removeAllObjects];
+        
+    } else {
+        
+        self.tempStreetList = [[NSMutableArray alloc] init];
+        
+    }
     
     if (searchKey.length > 0 && ![ChineseInclude isIncludeChineseInString:searchKey]) {
         
@@ -680,6 +702,7 @@ typedef enum {
                 if (titleResult.length > 0) {
                     
                     [self.tempStreetList addObject:tempModel];
+                    continue;
                     
                 }
                 
