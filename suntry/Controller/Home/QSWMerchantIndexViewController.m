@@ -140,7 +140,7 @@ static char titleLabelKey;//!<标题key
     [navTitle setFont:[UIFont boldSystemFontOfSize:18.0f]];
     [navTitle setTextColor:[UIColor whiteColor]];
     [navTitle setBackgroundColor:[UIColor clearColor]];
-    [navTitle setTextAlignment:NSTextAlignmentRight];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
     navTitle.adjustsFontSizeToFitWidth = YES;
     [navTitle setText:self.distictName];
     objc_setAssociatedObject(self, &titleLabelKey, navTitle, OBJC_ASSOCIATION_ASSIGN);
