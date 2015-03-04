@@ -125,11 +125,33 @@ static char titleLabelKey;//!<标题关联
                 QSAnnotation *anno0 = [[QSAnnotation alloc] init];
                 anno0.title = self.title;
                 anno0.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                
+
                 // 设置地图的显示范围
                 MKCoordinateSpan span = MKCoordinateSpanMake(0.171321, 0.169366);
                 MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(latitude, longitude), span);
                 [_mapView setRegion:region animated:YES];
+                
+//                CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude
+//                                                             longitude:longitude];
+//                //2.反地理编码
+//                CLGeocoder *geocoder=[[CLGeocoder alloc]init];
+//                
+//                [geocoder reverseGeocodeLocation:loc completionHandler:^(NSArray *placemarks, NSError *error) {
+//                    
+//                    if (error) {//有错误
+//                        NSLog(@"========================================");
+//                        NSLog(@"============无法获取当前用户位置===========");
+//                        NSLog(@"========================================");
+//                    }
+//                    
+//                    else{//编码成功
+//                        
+//                        //取出最前面的地址
+//                        CLPlacemark *pm=[placemarks firstObject];
+//                        anno0.subtitle=pm.name;
+//                        
+//                    }
+//                }
                 
                 [self.mapView addAnnotation:anno0];
                 
