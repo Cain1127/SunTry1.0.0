@@ -15,5 +15,7 @@
 @property (nonatomic,copy) NSString *parent_id; //!<优惠券ID
 @property (nonatomic,copy) NSString *pice;      //!<实现的优惠
 @property (nonatomic,copy) NSString *banner;    //!<图片
+@property (nonatomic,copy) NSString *begin_time;//!<活动开始时间
+@property (nonatomic,copy) NSString *over_time; //!<活动结束时间
 
 @end

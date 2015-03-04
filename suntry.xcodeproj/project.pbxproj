@@ -62,11 +62,22 @@
 		187CA8E91AA4784800841A7E /* QSStoreCardNewPswSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8E81AA4784800841A7E /* QSStoreCardNewPswSetViewController.m */; };
 		187CA8EC1AA57AC500841A7E /* QSAdvertDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8EB1AA57AC500841A7E /* QSAdvertDetailViewController.m */; };
 		187CA8EF1AA5D2EE00841A7E /* QSStoreCarInfoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8EE1AA5D2EE00841A7E /* QSStoreCarInfoCollectionViewCell.m */; };
+		187CA8F31AA6F25B00841A7E /* libBPush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 187CA8F21AA6F25B00841A7E /* libBPush.a */; };
+		187CA8F71AA6F9C900841A7E /* NSDate+Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 187CA8F61AA6F9C900841A7E /* NSDate+Formatter.m */; };
+		187CA8F91AA6FAE700841A7E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 187CA8F81AA6FAE700841A7E /* CoreTelephony.framework */; };
+		187CA8FB1AA6FB0600841A7E /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 187CA8FA1AA6FB0600841A7E /* libz.1.1.3.dylib */; };
+		187CA8FD1AA6FB5400841A7E /* BPushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 187CA8FC1AA6FB5400841A7E /* BPushConfig.plist */; };
 		18B955761AA1930400006B4C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955751AA1930400006B4C /* AVFoundation.framework */; };
 		18B955781AA1931400006B4C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955771AA1931400006B4C /* CoreMedia.framework */; };
 		18B9557A1AA1932000006B4C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B955791AA1932000006B4C /* CoreVideo.framework */; };
 		18B9557C1AA1932F00006B4C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B9557B1AA1932F00006B4C /* QuartzCore.framework */; };
 		18B9557E1AA1934000006B4C /* libiconv.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B9557D1AA1934000006B4C /* libiconv.2.4.0.dylib */; };
+		18EE34521AA6FDDB0053B909 /* BPushClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EE34481AA6FDDB0053B909 /* BPushClass.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		18EE34531AA6FDDB0053B909 /* GzipCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EE344A1AA6FDDB0053B909 /* GzipCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		18EE34541AA6FDDB0053B909 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EE344C1AA6FDDB0053B909 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		18EE34551AA6FDDB0053B909 /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EE344E1AA6FDDB0053B909 /* OpenUDID.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		18EE34561AA6FDDB0053B909 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EE34501AA6FDDB0053B909 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		18EE34591AA700BB0053B909 /* BPushBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EE34581AA700BB0053B909 /* BPushBase64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4739023B1A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902171A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m */; };
 		4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 473902191A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m */; };
 		4739023D1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4739021B1A9EF3D4000ECF41 /* QSPFoodPackageItemView.m */; };
@@ -366,11 +377,31 @@
 		187CA8EB1AA57AC500841A7E /* QSAdvertDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAdvertDetailViewController.m; sourceTree = "<group>"; };
 		187CA8ED1AA5D2EE00841A7E /* QSStoreCarInfoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSStoreCarInfoCollectionViewCell.h; sourceTree = "<group>"; };
 		187CA8EE1AA5D2EE00841A7E /* QSStoreCarInfoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSStoreCarInfoCollectionViewCell.m; sourceTree = "<group>"; };
+		187CA8F11AA6F25B00841A7E /* BPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPush.h; sourceTree = "<group>"; };
+		187CA8F21AA6F25B00841A7E /* libBPush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBPush.a; sourceTree = "<group>"; };
+		187CA8F51AA6F9C900841A7E /* NSDate+Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Formatter.h"; sourceTree = "<group>"; };
+		187CA8F61AA6F9C900841A7E /* NSDate+Formatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Formatter.m"; sourceTree = "<group>"; };
+		187CA8F81AA6FAE700841A7E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		187CA8FA1AA6FB0600841A7E /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
+		187CA8FC1AA6FB5400841A7E /* BPushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BPushConfig.plist; sourceTree = "<group>"; };
 		18B955751AA1930400006B4C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		18B955771AA1931400006B4C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		18B955791AA1932000006B4C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		18B9557B1AA1932F00006B4C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		18B9557D1AA1934000006B4C /* libiconv.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.4.0.dylib; path = usr/lib/libiconv.2.4.0.dylib; sourceTree = SDKROOT; };
+		18EE34461AA6FDDB0053B909 /* Base64Defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Defines.h; sourceTree = "<group>"; };
+		18EE34471AA6FDDB0053B909 /* BPushClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPushClass.h; sourceTree = "<group>"; };
+		18EE34481AA6FDDB0053B909 /* BPushClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPushClass.m; sourceTree = "<group>"; };
+		18EE34491AA6FDDB0053B909 /* GzipCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GzipCompressor.h; sourceTree = "<group>"; };
+		18EE344A1AA6FDDB0053B909 /* GzipCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GzipCompressor.m; sourceTree = "<group>"; };
+		18EE344B1AA6FDDB0053B909 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		18EE344C1AA6FDDB0053B909 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		18EE344D1AA6FDDB0053B909 /* OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDID.h; sourceTree = "<group>"; };
+		18EE344E1AA6FDDB0053B909 /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
+		18EE344F1AA6FDDB0053B909 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		18EE34501AA6FDDB0053B909 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		18EE34571AA700BB0053B909 /* BPushBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPushBase64.h; sourceTree = "<group>"; };
+		18EE34581AA700BB0053B909 /* BPushBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPushBase64.m; sourceTree = "<group>"; };
 		473902161A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodInfoListTableViewCell.h; sourceTree = "<group>"; };
 		473902171A9EF3D4000ECF41 /* QSPFoodInfoListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSPFoodInfoListTableViewCell.m; sourceTree = "<group>"; };
 		473902181A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPFoodPackageItemGridView.h; sourceTree = "<group>"; };
@@ -606,8 +637,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				187CA8FB1AA6FB0600841A7E /* libz.1.1.3.dylib in Frameworks */,
+				187CA8F91AA6FAE700841A7E /* CoreTelephony.framework in Frameworks */,
 				18B9557E1AA1934000006B4C /* libiconv.2.4.0.dylib in Frameworks */,
 				18B9557C1AA1932F00006B4C /* QuartzCore.framework in Frameworks */,
+				187CA8F31AA6F25B00841A7E /* libBPush.a in Frameworks */,
 				18B9557A1AA1932000006B4C /* CoreVideo.framework in Frameworks */,
 				18B955781AA1931400006B4C /* CoreMedia.framework in Frameworks */,
 				18B955761AA1930400006B4C /* AVFoundation.framework in Frameworks */,
@@ -669,6 +703,8 @@
 		183673FD1A7F8FA800BCCF39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				187CA8FA1AA6FB0600841A7E /* libz.1.1.3.dylib */,
+				187CA8F81AA6FAE700841A7E /* CoreTelephony.framework */,
 				18B9557D1AA1934000006B4C /* libiconv.2.4.0.dylib */,
 				18B9557B1AA1932F00006B4C /* QuartzCore.framework */,
 				18B955791AA1932000006B4C /* CoreVideo.framework */,
@@ -996,6 +1032,46 @@
 				187CA8E21AA4423E00841A7E /* QSCommonStringReturnData.m */,
 			);
 			name = Common;
+			sourceTree = "<group>";
+		};
+		187CA8F01AA6F25B00841A7E /* LibBPush */ = {
+			isa = PBXGroup;
+			children = (
+				18EE34431AA6FDDB0053B909 /* opensource */,
+				187CA8F11AA6F25B00841A7E /* BPush.h */,
+				187CA8F21AA6F25B00841A7E /* libBPush.a */,
+				187CA8FC1AA6FB5400841A7E /* BPushConfig.plist */,
+			);
+			path = LibBPush;
+			sourceTree = "<group>";
+		};
+		187CA8F41AA6F9C900841A7E /* NSDate */ = {
+			isa = PBXGroup;
+			children = (
+				187CA8F51AA6F9C900841A7E /* NSDate+Formatter.h */,
+				187CA8F61AA6F9C900841A7E /* NSDate+Formatter.m */,
+			);
+			path = NSDate;
+			sourceTree = "<group>";
+		};
+		18EE34431AA6FDDB0053B909 /* opensource */ = {
+			isa = PBXGroup;
+			children = (
+				18EE34461AA6FDDB0053B909 /* Base64Defines.h */,
+				18EE34471AA6FDDB0053B909 /* BPushClass.h */,
+				18EE34481AA6FDDB0053B909 /* BPushClass.m */,
+				18EE34491AA6FDDB0053B909 /* GzipCompressor.h */,
+				18EE344A1AA6FDDB0053B909 /* GzipCompressor.m */,
+				18EE344B1AA6FDDB0053B909 /* JSONKit.h */,
+				18EE344C1AA6FDDB0053B909 /* JSONKit.m */,
+				18EE344D1AA6FDDB0053B909 /* OpenUDID.h */,
+				18EE344E1AA6FDDB0053B909 /* OpenUDID.m */,
+				18EE344F1AA6FDDB0053B909 /* Reachability.h */,
+				18EE34501AA6FDDB0053B909 /* Reachability.m */,
+				18EE34571AA700BB0053B909 /* BPushBase64.h */,
+				18EE34581AA700BB0053B909 /* BPushBase64.m */,
+			);
+			path = opensource;
 			sourceTree = "<group>";
 		};
 		33C6DF1C30579CFE5CB10286 /* Pods */ = {
@@ -1347,6 +1423,7 @@
 		CE53418A1A7FBFAA002BA188 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				187CA8F41AA6F9C900841A7E /* NSDate */,
 				CE5341921A7FBFAA002BA188 /* NSString */,
 				CE5341981A7FBFAA002BA188 /* UIImageView */,
 				CE53419B1A7FBFAA002BA188 /* UITextField */,
@@ -1632,6 +1709,7 @@
 		CEEAC3CF1A8DA7DF009AC6AA /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				187CA8F01AA6F25B00841A7E /* LibBPush */,
 				187CA8D51AA3F35400841A7E /* AutoScroll */,
 				18018AFB1AA190D400F35DEB /* libqrencode */,
 				185343CC1A9ED82C00A83039 /* AlixPaySDK */,
@@ -1801,6 +1879,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				187CA8FD1AA6FB5400841A7E /* BPushConfig.plist in Resources */,
 				185344371A9ED82C00A83039 /* AlipaySDK.bundle in Resources */,
 				183674091A7F8FA800BCCF39 /* InfoPlist.strings in Resources */,
 				1859F3AD1A8DFB2000EABC7D /* QSDatePickerViewController.xib in Resources */,
@@ -1872,6 +1951,7 @@
 				CE7946AF1A8B6F2F00C0113B /* UIImage+Compressed.m in Sources */,
 				187CA8E91AA4784800841A7E /* QSStoreCardNewPswSetViewController.m in Sources */,
 				473902441A9EF3D4000ECF41 /* QSPOrderPaymentView.m in Sources */,
+				187CA8F71AA6F9C900841A7E /* NSDate+Formatter.m in Sources */,
 				CE5341761A7FBC6F002BA188 /* QSBlockButtonStyleModel.m in Sources */,
 				CEEAC3961A8CA4EF009AC6AA /* QSSelectReturnData.m in Sources */,
 				CEDC5EE31AA4585B004C979C /* QSCarPostionReturnData.m in Sources */,
@@ -1907,11 +1987,13 @@
 				4739023F1A9EF3D4000ECF41 /* QSPFoodTypeTableViewCell.m in Sources */,
 				187CA8EF1AA5D2EE00841A7E /* QSStoreCarInfoCollectionViewCell.m in Sources */,
 				1859F3A71A8DEF9000EABC7D /* QSPickerViewItem.m in Sources */,
+				18EE34521AA6FDDB0053B909 /* BPushClass.m in Sources */,
 				187CA8E61AA46B6900841A7E /* QSStoreCardForgetPswViewController.m in Sources */,
 				473902401A9EF3D4000ECF41 /* QSPointMealViewController.m in Sources */,
 				185343B91A91D17B00A83039 /* QSCouponInfoDataModel.m in Sources */,
 				47B211FE1AA17C2500EEC787 /* QSOrderDetailReturnData.m in Sources */,
 				184AE0801A90730F007A8CBD /* PinYinForObjc.m in Sources */,
+				18EE34561AA6FDDB0053B909 /* Reachability.m in Sources */,
 				1836740F1A7F8FA800BCCF39 /* QSAppDelegate.m in Sources */,
 				CEEAC3911A8CA4EF009AC6AA /* QSGoodsDataModel.m in Sources */,
 				184AE0811A90730F007A8CBD /* PinyinHelper.m in Sources */,
@@ -1925,6 +2007,7 @@
 				CE53415B1A7FA527002BA188 /* QSMapManager.m in Sources */,
 				CE571F071A84C92B00609788 /* QSWUserSettingViewController.m in Sources */,
 				CE571EF41A84AFB200609788 /* QSWSettingItem.m in Sources */,
+				18EE34541AA6FDDB0053B909 /* JSONKit.m in Sources */,
 				CE7946BE1A8B705600C0113B /* QSPShakeFoodView.m in Sources */,
 				CEB630CB1A88643A00F64DEE /* QSWSettingButtonItem.m in Sources */,
 				185344451A9ED82C00A83039 /* RSADataVerifier.m in Sources */,
@@ -1958,6 +2041,7 @@
 				CE7946BF1A8B705600C0113B /* QSWMerchantIndexCell.m in Sources */,
 				CE5341A91A7FC268002BA188 /* QSTextField.m in Sources */,
 				473902491A9EF3D4000ECF41 /* QSPPayForOrderViewController.m in Sources */,
+				18EE34551AA6FDDB0053B909 /* OpenUDID.m in Sources */,
 				CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */,
 				473902431A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.m in Sources */,
 				CE571EF71A84AFEE00609788 /* QSWSettingCell.m in Sources */,
@@ -1970,6 +2054,7 @@
 				4739023C1A9EF3D4000ECF41 /* QSPFoodPackageItemGridView.m in Sources */,
 				1836740B1A7F8FA800BCCF39 /* main.m in Sources */,
 				CE6ED5AE1A89EEF7009FF8A7 /* QSOrderListViewController.m in Sources */,
+				18EE34531AA6FDDB0053B909 /* GzipCompressor.m in Sources */,
 				47A071AB1AA43EC900B53883 /* QSConfigInfoDataListModel.m in Sources */,
 				CEEAC3921A8CA4EF009AC6AA /* QSMSGModel.m in Sources */,
 				184AE07D1A90730F007A8CBD /* HanyuPinyinOutputFormat.m in Sources */,
@@ -1998,6 +2083,7 @@
 				CE53415A1A7FA527002BA188 /* QSDataMappingManager.m in Sources */,
 				47C89A4C1AA5AE54001CE933 /* QSPItemSelectePopView.m in Sources */,
 				47A071A81AA436F200B53883 /* QSConfigInfoDataModel.m in Sources */,
+				18EE34591AA700BB0053B909 /* BPushBase64.m in Sources */,
 				185344441A9ED82C00A83039 /* RSADataSigner.m in Sources */,
 				185343CB1A9ED31000A83039 /* QSGoodsStapleFoodReturnData.m in Sources */,
 				CE5341A01A7FBFAA002BA188 /* NSString+Calculation.m in Sources */,
@@ -2147,12 +2233,14 @@
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/NSLog\"",
 					"$(SRCROOT)/suntry/Lib/AlixPaySDK/AlixPay",
+					"$(SRCROOT)/suntry/Lib/LibBPush",
 				);
 				INFOPLIST_FILE = "suntry/suntry-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/suntry/Lib/AlixPaySDK/AlixPay",
+					"$(PROJECT_DIR)/suntry/Lib/LibBPush",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2188,12 +2276,14 @@
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/NSLog\"",
 					"$(SRCROOT)/suntry/Lib/AlixPaySDK/AlixPay",
+					"$(SRCROOT)/suntry/Lib/LibBPush",
 				);
 				INFOPLIST_FILE = "suntry/suntry-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/suntry/Lib/AlixPaySDK/AlixPay",
+					"$(PROJECT_DIR)/suntry/Lib/LibBPush",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

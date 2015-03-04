@@ -22,7 +22,9 @@
                                                     @"goods_name",
                                                     @"parent_id",
                                                     @"pice",
-                                                    @"banner"]];
+                                                    @"banner",
+                                                    @"begin_time",
+                                                    @"over_time"]];
     
     return shared_mapping;
     
