@@ -106,6 +106,17 @@ typedef enum {
         
     }
     
+    ///判断是否为空的数组
+    if ([tempArray count] <= 0) {
+        
+        QSDistrictDataModel *defaultDistrict = [[QSDistrictDataModel alloc] init];
+        defaultDistrict.districtID = @"299";
+        defaultDistrict.val = @"体育西路";
+        defaultDistrict.status = @"1";
+        [tempArray addObject:defaultDistrict];
+        
+    }
+    
     self.districtList = [[NSMutableArray alloc] initWithArray:tempArray];
     
 }
