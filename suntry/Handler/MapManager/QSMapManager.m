@@ -31,13 +31,14 @@
         
         //
         // 设置代理
+        self.locMgr.delegate=self;
         
     }
     return _locMgr;
 }
 
 ///获取当前用户位置信息
-- (void)getUserLocation:(void (^)(BOOL isLocalSuccess,NSString *placename))CallBack;
+- (void)getUserLocation:(void (^)(BOOL isLocalSuccess,NSString *placename))CallBack
 {
     
     ///1.定位
@@ -118,9 +119,6 @@
 -(void)startUserLocation:(void(^)(BOOL isLocalSuccess,double longitude,double latitude))callBack
 {
     
-    ///开启定位服务
-    _locMgr=[[CLLocationManager alloc]init];
-    
    if ([[[UIDevice currentDevice] systemVersion] doubleValue] > 8.0)
    {
         //设置定位权限 仅ios8有意义
@@ -130,7 +128,6 @@
     }
    
     [self.locMgr startUpdatingLocation];
-    self.locMgr.delegate = self;
     
     if (callBack) {
         
@@ -151,6 +148,7 @@
  *
  *  @since 1.0
  */
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     
@@ -166,7 +164,7 @@
         self.userLoationCallBack(YES,coordinate.longitude,coordinate.latitude);
         
         // 3.打印经纬度
-        //        NSLog(@"didUpdateLocations------%f %f", coordinate.latitude, coordinate.longitude);
+                NSLog(@"didUpdateLocations定位坐标代理方法回调成功------%f %f", coordinate.latitude, coordinate.longitude);
         
     }
     
