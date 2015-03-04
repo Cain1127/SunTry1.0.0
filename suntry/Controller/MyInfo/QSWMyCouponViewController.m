@@ -199,6 +199,9 @@
         ///获取成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
+            ///头数据模型
+            QSHeaderDataModel *tempModel = resultData;
+            
             ///刷新优惠券列表
             [self.couponListView headerBeginRefreshing];
             
@@ -206,7 +209,7 @@
             self.inputField.text = @"";
             
             ///结束HUD
-            self.hud.labelText = @"添加成功！";
+            self.hud.labelText = tempModel.info ? tempModel.info : @"添加成功！";
             [self.hud hide:YES afterDelay:1.0f];
             
             ///刷新数据
@@ -219,9 +222,12 @@
             [self.hud hide:YES afterDelay:1.0f];
         
         } else {
+            
+            ///判断是否存在服务端的返回
+            QSHeaderDataModel *tempModel = resultData;
         
             ///结束HUD
-            self.hud.labelText = @"添加失败，请稍后再试！";
+            self.hud.labelText = tempModel ? (tempModel.info ? tempModel.info : @"添加失败，请稍后再试！") : @"添加失败，请稍后再试！";
             [self.hud hide:YES afterDelay:1.0f];
         
         }

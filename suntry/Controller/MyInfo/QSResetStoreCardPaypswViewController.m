@@ -16,6 +16,7 @@
 
 #import "QSUserManager.h"
 #import "QSUserInfoDataModel.h"
+#import "QSHeaderDataModel.h"
 
 #import "QSRequestManager.h"
 
@@ -225,7 +226,8 @@
             
         } else {
         
-            self.hud.labelText=@"更新支付密码失败";
+            QSHeaderDataModel *tempModel = resultData;
+            self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"更新支付密码失败") : @"更新支付密码失败";
             [self.hud hide:YES afterDelay:1.0f];
         
         }

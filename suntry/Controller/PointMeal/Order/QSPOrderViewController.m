@@ -130,15 +130,30 @@
     [shipAddressBtStyle setCornerRadio:8.];
     [shipAddressBtStyle setBgColor:ORDERVIEWCONTROLLER_SHIP_BT_BG_COLOR];
     UIButton *shipAddressBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, shipTip.frame.origin.y+shipTip.frame.size.height+6, SIZE_DEVICE_WIDTH-24, 70) andButtonStyle:shipAddressBtStyle andCallBack:^(UIButton *button) {
-
+        
         //判断有没有地址
         if (!self.orderName || !self.orderAddress || !self.orderPhone || [self.orderName isEqualToString:@""] || [self.orderAddress isEqualToString:@""] || [self.orderPhone isEqualToString:@""]) {
             
             [self showAddNewAddressView];
             
         }else{
-            QSWMySendAdsViewController *adVc = [[QSWMySendAdsViewController alloc] init];
+            
+            QSWMySendAdsViewController *adVc = [[QSWMySendAdsViewController alloc] initWithCallBackBlock:^(BOOL flag, QSUserAddressDataModel *addressModel) {
+                
+                ///判断是否选择了新的地址
+                if (flag) {
+                    
+                    self.orderName = [NSString stringWithFormat:@"%@%@",addressModel.userName,([addressModel.gender intValue] == 1) ? @"先生" : @"女士"];
+                    self.orderAddress = addressModel.address;
+                    self.orderPhone = addressModel.phone;
+                    [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
+                    [_shipToAddress setText:self.orderAddress];
+                    
+                }
+                
+            }];
             [self.navigationController pushViewController:adVc animated:YES];
+            
         }
     }];
     UIImageView *arrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_selected"]];
@@ -162,7 +177,7 @@
     [_hadOrderFrameView setBackgroundColor:[UIColor clearColor]];
     [_hadOrderFrameView setClipsToBounds:YES];
     [_scrollView addSubview:_hadOrderFrameView];
- 
+    
     QSLabel *hadOrderTip = [[QSLabel alloc] initWithFrame:CGRectMake(12, 12, SIZE_DEVICE_WIDTH-24, 17)];
     [hadOrderTip setFont:[UIFont boldSystemFontOfSize:ORDERVIEWCONTROLLER_TITLE_FONT_SIZE]];
     [hadOrderTip setText:@"已点菜单"];
@@ -193,7 +208,7 @@
     [_hadOrderTotalUnitTip setText:hadOrderTotalUnitStr];
     [_hadOrderTotalUnitTip setTextColor:[UIColor blackColor]];
     [_hadOrderFrameView addSubview:_hadOrderTotalUnitTip];
-
+    
     [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, lineButtomView.frame.origin.y+lineButtomView.frame.size.height)];
     
     //优惠信息
@@ -234,34 +249,6 @@
     [_specialOfferTotalUnitTip setTextColor:[UIColor blackColor]];
     [_specialOfferFrameView addSubview:_specialOfferTotalUnitTip];
     
-//    QSBlockButtonStyleModel *specialOfferBtStyle = [[QSBlockButtonStyleModel alloc] init];
-//    [specialOfferBtStyle setBgColor:[UIColor clearColor]];
-//    UIButton *specialOfferBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, _specialOfferTotalTip.frame.origin.y+_specialOfferTotalTip.frame.size.height+12 + 0 * 45, SIZE_DEVICE_WIDTH-24, 45) andButtonStyle:specialOfferBtStyle andCallBack:^(UIButton *button) {
-//        NSLog(@"specialOfferBt");
-//        
-//        QSWMyCouponViewController *myCouponVc = [[QSWMyCouponViewController alloc] init];
-//        [self.navigationController pushViewController:myCouponVc animated:YES];
-//        
-//    }];
-//    UIImageView *specialOfferrrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
-//    [specialOfferrrowMarkView setFrame:CGRectMake(specialOfferBt.frame.size.width-arrowMarkView.frame.size.width-6, (specialOfferBt.frame.size.height-arrowMarkView.frame.size.height)/2, arrowMarkView.frame.size.width, arrowMarkView.frame.size.height)];
-//    [specialOfferBt addSubview:specialOfferrrowMarkView];
-//    [specialOfferBt setTag:8000];
-//    [_specialOfferFrameView addSubview:specialOfferBt];
-//    
-//    QSLabel *scNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, (specialOfferBt.frame.size.height-17)/2, specialOfferBt.frame.size.width-26, 17)];
-//    [scNameLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_SPECIAL_CELL_TITLE_FONT_SIZE]];
-//    [scNameLabel setBackgroundColor:[UIColor clearColor]];
-//    [scNameLabel setText:@"暂无优惠"];
-//    [scNameLabel setTextColor:ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR];
-//    [specialOfferBt addSubview:scNameLabel];
-//    
-//    UIView *specialOfferBtLineButtomView = [[UIView alloc] initWithFrame:CGRectMake(12,specialOfferBt.frame.size.height-1, SIZE_DEVICE_WIDTH-24, 1)];
-//    [specialOfferBtLineButtomView setBackgroundColor:ORDERVIEWCONTROLLER_LINE_COLOR];
-//    [specialOfferBt addSubview:specialOfferBtLineButtomView];
-//    
-//    [_specialOfferFrameView setFrame:CGRectMake(_specialOfferFrameView.frame.origin.x, _specialOfferFrameView.frame.origin.y, _specialOfferFrameView.frame.size.width, specialOfferBt.frame.origin.y+specialOfferBt.frame.size.height)];
-//    
     //送餐时间
     self.deliveryTimeView = [[QSPOrderDeliveryTimeView alloc] initOrderDeliveryTimeView];
     [self.deliveryTimeView setFrame:CGRectMake(0, _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height, self.deliveryTimeView.frame.size.width, self.deliveryTimeView.frame.size.height)];
@@ -282,12 +269,12 @@
     UIView *remarkFrameLineButtomView = [[UIView alloc] initWithFrame:CGRectMake(12, remarkTip.frame.origin.y+remarkTip.frame.size.height+12, SIZE_DEVICE_WIDTH-24, 1)];
     [remarkFrameLineButtomView setBackgroundColor:ORDERVIEWCONTROLLER_LINE_COLOR];
     [_remarkFrameView addSubview:remarkFrameLineButtomView];
-
+    
     QSBlockButtonStyleModel *remarkBtStyle = [[QSBlockButtonStyleModel alloc] init];
     [remarkBtStyle setCornerRadio:8.];
     [remarkBtStyle setBgColor:[UIColor clearColor]];
     UIButton *remarkBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, remarkFrameLineButtomView.frame.origin.y+remarkFrameLineButtomView.frame.size.height, SIZE_DEVICE_WIDTH-24, 45) andButtonStyle:remarkBtStyle andCallBack:^(UIButton *button) {
-//        NSLog(@"remarkBt");
+        //        NSLog(@"remarkBt");
         QSPOrderRemarkViewController *orVC = [[QSPOrderRemarkViewController alloc] init];
         [self.addNewAddView hideAddNewAddressView];
         [self.navigationController pushViewController:orVC animated:YES];
@@ -300,7 +287,7 @@
     self.remarkLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, (remarkBt.frame.size.height-17)/2, remarkBt.frame.size.width-32, 17)];
     [self.remarkLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_SPECIAL_CELL_TITLE_FONT_SIZE]];
     [self.remarkLabel setBackgroundColor:[UIColor clearColor]];
-//    [self.remarkLabel setText:@"暂无备注"];
+    //    [self.remarkLabel setText:@"暂无备注"];
     [self.remarkLabel setTextColor:ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR];
     [remarkBt addSubview:self.remarkLabel];
     
@@ -329,7 +316,6 @@
     [self updateAddress];
     [self updateHadOrderFoodList];
     [self updateHadOrderCount];
-//    [self getUserCouponList];
     [self updateSpecialOfferCount];
     
     [self.deliveryTimeView setFrame:CGRectMake(0, _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height, self.deliveryTimeView.frame.size.width, self.deliveryTimeView.frame.size.height)];
@@ -361,7 +347,7 @@
     if (userData) {
         
         if (userData.address && ![userData.address isEqualToString:@""]) {
-
+            
             self.orderName = userData.receidName;
             self.orderAddress = userData.address;
             self.orderPhone = userData.phone;
@@ -387,10 +373,12 @@
             }
         }
         
-    }else{
+    } else {
+        
         [self showAddNewAddressView];
+        
     }
-
+    
 }
 
 - (void)showAddNewAddressView
@@ -419,7 +407,7 @@
 {
     //!!!! : 逻辑需要根据购物车逻辑完善。
     NSInteger selectedTotalCount = 0;
-
+    
     NSArray *array = [QSPShoppingCarData getShoppingCarDataList];
     
     for (int i=0; i<[array count]; i++) {
@@ -466,16 +454,16 @@
     NSArray *array = [QSPShoppingCarData getShoppingCarDataList];
     for (int i=0; i<[array count]; i++) {
         NSDictionary *dic = array[i];
-            NSString *countStr = [dic objectForKey:@"num"];
+        NSString *countStr = [dic objectForKey:@"num"];
         
-            QSPOrderViewHadOrderCell *cell = [[QSPOrderViewHadOrderCell alloc] initOrderItemViewWithData:dic withCount:countStr.integerValue];
-            [cell setFrame:CGRectMake(0, _hadOrderTotalTip.frame.origin.y+_hadOrderTotalTip.frame.size.height+12 + i *cell.frame.size.height, cell.frame.size.width, cell.frame.size.height)];
-            [cell setDelegate:self];
-            [_hadOrderFrameView addSubview:cell];
-            [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, cell.frame.origin.y+cell.frame.size.height)];
+        QSPOrderViewHadOrderCell *cell = [[QSPOrderViewHadOrderCell alloc] initOrderItemViewWithData:dic withCount:countStr.integerValue];
+        [cell setFrame:CGRectMake(0, _hadOrderTotalTip.frame.origin.y+_hadOrderTotalTip.frame.size.height+12 + i *cell.frame.size.height, cell.frame.size.width, cell.frame.size.height)];
+        [cell setDelegate:self];
+        [_hadOrderFrameView addSubview:cell];
+        [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, cell.frame.origin.y+cell.frame.size.height)];
     }
     
- }
+}
 
 - (void)updateSpecialOfferCount
 {
@@ -595,11 +583,6 @@
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 /**
  *  响应增加减少菜品操作
  *
@@ -619,7 +602,7 @@
             }
         }
     }
-
+    
     [QSPShoppingCarData setShoppingCarDataListWithData:foodData withCount:count AddOrSetPackageData:NO];
     
     if ([QSPShoppingCarData getTotalFoodCount]==0) {
@@ -815,46 +798,52 @@
                         break;
                     case PaymentTypeAlipay:
                         //支付类型 1在线支付
-                        {
-                            //订单标题
-                            orderFormModel.orderTitle = [NSString stringWithFormat:@"订单:%@",orderFormModel.order_num];
-
-                            //订单描述
-                            orderFormModel.des = [NSString stringWithFormat:@"在线支付订单:%@",orderFormModel.order_num];
-
-                            //支付金额
-                            orderFormModel.payPrice = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
-
-                            //回调
-                            __block NSString *orderID = orderFormModel.order_id;
-                            __weak QSPOrderViewController *weakSelf = self;
-                            orderFormModel.alixpayCallBack = ^(NSString *payCode,NSString *payInfo){
-                                
-                                //处理支付宝的回调结果
-                                [weakSelf checkPayResultWithCode:payCode andPayResultInfo:payInfo andOrderID:orderID];
-                                
-                            };
-
-                            //进入支付宝
-                            [[QSAlixPayManager shareAlixPayManager] startAlixPay:orderFormModel];
+                    {
+                        //订单标题
+                        orderFormModel.orderTitle = [NSString stringWithFormat:@"订单:%@",orderFormModel.order_num];
+                        
+                        //订单描述
+                        orderFormModel.des = [NSString stringWithFormat:@"在线支付订单:%@",orderFormModel.order_num];
+                        
+                        //支付金额
+                        orderFormModel.payPrice = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
+                        
+                        //回调
+                        __block NSString *orderID = orderFormModel.order_id;
+                        __weak QSPOrderViewController *weakSelf = self;
+                        orderFormModel.alixpayCallBack = ^(NSString *payCode,NSString *payInfo){
                             
-                            [QSPShoppingCarData clearShoopingCar];
-                        }
+                            //处理支付宝的回调结果
+                            [weakSelf checkPayResultWithCode:payCode andPayResultInfo:payInfo andOrderID:orderID];
+                            
+                        };
+                        
+                        //进入支付宝
+                        [[QSAlixPayManager shareAlixPayManager] startAlixPay:orderFormModel];
+                        
+                        [QSPShoppingCarData clearShoopingCar];
+                    }
                         break;
                     case PaymentTypePayCrads:
                         //支付类型 3，储蓄卡支付
-                        {
-                            QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
-                            //支付金额
-                            orderFormModel.payPrice = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
-                            orderFormModel.diet_num = [NSString stringWithFormat:@"%ld",(long)[QSPShoppingCarData getTotalFoodCount]];
-                            [pfovc setOrderFormModel:orderFormModel];
-                            [self.navigationController pushViewController:pfovc animated:YES];
-                            [QSPShoppingCarData clearShoopingCar];
-                        }
+                    {
+                        
+                        QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
+                        //支付金额
+                        orderFormModel.payPrice = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
+                        orderFormModel.diet_num = [NSString stringWithFormat:@"%ld",(long)[QSPShoppingCarData getTotalFoodCount]];
+                        [pfovc setOrderFormModel:orderFormModel];
+                        [self.navigationController pushViewController:pfovc animated:YES];
+                        [QSPShoppingCarData clearShoopingCar];
+                        
+                    }
+                        
                         break;
+                        
                     default:
+                        
                         break;
+                        
                 }
                 
             } else {
@@ -866,15 +855,20 @@
                     }
                         break;
                     case PaymentTypeAlipay:
+                    {
                         //支付类型 1在线支付
-                        
+                    }
                         break;
                     case PaymentTypePayCrads:
                         //支付类型 3，储蓄卡支付
-                        {
-                        }
+                    {
+                        
+                        
+                    }
                         break;
+                        
                     default:
+                        
                         break;
                 }
                 
@@ -888,7 +882,7 @@
                     [alert dismissWithClickedButtonIndex:0 animated:YES];
                     
                 });
-
+                
             }
             
         }];
@@ -1082,7 +1076,7 @@
             orderResultData.order_desc = [tempParams objectForKey:@"desc"];
             [ossVc setOrderData:orderResultData];
             [self.navigationController pushViewController:ossVc animated:YES];
-
+            
             
         }];
         
@@ -1107,7 +1101,7 @@
 #pragma mark - 选择支付方式响应
 - (void)clickedItemWithType:(PaymentType)type WithOrderPaymentView:(QSPOrderPaymentView*)view
 {
-    if (type==PaymentTypePayCrads) {
+    if (type == PaymentTypePayCrads) {
         CGFloat totalPrice = [QSPShoppingCarData getTotalPrice];
         ///用户信息模型
         QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];

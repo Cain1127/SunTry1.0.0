@@ -15,6 +15,7 @@
 #import "QSRequestManager.h"
 #import "QSUserManager.h"
 #import "QSUserInfoDataModel.h"
+#import "QSHeaderDataModel.h"
 
 #import "QSBlockButton.h"
 
@@ -177,20 +178,14 @@
         ///判断是否更新成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-//            ///弹出框
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"修改支付密码成功" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-//            [alert show];
-            self.hud.labelText=@"修改支付密码成功";
+            self.hud.labelText=@"修改成功";
             
             ///刷新用户数据
             [QSUserManager updateUserData:nil];
             
-            //[self.hud hide:YES afterDelay:1.5f];
-            
             ///显示一秒
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
-               // [alert dismissWithClickedButtonIndex:0 animated:YES];
                 [self.hud hide:YES];
             
                 ///返回上一级
@@ -210,17 +205,8 @@
         
         } else {
             
-//            ///弹出框
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"修改支付密码失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-//            [alert show];
-//            
-//            ///显示一秒
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                
-//                [alert dismissWithClickedButtonIndex:0 animated:YES];
-//                
-//            });
-            self.hud.labelText=@"修改支付密码失败";
+            QSHeaderDataModel *tempModel = resultData;
+            self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"修改支付密码失败") : @"修改支付密码失败";
             [self.hud hide:YES afterDelay:1.5f];
             
         }

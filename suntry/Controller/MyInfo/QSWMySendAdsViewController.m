@@ -27,10 +27,42 @@
 @interface QSWMySendAdsViewController ()
 
 @property (nonatomic,retain) NSMutableArray *dataSource;//!<地址数据源
+///选择一个地址时的回调
+@property (nonatomic,copy) void(^pickAddressAction)(BOOL flag,QSUserAddressDataModel *addressModel);
 
 @end
 
 @implementation QSWMySendAdsViewController
+
+#pragma mark - 初始化
+/**
+ *  @author                     yangshengmeng, 15-03-04 18:03:38
+ *
+ *  @brief                      如若是选择地送餐地址，则回调所选择的地址
+ *
+ *  @param pickAddressAction    选择一个地址时的回调
+ *
+ *  @return                     返回当前地址列表
+ *
+ *  @since                      1.0.0
+ */
+- (instancetype)initWithCallBackBlock:(void(^)(BOOL flag,QSUserAddressDataModel *addressModel))pickAddressAction
+{
+
+    if (self = [super init]) {
+        
+        ///保存回调
+        if (pickAddressAction) {
+            
+            self.pickAddressAction = pickAddressAction;
+            
+        }
+        
+    }
+    
+    return self;
+
+}
 
 #pragma mark - UI搭建
 - (void)viewDidLoad
@@ -177,18 +209,37 @@
         
         ///模型
         QSUserAddressDataModel *tempModel = self.dataSource[indexPath.row];
-        QSWEditSendAdsViewController *editVC = [[QSWEditSendAdsViewController alloc] initWithAddressModel:tempModel];
-        editVC.editSendAddressCallBack = ^(BOOL flag){
         
-            if (flag) {
+        ///判断是否是选择地址
+        if (self.pickAddressAction) {
+            
+            self.pickAddressAction(YES,tempModel);
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        } else {
+            
+            QSWEditSendAdsViewController *editVC = [[QSWEditSendAdsViewController alloc] initWithAddressModel:tempModel];
+            editVC.editSendAddressCallBack = ^(BOOL flag){
                 
-                [self.tableView headerBeginRefreshing];
+                if (flag) {
+                    
+                    [self.tableView headerBeginRefreshing];
+                    
+                }
                 
-            }
+            };
+            [self.navigationController pushViewController:editVC animated:YES];
+            
+        }
         
-        };
-        [self.navigationController pushViewController:editVC animated:YES];
-        
+    } else {
+    
+        if (self.pickAddressAction) {
+            
+            self.pickAddressAction (NO,nil);
+            
+        }
+    
     }
 
 }

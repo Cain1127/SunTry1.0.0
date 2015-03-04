@@ -183,11 +183,14 @@
         NSLog(@"submitBtl");
         NSString *pass = [self.payCardPassTextField text];
         if (!pass || [pass isEqualToString:@""]) {
+            
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"请输入储值卡支付密码" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             return ;
+            
         }
+        
         //提交支付所需参数
         NSMutableDictionary *tempParams = [[NSMutableDictionary alloc] init];
         [tempParams setObject:userModel.userID forKey:@"user_id"];
@@ -215,6 +218,8 @@
                 [self.navigationController pushViewController:ossVc animated:YES];
                 
             }else{
+                
+#warning 修改逻辑：和聪哥确认，提示服务端返回的错误信息
                 //支付失败跳转
                 NSLog(@"订单：%@ 支付失败",orderFormModel.order_id);
                 QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
@@ -224,6 +229,7 @@
                 orderResultData.order_desc = orderFormModel.des;
                 [ossVc setOrderData:orderResultData];
                 [self.navigationController pushViewController:ossVc animated:YES];
+                
             }
         }];
         

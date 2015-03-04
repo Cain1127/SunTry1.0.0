@@ -18,6 +18,7 @@
 #import "QSPickerViewItem.h"
 #import "QSDatePickerViewController.h"
 #import "QSUserInfoDataModel.h"
+#import "QSHeaderDataModel.h"
 
 #import "NSString+Format.h"
 #import "ASDepthModalViewController.h"
@@ -299,8 +300,11 @@
         ///添加成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
+            ///转换模型
+            QSHeaderDataModel *tempModel = resultData;
+            
             ///显示提示
-            self.hud.labelText = @"添加成功";
+            self.hud.labelText = tempModel.info ? tempModel.info : @"添加成功";
             [self.hud hide:YES afterDelay:1.0f];
             
             ///显示1秒后移除提示
@@ -319,9 +323,12 @@
             });
             
         } else {
+            
+            ///转换模型
+            QSHeaderDataModel *tempModel = resultData;
         
             ///显示提示
-            self.hud.labelText = @"添加送餐地址失败，请稍后再试";
+            self.hud.labelText = (tempModel ? (tempModel.info ? tempModel.info : @"添加送餐地址失败，请稍后再试") : @"添加送餐地址失败，请稍后再试");
             [self.hud hide:YES afterDelay:1.0f];
         
         }

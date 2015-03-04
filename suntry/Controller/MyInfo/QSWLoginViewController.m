@@ -144,7 +144,6 @@
     
     if ((nil == userName) || (0 >= [userName length])) {
 
-        
         return;
         
     }
@@ -202,8 +201,10 @@
             });
             
         } else {
+            
+            QSHeaderDataModel *tempModel = resultData;
         
-            self.hud.labelText = @"登录失败";
+            self.hud.labelText = tempModel ? (tempModel.info ? tempModel.info : @"登录失败") : @"登录失败";
             [self.hud hide:YES afterDelay:1.0f];
             
             ///修改登录状态

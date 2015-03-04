@@ -211,7 +211,8 @@
             
         } else {
         
-            self.hud.labelText = @"手机验证码发送失败，请稍后再试……";
+            QSHeaderDataModel *tempModel = resultData;
+            self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"手机验证码发送失败，请稍后再试……") : @"手机验证码发送失败，请稍后再试……";
             [self.hud hide:YES afterDelay:0.6f];
         
         }

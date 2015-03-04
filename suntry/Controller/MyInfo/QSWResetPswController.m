@@ -221,8 +221,10 @@
         } else {
             
             [self.hud hide:YES];
+            
+            QSHeaderDataModel *tempModel = resultData;
         
-            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"密码重置失败！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"密码重置失败！") : @"密码重置失败！") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [aler show];
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

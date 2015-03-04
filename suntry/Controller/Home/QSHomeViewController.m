@@ -247,6 +247,12 @@ typedef enum {
     ///进行搜索
     [self.searchBar resignFirstResponder];
     
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    ///一秒后隐藏
+    [self.hud hide:YES afterDelay:1.0f];
+    
 }
 
 #pragma mark - 弹出地区选择窗口
@@ -397,7 +403,7 @@ typedef enum {
         ///提示信息
         UILabel *tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 44.0f)];
         NSArray *tempArray = self.isShowDistrictStreetList ? self.districtStreetList : (self.isShowSearchStreetList ? self.tempStreetList : nil);
-        NSString *tips = [tempArray count] > 0 ? @"可配送区域" : @"暂无记录";
+        NSString *tips = [tempArray count] > 0 ? @"可配送区域" : @"您搜索的区域暂无配送";
         tipsLabel.text = tips;
         tipsLabel.textAlignment = NSTextAlignmentCenter;
         tipsLabel.font = [UIFont boldSystemFontOfSize:16.0f];
@@ -452,7 +458,7 @@ typedef enum {
         static NSString *districtStreetCell=@"districtStreetCell";
         UITableViewCell *cellDistrictStree=[tableView dequeueReusableCellWithIdentifier:districtStreetCell];
         
-        if (cellDistrictStree==nil) {
+        if (cellDistrictStree == nil) {
             
             cellDistrictStree=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:districtStreetCell];
             

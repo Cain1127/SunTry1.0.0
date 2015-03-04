@@ -293,7 +293,9 @@
             
         } else {
             
-            self.hud.labelText = @"注册失败";
+            QSHeaderDataModel *tempModel = resultData;
+            
+            self.hud.labelText = tempModel ? (tempModel.info ? tempModel.info : @"注册失败") : @"注册失败";
             [self.hud hide:YES afterDelay:1.0f];
             
             
