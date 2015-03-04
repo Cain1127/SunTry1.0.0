@@ -289,6 +289,7 @@
     UIButton *remarkBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, remarkFrameLineButtomView.frame.origin.y+remarkFrameLineButtomView.frame.size.height, SIZE_DEVICE_WIDTH-24, 45) andButtonStyle:remarkBtStyle andCallBack:^(UIButton *button) {
 //        NSLog(@"remarkBt");
         QSPOrderRemarkViewController *orVC = [[QSPOrderRemarkViewController alloc] init];
+        [self.addNewAddView hideAddNewAddressView];
         [self.navigationController pushViewController:orVC animated:YES];
     }];
     UIImageView *remarkArrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
@@ -620,6 +621,10 @@
     }
 
     [QSPShoppingCarData setShoppingCarDataListWithData:foodData withCount:count AddOrSetPackageData:NO];
+    
+    if ([QSPShoppingCarData getTotalFoodCount]==0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     
     if (count==0) {
         [self updateView];

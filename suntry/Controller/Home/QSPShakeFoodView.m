@@ -270,6 +270,7 @@
     
     if (currentViewType == FoodDetailPopViewTypeNormal) {
         [self setBackgroundColor:SHAKEVIEW_BACKGROUND_COLOR];
+        [self setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     }else if (currentViewType == FoodDetailPopViewTypeShake) {
         [self setBackgroundColor:[UIColor clearColor]];
         [UIView animateWithDuration:0.3 animations:^{

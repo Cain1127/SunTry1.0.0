@@ -33,4 +33,7 @@
  */
 - (void)showAddNewAddressView;
 
+
+- (void)hideAddNewAddressView;
+
 @end

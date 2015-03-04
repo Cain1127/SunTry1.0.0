@@ -400,7 +400,9 @@ static char titleLabelKey;//!<标题key
     QSPShakeFoodView *foodDetalPopView = [QSPShakeFoodView getShakeFoodView];
     [foodDetalPopView setDelegate:self];
     [self.tabBarController.view addSubview:foodDetalPopView];
+    NSArray *array = [self.tabBarController.view subviews];
     [foodDetalPopView updateFoodData:goodsItem];
+    [self.tabBarController.view bringSubviewToFront:foodDetalPopView];
     [foodDetalPopView showShakeFoodView];
     
 }
