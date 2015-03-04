@@ -110,8 +110,8 @@ typedef enum {
     if ([tempArray count] <= 0) {
         
         QSDistrictDataModel *defaultDistrict = [[QSDistrictDataModel alloc] init];
-        defaultDistrict.districtID = @"299";
-        defaultDistrict.val = @"体育西路";
+        defaultDistrict.districtID = @"3";
+        defaultDistrict.val = @"天河区";
         defaultDistrict.status = @"1";
         [tempArray addObject:defaultDistrict];
         
