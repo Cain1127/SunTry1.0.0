@@ -161,11 +161,6 @@ typedef enum {
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
@@ -288,14 +283,21 @@ typedef enum {
                 if (headDic&&[headDic isKindOfClass:[NSDictionary class]]) {
                     NSString *topTitle = [headDic objectForKey:@"topTitle"];
                     NSString *subTitle = [headDic objectForKey:@"subTitle"];
-                    if (subTitle&&![subTitle isEqualToString:@""]) {
-                        if (section==0) {
-                            height = FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT*2;
-                        }else{
-                            NSString *lastTopTitle = [[self.foodListHeadTitleList objectAtIndex:section-1] objectForKey:@"topTitle"];
+                    if (subTitle && ![subTitle isEqualToString:@""]) {
+                        
+                        if (section == 0) {
+                            
+                            height = FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT * 2.0f;
+                            
+                        } else {
+                            
+                            NSString *lastTopTitle = [[self.foodListHeadTitleList objectAtIndex:section - 1] objectForKey:@"topTitle"];
                             if (![lastTopTitle isEqualToString:topTitle]) {
-                                height = FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT*2;
+                                
+                                height = FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT * 2.0f;
+                                
                             }
+                            
                         }
                     }
                 }
@@ -344,7 +346,7 @@ typedef enum {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT)];
     [headerView setBackgroundColor:[UIColor clearColor]];
     
-    UIView *titleBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(10, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT-FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT, tableView.frame.size.width-10*2, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT)];
+    UIView *titleBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT-FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT, tableView.frame.size.width - 10.0f * 2.0f, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT)];
     [titleBackgroundView setBackgroundColor:FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_COLOR];
     [headerView addSubview:titleBackgroundView];
     
@@ -376,6 +378,7 @@ typedef enum {
     
     if (self.foodListHeadTitleList&&[self.foodListHeadTitleList isKindOfClass:[NSArray class]]&&[self.foodListHeadTitleList count]>section)
     {
+        
         NSDictionary *headDic = [self.foodListHeadTitleList objectAtIndex:section];
         if (headDic&&[headDic isKindOfClass:[NSDictionary class]]) {
             NSString *topTitle = [headDic objectForKey:@"topTitle"];
@@ -383,12 +386,14 @@ typedef enum {
             if (subTitle&&![subTitle isEqualToString:@""]) {
                 if (section==0) {
                     
-                    [titleBackgroundView setFrame:CGRectMake(10, 0, tableView.frame.size.width-10*2, 30)];
+                    [titleBackgroundView setFrame:CGRectMake(10, 5, tableView.frame.size.width-10*2, 30)];
                     [titleLabel setFont:[UIFont boldSystemFontOfSize:FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_FONT_SIZE]];
                     [titleLabel setTextAlignment:NSTextAlignmentLeft];
                     [titleLabel setText:topTitle];
                     
                     UIView *subTitleBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(10, titleBackgroundView.frame.origin.y+titleBackgroundView.frame.size.height+4, titleBackgroundView.frame.size.width, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT)];
+                    
+                    ///修改背景颜色
                     [subTitleBackgroundView setBackgroundColor:FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_COLOR];
                     [headerView addSubview:subTitleBackgroundView];
                     //
@@ -400,20 +405,24 @@ typedef enum {
                     [subTitleLabel setTextAlignment:NSTextAlignmentCenter];
                     [headerView setFrame:CGRectMake(headerView.frame.origin.x,headerView.frame.origin.y, subTitleBackgroundView.frame.size.width, subTitleBackgroundView.frame.origin.y+subTitleBackgroundView.frame.size.height)];
                     
-                }else{
+                } else {
+                    
                     NSString *lastTopTitle = [[self.foodListHeadTitleList objectAtIndex:section-1] objectForKey:@"topTitle"];
                     if (![lastTopTitle isEqualToString:topTitle]) {
                         
-                        [titleBackgroundView setFrame:CGRectMake(10, 0, tableView.frame.size.width-10*2, 30)];
+                        [titleBackgroundView setFrame:CGRectMake(10.0f, 15.0f, tableView.frame.size.width - 10.0f * 2.0f, 30.0f)];
+                        titleBackgroundView.backgroundColor = [UIColor whiteColor];
                         [titleLabel setFont:[UIFont boldSystemFontOfSize:FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_FONT_SIZE]];
                         [titleLabel setTextAlignment:NSTextAlignmentLeft];
                         [titleLabel setText:topTitle];
                     
-                        UIView *subTitleBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(10, titleBackgroundView.frame.origin.y+titleBackgroundView.frame.size.height+4, titleBackgroundView.frame.size.width, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT)];
+                        UIView *subTitleBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, titleBackgroundView.frame.origin.y + titleBackgroundView.frame.size.height + 9.0f, titleBackgroundView.frame.size.width, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT)];
+                        
+                        ///背景颜色
                         [subTitleBackgroundView setBackgroundColor:FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_COLOR];
                         [headerView addSubview:subTitleBackgroundView];
                         //
-                        UILabel *subTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, titleLabel.frame.size.width, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT)];
+                        UILabel *subTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, titleLabel.frame.size.width, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT)];
                         [subTitleLabel setFont:[UIFont boldSystemFontOfSize:FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_SUB_TITLE_FONT_SIZE]];
                         [subTitleLabel setBackgroundColor:[UIColor clearColor]];
                         [subTitleBackgroundView addSubview:subTitleLabel];
@@ -613,11 +622,13 @@ typedef enum {
             
         case FoodTypeTable:
             {
-                if (self.foodTypeIndexList&&[self.foodTypeIndexList isKindOfClass:[NSArray class]]&&[self.foodTypeIndexList count]>indexPath.row) {
+                if (self.foodTypeIndexList && [self.foodTypeIndexList isKindOfClass:[NSArray class]] && [self.foodTypeIndexList count] > indexPath.row) {
                     
                     NSInteger selectRow = [[self.foodTypeIndexList objectAtIndex:indexPath.row] integerValue];
-                    if (selectRow<[self.foodInfoListTableView numberOfSections]) {
+                    if (selectRow < [self.foodInfoListTableView numberOfSections]) {
+                        
                         [self.foodInfoListTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:selectRow] animated:YES scrollPosition:UITableViewScrollPositionTop];
+                        
                     }
                 }
             }
