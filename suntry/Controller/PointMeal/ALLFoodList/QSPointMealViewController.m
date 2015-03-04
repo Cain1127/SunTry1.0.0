@@ -34,24 +34,28 @@
 #define FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_SUB_TITLE_FONT_SIZE 17.
 
 enum TableViewType{
+    
     FoodTypeTable = 1,
     FoodInfoListTable
+    
 };
 
 typedef enum {
+    
     FoodTypeSPecial     = 0,
     FoodTypeHeathy      = 1,
     FoodTypeSoup        = 2,
-    FoodTypePackage     = 3,
+    FoodTypePackage     = 3
+    
 } FoodType;
 
-@interface QSPointMealViewController ()<QSPShakeFoodViewDelegate,UIAlertViewDelegate>
+@interface QSPointMealViewController () <QSPShakeFoodViewDelegate,UIAlertViewDelegate>
 
 @property(nonatomic,strong) UITableView     *foodTypeTableView;
 @property(nonatomic,strong) NSMutableArray  *foodTypeList;              //<! 当前有数据类型数组
 @property(nonatomic,strong) NSMutableArray  *foodTypeIndexList;         //<! 当前有数据索引数组
 @property(nonatomic,strong) NSMutableArray  *foodListHeadTitleList;     //<! 菜品列表标题数组
-@property(nonatomic,strong) NSMutableArray  *allFoodDataList;            //<! 所有菜品数据
+@property(nonatomic,strong) NSMutableArray  *allFoodDataList;           //<! 所有菜品数据
 
 @property(nonatomic,strong) UITableView     *foodInfoListTableView;
 @property(nonatomic,strong) QSPShoppingCarView *shoppingCarView;
@@ -61,6 +65,8 @@ typedef enum {
 
 @implementation QSPointMealViewController
 
+#pragma mark - 进入视图时加载UI
+///进入视图时加载UI
 - (void)loadView{
     
     [super loadView];
@@ -81,18 +87,23 @@ typedef enum {
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
         
         if ([QSPShoppingCarData getTotalFoodCount]==0) {
+            
             [self.tabBarController setSelectedIndex:0];
             return ;
+            
         }
+        
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"是否清空购物车？" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
         [av show];
+        
     }];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    
     CGFloat offetY = 0;
     if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+        
         offetY = 64;
+        
     }
     
     self.shoppingCarView = [[QSPShoppingCarView alloc] initShakeFoodView];
@@ -101,8 +112,6 @@ typedef enum {
     [_shoppingCarView setDelegate:self];
     [_shoppingCarView updateShoppingCar];
     
-//    self.foodTypeList = [NSArray arrayWithObjects:@"优惠特价",@"健康餐",@"养生炖汤",@"营养套餐", nil];
-//    self.foodInfoList = [NSArray arrayWithObjects:@"",@"",@"",@"",@"",@"", nil];
     self.foodTypeList = [NSMutableArray array];
     self.foodTypeIndexList = [NSMutableArray array];
     self.foodListHeadTitleList = [NSMutableArray array];
@@ -134,31 +143,26 @@ typedef enum {
     [_shoppingCarView setHidden:YES];
     [_foodTypeTableView setHidden:YES];
     [_foodInfoListTableView setHidden:YES];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        
-//        [self getGoodsData];
-//        
-//    });
-    
     
 }
 
+#pragma mark - 视图已经显示时获取数据
+///视图已经显示时获取数据
 - (void)viewDidAppear:(BOOL)animated
 {
+    
     [super viewDidAppear:animated];
     if ([_shoppingCarView isHidden]) {
-//        [self getGoodsData];
+        
         [self getAllGoodsData];
+        
     }else{
+        
         [_shoppingCarView updateShoppingCar];
         [_foodInfoListTableView reloadData];
+        
     }
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -174,9 +178,6 @@ typedef enum {
             
         case FoodInfoListTable:
             
-//            if (_foodTypeList&&[_foodTypeList count]>0) {
-//                count = [_foodTypeList count];
-//            }
             if (self.allFoodDataList&&[self.allFoodDataList isKindOfClass:[NSArray class]]&&[self.allFoodDataList count]>0) {
                 
                 count = [self.allFoodDataList count];
@@ -184,7 +185,9 @@ typedef enum {
             }
             
             break;
+            
         default:
+            
             break;
             
     }
@@ -193,6 +196,8 @@ typedef enum {
     
 }
 
+#pragma mark - 返回有多少美食列
+///返回有多少美食列
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
@@ -203,57 +208,30 @@ typedef enum {
         case FoodTypeTable:
             
             if (_foodTypeList&&[_foodTypeList count]>0) {
+                
                 count = [_foodTypeList count];
+                
             }
             
             break;
             
         case FoodInfoListTable:
             
-//            if (_allGoodsData) {
-//                
-//                NSNumber *foodType = _foodTypeList[section];
-//                
-//                switch (foodType.intValue) {
-//                    case FoodTypeSPecial:
-//                        if (_allGoodsData.specialList && [_allGoodsData.specialList isKindOfClass:[NSArray class]])
-//                        {
-//                            count = [_allGoodsData.specialList count];
-//                        }
-//                        break;
-//                    case FoodTypeHeathy:
-//                        if (_allGoodsData.healthyList && [_allGoodsData.healthyList isKindOfClass:[NSArray class]])
-//                        {
-//                            count = [_allGoodsData.healthyList count];
-//                        }
-//                        break;
-//                    case FoodTypeSoup:
-//                        if (_allGoodsData.soupList && [_allGoodsData.soupList isKindOfClass:[NSArray class]])
-//                        {
-//                            count = [_allGoodsData.soupList count];
-//                        }
-//                        break;
-//                    case FoodTypePackage:
-//                        if (_allGoodsData.menuPackeList && [_allGoodsData.menuPackeList isKindOfClass:[NSArray class]])
-//                        {
-//                            count = [_allGoodsData.menuPackeList count];
-//                        }
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-            
-            
             if (self.allFoodDataList&&[self.allFoodDataList isKindOfClass:[NSArray class]]&&[self.allFoodDataList count]>0) {
+                
                 NSArray *subArray = [self.allFoodDataList objectAtIndex:section];
-                if (subArray&&[subArray isKindOfClass:[NSArray class]]&&[subArray count]>0) {
+                if (subArray&&[subArray isKindOfClass:[NSArray class]]&&[subArray count] > 0.0f) {
+                    
                     count = [subArray count];
+                    
                 }
+                
             }
             
             break;
+            
         default:
+            
             break;
             
     }
@@ -262,6 +240,8 @@ typedef enum {
     
 }
 
+#pragma mark - 返回不同的美食信息cell高度
+///返回不同的美食信息cell高度
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     
@@ -305,7 +285,9 @@ typedef enum {
             }
             
             break;
+            
         default:
+            
             break;
             
     }
@@ -314,6 +296,8 @@ typedef enum {
     
 }
 
+#pragma mark - 返回餐单标题栏的高度
+///返回餐单标题栏的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -333,6 +317,7 @@ typedef enum {
             
             break;
         default:
+            
             break;
             
     }
@@ -341,6 +326,8 @@ typedef enum {
     
 }
 
+#pragma mark - 返回餐单头信息view
+///返回餐单头信息view
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     
@@ -361,9 +348,12 @@ typedef enum {
         
         NSDictionary *headDic = [self.foodListHeadTitleList objectAtIndex:section];
         if (headDic&&[headDic isKindOfClass:[NSDictionary class]]) {
+            
             NSString *topTitle = [headDic objectForKey:@"topTitle"];
             NSString *subTitle = [headDic objectForKey:@"subTitle"];
+            
             if (subTitle&&![subTitle isEqualToString:@""]) {
+                
                 if (section == 0) {
                     
                     [titleBackgroundView setFrame:CGRectMake(10.0f, 0.0f, tableView.frame.size.width - 10.0f * 2.0f, 30.0f)];
@@ -417,9 +407,12 @@ typedef enum {
                         [titleLabel setText:subTitle];
                         titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, 5.0f, titleLabel.frame.size.width, titleLabel.frame.size.height);
                         [titleLabel setTextAlignment:NSTextAlignmentLeft];
+                        
                     }
+                    
                 }
-            }else{
+                
+            } else {
                 
                 [titleBackgroundView setFrame:CGRectMake(10.0f, 15.0f, tableView.frame.size.width - 10.0f * 2.0f, 30.0f)];
                 titleBackgroundView.backgroundColor = [UIColor whiteColor];
@@ -427,15 +420,10 @@ typedef enum {
                 [titleLabel setTextAlignment:NSTextAlignmentLeft];
                 [titleLabel setText:topTitle];
                 
-                /*
-                [titleBackgroundView setFrame:CGRectMake(10.0f, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT-FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT, tableView.frame.size.width - 10.0f * 2.0f, FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_HEIGHT + 10.0f)];
-                [titleLabel setFont:[UIFont boldSystemFontOfSize:FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_TITLE_FONT_SIZE]];
-                [titleLabel setTextAlignment:NSTextAlignmentLeft];
-                titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, 5.0f, titleLabel.frame.size.width, titleLabel.frame.size.height);
-                [titleLabel setText:topTitle];
-                 */
             }
+            
         }
+        
     }
     
     return headerView;
@@ -761,109 +749,24 @@ typedef enum {
     if (isLogin != 1 ) {
         QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
         loginVC.loginSuccessCallBack = ^(BOOL flag){
+            
             if (flag) {
                 
+                
+                
             }
+            
         };
         [self.navigationController pushViewController:loginVC animated:YES];
         return;
-    }else{
+        
+    } else {
+        
         QSPOrderViewController *orderVc = [[QSPOrderViewController alloc] init];
         [self.navigationController pushViewController:orderVc animated:YES];
+        
     }
 }
-
-//- (void)getGoodsData
-//{
-//    
-//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    [_shoppingCarView setHidden:YES];
-//    [_foodTypeTableView setHidden:YES];
-//    [_foodInfoListTableView setHidden:YES];
-//    
-//    [QSRequestManager requestDataWithType:rRequestTypeAllGoods andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
-//        
-//        
-//        ///判断是否请求成功
-//        if (rRequestResultTypeSuccess == resultStatus) {
-//            
-//            ///模型转换 
-//            QSGoodsStapleFoodReturnData *tempModel = resultData;
-//            
-//            self.allGoodsData = tempModel.headerMSG;
-//            
-//            [self.foodTypeList removeAllObjects];
-//            
-//            if (self.allGoodsData)
-//            {
-//                
-//                if (_allGoodsData.specialList&&[_allGoodsData.specialList count]>0)
-//                {
-//                    [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeSPecial]];
-//                }
-//                if (_allGoodsData.healthyList&&[_allGoodsData.healthyList count]>0)
-//                {
-//                    [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeHeathy]];
-//                }
-//                if (_allGoodsData.soupList&&[_allGoodsData.soupList count]>0)
-//                {
-//                    [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeSoup]];
-//                }
-//                if (_allGoodsData.menuPackeList&&[_allGoodsData.menuPackeList count]>0)
-//                {
-//                    [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypePackage]];
-//                }
-//            }
-//            
-//            //最后一组添加空数据
-//            if ([_allGoodsData.menuPackeList count]>0)
-//            {
-//                _allGoodsData.menuPackeList = [self addNullDataInTheList:_allGoodsData.menuPackeList];
-//            }else if ([_allGoodsData.soupList count]>0)
-//            {
-//                _allGoodsData.soupList = [self addNullDataInTheList:_allGoodsData.soupList];
-//            }else if ([_allGoodsData.healthyList count]>0)
-//            {
-//                _allGoodsData.healthyList = [self addNullDataInTheList:_allGoodsData.healthyList];
-//            }else if ([_allGoodsData.specialList count]>0)
-//            {
-//                _allGoodsData.specialList = [self addNullDataInTheList:_allGoodsData.specialList];
-//            }
-//            
-//            [self.foodTypeTableView reloadData];
-//            if ([[self.foodTypeTableView visibleCells] count]>0) {
-//                [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
-//            }
-//
-//            [self.foodInfoListTableView reloadData];
-//            [_shoppingCarView setHidden:NO];
-//            [_foodTypeTableView setHidden:NO];
-//            [_foodInfoListTableView setHidden:NO];
-//            
-//        } else {
-//            
-//            NSLog(@"================所有菜品数据请求失败================");
-//            NSLog(@"error : %@",errorInfo);
-//            
-////            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
-////            networkingErrorVC.hidesBottomBarWhenPushed = YES;
-////            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
-////            [self.navigationController pushViewController:networkingErrorVC animated:YES];
-//            ///弹出提示
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取菜品数据失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-//            [alert show];
-//            
-//            ///显示1秒后移除提示
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                
-//                [alert dismissWithClickedButtonIndex:0 animated:YES];
-//                
-//            });
-//        }
-//        [MBProgressHUD hideHUDForView:self.view animated:YES];
-//    }];
-//    
-//}
 
 /**
  *  补全空数据以填充全屏
