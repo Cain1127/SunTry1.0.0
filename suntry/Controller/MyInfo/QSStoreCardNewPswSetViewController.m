@@ -18,10 +18,13 @@
 
 #import "QSBlockButton.h"
 
+#import "MBProgressHUD.h"
+
 @interface QSStoreCardNewPswSetViewController () <UITextFieldDelegate>
 
-@property (nonatomic,copy) NSString *phone; //!<手机号码
-@property (nonatomic,copy) NSString *code;  //!<验证码
+@property (nonatomic,copy) NSString *phone;       //!<手机号码
+@property (nonatomic,copy) NSString *code;        //!<验证码
+@property (nonatomic,retain) MBProgressHUD *hud;  //!<HUD
 
 @end
 
@@ -160,6 +163,8 @@
 - (void)forgetStoreCardPsw:(NSString *)newPsw
 {
     
+    self.hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     ///请数
     NSDictionary *tempParams = @{@"phone" : self.phone,
                                  @"pay" : newPsw,
@@ -172,18 +177,20 @@
         ///判断是否更新成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            ///弹出框
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"修改支付密码成功" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
+//            ///弹出框
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"修改支付密码成功" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+//            [alert show];
+            self.hud.labelText=@"修改支付密码成功";
+            [self.hud hide:YES afterDelay:1.5f];
             
             ///刷新用户数据
             [QSUserManager updateUserData:nil];
             
-            ///显示一秒
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
-                
+//            ///显示一秒
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                
+//                [alert dismissWithClickedButtonIndex:0 animated:YES];
+            
                 ///返回上一级
                 NSInteger sumVC = [self.navigationController.viewControllers count];
                 UIViewController *tempVC = self.navigationController.viewControllers[sumVC - 3];
@@ -197,20 +204,22 @@
                     
                 }
                 
-            });
-            
+//            });
+        
         } else {
             
-            ///弹出框
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"修改支付密码失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
-            
-            ///显示一秒
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
-                
-            });
+//            ///弹出框
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"修改支付密码失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+//            [alert show];
+//            
+//            ///显示一秒
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                
+//                [alert dismissWithClickedButtonIndex:0 animated:YES];
+//                
+//            });
+            self.hud.labelText=@"修改支付密码失败";
+            [self.hud hide:YES afterDelay:1.5f];
             
         }
         

@@ -19,6 +19,8 @@
 
 #import "QSRequestManager.h"
 
+#import "MBProgressHUD.h"
+
 @interface QSResetStoreCardPaypswViewController () <UITextFieldDelegate>
 
 @property (nonatomic,strong) UITextField *originalPswInputField;    //!<原密码输入框
@@ -27,6 +29,8 @@
 @property (nonatomic,strong) UIButton *resetButton;                 //!<重置按钮
 
 @property (nonatomic,strong) QSUserInfoDataModel *userInfo;         //!<用户信息
+
+@property (nonatomic,retain) MBProgressHUD *hud;                    //!<HUD
 
 @end
 
@@ -193,6 +197,8 @@
         
     }
     
+    self.hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     ///请数
     NSDictionary *tempParams = @{@"old_pay" : originalPsw,
                                  @"pay" : newPsw};
@@ -203,35 +209,21 @@
         ///判断是否更新成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            ///弹出框
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"更新支付密码成功" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
             
+            self.hud.labelText=@"更新支付密码成功";
+           
             ///刷新用户数据
             [QSUserManager updateUserData:nil];
             
-            ///显示一秒
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
-                
+            [self.hud hide:YES afterDelay:1.5f];
+            
                 ///返回上一级
                 [self.navigationController popViewControllerAnimated:YES];
-                
-            });
             
         } else {
         
-            ///弹出框
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"更新支付密码失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
-            
-            ///显示一秒
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
-                
-            });
+            self.hud.labelText=@"更新支付密码失败";
+            [self.hud hide:YES afterDelay:2.0f];
         
         }
         

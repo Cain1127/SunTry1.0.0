@@ -138,7 +138,7 @@ static char BackgroudViewKey;   //!<背景view
     UILabel *subTitleLabel = objc_getAssociatedObject(self, &GitPriceKey);
     if (subTitleLabel && tempModel.presentPrice) {
         
-        subTitleLabel.text = [NSString stringWithFormat:@"￥%@",tempModel.presentPrice];
+        subTitleLabel.text = [NSString stringWithFormat:@"送￥%@",tempModel.presentPrice];
         
     }
     

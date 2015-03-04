@@ -191,7 +191,7 @@
     [self.view addSubview:paySepLabel];
     
     ///提交支付
-    UIButton *putPayButton=[[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT - 44.0f - 60.0f - 10.0f,SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
+    UIButton *putPayButton=[[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_HEIGHT - 44.0f - 64.0f - SIZE_DEFAULT_MARGIN_LEFT_RIGHT,SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
     [putPayButton setTitle:@"提交支付" forState:UIControlStateNormal];
     [putPayButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     putPayButton.backgroundColor=COLOR_CHARACTERS_RED;
