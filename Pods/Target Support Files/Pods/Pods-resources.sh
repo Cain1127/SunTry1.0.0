@@ -51,6 +51,7 @@ install_resource()
                     install_resource "ZBarSDK/iphone/res/zbar-help.html"
                     install_resource "ZBarSDK/iphone/res/zbar-helpicons.png"
                     install_resource "ZBarSDK/iphone/res/zbar-samples.png"
+                    install_resource "iVersion/iVersion/iVersion.bundle"
           
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 if [[ "${ACTION}" == "install" ]]; then

@@ -96,6 +96,12 @@
 #define COCOAPODS_VERSION_MINOR_ZBarSDK 3
 #define COCOAPODS_VERSION_PATCH_ZBarSDK 1
 
+// iVersion
+#define COCOAPODS_POD_AVAILABLE_iVersion
+#define COCOAPODS_VERSION_MAJOR_iVersion 1
+#define COCOAPODS_VERSION_MINOR_iVersion 10
+#define COCOAPODS_VERSION_PATCH_iVersion 6
+
 // libqrencode
 #define COCOAPODS_POD_AVAILABLE_libqrencode
 #define COCOAPODS_VERSION_MAJOR_libqrencode 3
