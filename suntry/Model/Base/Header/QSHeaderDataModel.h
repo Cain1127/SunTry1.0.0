@@ -10,6 +10,7 @@
 
 @interface QSHeaderDataModel : QSBaseModel
 
-@property (nonatomic,assign) BOOL type;//!<服务端返回标识：YES-成功
+@property (nonatomic,assign) BOOL type;     //!<服务端返回标识：YES-成功
+@property (nonatomic,copy) NSString *info;  //!<错误信息
 
 @end

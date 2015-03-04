@@ -228,9 +228,12 @@
                 });
                 
             } else {
+                
+                ///获取默认模型
+                QSHeaderDataModel *tempModel = resultData;
             
                 ///弹出提示
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"密码修改失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? (tempModel.info ? tempModel.info : @"密码修改失败，请稍后再试……！") : @"密码修改失败，请稍后再试……！") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
                 [alert show];
                 
                 ///显示1秒后移除提示

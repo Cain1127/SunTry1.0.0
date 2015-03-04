@@ -18,7 +18,7 @@
     shared_mapping = [RKObjectMapping mappingForClass:[self class]];
     
     //mapping字典
-    NSDictionary *mappingDict = @{@"type" : @"type"};
+    NSDictionary *mappingDict = @{@"type" : @"type",@"info" : @"info"};
     [shared_mapping addAttributeMappingsFromDictionary:mappingDict];
     
     return shared_mapping;

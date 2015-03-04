@@ -268,11 +268,11 @@
     
     [QSRequestManager requestDataWithType:rRequestTypeUserSendAddressList andParams:@{@"status" : @"0"} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
-        ///清空数据
-        [self.dataSource removeAllObjects];
-        
         ///请成功，并有数据
         if (rRequestResultTypeSuccess == resultStatus) {
+            
+            ///清空数据
+            [self.dataSource removeAllObjects];
             
             ///转换模型
             QSUserAddressListReturnData *tempModel = resultData;
@@ -289,29 +289,29 @@
                 NSData *tempData = [NSKeyedArchiver archivedDataWithRootObject:tempModel.addressList];
                 [tempData writeToFile:path atomically:YES];
                 
-            }
+            } else {
             
-        } else {
-        
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
-            
-            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
                 
-                NSError *error = nil;
-                [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
-                if (error) {
+                if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
                     
-                    NSLog(@"===============清空本地送餐地址失败=================");
+                    NSError *error = nil;
+                    [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+                    if (error) {
+                        
+                        NSLog(@"===============清空本地送餐地址失败=================");
+                        
+                    } else {
+                        
+                        NSLog(@"===============清空本地送餐地址成功=================");
+                        
+                    }
                     
-                } else {
-                
-                    NSLog(@"===============清空本地送餐地址成功=================");
-                
                 }
-                
+            
             }
-        
+            
         }
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
