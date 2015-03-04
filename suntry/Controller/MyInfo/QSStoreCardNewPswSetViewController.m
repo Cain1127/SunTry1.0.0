@@ -181,10 +181,11 @@
 //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"修改支付密码成功" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
 //            [alert show];
             self.hud.labelText=@"修改支付密码成功";
-            [self.hud hide:YES afterDelay:1.5f];
             
             ///刷新用户数据
             [QSUserManager updateUserData:nil];
+            
+            [self.hud hide:YES afterDelay:2.0f];
             
 //            ///显示一秒
 //            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -219,7 +220,7 @@
 //                
 //            });
             self.hud.labelText=@"修改支付密码失败";
-            [self.hud hide:YES afterDelay:1.5f];
+            [self.hud hide:YES afterDelay:2.0f];
             
         }
         

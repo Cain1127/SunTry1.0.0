@@ -381,7 +381,7 @@
     
 }
 
-///点击重置密码
+///点击重置支付密码
 - (IBAction)resetPswButton:(id)sender
 {
     

@@ -211,11 +211,10 @@
             
             
             self.hud.labelText=@"更新支付密码成功";
+            [self.hud hide:YES afterDelay:2.0f];
            
             ///刷新用户数据
             [QSUserManager updateUserData:nil];
-            
-            [self.hud hide:YES afterDelay:1.5f];
             
                 ///返回上一级
                 [self.navigationController popViewControllerAnimated:YES];

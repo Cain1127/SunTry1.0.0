@@ -174,7 +174,13 @@
         frame.origin.x = 5;
         frame.size.width -= 10;
         
+        if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
+            
+             frame.origin.x = 0;
+        }
+        
     }
+  
     [super setFrame:frame];
 }
 
