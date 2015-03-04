@@ -1,4 +1,6 @@
 // 0.从appStore上获取最新的版本信息
+#define REQUEST_APPLE_VERSION @"http://itunes.apple.com/lookup?id=908958155";
+
 ///检查更新版本
 #define REQUEST_VERSION_URL  @"site/GetVersion"
 

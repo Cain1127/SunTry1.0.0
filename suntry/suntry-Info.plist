@@ -38,9 +38,9 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<true/>
 	<key>NSLocationUsageDescription</key>
-	<string>根据您当前位置，快捷查找配送餐车。</string>
+	<string>定位您当前配送中的订单餐车所在位置</string>
 	<key>NSLocationWhenInUseDescription</key>
-	<string>根据您当前位置，快捷查找配送餐车。</string>
+	<string>定位您当前配送中的订单餐车所在位置</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
