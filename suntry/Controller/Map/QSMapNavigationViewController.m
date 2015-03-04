@@ -77,9 +77,10 @@ static char titleLabelKey;//!<标题关联
     
     // 1.跟踪用户位置(显示用户的具体位置)
     //self.mapView.userTrackingMode = MKUserTrackingModeFollow;
+    //self.mapView.showsUserLocation=YES;
     
     // 2.设置地图类型
-    //self.mapView.mapType = MKMapTypeStandard;
+    self.mapView.mapType = MKMapTypeStandard;
     
     // 3.设置代理
     self.mapView.delegate = self;
@@ -95,9 +96,6 @@ static char titleLabelKey;//!<标题关联
     //    }];
     
     [self.view addSubview:_mapView];
-    
-    ///显示HUD
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     [self getCarPostingInfo];
     
@@ -135,21 +133,23 @@ static char titleLabelKey;//!<标题关联
                 
                 [self.mapView addAnnotation:anno0];
                 
+                //黙认选中
+                [self.mapView selectAnnotation:anno0 animated:YES];
+                
             }
                 break;
                 
-            case 1:
+            default:
             {
                 // 2.餐车2
                 QSAnnotation *anno1 = [[QSAnnotation alloc] init];
                 anno1.title = self.title;
                 anno1.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
                 [self.mapView addAnnotation:anno1];
+                //黙认选中
+                //[self.mapView selectAnnotation:anno1 animated:YES];
                 
             }
-                break;
-                
-            default:
                 break;
         }
         
@@ -170,6 +170,7 @@ static char titleLabelKey;//!<标题关联
         annoView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:ID];
         // 显示子标题和标题
         annoView.canShowCallout = YES;
+        
         // 设置大头针描述的偏移量
         annoView.calloutOffset = CGPointMake(0, -10);
         
@@ -197,6 +198,25 @@ static char titleLabelKey;//!<标题关联
     //餐车地址信息请求参数
     NSDictionary *dict = @{@"mer_id" : @"1"};
     [QSRequestManager requestDataWithType:rRequestTypeCarPostion andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+        
+        ///显示HUD
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        
+        [self.hud hide:YES afterDelay:8.0f];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            
+//            self.hud.labelText = @"网络慢下载超时";
+//            [self.hud hide:YES afterDelay:2.0f];
+//            
+//            ///返回上一页
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                
+//                [self.navigationController popViewControllerAnimated:YES];
+//                
+//            });
+//            
+//        });
+
         
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {

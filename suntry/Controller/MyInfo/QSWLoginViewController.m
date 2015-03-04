@@ -143,6 +143,7 @@
     [((UITextField *)self.passWordItem.property) resignFirstResponder];
     
     if ((nil == userName) || (0 >= [userName length])) {
+
         
         return;
         

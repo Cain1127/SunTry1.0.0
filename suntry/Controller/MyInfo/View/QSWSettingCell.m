@@ -167,22 +167,22 @@
 }
 
 #pragma mark-cell的frame
-- (void)setFrame:(CGRect)frame
-{
-    if (!iOS7) {
-        
-        frame.origin.x = 5;
-        frame.size.width -= 10;
-        
-        if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
-            
-             frame.origin.x = 0;
-        }
-        
-    }
-  
-    [super setFrame:frame];
-}
+//- (void)setFrame:(CGRect)frame
+//{
+//    if (!iOS7) {
+//        
+//        frame.origin.x = 5;
+//        frame.size.width -= 10;
+//        
+//        if ([self.item isKindOfClass:[QSWTextFieldItem class]]) {
+//            
+//             frame.origin.x = 0;
+//        }
+//        
+//    }
+//  
+//    [super setFrame:frame];
+//}
 
 #pragma mark--设置cell
 - (void)setItem:(QSWSettingItem *)item
@@ -214,7 +214,7 @@
     }
     
     ///加边框
-    UIView *lineRootView = [[UIView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, SIZE_DEFAULT_MAX_WIDTH - SIZE_DEFAULT_MARGIN_LEFT_RIGHT, height)];
+    UIView *lineRootView = [[UIView alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0.0f, SIZE_DEFAULT_MAX_WIDTH , height)];
     lineRootView.backgroundColor = [UIColor clearColor];
     lineRootView.layer.borderColor = [[UIColor colorWithRed:194.0f / 255.0f green:181.0f / 255.0f blue:156.0f / 255.0f alpha:1.0f] CGColor];
     lineRootView.layer.borderWidth = 0.5f;

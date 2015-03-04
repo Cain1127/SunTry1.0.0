@@ -130,6 +130,7 @@ static char titleLabelKey;//!<标题关联
     [infoLabel1 setTextColor:ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR];
     [_nodataView addSubview:infoLabel1];
     
+    self.view.backgroundColor=[UIColor whiteColor];
 }
 
 @end

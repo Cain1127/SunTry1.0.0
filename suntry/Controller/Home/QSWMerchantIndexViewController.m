@@ -35,6 +35,7 @@
 
 #import "QSHomeViewController.h"
 #import "QSAdvertDetailViewController.h"
+#import "QSWLoginViewController.h"
 
 #import <objc/runtime.h>
 
@@ -490,9 +491,25 @@ static char titleLabelKey;//!<标题key
 - (IBAction)carButtonClick:(id)sender
 {
     
-    QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init];
-    VC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:VC animated:YES];
+    ///判断是否已经登录
+    int isLogin = [[[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"] intValue];
+    
+    if (1 == isLogin) {
+        
+        
+        QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init];
+        VC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:VC animated:YES];
+        
+    } else {
+        
+        ///弹出登录框
+        QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
+        loginVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController setNavigationBarHidden:NO];
+        [self.navigationController pushViewController:loginVC animated:YES];
+        
+    }
     
 }
 
@@ -763,9 +780,21 @@ static char titleLabelKey;//!<标题key
     [alert show];
     ///显示1秒后移除提示
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
         [alert dismissWithClickedButtonIndex:0 animated:YES];
         [self.navigationController popViewControllerAnimated:YES];
+        
     });
+    
+}
+
+#pragma mark - 当前页面将要显示时隐藏navigationBar
+- (void)viewWillAppear:(BOOL)animated
+{
+
+    [self.navigationController setNavigationBarHidden:YES];
+    [super viewWillAppear:animated];
+
 }
 
 @end

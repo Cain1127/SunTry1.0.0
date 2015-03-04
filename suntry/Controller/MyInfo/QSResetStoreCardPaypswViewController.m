@@ -211,18 +211,22 @@
             
             
             self.hud.labelText=@"更新支付密码成功";
-            [self.hud hide:YES afterDelay:2.0f];
+            [self.hud hide:YES afterDelay:1.5f];
            
             ///刷新用户数据
             [QSUserManager updateUserData:nil];
             
-                ///返回上一级
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                ///返回上一页
                 [self.navigationController popViewControllerAnimated:YES];
+                
+            });
             
         } else {
         
             self.hud.labelText=@"更新支付密码失败";
-            [self.hud hide:YES afterDelay:2.0f];
+            [self.hud hide:YES afterDelay:1.0f];
         
         }
         

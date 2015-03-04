@@ -185,12 +185,13 @@
             ///刷新用户数据
             [QSUserManager updateUserData:nil];
             
-            [self.hud hide:YES afterDelay:2.0f];
+            //[self.hud hide:YES afterDelay:1.5f];
             
-//            ///显示一秒
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                
-//                [alert dismissWithClickedButtonIndex:0 animated:YES];
+            ///显示一秒
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+               // [alert dismissWithClickedButtonIndex:0 animated:YES];
+                [self.hud hide:YES];
             
                 ///返回上一级
                 NSInteger sumVC = [self.navigationController.viewControllers count];
@@ -205,7 +206,7 @@
                     
                 }
                 
-//            });
+            });
         
         } else {
             
@@ -220,7 +221,7 @@
 //                
 //            });
             self.hud.labelText=@"修改支付密码失败";
-            [self.hud hide:YES afterDelay:2.0f];
+            [self.hud hide:YES afterDelay:1.5f];
             
         }
         
