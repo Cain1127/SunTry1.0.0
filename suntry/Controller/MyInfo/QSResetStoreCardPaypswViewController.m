@@ -100,6 +100,28 @@
             
         }
         
+        ///判断是否需要返回到指定的页面
+        if (self.turnBackStep > 2) {
+            
+            int sumVC = (int)[self.navigationController.viewControllers count];
+            int turnBackIndex = sumVC - self.turnBackStep;
+            UIViewController *tempVC = self.navigationController.viewControllers[turnBackIndex];
+            if (tempVC) {
+                
+                [self.navigationController popToViewController:tempVC animated:YES];
+                
+            } else {
+                
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            }
+            
+        } else {
+            
+            [self.navigationController popViewControllerAnimated:NO];
+            
+        }
+        
         ///返回
         [self.navigationController popViewControllerAnimated:YES];
         

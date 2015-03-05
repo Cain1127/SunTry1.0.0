@@ -10,6 +10,8 @@
 
 @interface QSResetStoreCardPaypswViewController : UIViewController
 
+@property (nonatomic,assign) int turnBackStep;//!<返回事件时的步长
+
 /**
  *  @author                 yangshengmeng, 15-03-05 13:03:34
  *
