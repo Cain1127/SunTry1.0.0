@@ -366,17 +366,64 @@
             
             }
             
-        }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                ///刷新数据
+                [self.tableView reloadData];
+                
+                ///结束刷新动画
+                [self.tableView headerEndRefreshing];
+                
+            });
+            
+        } else {
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            ///清空数据
+            [self.dataSource removeAllObjects];
             
-            ///刷新数据
-            [self.tableView reloadData];
+            ///显示提示信息
+            QSHeaderDataModel *tempModel = resultData;
             
-            ///结束刷新动画
-            [self.tableView headerEndRefreshing];
+            ///清空本地缓存
+            if (!tempModel.type) {
+                
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
+                
+                if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                    
+                    NSError *error = nil;
+                    [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+                    if (error) {
+                        
+                        NSLog(@"===============清空本地送餐地址失败=================");
+                        
+                    } else {
+                        
+                        NSLog(@"===============清空本地送餐地址成功=================");
+                        
+                    }
+                    
+                }
+                
+            }
             
-        });
+            ///弹出提示信息
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"获取送餐地址失败") : @"获取送餐地址失败") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                
+                ///刷新数据
+                [self.tableView reloadData];
+                
+                ///结束刷新动画
+                [self.tableView headerEndRefreshing];
+                
+            });
+        
+        }
         
     }];
     

@@ -237,7 +237,7 @@ static char titleLabelKey;//!<标题key
         
         if (2 == indexPath.section) {
             
-            if (userModel.isBoughtStoreCard) {
+            if (userModel.isBoughtStoreCard || [userModel.balance floatValue] > 0.1f) {
                 
                 QSWStoredCardViewController *storeCardVC = [[QSWStoredCardViewController alloc] init];
                 storeCardVC.hidesBottomBarWhenPushed = YES;
