@@ -156,6 +156,13 @@
     NSString *localPwd = [[NSUserDefaults standardUserDefaults] valueForKey:@"pwd"];
     
     if (![originalPwd isEqualToString:localPwd]) {
+//        
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"输入的当前密码有误" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+//        [alert show];
+//        
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            
+//        });
         
         [originalField becomeFirstResponder];
         return;
@@ -208,10 +215,6 @@
                 ///弹出提示
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"密码修改成功！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
                 [alert show];
-                
-//                ///修改登录状态
-//                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_login"];
-//                [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 ///显示1秒后移除提示
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

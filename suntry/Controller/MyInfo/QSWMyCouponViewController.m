@@ -28,10 +28,44 @@
 @property (nonatomic,retain) NSMutableArray *dataSource;    //!<优惠券数据
 @property (nonatomic,strong) MBProgressHUD *hud;            //!<HUD
 
+///选择优惠券时的回调
+@property (nonatomic,copy) void(^pickCouponCallBack)(BOOL flag,id couponModel);
+
 @end
 
 @implementation QSWMyCouponViewController
 
+#pragma mark - 初始化
+/**
+ *  @author         yangshengmeng, 15-03-05 10:03:59
+ *
+ *  @brief          创建一个选择优惠券的优惠卷列表
+ *
+ *  @param callBack 选择一张优惠券时的回调
+ *
+ *  @return         返回当前优惠券选择窗口
+ *
+ *  @since          1.0.0
+ */
+- (instancetype)initWithPickedCallBack:(void(^)(BOOL flag,id couponModel))callBack
+{
+
+    if (self = [super init]) {
+        
+        ///保存回调
+        if (callBack) {
+            
+            self.pickCouponCallBack = callBack;
+            
+        }
+        
+    }
+    
+    return self;
+
+}
+
+#pragma mark - UI搭建
 - (void)viewDidLoad
 {
     
@@ -306,6 +340,18 @@
         [cellNormal updateUserCouponInfoCellUI:self.dataSource[indexPath.row]];
         
         return cellNormal;
+        
+    }
+
+}
+
+#pragma mark - 选择优惠券
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    if (self.pickCouponCallBack && [self.dataSource count] > 0) {
+        
+        self.pickCouponCallBack(YES,self.dataSource[indexPath.row]);
         
     }
 
