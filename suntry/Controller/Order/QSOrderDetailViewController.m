@@ -452,7 +452,7 @@
         [totalPriceString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:ORDER_DETAIL_TOP_VIEW_CONTENT_TEXT_FONT_SIZE] range:NSMakeRange(4, totalPriceStr.length)];
         [self.totalPriceLabel setAttributedText:totalPriceString];
         
-        //TODO: 优惠券数据
+        //TODO: 优惠券数据更新
         NSArray *couponList = [NSArray array];
         CGFloat nextItemY = self.paymentLabel.frame.origin.y+self.paymentLabel.frame.size.height+1;
         if ([couponList count]>0) {

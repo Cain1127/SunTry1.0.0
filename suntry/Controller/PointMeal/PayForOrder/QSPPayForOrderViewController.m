@@ -108,7 +108,7 @@
     [self.orderPriceLabel setTextAlignment:NSTextAlignmentRight];
     [self.view addSubview:self.orderPriceLabel];
     
-    //TODO: 订单价格
+    // 订单价格
     NSString *price = orderFormModel.payPrice;
     NSMutableAttributedString *priceString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%@",price]];
     [priceString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0,1)];
@@ -121,7 +121,7 @@
     [lineView2 setBackgroundColor:PAY_FOR_ORDER_LINE_COLOR];
     [self.view addSubview:lineView2];
     
-    //TODO: 储值卡账户余额
+    //储值卡账户余额
     QSLabel *userBalanceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(foodCountLabel.frame.origin.x, lineView2.frame.origin.y+lineView2.frame.size.height+(44-17)/2, foodCountLabel.frame.size.width, foodCountLabel.frame.size.height)];
     [userBalanceLabel setFont:[UIFont systemFontOfSize:PAY_FOR_ORDER_TITLE_FONT_SIZE]];
     [userBalanceLabel setBackgroundColor:[UIColor clearColor]];

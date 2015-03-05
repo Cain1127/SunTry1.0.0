@@ -325,8 +325,6 @@
         NSLog(@"areaBT ");
         [self hideKeybord];
         
-        //FIXME: 区数组
-
         ///数据地址
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/districtData"];
@@ -335,7 +333,7 @@
         ///encode数据
         QSDistrictReturnData *districtData = [NSKeyedUnarchiver unarchiveObjectWithData:saveData];
         
-        //FIXME: 区数组
+        //区数组
         NSMutableArray *areaArray = [NSMutableArray arrayWithCapacity:0];
         for (QSDistrictDataModel *data in districtData.districtList) {
             if (data&&[data isKindOfClass:[QSDistrictDataModel class]]) {
@@ -727,14 +725,14 @@
 - (void)selectedItem:(id)data withIndex:(NSInteger)index inView:(QSPItemSelectePopView*)view
 {
     if (view.tag == 110) {
-        //FIXME: 城市名字
+        //城市名字
         NSString *cityName = @"";
         if (data&&[data isKindOfClass:[NSString class]]) {
             cityName = (NSString*)data;
         }
         [self.cityTextField setPlaceholder:cityName];
     }else if (view.tag == 111) {
-        //FIXME: 区名字
+        //区名字
         NSString *areaName = @"";
         if (data&&[data isKindOfClass:[NSString class]]) {
             areaName = (NSString*)data;

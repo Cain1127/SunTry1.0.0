@@ -28,5 +28,7 @@
 @property (nonatomic,copy) NSString *order_shippingState;   //!<配送状态
 
 @property (nonatomic,copy) NSArray  *goods_list;    //!<菜品数据列表
+//@property (nonatomic,copy) NSArray  *counpon_list;    //!<优惠数据列表  //TODO: 优惠券数据需和接口数据完成后对接
+
 
 @end

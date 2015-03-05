@@ -109,7 +109,7 @@
     if (arrayData&&[arrayData isKindOfClass:[NSArray class]]) {
         for (int i=0;i<[arrayData count];i++) {
             
-            //FIXME: 元素的名字
+            //元素的名字
             NSString *itemName = [arrayData objectAtIndex:i];
             
             UIView *itembgView = [[UIView alloc] initWithFrame:CGRectMake(2, 2+(44+2)*i, self.contentBackgroundView.frame.size.width-5, 44)];

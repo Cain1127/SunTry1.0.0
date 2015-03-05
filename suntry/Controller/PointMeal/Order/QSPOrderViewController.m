@@ -39,6 +39,8 @@
 #define ORDER_VIEW_SPECIAL_CELL_TITLE_FONT_SIZE     17.
 #define ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR          [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 
+//!!!: 下单使用优惠券入口开关
+#define ORDER_VIEW_CAN_USE_COUPON_FLAG             NO
 
 @interface QSPOrderViewController ()<QSPOrderViewHadOrderCellDelegate,QSPShoppingCarViewDelegate, QSPOrderAddNewAddressViewDelegate, QSPOrderPaymentViewDelegate>
 
@@ -322,20 +324,6 @@
     [self updateHadOrderFoodList];
     [self updateHadOrderCount];
     [self updateSpecialOfferCount];
-    
-    [self.deliveryTimeView setFrame:CGRectMake(0, _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height, self.deliveryTimeView.frame.size.width, self.deliveryTimeView.frame.size.height)];
-    
-    CGRect tempFrame = _remarkFrameView.frame;
-    tempFrame.origin.y = _deliveryTimeView.frame.origin.y+_deliveryTimeView.frame.size.height;
-    [_remarkFrameView setFrame:tempFrame];
-    
-    
-    CGRect payFrame = _paymentView.frame;
-    payFrame.origin.y = _remarkFrameView.frame.origin.y+_remarkFrameView.frame.size.height;
-    _paymentView.frame = payFrame;
-    [_scrollView addSubview:_paymentView];
-    
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _paymentView.frame.origin.y+_paymentView.frame.size.height+45)];
 }
 
 - (void)updateAddress
@@ -446,6 +434,7 @@
     if (_shoppingCarView) {
         [_shoppingCarView updateShoppingCar];
     }
+    
 }
 
 - (void)updateHadOrderFoodList
@@ -469,109 +458,142 @@
         [_hadOrderFrameView setFrame:CGRectMake(_hadOrderFrameView.frame.origin.x, _hadOrderFrameView.frame.origin.y, _hadOrderFrameView.frame.size.width, cell.frame.origin.y+cell.frame.size.height)];
     }
     
+    CGRect tempsSpecialOfferFrame = _specialOfferFrameView.frame;
+    tempsSpecialOfferFrame.origin.y = _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height;
+    [_specialOfferFrameView setFrame:tempsSpecialOfferFrame];
+    
+    [self.deliveryTimeView setFrame:CGRectMake(0, _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height, self.deliveryTimeView.frame.size.width, self.deliveryTimeView.frame.size.height)];
+    
+    CGRect tempRemarkFrame = _remarkFrameView.frame;
+    tempRemarkFrame.origin.y = _deliveryTimeView.frame.origin.y+_deliveryTimeView.frame.size.height;
+    [_remarkFrameView setFrame:tempRemarkFrame];
+    
+    
+    CGRect payFrame = _paymentView.frame;
+    payFrame.origin.y = _remarkFrameView.frame.origin.y+_remarkFrameView.frame.size.height;
+    _paymentView.frame = payFrame;
+    [_scrollView addSubview:_paymentView];
+    
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _paymentView.frame.origin.y+_paymentView.frame.size.height+45)];
 }
 
 - (void)updateSpecialOfferCount
 {
-    CGFloat couponPrice = 0.f;
-    if (self.couponList&&[self.couponList count]>0) {
-        
-//        for (int i=0; 0<[self.couponList count]; i++) {
-//            // 能用多张优惠券逻辑
-//        }
-        QSCouponInfoDataModel *couponItem = [self.couponList objectAtIndex:0];
-        if(couponItem&&[couponItem isKindOfClass:[QSCouponInfoDataModel class]])
-        {
-            if ([couponItem.type isEqualToString:@"8"]) {
-                couponPrice = (couponItem.pice).floatValue;
-            }
-        }
-        
-    }
-    //计算宽度
-    NSString* specialOfferTotalCountStr = [NSString stringWithFormat:@"%.2f",couponPrice];
-    CGFloat specialOfferTotalCountStrWidth = [specialOfferTotalCountStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDERVIEWCONTROLLER_TITLE_FONT_SIZE]+4;
-    [_specialOfferTotalCountTip setFrame:CGRectMake(_specialOfferTotalCountTip.frame.origin.x, _specialOfferTotalCountTip.frame.origin.y, specialOfferTotalCountStrWidth, _specialOfferTotalCountTip.frame.size.height)];
-    [_specialOfferTotalCountTip setText:specialOfferTotalCountStr];
-    
-    //设置位置
-    CGRect tempFrame = _specialOfferTotalTip.frame;
-    tempFrame.origin.x = _scrollView.frame.size.width-ORDERVIEWCONTROLLER_ORDER_COUNT_INFO_MARGIN_RIGHT-_specialOfferTotalTip.frame.size.width-_specialOfferTotalCountTip.frame.size.width-_specialOfferTotalUnitTip.frame.size.width;
-    [_specialOfferTotalTip setFrame:tempFrame];
-    
-    tempFrame = _specialOfferTotalCountTip.frame;
-    tempFrame.origin.x = _specialOfferTotalTip.frame.origin.x+_specialOfferTotalTip.frame.size.width;
-    [_specialOfferTotalCountTip setFrame:tempFrame];
-    
-    tempFrame = _specialOfferTotalUnitTip.frame;
-    tempFrame.origin.x = _specialOfferTotalCountTip.frame.origin.x+_specialOfferTotalCountTip.frame.size.width;
-    [_specialOfferTotalUnitTip setFrame:tempFrame];
-    
-    tempFrame = _specialOfferFrameView.frame;
-    tempFrame.origin.y = _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height;
-    [_specialOfferFrameView setFrame:tempFrame];
-    
-    // 用户的优惠券更新
-    NSArray *specialOfferList = self.couponList;//[NSArray arrayWithObjects:@"", nil];
-    if (!specialOfferList || [specialOfferList count]==0 ) {
-        specialOfferList = [NSArray arrayWithObjects:@"暂无优惠", nil];
-    }
-    
-    for (UIView *view in [_specialOfferFrameView subviews]) {
-        if (view.tag>=8000&&view.tag<8009) {
-            [view removeFromSuperview];
-        }
-    }
-    for (int i=0; i<[specialOfferList count]; i++) {
-        
-        QSBlockButtonStyleModel *specialOfferBtStyle = [[QSBlockButtonStyleModel alloc] init];
-        [specialOfferBtStyle setBgColor:[UIColor clearColor]];
-        UIButton *specialOfferBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, _specialOfferTotalTip.frame.origin.y+_specialOfferTotalTip.frame.size.height+12 + i * 45, SIZE_DEVICE_WIDTH-24, 45) andButtonStyle:specialOfferBtStyle andCallBack:^(UIButton *button) {
-            NSLog(@"specialOfferBt");
+    if (!ORDER_VIEW_CAN_USE_COUPON_FLAG) {
+        [_specialOfferFrameView setFrame:CGRectMake(_specialOfferFrameView.frame.origin.x, _specialOfferFrameView.frame.origin.y, _specialOfferFrameView.frame.size.width, 0)];
+    }else{
+        CGFloat couponPrice = 0.f;
+        if (self.couponList&&[self.couponList count]>0) {
             
-            QSWMyCouponViewController *myCouponVc = [[QSWMyCouponViewController alloc] initWithPickedCallBack:^(BOOL flag, QSCouponInfoDataModel *couponModel) {
-                if (flag) {
-                    if (couponModel&&[couponModel isKindOfClass:[QSCouponInfoDataModel class]]) {
-                        NSMutableArray *couponList = [NSMutableArray arrayWithObjects:couponModel, nil];
-                        self.couponList = couponList;
-                        [self updateSpecialOfferCount];
-                    }
+            //        for (int i=0; 0<[self.couponList count]; i++) {
+            //            // 能用多张优惠券逻辑
+            //        }
+            QSCouponInfoDataModel *couponItem = [self.couponList objectAtIndex:0];
+            if(couponItem&&[couponItem isKindOfClass:[QSCouponInfoDataModel class]])
+            {
+                if ([couponItem.type isEqualToString:@"8"]) {
+                    couponPrice = (couponItem.pice).floatValue;
                 }
-            }];
-            [self.navigationController pushViewController:myCouponVc animated:YES];
+            }
             
-        }];
-        UIImageView *arrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
-        [arrowMarkView setFrame:CGRectMake(specialOfferBt.frame.size.width-arrowMarkView.frame.size.width-6, (specialOfferBt.frame.size.height-arrowMarkView.frame.size.height)/2, arrowMarkView.frame.size.width, arrowMarkView.frame.size.height)];
-        [specialOfferBt addSubview:arrowMarkView];
-        [specialOfferBt setTag:8000+i];
-        [_specialOfferFrameView addSubview:specialOfferBt];
+        }
+        //计算宽度
+        NSString* specialOfferTotalCountStr = [NSString stringWithFormat:@"%.2f",couponPrice];
+        CGFloat specialOfferTotalCountStrWidth = [specialOfferTotalCountStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDERVIEWCONTROLLER_TITLE_FONT_SIZE]+4;
+        [_specialOfferTotalCountTip setFrame:CGRectMake(_specialOfferTotalCountTip.frame.origin.x, _specialOfferTotalCountTip.frame.origin.y, specialOfferTotalCountStrWidth, _specialOfferTotalCountTip.frame.size.height)];
+        [_specialOfferTotalCountTip setText:specialOfferTotalCountStr];
         
-        QSLabel *scNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, (specialOfferBt.frame.size.height-17)/2, specialOfferBt.frame.size.width-26, 17)];
-        [scNameLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_SPECIAL_CELL_TITLE_FONT_SIZE]];
-        [scNameLabel setBackgroundColor:[UIColor clearColor]];
-        NSString *titleStr = @"";
-        id item = [specialOfferList objectAtIndex:i];
-        if (item) {
-            if ([item isKindOfClass:[NSString class]]) {
-                titleStr = item;
-            }else if ([item isKindOfClass:[QSCouponInfoDataModel class]]) {
-                titleStr = ((QSCouponInfoDataModel*)item).goods_name;
+        //设置位置
+        CGRect tempFrame = _specialOfferTotalTip.frame;
+        tempFrame.origin.x = _scrollView.frame.size.width-ORDERVIEWCONTROLLER_ORDER_COUNT_INFO_MARGIN_RIGHT-_specialOfferTotalTip.frame.size.width-_specialOfferTotalCountTip.frame.size.width-_specialOfferTotalUnitTip.frame.size.width;
+        [_specialOfferTotalTip setFrame:tempFrame];
+        
+        tempFrame = _specialOfferTotalCountTip.frame;
+        tempFrame.origin.x = _specialOfferTotalTip.frame.origin.x+_specialOfferTotalTip.frame.size.width;
+        [_specialOfferTotalCountTip setFrame:tempFrame];
+        
+        tempFrame = _specialOfferTotalUnitTip.frame;
+        tempFrame.origin.x = _specialOfferTotalCountTip.frame.origin.x+_specialOfferTotalCountTip.frame.size.width;
+        [_specialOfferTotalUnitTip setFrame:tempFrame];
+        
+        tempFrame = _specialOfferFrameView.frame;
+        tempFrame.origin.y = _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height;
+        [_specialOfferFrameView setFrame:tempFrame];
+        
+        // 用户的优惠券更新
+        NSArray *specialOfferList = self.couponList;//[NSArray arrayWithObjects:@"", nil];
+        if (!specialOfferList || [specialOfferList count]==0 ) {
+            specialOfferList = [NSArray arrayWithObjects:@"暂无优惠", nil];
+        }
+        
+        for (UIView *view in [_specialOfferFrameView subviews]) {
+            if (view.tag>=8000&&view.tag<8009) {
+                [view removeFromSuperview];
             }
         }
-        [scNameLabel setText:titleStr];
-        [scNameLabel setTextColor:ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR];
-        [specialOfferBt addSubview:scNameLabel];
-        
-        UIView *lineButtomView = [[UIView alloc] initWithFrame:CGRectMake(0,specialOfferBt.frame.size.height-1, SIZE_DEVICE_WIDTH-24, 1)];
-        [lineButtomView setBackgroundColor:ORDERVIEWCONTROLLER_LINE_COLOR];
-        [specialOfferBt addSubview:lineButtomView];
-        
-        [_specialOfferFrameView setFrame:CGRectMake(_specialOfferFrameView.frame.origin.x, _specialOfferFrameView.frame.origin.y, _specialOfferFrameView.frame.size.width, specialOfferBt.frame.origin.y+specialOfferBt.frame.size.height)];
-        
+        for (int i=0; i<[specialOfferList count]; i++) {
+            
+            QSBlockButtonStyleModel *specialOfferBtStyle = [[QSBlockButtonStyleModel alloc] init];
+            [specialOfferBtStyle setBgColor:[UIColor clearColor]];
+            UIButton *specialOfferBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, _specialOfferTotalTip.frame.origin.y+_specialOfferTotalTip.frame.size.height+12 + i * 45, SIZE_DEVICE_WIDTH-24, 45) andButtonStyle:specialOfferBtStyle andCallBack:^(UIButton *button) {
+                NSLog(@"specialOfferBt");
+                
+                QSWMyCouponViewController *myCouponVc = [[QSWMyCouponViewController alloc] initWithPickedCallBack:^(BOOL flag, QSCouponInfoDataModel *couponModel) {
+                    if (flag) {
+                        if (couponModel&&[couponModel isKindOfClass:[QSCouponInfoDataModel class]]) {
+                            NSMutableArray *couponList = [NSMutableArray arrayWithObjects:couponModel, nil];
+                            self.couponList = couponList;
+                            [self updateSpecialOfferCount];
+                        }
+                    }
+                }];
+                [self.navigationController pushViewController:myCouponVc animated:YES];
+                
+            }];
+            UIImageView *arrowMarkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"public_arrow_normal"]];
+            [arrowMarkView setFrame:CGRectMake(specialOfferBt.frame.size.width-arrowMarkView.frame.size.width-6, (specialOfferBt.frame.size.height-arrowMarkView.frame.size.height)/2, arrowMarkView.frame.size.width, arrowMarkView.frame.size.height)];
+            [specialOfferBt addSubview:arrowMarkView];
+            [specialOfferBt setTag:8000+i];
+            [_specialOfferFrameView addSubview:specialOfferBt];
+            
+            QSLabel *scNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(0, (specialOfferBt.frame.size.height-17)/2, specialOfferBt.frame.size.width-26, 17)];
+            [scNameLabel setFont:[UIFont systemFontOfSize:ORDER_VIEW_SPECIAL_CELL_TITLE_FONT_SIZE]];
+            [scNameLabel setBackgroundColor:[UIColor clearColor]];
+            NSString *titleStr = @"";
+            id item = [specialOfferList objectAtIndex:i];
+            if (item) {
+                if ([item isKindOfClass:[NSString class]]) {
+                    titleStr = item;
+                }else if ([item isKindOfClass:[QSCouponInfoDataModel class]]) {
+                    titleStr = ((QSCouponInfoDataModel*)item).goods_name;
+                }
+            }
+            [scNameLabel setText:titleStr];
+            [scNameLabel setTextColor:ORDER_VIEW_SPECIAL_CELL_TEXT_COLOR];
+            [specialOfferBt addSubview:scNameLabel];
+            
+            UIView *lineButtomView = [[UIView alloc] initWithFrame:CGRectMake(0,specialOfferBt.frame.size.height-1, SIZE_DEVICE_WIDTH-24, 1)];
+            [lineButtomView setBackgroundColor:ORDERVIEWCONTROLLER_LINE_COLOR];
+            [specialOfferBt addSubview:lineButtomView];
+            
+            [_specialOfferFrameView setFrame:CGRectMake(_specialOfferFrameView.frame.origin.x, _specialOfferFrameView.frame.origin.y, _specialOfferFrameView.frame.size.width, specialOfferBt.frame.origin.y+specialOfferBt.frame.size.height)];
+            
+        }
     }
+
+    [self.deliveryTimeView setFrame:CGRectMake(0, _specialOfferFrameView.frame.origin.y+_specialOfferFrameView.frame.size.height, self.deliveryTimeView.frame.size.width, self.deliveryTimeView.frame.size.height)];
+    
+    CGRect tempFrame = _remarkFrameView.frame;
+    tempFrame.origin.y = _deliveryTimeView.frame.origin.y+_deliveryTimeView.frame.size.height;
+    [_remarkFrameView setFrame:tempFrame];
     
     
+    CGRect payFrame = _paymentView.frame;
+    payFrame.origin.y = _remarkFrameView.frame.origin.y+_remarkFrameView.frame.size.height;
+    _paymentView.frame = payFrame;
+    [_scrollView addSubview:_paymentView];
+    
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _paymentView.frame.origin.y+_paymentView.frame.size.height+45)];
 }
 
 - (void)viewDidLoad {
