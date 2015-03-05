@@ -22,6 +22,7 @@
 #import "QSHeaderDataModel.h"
 #import "QSResetStoreCardPaypswViewController.h"
 #import "QSStoreCardForgetPswViewController.h"
+#import "QSUserManager.h"
 
 #define PAY_FOR_ORDER_TITLE_FONT_SIZE       15.
 #define PAY_FOR_ORDER_TEXT_COLOR            [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -208,6 +209,9 @@
             
             ///支付成功
             if (rRequestResultTypeSuccess == resultStatus) {
+                
+                ///刷新用户数据
+                [QSUserManager updateUserData:nil];
                 
                 NSLog(@"订单：%@ 支付成功",orderFormModel.order_id);
                 //支付成功跳转：
