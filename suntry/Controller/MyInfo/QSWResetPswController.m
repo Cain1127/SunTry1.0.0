@@ -37,6 +37,7 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     ///标题
     UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 30.0f)];

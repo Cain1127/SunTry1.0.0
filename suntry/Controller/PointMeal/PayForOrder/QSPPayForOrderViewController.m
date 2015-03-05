@@ -164,7 +164,6 @@
         
         NSLog(@"forgetPassBtl");
         QSStoreCardForgetPswViewController *VC = [[QSStoreCardForgetPswViewController alloc] init];
-        self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:VC animated:YES];
         
     }];
