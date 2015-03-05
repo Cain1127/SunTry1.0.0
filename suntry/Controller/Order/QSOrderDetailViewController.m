@@ -646,18 +646,13 @@
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height)];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    [self getDetailData];
-}
+- (void)viewWillAppear:(BOOL)animated
+{
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+    self.navigationController.navigationBar.hidden = NO;
+    [super viewWillAppear:animated];
 
+}
 
 - (void)getDetailData
 {
@@ -773,7 +768,7 @@
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 
                 return;
-            }else{
+            } else {
                 
                 QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
                 QSOrderInfoDataModel *orderInfoModel = [[QSOrderInfoDataModel alloc] init];

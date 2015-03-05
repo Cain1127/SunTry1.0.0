@@ -11,6 +11,7 @@
 
 #import "DeviceSizeHeader.h"
 #import "ColorHeader.h"
+#import "ImageHeader.h"
 
 #import "QSBlockButton.h"
 
@@ -74,33 +75,21 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    [self.navigationController setNavigationBarHidden:YES];
     
-    ///导航栏底view
-    UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
-    navRootView.image = [UIImage imageNamed:@"nav_backgroud"];
-    navRootView.userInteractionEnabled = YES;
-    [self.view addSubview:navRootView];
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"新的支付密码"];
+    self.navigationItem.titleView = navTitle;
     
-    ///标题
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(navRootView.frame.size.width / 2.0f - 60.0f, 27.0f, 120.0f, 30.0f)];
-    titleLabel.text = @"新的支付密码";
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    [navRootView addSubview:titleLabel];
+    QSBlockButtonStyleModel *backButtonStyle = [[QSBlockButtonStyleModel alloc] init];
+    [backButtonStyle setImagesNormal:IMAGE_NAVIGATIONBAR_BACK_NORMAL];
+    [backButtonStyle setImagesHighted:IMAGE_NAVIGATIONBAR_MEINFO_HIGHLIGHTED];
     
-    ///自定义返回按钮
-    UIButton *turnBackButton = [UIButton createBlockButtonWithFrame:CGRectMake(5.0f, 20.0f, 44.0f, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+    UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
         
-        ///判断是否有回调
-        if (self.turnBackBlock) {
-            
-            self.turnBackBlock(YES);
-            
-        }
-        
-        ///判断是否需要返回到指定的页面
         if (self.turnBackStep > 2) {
             
             int sumVC = (int)[self.navigationController.viewControllers count];
@@ -118,18 +107,12 @@
             
         } else {
             
-            [self.navigationController popViewControllerAnimated:NO];
+            [self.navigationController popViewControllerAnimated:YES];
             
         }
         
-        ///返回
-        [self.navigationController popViewControllerAnimated:YES];
-        
     }];
-    ///设置返回按钮的颜色
-    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal];
-    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted];
-    [navRootView addSubview:turnBackButton];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     ///获取用户信息
     self.userInfo = [QSUserManager getCurrentUserData];
@@ -185,18 +168,22 @@
     self.resetButton.layer.cornerRadius = 6.0f;
     [self.view addSubview:self.resetButton];
     
-    ///忘记密码按钮
-    UIButton *forgetPayPswButton = [UIButton createBlockButtonWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.resetButton.frame.origin.y + self.resetButton.frame.size.height + 5.0f, 120.0f, 30.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+    if (self.userInfo.pay_salt && [self.userInfo.pay_salt length] > 0) {
         
-        ///进入忘记密码页面
-        QSStoreCardForgetPswViewController *resetPswVC = [[QSStoreCardForgetPswViewController alloc] init];
-        [self.navigationController pushViewController:resetPswVC animated:YES];
+        ///忘记密码按钮
+        UIButton *forgetPayPswButton = [UIButton createBlockButtonWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.resetButton.frame.origin.y + self.resetButton.frame.size.height + 5.0f, 120.0f, 30.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+            
+            ///进入忘记密码页面
+            QSStoreCardForgetPswViewController *resetPswVC = [[QSStoreCardForgetPswViewController alloc] init];
+            [self.navigationController pushViewController:resetPswVC animated:YES];
+            
+        }];
+        [forgetPayPswButton setTitle:@"忘记密码？" forState:UIControlStateNormal];
+        [forgetPayPswButton setTitleColor:COLOR_CHARACTERS_ROOTLINE forState:UIControlStateNormal];
+        [forgetPayPswButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateHighlighted];
+        [self.view addSubview:forgetPayPswButton];
         
-    }];
-    [forgetPayPswButton setTitle:@"忘记密码？" forState:UIControlStateNormal];
-    [forgetPayPswButton setTitleColor:COLOR_CHARACTERS_ROOTLINE forState:UIControlStateNormal];
-    [forgetPayPswButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateHighlighted];
-    [self.view addSubview:forgetPayPswButton];
+    }
     
 }
 

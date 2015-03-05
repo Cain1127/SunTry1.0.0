@@ -596,14 +596,16 @@
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _paymentView.frame.origin.y+_paymentView.frame.size.height+45)];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if ([QSPShoppingCarData getTotalFoodCount] == 0) {
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+        
+    }
     
     int isLogin = [[[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"] intValue];
     
@@ -620,8 +622,10 @@
         };
         [self.navigationController pushViewController:loginVC animated:YES];
         return;
-    }else{
+    } else {
+        
         [self updateView];
+        
     }
     
     NSString *remarkStr = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_ORDER_USER_REMARK_INFO];
@@ -655,14 +659,20 @@
     
     [QSPShoppingCarData setShoppingCarDataListWithData:foodData withCount:count AddOrSetPackageData:NO];
     
-    if ([QSPShoppingCarData getTotalFoodCount]==0) {
+    if ([QSPShoppingCarData getTotalFoodCount] == 0) {
+        
         [self.navigationController popViewControllerAnimated:YES];
+        
     }
     
     if (count==0) {
+        
         [self updateView];
-    }else{
+        
+    } else {
+        
         [self updateHadOrderCount];
+        
     }
     
 }

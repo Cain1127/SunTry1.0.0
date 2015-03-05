@@ -60,7 +60,6 @@
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
-    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     CGFloat offsetY = 3;
@@ -224,7 +223,6 @@
             } else {
                 
                 QSHeaderDataModel *tempModel = resultData;
-                
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"支付失败") : @"支付失败") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [av show];
                 
@@ -249,14 +247,6 @@
     }];
     [self.view addSubview:submitBt];
     
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    
-    self.navigationController.navigationBar.hidden = NO;
-    [super viewWillAppear:animated];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -300,7 +290,6 @@
         //没有支付密码
         QSResetStoreCardPaypswViewController *nopassVc=[[QSResetStoreCardPaypswViewController alloc] init];
         nopassVc.turnBackStep = 3;
-        self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:nopassVc animated:YES];
         
     }
