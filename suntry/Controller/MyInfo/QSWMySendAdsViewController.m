@@ -205,7 +205,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    if ([self.dataSource count] > 0) {
+    if ([self.dataSource count] > 0 && indexPath.row <= [self.dataSource count]) {
         
         ///模型
         QSUserAddressDataModel *tempModel = self.dataSource[indexPath.row];
@@ -341,6 +341,9 @@
                 [tempData writeToFile:path atomically:YES];
                 
             } else {
+                
+                ///清空数据
+                [self.dataSource removeAllObjects];
             
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];

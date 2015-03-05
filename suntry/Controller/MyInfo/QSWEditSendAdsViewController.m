@@ -378,8 +378,11 @@
             
         } else {
             
+            ///头模型
+            QSHeaderDataModel *tempModel = resultData;
+            
             ///弹出提示
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"删除送餐地址失败，请稍后再试。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"删除送餐地址失败，请稍后再试。") : @"删除送餐地址失败，请稍后再试。") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alert show];
             
             ///显示1秒后移除提示
