@@ -29,7 +29,7 @@
 @property (nonatomic,strong) MBProgressHUD *hud;            //!<HUD
 
 ///选择优惠券时的回调
-@property (nonatomic,copy) void(^pickCouponCallBack)(BOOL flag,id couponModel);
+@property (nonatomic,copy) void(^pickCouponCallBack)(BOOL flag,QSCouponInfoDataModel *couponModel);
 
 @end
 
@@ -47,7 +47,7 @@
  *
  *  @since          1.0.0
  */
-- (instancetype)initWithPickedCallBack:(void(^)(BOOL flag,id couponModel))callBack
+- (instancetype)initWithPickedCallBack:(void(^)(BOOL flag,QSCouponInfoDataModel *couponModel))callBack
 {
 
     if (self = [super init]) {
@@ -81,7 +81,6 @@
     ///设置返回按钮的颜色
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-    
     self.navigationItem.leftBarButtonItem = turnBackButton;
     
     ///标题
@@ -185,13 +184,6 @@
         [self.couponListView headerEndRefreshing];
         
     }];
-
-}
-
-- (void)getMoreUserCouponList
-{
-
-    
 
 }
 
