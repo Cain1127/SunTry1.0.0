@@ -21,6 +21,7 @@
 #import "MBProgressHUD.h"
 #import "QSHeaderDataModel.h"
 #import "QSResetStoreCardPaypswViewController.h"
+#import "QSStoreCardForgetPswViewController.h"
 
 #define PAY_FOR_ORDER_TITLE_FONT_SIZE       15.
 #define PAY_FOR_ORDER_TEXT_COLOR            [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
@@ -163,7 +164,8 @@
     UIButton *forgetPassBt = [UIButton createBlockButtonWithFrame:CGRectMake(lineView1.frame.origin.x, _payCardPassTextField.frame.origin.y+_payCardPassTextField.frame.size.height+2, SIZE_DEVICE_WIDTH-12*2, 44) andButtonStyle:forgetPassBtStyleModel andCallBack:^(UIButton *button) {
         
         NSLog(@"forgetPassBtl");
-        QSWForgetPswController *VC=[[QSWForgetPswController alloc] init];
+        QSStoreCardForgetPswViewController *VC = [[QSStoreCardForgetPswViewController alloc] init];
+        self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:VC animated:YES];
         
     }];
@@ -219,7 +221,7 @@
                 [ossVc setOrderData:orderResultData];
                 [self.navigationController pushViewController:ossVc animated:YES];
                 
-            }else{
+            } else {
                 
                 QSHeaderDataModel *tempModel = resultData;
                 
@@ -288,6 +290,7 @@
     
 }
 
+#pragma mark - 判断当前是否有储值卡支付密码
 - (void)checkHadPayPassWord
 {
     
@@ -296,6 +299,7 @@
         
         //没有支付密码
         QSResetStoreCardPaypswViewController *nopassVc=[[QSResetStoreCardPaypswViewController alloc] init];
+        self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:nopassVc animated:YES];
         
     }

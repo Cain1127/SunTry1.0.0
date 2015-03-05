@@ -30,12 +30,43 @@
 @property (nonatomic,strong) UIButton *resetButton;                 //!<重置按钮
 
 @property (nonatomic,strong) QSUserInfoDataModel *userInfo;         //!<用户信息
+@property (nonatomic,copy) void(^turnBackBlock)(BOOL flag);         //!<返回时的回调
 
 @property (nonatomic,retain) MBProgressHUD *hud;                    //!<HUD
 
 @end
 
 @implementation QSResetStoreCardPaypswViewController
+
+#pragma mark - 初始化
+/**
+ *  @author                 yangshengmeng, 15-03-05 13:03:34
+ *
+ *  @brief                  根据返回时执行的block创建储值卡密码设置页
+ *
+ *  @param turnBackBlock    返回时的回调block
+ *
+ *  @return                 返回储值卡支付密码设置页面
+ *
+ *  @since                  1.0.0
+ */
+- (instancetype)initWithTurnBackBlock:(void(^)(BOOL))turnBackBlock
+{
+
+    if (self = [super init]) {
+        
+        ///保存回调
+        if (turnBackBlock) {
+            
+            self.turnBackBlock = turnBackBlock;
+            
+        }
+        
+    }
+    
+    return self;
+
+}
 
 #pragma mark - UI搭建
 - (void)viewDidLoad {
@@ -61,6 +92,13 @@
     
     ///自定义返回按钮
     UIButton *turnBackButton = [UIButton createBlockButtonWithFrame:CGRectMake(5.0f, 20.0f, 44.0f, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+        
+        ///判断是否有回调
+        if (self.turnBackBlock) {
+            
+            self.turnBackBlock(YES);
+            
+        }
         
         ///返回
         [self.navigationController popViewControllerAnimated:YES];
