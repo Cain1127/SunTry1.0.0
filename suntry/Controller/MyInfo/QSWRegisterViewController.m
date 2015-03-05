@@ -278,7 +278,6 @@
     
     ///封装登录参数
     NSDictionary *params = @{@"account" : userName,@"psw" : pwd,@"type" : @"1"};
-    
     [QSRequestManager requestDataWithType:rRequestTypeRegister andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///判断是否登录成功
