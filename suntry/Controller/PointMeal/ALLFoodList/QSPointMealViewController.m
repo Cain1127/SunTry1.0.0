@@ -639,7 +639,7 @@ typedef enum {
     if (scrollView == self.foodInfoListTableView)
     {
         
-        CGFloat sectionHeaderHeight = FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT*2;
+        CGFloat sectionHeaderHeight = FOOD_INFOLIST_TABLEVIEW_CELL_HEADER_HEIGHT*3;
         if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
             
             scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
