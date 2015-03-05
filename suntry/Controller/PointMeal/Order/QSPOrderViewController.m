@@ -473,9 +473,23 @@
 
 - (void)updateSpecialOfferCount
 {
-    
+    CGFloat couponPrice = 0.f;
+    if (self.couponList&&[self.couponList count]>0) {
+        
+//        for (int i=0; 0<[self.couponList count]; i++) {
+//            // 能用多张优惠券逻辑
+//        }
+        QSCouponInfoDataModel *couponItem = [self.couponList objectAtIndex:0];
+        if(couponItem&&[couponItem isKindOfClass:[QSCouponInfoDataModel class]])
+        {
+            if ([couponItem.type isEqualToString:@"8"]) {
+                couponPrice = (couponItem.pice).floatValue;
+            }
+        }
+        
+    }
     //计算宽度
-    NSString* specialOfferTotalCountStr = [NSString stringWithFormat:@"%ld",(long)0];
+    NSString* specialOfferTotalCountStr = [NSString stringWithFormat:@"%.2f",couponPrice];
     CGFloat specialOfferTotalCountStrWidth = [specialOfferTotalCountStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDERVIEWCONTROLLER_TITLE_FONT_SIZE]+4;
     [_specialOfferTotalCountTip setFrame:CGRectMake(_specialOfferTotalCountTip.frame.origin.x, _specialOfferTotalCountTip.frame.origin.y, specialOfferTotalCountStrWidth, _specialOfferTotalCountTip.frame.size.height)];
     [_specialOfferTotalCountTip setText:specialOfferTotalCountStr];
@@ -497,7 +511,7 @@
     tempFrame.origin.y = _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height;
     [_specialOfferFrameView setFrame:tempFrame];
     
-    //TODO: 用户的优惠券设置
+    // 用户的优惠券更新
     NSArray *specialOfferList = self.couponList;//[NSArray arrayWithObjects:@"", nil];
     if (!specialOfferList || [specialOfferList count]==0 ) {
         specialOfferList = [NSArray arrayWithObjects:@"暂无优惠", nil];
@@ -515,7 +529,15 @@
         UIButton *specialOfferBt = [UIButton createBlockButtonWithFrame:CGRectMake(12, _specialOfferTotalTip.frame.origin.y+_specialOfferTotalTip.frame.size.height+12 + i * 45, SIZE_DEVICE_WIDTH-24, 45) andButtonStyle:specialOfferBtStyle andCallBack:^(UIButton *button) {
             NSLog(@"specialOfferBt");
             
-            QSWMyCouponViewController *myCouponVc = [[QSWMyCouponViewController alloc] init];
+            QSWMyCouponViewController *myCouponVc = [[QSWMyCouponViewController alloc] initWithPickedCallBack:^(BOOL flag, QSCouponInfoDataModel *couponModel) {
+                if (flag) {
+                    if (couponModel&&[couponModel isKindOfClass:[QSCouponInfoDataModel class]]) {
+                        NSMutableArray *couponList = [NSMutableArray arrayWithObjects:couponModel, nil];
+                        self.couponList = couponList;
+                        [self updateSpecialOfferCount];
+                    }
+                }
+            }];
             [self.navigationController pushViewController:myCouponVc animated:YES];
             
         }];
@@ -623,6 +645,9 @@
     
 }
 
+
+
+#pragma mark - 提交下单
 /**
  *  点击确定下单响应
  *
@@ -727,7 +752,27 @@
         if (!_couponList) {
             _couponList = [NSArray array];
         }
-        [tempParams setObject:_couponList forKey:@"coupon"];
+        
+        NSMutableArray *couponlist = [NSMutableArray arrayWithCapacity:0];
+        if (_couponList &&[_couponList count]>0) {
+            for (int i=0; i<[_couponList count]; i++)
+            {
+                QSCouponInfoDataModel *couponItem = [_couponList objectAtIndex:i];
+                if (couponItem&&[couponItem isKindOfClass:[QSCouponInfoDataModel class]])
+                {
+                    NSMutableDictionary *couponDic = [NSMutableDictionary dictionaryWithCapacity:0];
+                    [couponDic setObject:couponItem.type forKey:@"type"];
+                    [couponDic setObject:couponItem.pice forKey:@"pice"];
+                    [couponDic setObject:couponItem.goods_name forKey:@"goods_name"];
+                    [couponDic setObject:couponItem.begin_time forKey:@"begin_time"];
+                    [couponDic setObject:couponItem.over_time forKey:@"over_time"];
+                    [couponDic setObject:couponItem.parent_id forKey:@"parent_id"];
+                    [couponlist addObject:couponDic];
+                }
+            }
+        }
+        
+        [tempParams setObject:couponlist forKey:@"coupon"];
         // status 状态
         [tempParams setObject:@"" forKey:@"status"];
         // source_type 来源类型 1 为后台，2为ios手机端，3为android手机端，4为网站端

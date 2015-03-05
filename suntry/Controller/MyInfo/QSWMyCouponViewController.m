@@ -352,7 +352,7 @@
     if (self.pickCouponCallBack && [self.dataSource count] > 0) {
         
         self.pickCouponCallBack(YES,self.dataSource[indexPath.row]);
-        
+        [self.navigationController popViewControllerAnimated:YES];
     }
 
 }
