@@ -225,7 +225,6 @@ static char titleLabelKey;//!<标题key
     [self.collectionView headerBeginRefreshing];
     
     //注册Cell，必须要有
-    
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"HeaderCollectionViewCell"];
     
     [self.collectionView registerClass:[QSWMerchantIndexCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
@@ -284,6 +283,7 @@ static char titleLabelKey;//!<标题key
 {
     
     if (indexPath.row==0) {
+        
         static NSString * CellIdentifier = @"HeaderCollectionViewCell";
         
         UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
@@ -346,7 +346,6 @@ static char titleLabelKey;//!<标题key
         
         ///获取模型
         QSGoodsDataModel *tempModel = self.specialDataSource[indexPath.row-1];
-        
         cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
         cell.foodNameLabel.text= tempModel.goodsName;
         cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];

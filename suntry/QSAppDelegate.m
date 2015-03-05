@@ -294,6 +294,14 @@
             ///模型转换
             QSSelectReturnData *tempModel = resultData;
             
+            for (QSSelectDataModel *obj in tempModel.selectList) {
+                
+                NSLog(@"==================配送区信息======================");
+                NSLog(@"街道：%@     ID：%@",obj.streetName,obj.streetID);
+                NSLog(@"==================配送区信息======================");
+                
+            }
+            
             ///保存数据
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/selectData"];
