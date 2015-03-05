@@ -299,6 +299,7 @@
         
         //没有支付密码
         QSResetStoreCardPaypswViewController *nopassVc=[[QSResetStoreCardPaypswViewController alloc] init];
+        nopassVc.turnBackStep = 3;
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:nopassVc animated:YES];
         
