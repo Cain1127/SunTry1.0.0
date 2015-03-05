@@ -19,6 +19,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "QSRequestManager.h"
 #import "MBProgressHUD.h"
+#import "QSHeaderDataModel.h"
 #import "QSResetStoreCardPaypswViewController.h"
 
 #define PAY_FOR_ORDER_TITLE_FONT_SIZE       15.
@@ -207,6 +208,7 @@
             
             ///支付成功
             if (rRequestResultTypeSuccess == resultStatus) {
+                
                 NSLog(@"订单：%@ 支付成功",orderFormModel.order_id);
                 //支付成功跳转：
                 QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
@@ -219,16 +221,25 @@
                 
             }else{
                 
-#warning 修改逻辑：和聪哥确认，提示服务端返回的错误信息
-                //支付失败跳转
-                NSLog(@"订单：%@ 支付失败",orderFormModel.order_id);
-                QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
-                [ossVc setPaymentSate:NO];
-                QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
-                orderResultData.order_id = orderFormModel.order_id;
-                orderResultData.order_desc = orderFormModel.des;
-                [ossVc setOrderData:orderResultData];
-                [self.navigationController pushViewController:ossVc animated:YES];
+                QSHeaderDataModel *tempModel = resultData;
+                
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"支付失败") : @"支付失败") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [av show];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    [av dismissWithClickedButtonIndex:0 animated:YES];
+                    
+                    //支付失败跳转
+                    QSPOrderSubmitedStateViewController *ossVc = [[QSPOrderSubmitedStateViewController alloc] init];
+                    [ossVc setPaymentSate:NO];
+                    QSOrderDetailDataModel *orderResultData = [[QSOrderDetailDataModel alloc] init];
+                    orderResultData.order_id = orderFormModel.order_id;
+                    orderResultData.order_desc = orderFormModel.des;
+                    [ossVc setOrderData:orderResultData];
+                    [self.navigationController pushViewController:ossVc animated:YES];
+                    
+                });
                 
             }
         }];
@@ -236,11 +247,6 @@
     }];
     [self.view addSubview:submitBt];
     
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -254,11 +260,6 @@
 {
     [self.payCardPassTextField resignFirstResponder];
     return YES;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - MD5加密
@@ -279,24 +280,18 @@
     
 }
 
-- (void)checkHadPayPassWord{
+- (void)checkHadPayPassWord
+{
     
     QSUserInfoDataModel *userInfoData = [QSUserInfoDataModel userDataModel];
     if (!userInfoData.pay_salt || [userInfoData.pay_salt isEqualToString:@""]) {
+        
         //没有支付密码
         QSResetStoreCardPaypswViewController *nopassVc=[[QSResetStoreCardPaypswViewController alloc] init];
         [self.navigationController pushViewController:nopassVc animated:YES];
+        
     }
+    
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
