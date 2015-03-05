@@ -5,7 +5,8 @@
 #define REQUEST_VERSION_URL  @"site/GetVersion"
 
 ///数据请求根地址
-#define REQUEST_ROOT_URL @"http://test.9dxz.com/"
+//#define REQUEST_ROOT_URL @"http://test.9dxz.com/"
+#define REQUEST_ROOT_URL @"api.9dxz.com/"
 
 // 1.判断是否为iOS7
 #define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0)

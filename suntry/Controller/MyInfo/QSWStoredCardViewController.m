@@ -115,6 +115,15 @@
     ///加边框
     UIView *lineTopView = [[UIView alloc] initWithFrame:CGRectMake(_payPswLabel.frame.origin.x, _payPswLabel.frame.origin.y, _payPswLabel.frame.size.width, 0.5f)];
     lineTopView.backgroundColor=COLOR_CHARACTERS_ROOTLINE;
+    if (nil == userModel.pay_salt || [userModel.pay_salt length] <= 0) {
+        
+        _payPswLabel.text = @"支付密码：未开启(储值卡支付需要支付密码)";
+        
+    } else {
+    
+        _payPswLabel.text = @"支付密码：已开启(储值卡支付需要支付密码)";
+    
+    }
     
     ///加边框
     UIView *lineBottomView = [[UIView alloc] initWithFrame:CGRectMake(_payPswLabel.frame.origin.x, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height, _payPswLabel.frame.size.width, 0.5f)];
@@ -126,9 +135,18 @@
     _chargeButton.backgroundColor=COLOR_CHARACTERS_RED;
     _chargeButton.layer.cornerRadius=6.0f;
     
-    _resetPswButton.frame=CGRectMake(2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT+_chargeButton.frame.size.width, _payPswLabel.frame.origin.y+_payPswLabel.frame.size.height+topViewH*1/8,(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)*0.5, 44.0f);
+    _resetPswButton.frame=CGRectMake(2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT + _chargeButton.frame.size.width, _payPswLabel.frame.origin.y + _payPswLabel.frame.size.height+topViewH * 1.0f / 8.0f,(SIZE_DEVICE_WIDTH-3*SIZE_DEFAULT_MARGIN_LEFT_RIGHT) * 0.5, 44.0f);
     _resetPswButton.backgroundColor=COLOR_CHARACTERS_RED;
-    _resetPswButton.layer.cornerRadius=6.0f;
+    _resetPswButton.layer.cornerRadius = 6.0f;
+    if (userModel.pay_salt && [userModel.pay_salt length] > 0) {
+        
+        [_resetPswButton setTitle:@"重置支付密码" forState:UIControlStateNormal];
+        
+    } else {
+    
+        [_resetPswButton setTitle:@"设置支付密码" forState:UIControlStateNormal];
+    
+    }
     
 }
 
