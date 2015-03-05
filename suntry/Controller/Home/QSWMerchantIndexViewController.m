@@ -602,7 +602,6 @@ static char titleLabelKey;//!<标题key
 -(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
     
-    //FIXME: 需要完善逻辑，预防网络慢时同时触发调用的问题。
     if (![self.shakeView isHidden]) {
         
         NSLog(@"摇一摇");

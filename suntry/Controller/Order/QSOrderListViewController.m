@@ -232,7 +232,11 @@
             [self.orderListTableView footerEndRefreshing];
             [self.orderListTableView headerEndRefreshing];
             
-//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] initWithCallBack:^{
+//                
+//                
+//            }];
+//            [self.navigationController setNavigationBarHidden:YES];
 //            networkingErrorVC.hidesBottomBarWhenPushed = YES;
 //            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
 //            [self.navigationController pushViewController:networkingErrorVC animated:YES];
@@ -334,7 +338,11 @@
             [self.orderListTableView footerEndRefreshing];
             [self.orderListTableView headerEndRefreshing];
             
-//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
+//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] initWithCallBack:^{
+//                
+//                
+//            }];
+//            [self.navigationController setNavigationBarHidden:YES];
 //            networkingErrorVC.hidesBottomBarWhenPushed = YES;
 //            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
 //            [self.navigationController pushViewController:networkingErrorVC animated:YES];

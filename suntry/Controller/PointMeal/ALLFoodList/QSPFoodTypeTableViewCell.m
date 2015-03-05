@@ -40,12 +40,16 @@
         [self.typeNameLabel setTextColor:FOODTYPE_TABLEVIEW_CELL_TEXT_COLOR];
         [self.contentView addSubview:self.typeNameLabel];
         
-        self.lineTopView = [[UIView alloc] initWithFrame:CGRectMake(0, self.typeNameLabel.frame.origin.y-1, FOOD_TYPE_TABLEVIEW_WIDTH, 1)];
+        CGFloat offetY = 0;
+        if ([[UIDevice currentDevice].systemVersion doubleValue] == 7.0) {
+            offetY = 1;
+        }
+        self.lineTopView = [[UIView alloc] initWithFrame:CGRectMake(0, self.typeNameLabel.frame.origin.y-offetY, FOOD_TYPE_TABLEVIEW_WIDTH, 1)];
         [self.lineTopView setBackgroundColor:FOODTYPE_TABLEVIEW_CELL_LINE_COLOR];
         [self.contentView addSubview:self.lineTopView];
         [self.contentView setUserInteractionEnabled:YES];
         
-        UIView *lineButtomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.typeNameLabel.frame.origin.y+self.typeNameLabel.frame.size.height-1, FOOD_TYPE_TABLEVIEW_WIDTH, 1)];
+        UIView *lineButtomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.typeNameLabel.frame.origin.y+self.typeNameLabel.frame.size.height-offetY, FOOD_TYPE_TABLEVIEW_WIDTH, 1)];
         [lineButtomView setBackgroundColor:FOODTYPE_TABLEVIEW_CELL_LINE_COLOR];
         [self.contentView addSubview:lineButtomView];
         [self.contentView setUserInteractionEnabled:YES];
