@@ -136,14 +136,14 @@
             
             [self showAddNewAddressView];
             
-        }else{
+        } else {
             
             QSWMySendAdsViewController *adVc = [[QSWMySendAdsViewController alloc] initWithCallBackBlock:^(BOOL flag, QSUserAddressDataModel *addressModel) {
                 
                 ///判断是否选择了新的地址
                 if (flag) {
                     
-                    self.orderName = [NSString stringWithFormat:@"%@%@",addressModel.userName,([addressModel.gender intValue] == 1) ? @"先生" : @"女士"];
+                    self.orderName = [NSString stringWithFormat:@"%@%@",addressModel.userName,([addressModel.gender intValue] == 0) ? @"女士" : @"先生"];
                     self.orderAddress = addressModel.address;
                     self.orderPhone = addressModel.phone;
                     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
@@ -152,6 +152,7 @@
                 }
                 
             }];
+            
             [self.navigationController pushViewController:adVc animated:YES];
             
         }
@@ -339,6 +340,7 @@
 
 - (void)updateAddress
 {
+    
     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
     [_shipToAddress setText:self.orderAddress];
     
@@ -354,6 +356,7 @@
             [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
             [_shipToAddress setText:self.orderAddress];
             return;
+            
         }else if(userData.address && [userData.address isEqualToString:@""]){
             ///获取本地数据
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
