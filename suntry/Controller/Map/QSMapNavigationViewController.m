@@ -8,7 +8,7 @@
 
 #import "QSMapNavigationViewController.h"
 #import "QSAnnotation.h"
-#import "QSAnnotationView.h"
+
 #import "QSMapManager.h"
 #import "DeviceSizeHeader.h"
 #import "QSBlockButton.h"
@@ -119,72 +119,50 @@ static char titleLabelKey;//!<标题关联
         CGFloat latitude= carPostion.latitude;
         CGFloat longitude=carPostion.longitude;
         
-        switch (i) {
-            case 0:
-            {
-                // 1.餐车1
-            
-                QSAnnotation *anno0 = [[QSAnnotation alloc] init];
-                anno0.title = self.title;
-                anno0.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-
-                // 设置地图的显示范围
-                MKCoordinateSpan span = MKCoordinateSpanMake(0.021321, 0.019366);
-                MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(latitude, longitude), span);
-                [_mapView setRegion:region animated:YES];
-                
-                CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude
-                                                             longitude:longitude];
-                //2.反地理编码
-                CLGeocoder *geocoder=[[CLGeocoder alloc]init];
-                
-                [geocoder reverseGeocodeLocation:loc completionHandler:^(NSArray *placemarks, NSError *error) {
-                    
-                    if (error) {
-                        
-                        //有错误
-                        NSLog(@"========================================");
-                        NSLog(@"============无法获取当前用户位置===========");
-                        NSLog(@"========================================");
-                        
-                    } else {//编码成功
-                        
-                        //取出最前面的地址
-                        CLPlacemark *pm = [placemarks firstObject];
-                        NSMutableString *tempTitle = [pm.name mutableCopy];
-                        
-                        ///删除省份之前的数据
-                        NSRange tempRange = [tempTitle rangeOfString:@"市"];
-                        NSString *resultTitle = [tempTitle substringFromIndex:tempRange.location + 1];
-                        
-                        anno0.subtitle = resultTitle;
-                        
-                        
-                    }
-                }];
-                
-                [self.mapView addAnnotation:anno0];
-                
-                //黙认选中
-                [self.mapView selectAnnotation:anno0 animated:YES];
-                
-            }
-                break;
-                
-            default:
-            {
-                // 2.餐车2
-                QSAnnotation *anno1 = [[QSAnnotation alloc] init];
-                anno1.title = self.title;
-                anno1.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                [self.mapView addAnnotation:anno1];
-                //黙认选中
-                //[self.mapView selectAnnotation:anno1 animated:YES];
-                
-            }
-                break;
-        }
+        QSAnnotation *anno0 = [[QSAnnotation alloc] init];
+        anno0.title = self.title;
+        anno0.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
         
+        // 设置地图的显示范围
+        MKCoordinateSpan span = MKCoordinateSpanMake(0.021321, 0.019366);
+        MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(latitude, longitude), span);
+        [_mapView setRegion:region animated:YES];
+        
+        CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude
+                                                     longitude:longitude];
+        //2.反地理编码
+        CLGeocoder *geocoder=[[CLGeocoder alloc]init];
+        
+        [geocoder reverseGeocodeLocation:loc completionHandler:^(NSArray *placemarks, NSError *error) {
+            
+            if (error) {
+                
+                //有错误
+                NSLog(@"========================================");
+                NSLog(@"============无法获取当前用户位置===========");
+                NSLog(@"========================================");
+                
+            } else {//编码成功
+                
+                //取出最前面的地址
+                CLPlacemark *pm = [placemarks firstObject];
+                
+                ///删除省份之前的字符串
+                NSMutableString *tempTitle = [pm.name mutableCopy];
+                NSRange tempRange = [tempTitle rangeOfString:@"市"];
+                NSString *resultTitle = [tempTitle substringFromIndex:tempRange.location + 1];
+                
+                anno0.subtitle = resultTitle;
+                //anno0.subtitle=pm.name;
+                
+            }
+        }];
+        
+        
+        [self.mapView addAnnotation:anno0];
+        
+        //黙认选中
+        [self.mapView selectAnnotation:anno0 animated:YES];
         
     }
     
@@ -222,19 +200,17 @@ static char titleLabelKey;//!<标题关联
     return annoView;
 }
 
-/**
- *  选中了某一个大头针
- */
+#pragma mark --选中某个大头针代理方法
 //- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 //{
-//    
-//        
+//
+//
 //        // 1.删除以前的MJTuangouDescAnnotation
 //        for (id annotation in mapView.annotations) {
 //            if ([annotation isKindOfClass:[annotation class]]) {
 //                [mapView removeAnnotation:annotation];
 //            }
-//   
+//
 //        // 在这颗被点击的大头针上面, 添加一颗用于描述的大头针
 //        QSAnnotation *descAnno = [[QSAnnotation alloc] init];
 //        descAnno.tuangou = anno.tuangou;
@@ -259,20 +235,6 @@ static char titleLabelKey;//!<标题关联
         self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
         [self.hud hide:YES afterDelay:8.0f];
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            
-//            self.hud.labelText = @"网络慢下载超时";
-//            [self.hud hide:YES afterDelay:2.0f];
-//            
-//            ///返回上一页
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                
-//                [self.navigationController popViewControllerAnimated:YES];
-//                
-//            });
-//            
-//        });
-
         
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
@@ -293,13 +255,11 @@ static char titleLabelKey;//!<标题关联
                 [self.carPostionList addObjectsFromArray:tempModel.carPostionList];
                 
                 ///reload数据
-                //[self.view reloadData];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     
                     [self addAnnotations];
                     
                 });
-                
                 
             }
             
@@ -309,9 +269,17 @@ static char titleLabelKey;//!<标题关联
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================餐车地址信息请求失败================");
             
-            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] initWithCallBack:^{
+            ///隐藏HUD
+            [self.hud hide:YES];
+            
+            QSNoNetworkingViewController *networkingErrorVC = [[QSNoNetworkingViewController alloc] initWithTurnBackStep:3 andRefreshBlock:^(BOOL flag) {
                 
-                
+                ///判断是否刷新
+                if (flag) {
+                    
+                    [self getCarPostingInfo];
+                    
+                }
                 
             }];
             networkingErrorVC.hidesBottomBarWhenPushed = YES;

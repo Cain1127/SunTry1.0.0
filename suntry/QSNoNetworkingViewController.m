@@ -26,9 +26,13 @@ static char titleLabelKey;//!<标题关联
 
 @interface QSNoNetworkingViewController ()
 
-@property(nonatomic,strong) UIImageView *suntryImage;  //!<关于香哉图片
+@property(nonatomic,strong) UIImageView *suntryImage;   //!<关于香哉图片
 
-@property (nonatomic, strong) UIView *nodataView;      //!<图片与文字底部view
+@property (nonatomic, strong) UIView *nodataView;       //!<图片与文字底部view
+@property (nonatomic,assign) int turnBackStep;          //!<返回事件时的步长
+
+///点击重新刷新时的回调
+@property (nonatomic,copy) void(^refreshCallBack)(BOOL flag);
 
 @property (nonatomic,copy) void(^noNetworkingCallBack)(void);
 
@@ -46,6 +50,38 @@ static char titleLabelKey;//!<标题关联
         if (callBack) {
             
             self.noNetworkingCallBack = callBack;
+            
+        }
+        
+    }
+    
+    return self;
+
+}
+
+/*!
+ *  @author     wangshupeng, 15-03-05 13:03:08
+ *
+ *  @brief      根据给定的返回步长，创建无网络显示页面
+ *
+ *  @param step 返回的步长
+ *
+ *  @return     返回无网络页面
+ *
+ *  @since      1.0.0
+ */
+- (instancetype)initWithTurnBackStep:(int)step andRefreshBlock:(void(^)(BOOL flag))refreshCallBack
+{
+
+    if (self = [super init]) {
+        
+        ///保存返回步长
+        self.turnBackStep = step;
+        
+        ///保存回调
+        if (refreshCallBack) {
+            
+            self.refreshCallBack = refreshCallBack;
             
         }
         
@@ -87,7 +123,26 @@ static char titleLabelKey;//!<标题关联
             
         }
         
-        [self.navigationController popViewControllerAnimated:YES];
+        if (self.turnBackStep > 2) {
+            
+            int sumVC = (int)[self.navigationController.viewControllers count];
+            int turnBackIndex = sumVC - self.turnBackStep;
+            UIViewController *tempVC = self.navigationController.viewControllers[turnBackIndex];
+            if (tempVC) {
+                
+                [self.navigationController popToViewController:tempVC animated:YES];
+                
+            } else {
+            
+                [self.navigationController popViewControllerAnimated:YES];
+            
+            }
+            
+        } else {
+            
+            [self.navigationController popViewControllerAnimated:NO];
+            
+        }
         
     }];
     [turnBackButton setImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal];
@@ -130,7 +185,21 @@ static char titleLabelKey;//!<标题关联
     [infoLabel1 setTextColor:ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR];
     [_nodataView addSubview:infoLabel1];
     
+    UIButton *abcd=[QSBlockButton createBlockButtonWithFrame:CGRectMake(0.0f, 84.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-64.0f-49.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+        
+        if (self.refreshCallBack) {
+            
+            self.refreshCallBack(YES);
+            
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }];
+    abcd.backgroundColor=[UIColor clearColor];
+    [self.view addSubview:abcd];
+    
     self.view.backgroundColor=[UIColor whiteColor];
+    
 }
 
 @end

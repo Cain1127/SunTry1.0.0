@@ -26,6 +26,8 @@
 #import "QSResetStoreCardPaypswViewController.h"
 #import "QSWPayOrderViewController.h"
 
+#import "NSDate+Formatter.h"
+
 @interface QSWStoredCardViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *topView;               //!<顶部view
@@ -251,7 +253,10 @@
         ///获取模型
         QSStoredCardDataModel *tempModel = self.storedCardDataSource[indexPath.row];
         
-        cell.cTimeLabel.text = tempModel.createTime;
+        //转换为有效日期
+        NSString *confromTimesp = [NSString stringWithFormat:@"%@",[NSDate timeStampStringToNSDate:tempModel.createTime]];
+        
+        cell.cTimeLabel.text = [confromTimesp substringToIndex:10];
         if (_chargeRecord.selected){
             
             cell.cPrcieLabel.text=[NSString stringWithFormat:@"￥+%@",tempModel.amount];

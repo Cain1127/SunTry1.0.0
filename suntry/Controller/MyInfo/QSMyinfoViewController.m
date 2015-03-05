@@ -35,7 +35,7 @@
 #define kCallAlertViewTag 111
 
 ///关联ios7电话
-static char titleLabelKey;//!<标题key
+//static char titleLabelKey;//!<标题key
 
 @interface QSMyinfoViewController ()
 

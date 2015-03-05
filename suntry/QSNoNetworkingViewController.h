@@ -12,5 +12,18 @@
 
 - (instancetype)initWithCallBack:(void(^)(void))callBack;
 
+/*!
+ *  @author     wangshupeng, 15-03-05 13:03:08
+ *
+ *  @brief      根据给定的返回步长，创建无网络显示页面
+ *
+ *  @param step 返回的步长
+ *
+ *  @return     返回无网络页面
+ *
+ *  @since      1.0.0
+ */
+- (instancetype)initWithTurnBackStep:(int)step andRefreshBlock:(void(^)(BOOL flag))refreshCallBack;
+
 @end
 
