@@ -118,14 +118,14 @@
     self.userInfo = [QSUserManager getCurrentUserData];
     
     ///起始坐标
-    CGFloat ypoint = 72.0f;
+    CGFloat ypoint = (iOS7 ? 72.0f : 8.0f);
     
     if (self.userInfo.pay_salt && [self.userInfo.pay_salt length] > 0) {
         
         ypoint = ypoint + 44.0f + 8.0f;
         
         ///原密码输入框
-        self.originalPswInputField = [[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 72.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
+        self.originalPswInputField = [[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, (iOS7 ? 72.0f : 8.0f), SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
         self.originalPswInputField.borderStyle = UITextBorderStyleRoundedRect;
         self.originalPswInputField.placeholder = @"您当前的支付密码";
         self.originalPswInputField.secureTextEntry = YES;

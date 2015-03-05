@@ -71,7 +71,7 @@
     self.userInfo = [QSUserManager getCurrentUserData];
     
     ///手机号
-    self.phoneField = [[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 72.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
+    self.phoneField = [[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, (iOS7 ? 72.0f : 8.0f), SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
     self.phoneField.borderStyle = UITextBorderStyleRoundedRect;
     self.phoneField.placeholder = @"输入您的手机号码";
     if (self.userInfo.phone && [self.userInfo.phone length] == 11) {
