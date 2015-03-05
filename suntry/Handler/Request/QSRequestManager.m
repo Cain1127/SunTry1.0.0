@@ -242,7 +242,9 @@
         
         ///请求参数
         NSDictionary *postParams = taskModel.requestParams ? [self postUserInfoParams:taskModel.requestParams] : [self postUserInfoParams];
-        
+        NSLog(@"================请求参数======================");
+        NSLog(@"请求地址：%@     参数：%@",postParams,taskModel.requestURL);
+        NSLog(@"================请求参数======================");
         [self.httpRequestManager POST:taskModel.requestURL parameters:postParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
             ///转码
