@@ -145,6 +145,9 @@
 - (void)resetStoreCardPsw
 {
     
+    ///显示HUD
+    self.hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     ///当前输入的原密码
     NSString *originalPsw = @"";
     
@@ -156,7 +159,13 @@
         
         if (nil == originalPsw || [originalPsw length] <= 0) {
             
-            [self.originalPswInputField becomeFirstResponder];
+            self.hud.labelText = @"当前支付密码有误，请核对后再提交";
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [self.hud hide:YES];
+                [self.originalPswInputField becomeFirstResponder];
+                
+            });
             return;
             
         }
@@ -167,7 +176,13 @@
     NSString *newPsw = self.pswInputField.text;
     if (nil == newPsw || [newPsw length] <=0) {
         
-        [self.pswInputField becomeFirstResponder];
+        self.hud.labelText = @"请输入新的支付密码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES afterDelay:1.0f];
+            [self.pswInputField becomeFirstResponder];
+            
+        });
         return;
         
     }
@@ -176,7 +191,13 @@
     NSString *confirmPsw = self.confirmField.text;
     if (nil == confirmPsw || [confirmPsw length] <= 0) {
         
-        [self.confirmField becomeFirstResponder];
+        self.hud.labelText = @"请再次输入新的支付密码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES afterDelay:1.0f];
+            [self.confirmField becomeFirstResponder];
+            
+        });
         return;
         
     }
@@ -184,21 +205,11 @@
     ///验证确认密码
     if (![newPsw isEqualToString:confirmPsw]) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"两次输入的密码不一致" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-        [alert show];
-        
-        ///显示一秒
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            [alert dismissWithClickedButtonIndex:0 animated:YES];
-            
-        });
-        
+        self.hud.labelText = @"两次输入的密码不一致";
+        [self.hud hide:YES afterDelay:1.0f];
         return;
         
     }
-    
-    self.hud=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     ///请数
     NSDictionary *tempParams = @{@"old_pay" : originalPsw,
@@ -210,9 +221,8 @@
         ///判断是否更新成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            
-            self.hud.labelText=@"更新支付密码成功";
-            [self.hud hide:YES afterDelay:1.5f];
+            self.hud.labelText = @"支付密码更新成功";
+            [self.hud hide:YES afterDelay:1.0f];
            
             ///刷新用户数据
             [QSUserManager updateUserData:nil];

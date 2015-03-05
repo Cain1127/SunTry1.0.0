@@ -21,6 +21,7 @@
 #import "QSPickerViewItem.h"
 #import "QSRequestManager.h"
 #import "QSHeaderDataModel.h"
+#import "MBProgressHUD.h"
 
 @interface QSWEditSendAdsViewController ()<UITextFieldDelegate>
 
@@ -34,6 +35,7 @@
 @property (nonatomic,retain) QSWTextFieldItem *isMasterItem;        //!<是否默认配送选择框模型
 
 @property (nonatomic,strong) QSDatePickerViewController *pickerVC;  //!<选择器
+@property (nonatomic,retain) MBProgressHUD *hud;                    //!<HUD
 
 @end
 
@@ -217,51 +219,81 @@
 -(void)gotoNextVC
 {
     
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     ///姓名
     UITextField *nameField = ((UITextField *)self.userNameItem.property);
-    NSString *name = nameField.text;
+    ///性别
+    UITextField *genderField = (UITextField *)self.genderItem.property;
+    ///公司
+    UITextField *companyField = (UITextField *)self.companyItem.property;
+    ///地址
+    UITextField *addressField = (UITextField *)self.addressItem.property;
+    ///电话
+    UITextField *phoneField = (UITextField *)self.phoneItem.property;
     
-    ///判断姓名
+    ///回收键盘
+    [nameField resignFirstResponder];
+    [companyField resignFirstResponder];
+    [addressField resignFirstResponder];
+    [phoneField resignFirstResponder];
+    
+    ///校验姓名信息
+    NSString *name = nameField.text;
     if (nil == name || 0 >= [name length]) {
         
-        [nameField becomeFirstResponder];
+        self.hud.labelText = @"请输入姓名";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [nameField becomeFirstResponder];
+            
+        });
         return;
         
     }
-    
-    ///性别
-    UITextField *genderField = (UITextField *)self.genderItem.property;
+
+    ///获取性别信息
     UILabel *genderLabel = [genderField.rightView subviews][0];
     NSString *genderString = genderLabel.text ? genderLabel.text : @"先生";
     NSString *gender = ([genderString isEqualToString:@"先生"]) ? @"0" : @"1";
     
-    ///地址
-    UITextField *addressField = (UITextField *)self.addressItem.property;
+    ///校验地址信息
     NSString *address = addressField.text;
-    if (nil == address || 0 >= address) {
+    if (nil == address || 0 >= [address length]) {
         
-        [addressField becomeFirstResponder];
+        self.hud.labelText = @"请输入送餐地址";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [addressField becomeFirstResponder];
+            
+        });
         return;
         
     }
     
-    ///公司
-    UITextField *companyField = (UITextField *)self.companyItem.property;
+    ///校验公司信息
     NSString *company = companyField.text;
     if (nil == company || 0 >= [company length]) {
         
-        [companyField becomeFirstResponder];
-        return;
+        company = @"";
         
     }
     
-    ///电话
-    UITextField *phoneField = (UITextField *)self.phoneItem.property;
+    ///校验手机信息
     NSString *phone = phoneField.text;
     BOOL isPhone = [NSString isValidateMobile:phone];
     if (!isPhone) {
         
-        [phoneField becomeFirstResponder];
+        self.hud.labelText = @"请输入联系电话";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [phoneField becomeFirstResponder];
+            
+        });
         return;
         
     }
@@ -291,13 +323,12 @@
             QSHeaderDataModel *tempModel = resultData;
             
             ///弹出提示
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:tempModel.info delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
+            self.hud.labelText = tempModel.info;
             
             ///显示1秒后移除提示
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                [self.hud hide:YES];
                 
                 ///刷新送餐地址列表
                 if (self.editSendAddressCallBack) {
@@ -315,17 +346,10 @@
             
             ///转换模型
             QSHeaderDataModel *tempModel = resultData;
-            
-            ///弹出提示
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? (tempModel.info ? tempModel.info : @"添加送餐地址失败，请稍后再试。") : @"添加送餐地址失败，请稍后再试。") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
-            
+            ///提示信息
+            self.hud.labelText = tempModel ? (tempModel.info ? tempModel.info : @"送餐地址修改失败，请稍后再试。") : @"送餐地址修改失败，请稍后再试。";
             ///显示1秒后移除提示
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
-                
-            });
+            [self.hud hide:YES afterDelay:1.0f];
             
         }
         
@@ -337,6 +361,9 @@
 -(void)gotoNextVC1
 {
     
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     ///生成参数
     NSDictionary *params = @{@"id" : self.addressModel.addressID};
     
@@ -347,27 +374,17 @@
         if (rRequestResultTypeSuccess == resultStatus) {
             
             ///弹出提示
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"删除成功。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
+            self.hud.labelText = @"删除成功";
             
             ///显示1秒后移除提示
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                [self.hud hide:YES];
                 
                 ///刷新送餐地址列表
                 if (self.editSendAddressCallBack) {
                     
                     self.editSendAddressCallBack(YES);
-                    
-                }
-                
-                ///清空原记录
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
-                if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-                    
-                    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
                     
                 }
                 
@@ -380,23 +397,15 @@
             
             ///头模型
             QSHeaderDataModel *tempModel = resultData;
-            
             ///弹出提示
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"删除送餐地址失败，请稍后再试。") : @"删除送餐地址失败，请稍后再试。") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
-            
+            self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"删除送餐地址失败，请稍后再试。") : @"删除送餐地址失败，请稍后再试。";
             ///显示1秒后移除提示
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
-                
-            });
+            [self.hud hide:YES afterDelay:1.0f];
             
         }
         
     }];
 
-    
 }
 
 #pragma mark - 点击输入框时性别和默认送餐地址为弹出样式

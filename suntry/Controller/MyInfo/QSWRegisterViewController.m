@@ -227,17 +227,33 @@
     ///回收键盘
     [((UITextField *)self.userNameItem.property) resignFirstResponder];
     [((UITextField *)self.passWordItem.property) resignFirstResponder];
+    [self.activateTextfield resignFirstResponder];
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     if ((nil == userName) || (0 >= [userName length])) {
         
-        [userNameField becomeFirstResponder];
+        self.hud.labelText = @"请输入您的账号";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [userNameField becomeFirstResponder];
+            
+        });
         return;
         
     }
     
     if ((nil == pwd) || (0 >= [pwd length])) {
         
-        [pswNameField becomeFirstResponder];
+        self.hud.labelText = @"请输入登录密码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [pswNameField becomeFirstResponder];
+            
+        });
         return;
         
     }
@@ -248,23 +264,17 @@
           ([inputCode length] > 0) &&
           (NSOrderedSame == [inputCode compare:self.code options:NSCaseInsensitiveSearch]))) {
         
-        ///弹出提醒框
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"验证码有误，请确认后再注册。" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-        
-        [alert show];
-        
+        ///提醒
+        self.hud.labelText = @"验证码有误，请确认后再注册。";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
-            [alert dismissWithClickedButtonIndex:0 animated:YES];
+            [self.hud hide:YES];
             [self.activateTextfield becomeFirstResponder];
             
         });
         return;
         
     }
-    
-    ///显示HUD
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     ///封装登录参数
     NSDictionary *params = @{@"account" : userName,@"psw" : pwd,@"type" : @"1"};
@@ -295,9 +305,8 @@
             
             QSHeaderDataModel *tempModel = resultData;
             
-            self.hud.labelText = tempModel ? (tempModel.info ? tempModel.info : @"注册失败") : @"注册失败";
+            self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"注册失败") : @"注册失败";
             [self.hud hide:YES afterDelay:1.0f];
-            
             
         }
         

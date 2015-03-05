@@ -35,6 +35,7 @@
 
 @implementation QSWForgetPswController
 
+#pragma mark - UI搭建
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -86,6 +87,13 @@
         
         UITextField *phoneField = self.phoneItem.property;
         
+        ///回收键盘
+        [phoneField resignFirstResponder];
+        [self.verticodeField resignFirstResponder];
+        
+        ///显示HUD
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        
         ///验证手机是否有效
         if ([NSString isValidateMobile:phoneField.text]) {
             
@@ -93,7 +101,13 @@
             
         } else {
             
-            [self.verticodeField becomeFirstResponder];
+            self.hud.labelText = @"手机号码无效，请重新输入";
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [self.hud hide:YES];
+                [phoneField becomeFirstResponder];
+                
+            });
             
         }
         
@@ -146,10 +160,23 @@
     UITextField *phoneField = self.phoneItem.property;
     NSString *phone = phoneField.text;
     
+    ///回收键盘
+    [phoneField resignFirstResponder];
+    [self.verticodeField resignFirstResponder];
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     ///判断手机号
     if (![NSString isValidateMobile:phone]) {
         
-        [phoneField becomeFirstResponder];
+        self.hud.labelText = @"请输入手机号码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [phoneField becomeFirstResponder];
+            
+        });
         return;
         
     }
@@ -158,7 +185,13 @@
     NSString *inputVercode = self.verticodeField.text;
     if (nil == inputVercode || 0 >= inputVercode) {
         
-        [self.verticodeField becomeFirstResponder];
+        self.hud.labelText = @"请输入验证码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [self.verticodeField becomeFirstResponder];
+            
+        });
         return;
         
     }
@@ -167,12 +200,10 @@
           ([inputVercode length] > 0) &&
           (NSOrderedSame == [inputVercode compare:self.code options:NSCaseInsensitiveSearch]))) {
         
-        UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"验证码不正确，请核对后再提交！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-        [aler show];
-        
+        self.hud.labelText = @"验证码不正确，请核对后再提交！";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
-            [aler dismissWithClickedButtonIndex:0 animated:YES];
+            [self.hud hide:YES];
             
         });
         return;
@@ -192,9 +223,6 @@
 ///获取验证码
 - (void)getVertificationCode:(NSString *)phone
 {
-    
-    ///显示HUD
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:@{@"phone" : phone} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
@@ -203,17 +231,14 @@
             
             QSCommonStringReturnData *tempModel = resultData;
             self.code = tempModel.verticode;
-            self.hud.labelText = @"发送成功";
-            NSLog(@"=================手机验证码====================");
-            NSLog(@"手机验证码：%@",self.code);
-            NSLog(@"=================手机验证码====================");
-            [self.hud hide:YES afterDelay:0.6f];
+            self.hud.labelText = @"已发送";
+            [self.hud hide:YES afterDelay:1.0f];
             
         } else {
         
             QSHeaderDataModel *tempModel = resultData;
             self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"手机验证码发送失败，请稍后再试……") : @"手机验证码发送失败，请稍后再试……";
-            [self.hud hide:YES afterDelay:0.6f];
+            [self.hud hide:YES afterDelay:1.0f];
         
         }
         

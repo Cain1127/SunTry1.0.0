@@ -15,14 +15,18 @@
 #import "ColorHeader.h"
 
 #import "QSHeaderDataModel.h"
+#import "QSUserManager.h"
 
 #import "QSRequestManager.h"
+#import "MBProgressHUD.h"
 
 @interface QSWLoginPswViewController ()
 
 @property (nonatomic,retain) QSWTextFieldItem *originalPwdItem; //!<原密码
 @property (nonatomic,retain) QSWTextFieldItem *resetPwdItem;    //!<新密码
 @property (nonatomic,retain) QSWTextFieldItem *confirmPwdItem;  //!<确认密码
+
+@property (nonatomic,retain) MBProgressHUD *hud;                //!<HUD
 
 @end
 
@@ -148,51 +152,77 @@
 -(void)gotoNextVC
 {
     
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     ///验证密码
     UITextField *originalField = self.originalPwdItem.property;
     NSString *originalPwd = originalField.text;
-    
-    ///本地密码
-    NSString *localPwd = [[NSUserDefaults standardUserDefaults] valueForKey:@"pwd"];
-    
-    if (![originalPwd isEqualToString:localPwd]) {
-//        
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"输入的当前密码有误" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-//        [alert show];
-//        
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            
-//        });
-        
-        [originalField becomeFirstResponder];
-        return;
-        
-    }
     
     ///新密码和确认密码
     UITextField *newPwdField = self.resetPwdItem.property;
     UITextField *confirmPwdField = self.confirmPwdItem.property;
     
+    ///回收键盘
+    [originalField resignFirstResponder];
+    [newPwdField resignFirstResponder];
+    [confirmPwdField resignFirstResponder];
+    
+    ///本地密码
+    NSString *localPwd = [[NSUserDefaults standardUserDefaults] valueForKey:@"pwd"];
+    
+    if (![originalPwd isEqualToString:localPwd]) {
+        
+        self.hud.labelText = @"输入的当前密码有误";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [originalField becomeFirstResponder];
+            
+        });
+        
+        return;
+        
+    }
+    
+    ///新密码
     NSString *newPwd = newPwdField.text;
     NSString *confirmPwd = confirmPwdField.text;
     
     if (nil == newPwd || 0 >= [newPwd length]) {
         
-        [newPwdField becomeFirstResponder];
+        self.hud.labelText = @"请输入新密码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [newPwdField becomeFirstResponder];
+            
+        });
         return;
         
     }
     
     if (nil == confirmPwd || 0 >= [confirmPwd length]) {
         
-        [confirmPwdField becomeFirstResponder];
+        self.hud.labelText = @"请再次输入新密码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [confirmPwdField becomeFirstResponder];
+            
+        });
         return;
         
     }
     
-    [originalField resignFirstResponder];
-    [newPwdField resignFirstResponder];
-    [confirmPwdField resignFirstResponder];
+    ///判断前后两次的密码是否一致
+    if (![newPwd isEqualToString:confirmPwd]) {
+        
+        self.hud.labelText = @"两次输入的密码不一致，请核对后再提交";
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+        
+    }
     
     ///获取本地手机号码
     NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:@"phone"];
@@ -212,18 +242,20 @@
             QSHeaderDataModel *tempModel = resultData;
             if (tempModel.type) {
                 
-                ///弹出提示
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"密码修改成功！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-                [alert show];
+                self.hud.labelText = @"密码修改成功！";
                 
                 ///显示1秒后移除提示
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    
-                    [alert dismissWithClickedButtonIndex:0 animated:YES];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     
                     ///修改本地密码
                     [[NSUserDefaults standardUserDefaults] setObject:newPwd forKey:@"pwd"];
                     [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    ///隐藏HUD
+                    [self.hud hide:YES];
+                    
+                    ///更新用户信息
+                    [QSUserManager updateUserData:nil];
                     
                     ///返回上一页
                     [self.navigationController popViewControllerAnimated:YES];
@@ -234,32 +266,21 @@
                 
                 ///获取默认模型
                 QSHeaderDataModel *tempModel = resultData;
-            
-                ///弹出提示
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? (tempModel.info ? tempModel.info : @"密码修改失败，请稍后再试……！") : @"密码修改失败，请稍后再试……！") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-                [alert show];
-                
+                self.hud.labelText = tempModel ? (tempModel.info ? tempModel.info : @"密码修改失败，请稍后再试……！") : @"密码修改失败，请稍后再试……！";
                 ///显示1秒后移除提示
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    
-                    [alert dismissWithClickedButtonIndex:0 animated:YES];
-                    
-                });
+                [self.hud hide:YES afterDelay:1.5f];
             
             }
             
         } else {
-        
-            ///弹出提示
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"密码修改失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alert show];
+            
+            ///获取默认模型
+            QSHeaderDataModel *tempModel = resultData;
+            ///提示错误
+            self.hud.labelText = tempModel ? (tempModel.info ? tempModel.info : @"密码修改失败，请稍后再试……！") : @"密码修改失败，请稍后再试……！";
             
             ///显示1秒后移除提示
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [alert dismissWithClickedButtonIndex:0 animated:YES];
-                
-            });
+            [self.hud hide:YES afterDelay:1.5f];
         
         }
         

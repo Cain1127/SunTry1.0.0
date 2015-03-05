@@ -98,6 +98,13 @@
     ///获取激活码按钮
     UIButton *getVercodeButton = [UIButton createBlockButtonWithFrame:CGRectMake(self.verticodeField.frame.size.width + self.verticodeField.frame.origin.x + 5.0f, self.verticodeField.frame.origin.y, 75.0f, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
         
+        ///回收键盘
+        [self.phoneField resignFirstResponder];
+        [self.verticodeField resignFirstResponder];
+        
+        ///显示HUD
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        
         ///验证手机号码
         if ([NSString isValidateMobile:self.phoneField.text]) {
             
@@ -106,7 +113,14 @@
             
         } else {
         
-            [self.phoneField becomeFirstResponder];
+            self.hud.labelText = @"手机号码无效，请重新输入";
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [self.hud hide:YES];
+                [self.phoneField becomeFirstResponder];
+                
+            });
         
         }
         
@@ -122,6 +136,13 @@
     ///提交按钮
     UIButton *commitButton = [UIButton createBlockButtonWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.verticodeField.frame.origin.y + self.verticodeField.frame.size.height + 25.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
         
+        ///回收键盘
+        [self.phoneField resignFirstResponder];
+        [self.verticodeField resignFirstResponder];
+        
+        ///显示HUD
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        
         ///输入的验证码
         NSString *inputVercode = self.verticodeField.text;
         
@@ -130,14 +151,9 @@
               ([inputVercode length] > 0) &&
               (NSOrderedSame == [inputVercode compare:self.code options:NSCaseInsensitiveSearch]))) {
             
-            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"验证码不正确，请核对后再提交！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [aler show];
+            self.hud.labelText = @"验证码不正确，请核对后再提交！";
+            [self.hud hide:YES afterDelay:1.0f];
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [aler dismissWithClickedButtonIndex:0 animated:YES];
-                
-            });
             return;
             
         }
@@ -166,7 +182,14 @@
     ///判断手机号
     if (![NSString isValidateMobile:phone]) {
         
-        [self.phoneField becomeFirstResponder];
+        self.hud.labelText = @"请输入有效的手机号码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [self.phoneField becomeFirstResponder];
+            
+        });
+        
         return;
         
     }
@@ -175,7 +198,14 @@
     NSString *inputVercode = self.verticodeField.text;
     if (nil == inputVercode || 0 >= inputVercode) {
         
-        [self.verticodeField becomeFirstResponder];
+        self.hud.labelText = @"请输入验证码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [self.verticodeField becomeFirstResponder];
+            
+        });
+        
         return;
         
     }
@@ -184,14 +214,8 @@
           ([inputVercode length] > 0) &&
           (NSOrderedSame == [inputVercode compare:self.code options:NSCaseInsensitiveSearch]))) {
         
-        UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"验证码不正确，请核对后再提交！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-        [aler show];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            [aler dismissWithClickedButtonIndex:0 animated:YES];
-            
-        });
+        self.hud.labelText = @"验证码有误，请核对后重新提交";
+        [self.hud hide:YES afterDelay:1.0f];
         return;
         
     }
@@ -207,9 +231,6 @@
 - (void)getVertificationCode:(NSString *)phone
 {
     
-    ///显示HUD
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
     [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:@{@"phone" : phone} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///发送成功
@@ -217,17 +238,14 @@
             
             QSCommonStringReturnData *tempModel = resultData;
             self.code = tempModel.verticode;
-            self.hud.labelText = @"发送成功";
-            NSLog(@"=================手机验证码====================");
-            NSLog(@"手机验证码：%@",self.code);
-            NSLog(@"=================手机验证码====================");
-            [self.hud hide:YES afterDelay:0.6f];
+            self.hud.labelText = @"已发送";
+            [self.hud hide:YES afterDelay:1.0f];
             
         } else {
             
             QSHeaderDataModel *tempModel = resultData;
             self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"手机验证码发送失败，请稍后再试……") : @"手机验证码发送失败，请稍后再试……";
-            [self.hud hide:YES afterDelay:0.6f];
+            [self.hud hide:YES afterDelay:1.0f];
             
         }
         

@@ -231,12 +231,30 @@
 
     ///姓名
     UITextField *nameField = ((UITextField *)self.userNameItem.property);
-    NSString *name = nameField.text;
+    ///地址
+    UITextField *addressField = (UITextField *)self.addressItem.property;
+    ///公司
+    UITextField *companyField = (UITextField *)self.companyItem.property;
+    ///电话
+    UITextField *phoneField = (UITextField *)self.phoneItem.property;
     
-    ///判断姓名
+    ///回收键盘
+    [nameField resignFirstResponder];
+    [addressField resignFirstResponder];
+    [companyField resignFirstResponder];
+    [phoneField resignFirstResponder];
+    
+    ///校验用户名
+    NSString *name = nameField.text;
     if (nil == name || 0 >= [name length]) {
         
-        [nameField becomeFirstResponder];
+        self.hud.labelText = @"请输入用户名";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [nameField becomeFirstResponder];
+            
+        });
         return;
         
     }
@@ -247,35 +265,43 @@
     NSString *genderString = genderLabel.text ? genderLabel.text : @"先生";
     NSString *gender = ([genderString isEqualToString:@"先生"]) ? @"0" : @"1";
     
-    ///地址
-    UITextField *addressField = (UITextField *)self.addressItem.property;
+    ///校验送餐地址
     NSString *address = addressField.text;
-    if (nil == address || 0 >= address) {
+    if (nil == address || 0 >= [address length]) {
         
-        [addressField becomeFirstResponder];
+        self.hud.labelText = @"请输入详细送餐地址";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [addressField becomeFirstResponder];
+            
+        });
         return;
         
     }
     ///重新拼装送餐地址
     address = [NSString stringWithFormat:@"广州市天河区%@",address];
     
-    ///公司
-    UITextField *companyField = (UITextField *)self.companyItem.property;
+    ///校验公司信息
     NSString *company = companyField.text;
     if (nil == company || 0 >= [company length]) {
         
-        [companyField becomeFirstResponder];
-        return;
+        company = @"";
         
     }
     
-    ///电话
-    UITextField *phoneField = (UITextField *)self.phoneItem.property;
+    ///校验手机号码
     NSString *phone = phoneField.text;
     BOOL isPhone = [NSString isValidateMobile:phone];
     if (!isPhone) {
         
-        [phoneField becomeFirstResponder];
+        self.hud.labelText = @"请输入有效手机号码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [phoneField becomeFirstResponder];
+            
+        });
         return;
         
     }
@@ -326,7 +352,6 @@
             
             ///转换模型
             QSHeaderDataModel *tempModel = resultData;
-        
             ///显示提示
             self.hud.labelText = (tempModel ? (tempModel.info ? tempModel.info : @"添加送餐地址失败，请稍后再试") : @"添加送餐地址失败，请稍后再试");
             [self.hud hide:YES afterDelay:1.0f];

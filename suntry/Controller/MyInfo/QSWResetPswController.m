@@ -146,30 +146,34 @@
     UITextField *confirmField = self.passWordItem1.property;
     NSString *confirmPsw = confirmField.text;
     
+    ///回收键盘
+    [newPswField resignFirstResponder];
+    [confirmField resignFirstResponder];
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     ///验证
     if (nil == newPsw || 0 >= [newPsw length]) {
         
-        [newPswField becomeFirstResponder];
+        self.hud.labelText = @"请输入新密码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [newPswField becomeFirstResponder];
+            
+        });
         return;
         
     }
     
     if (nil == confirmPsw || 0 >= [confirmPsw length]) {
         
-        [confirmField becomeFirstResponder];
-        return;
-        
-    }
-    
-    if (![newPsw isEqualToString:confirmPsw]) {
-        
-        ///提示
-        UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"两次输入的密码不一致" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-        [aler show];
-        
+        self.hud.labelText = @"请重新输入新密码";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
-            [aler dismissWithClickedButtonIndex:0 animated:YES];
+            [self.hud hide:YES];
+            [confirmField becomeFirstResponder];
             
         });
         
@@ -177,8 +181,19 @@
         
     }
     
-    ///显示HUD
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    if (![newPsw isEqualToString:confirmPsw]) {
+        
+        ///提示
+        self.hud.labelText = @"两次输入的密码不一致";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            
+        });
+        
+        return;
+        
+    }
     
     ///获取改换密码的手机号
     NSString *phone = [[NSUserDefaults standardUserDefaults] objectForKey:@"reset_psw_phone"];
@@ -194,14 +209,15 @@
         
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            [self.hud hide:YES];
-            
-            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:@"密码重置成功！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [aler show];
+            self.hud.labelText = @"密码重置成功！";
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
-                [aler dismissWithClickedButtonIndex:0 animated:YES];
+                ///隐藏HUD
+                [self.hud hide:YES];
+                
+                ///更新用户信息
+                [QSUserManager updateUserData:nil];
                 
                 ///返回登录页面
                 NSInteger sumVC = [self.navigationController.viewControllers count];
@@ -220,18 +236,9 @@
             
         } else {
             
-            [self.hud hide:YES];
-            
             QSHeaderDataModel *tempModel = resultData;
-        
-            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"密码重置失败！") : @"密码重置失败！") delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [aler show];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                [aler dismissWithClickedButtonIndex:0 animated:YES];
-                
-            });
+            self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"密码重置失败！") : @"密码重置失败！";
+            [self.hud hide:YES afterDelay:1.0f];
         
         }
         

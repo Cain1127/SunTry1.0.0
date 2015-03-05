@@ -340,6 +340,9 @@
                 NSData *tempData = [NSKeyedArchiver archivedDataWithRootObject:tempModel.addressList];
                 [tempData writeToFile:path atomically:YES];
                 
+                ///更新用户信息
+                [QSUserManager updateUserData:nil];
+                
             } else {
                 
                 ///清空数据
@@ -363,6 +366,9 @@
                     }
                     
                 }
+                
+                ///更新用户信息
+                [QSUserManager updateUserData:nil];
             
             }
             
@@ -405,6 +411,9 @@
                     }
                     
                 }
+                
+                ///更新用户信息
+                [QSUserManager updateUserData:nil];
                 
             }
             

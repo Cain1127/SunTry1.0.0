@@ -135,27 +135,43 @@
 {
     
     ///判断数据
-    NSString *userName = ((UITextField *)self.userNameItem.property).text;
-    NSString *pwd = ((UITextField *)self.passWordItem.property).text;
+    UITextField *userNameField = (UITextField *)self.userNameItem.property;
+    UITextField *pwdField = (UITextField *)self.passWordItem.property;
+    NSString *userName = userNameField.text;
+    NSString *pwd = pwdField.text;
     
     ///回收键盘
-    [((UITextField *)self.userNameItem.property) resignFirstResponder];
-    [((UITextField *)self.passWordItem.property) resignFirstResponder];
+    [userNameField resignFirstResponder];
+    [pwdField resignFirstResponder];
+    
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     if ((nil == userName) || (0 >= [userName length])) {
 
+        self.hud.labelText = @"请输入用户名";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [userNameField resignFirstResponder];
+            
+        });
         return;
         
     }
     
     if ((nil == pwd) || (0 >= [pwd length])) {
         
+        self.hud.labelText = @"请输入登录密码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES];
+            [pwdField resignFirstResponder];
+            
+        });
         return;
         
     }
-    
-    ///显示HUD
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     ///封装登录参数
     NSDictionary *params = @{@"account" : userName,@"psw" : pwd,@"type" : @"1"};
@@ -203,13 +219,11 @@
         } else {
             
             QSHeaderDataModel *tempModel = resultData;
-        
-            self.hud.labelText = tempModel ? (tempModel.info ? tempModel.info : @"登录失败") : @"登录失败";
+            self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"登录失败") : @"登录失败";
             [self.hud hide:YES afterDelay:1.0f];
             
             ///修改登录状态
             [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"is_login"];
-            
             ///同步数据
             [[NSUserDefaults standardUserDefaults] synchronize];
         
