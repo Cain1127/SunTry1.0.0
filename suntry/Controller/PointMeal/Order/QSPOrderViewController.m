@@ -747,31 +747,31 @@
         DeliveryTimeType currentSelectTime = [self.deliveryTimeView getSelectedDeliveryTime];
         switch (currentSelectTime) {
             case DeliveryTimeTypeTodayAM:
-                [dateFormatter setDateFormat:@"yyyy-MM-dd 12:00:00"];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 12:00"];
                 currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
                 break;
             case DeliveryTimeTypeTodayPM:
-                [dateFormatter setDateFormat:@"yyyy-MM-dd 18:00:00"];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 18:00"];
                 currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
                 break;
             case DeliveryTimeTypeTomorrowAM:
-                [dateFormatter setDateFormat:@"yyyy-MM-dd 12:00:00"];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 12:00"];
                 currentDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:24*60*60]];
                 break;
             case DeliveryTimeTypeTomorrowPM:
-                [dateFormatter setDateFormat:@"yyyy-MM-dd 18:00:00"];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 18:00"];
                 currentDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:24*60*60]];
                 break;
             default:
                 currentDateStr = @"";
                 break;
         }
-        [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-        NSDate* selectedDate = [dateFormatter dateFromString:currentDateStr];
-        NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[selectedDate timeIntervalSince1970]];
-        NSLog(@"timeSp:%@",timeSp); //时间戳的值
+//        [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm"];
+//        NSDate* selectedDate = [dateFormatter dateFromString:currentDateStr];
+//        NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[selectedDate timeIntervalSince1970]];
+//        NSLog(@"timeSp:%@",timeSp); //时间戳的值
         
-        [tempParams setObject:timeSp forKey:@"get_time"];
+        [tempParams setObject:currentDateStr forKey:@"get_time"];
         // ortherPhone 其他电话
         [tempParams setObject:@"" forKey:@"ortherPhone"];
         // desc 描述，备注信息
