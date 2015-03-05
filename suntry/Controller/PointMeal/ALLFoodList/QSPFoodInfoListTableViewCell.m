@@ -73,12 +73,15 @@
         [self.contentView addSubview:self.foodImgButton];
         
         //菜名元素
-        NSString* foodNameStr = @"";
-        CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
-        self.foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(self.contentImgView.frame.origin.x+self.contentImgView.frame.size.width+10, self.contentImgView.frame.origin.y, foodNameWidth, 14)];
+//        NSString* foodNameStr = @"";
+//        CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
+        
+        CGFloat foodNameWidth = SIZE_DEVICE_WIDTH-FOOD_TYPE_TABLEVIEW_WIDTH-22-self.contentImgView.frame.origin.x-self.contentImgView.frame.size.width;
+        
+        self.foodNameLabel = [[QSLabel alloc] initWithFrame:CGRectMake(self.contentImgView.frame.origin.x+self.contentImgView.frame.size.width+20, self.contentImgView.frame.origin.y-3, foodNameWidth, 20)];
         [self.foodNameLabel setTextColor:TABLEVIEW_FOOD_NAME_STRING_COLOR];
         [self.foodNameLabel setFont:[UIFont systemFontOfSize:TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE ]];
-        [self.foodNameLabel setText:foodNameStr];
+//        [self.foodNameLabel setText:foodNameStr];
         [self.contentView addSubview:self.foodNameLabel];
         
         //特殊促销图标
@@ -159,8 +162,8 @@
     
     //菜名元素
     NSString* foodNameStr = _foodData.goodsName;
-    CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:self.foodNameLabel.frame.size.height andFontSize:TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
-    [self.foodNameLabel setFrame:CGRectMake(self.foodNameLabel.frame.origin.x, self.foodNameLabel.frame.origin.y, foodNameWidth, self.foodNameLabel.frame.size.height)];
+//    CGFloat foodNameWidth = [foodNameStr calculateStringDisplayWidthByFixedHeight:self.foodNameLabel.frame.size.height andFontSize:TABLEVIEW_FOOD_NAME_STRING_FONT_SIZE ]+4;
+//    [self.foodNameLabel setFrame:CGRectMake(self.foodNameLabel.frame.origin.x, self.foodNameLabel.frame.origin.y, foodNameWidth, self.foodNameLabel.frame.size.height)];
     [self.foodNameLabel setText:foodNameStr];
     
     [self.specialMarkImgView setFrame:CGRectMake(self.foodNameLabel.frame.origin.x+self.foodNameLabel.frame.size.width+2, self.foodNameLabel.frame.origin.y+1, self.specialMarkImgView.frame.size.width, self.specialMarkImgView.frame.size.height)];

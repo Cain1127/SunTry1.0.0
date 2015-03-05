@@ -64,7 +64,7 @@
         [foodNameLabel setTextColor:PACKAGE_VIEW_FOOD_NAME_TEXT_COLOR];
         [foodNameLabel setFont:[UIFont systemFontOfSize:PACKAGE_VIEW_FOOD_NAME_STRING_FONT_SIZE ]];
         [foodNameLabel setText:foodNameStr];
-        [foodNameLabel setAdjustsFontSizeToFitWidth:YES];
+//        [foodNameLabel setAdjustsFontSizeToFitWidth:YES];
         [self addSubview:foodNameLabel];
         
         QSBlockButtonStyleModel *imgBtStyle = [[QSBlockButtonStyleModel alloc] init];
