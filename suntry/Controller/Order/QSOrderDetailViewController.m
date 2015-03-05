@@ -377,7 +377,7 @@
     
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _payBt.frame.origin.y+_payBt.frame.size.height+20)];
     
-//    [self updateView];
+    [self getDetailData];
     
 }
 
@@ -644,6 +644,7 @@
     [self.hadOrderTotalCountLabel setAttributedText:totalString];
     
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _hadOrderFrameView.frame.origin.y+_hadOrderFrameView.frame.size.height)];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
