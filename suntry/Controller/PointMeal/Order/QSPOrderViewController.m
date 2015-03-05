@@ -143,7 +143,7 @@
                 ///判断是否选择了新的地址
                 if (flag) {
                     
-                    self.orderName = [NSString stringWithFormat:@"%@%@",addressModel.userName,([addressModel.gender intValue] == 0) ? @"女士" : @"先生"];
+                    self.orderName = [NSString stringWithFormat:@"%@%@",addressModel.userName,([addressModel.gender intValue] == 0) ? @"先生" : @"女士"];
                     self.orderAddress = addressModel.address;
                     self.orderPhone = addressModel.phone;
                     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
