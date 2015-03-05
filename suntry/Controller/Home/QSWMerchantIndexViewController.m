@@ -334,6 +334,7 @@ static char titleLabelKey;//!<标题key
         return cell;
         
     } else {
+        
         static NSString * CellIdentifier = @"UICollectionViewCell";
         
         QSWMerchantIndexCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
@@ -347,11 +348,11 @@ static char titleLabelKey;//!<标题key
         ///获取模型
         QSGoodsDataModel *tempModel = self.specialDataSource[indexPath.row-1];
         
-        cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
+        cell.foodImageView.image = [UIImage imageNamed:@"home_bannar"];
         cell.foodNameLabel.text= tempModel.goodsName;
         cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
         [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
-        cell.priceLabel.text= tempModel.goodsSpecialPrice;
+        cell.priceLabel.text= [tempModel.goodsSpecialPrice floatValue] > 0.0f ? tempModel.goodsSpecialPrice : tempModel.goodsPrice;
         return cell;
         
     }
