@@ -448,26 +448,9 @@ typedef enum {
                 }
                 
                 [cell setFoodTypeName:@""];
-                if (_foodTypeList&&[_foodTypeList count]>indexPath.row) {
-                    
-                    NSNumber *foodType = _foodTypeList[indexPath.row];
-                    NSString *typeName = @"";
-                    switch (foodType.intValue) {
-                        case FoodTypeSPecial:
-                            typeName = @"优惠特价";
-                            break;
-                        case FoodTypeHeathy:
-                            typeName = @"健康餐";
-                            break;
-                        case FoodTypeSoup:
-                            typeName = @"养生炖汤";
-                            break;
-                        case FoodTypePackage:
-                            typeName = @"营养套餐";
-                            break;
-                        default:
-                            break;
-                    }
+                if (_foodTypeList&&[_foodTypeList count]>indexPath.row)
+                {
+                    NSString *typeName = _foodTypeList[indexPath.row];
                     [cell setFoodTypeName:typeName];
                 }
                 return cell;
@@ -846,8 +829,7 @@ typedef enum {
     [_foodTypeTableView setHidden:YES];
     [_foodInfoListTableView setHidden:YES];
     
-//    [QSRequestManager requestDataWithType:rRequestTypeAllGoodsData andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {   //测试接口
-        [QSRequestManager requestDataWithType:rRequestTypeAllGoods andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+    [QSRequestManager requestDataWithType:rRequestTypeAllGoods andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
     
         
         ///判断是否请求成功
@@ -863,46 +845,29 @@ typedef enum {
             [self.foodTypeIndexList removeAllObjects];
             [self.foodListHeadTitleList removeAllObjects];
             
-            NSMutableArray *specialList = [NSMutableArray arrayWithCapacity:0];
-            NSMutableArray *healthyList = [NSMutableArray arrayWithCapacity:0];
-            NSMutableArray *soupList = [NSMutableArray arrayWithCapacity:0];
-            NSMutableArray *menuPackeList = [NSMutableArray arrayWithCapacity:0];
-            
-            NSMutableArray *specialHeadList = [NSMutableArray arrayWithCapacity:0];
-            NSMutableArray *healthyHeadList = [NSMutableArray arrayWithCapacity:0];
-            NSMutableArray *soupHeadList = [NSMutableArray arrayWithCapacity:0];
-            NSMutableArray *menuPackeHeadList = [NSMutableArray arrayWithCapacity:0];
-            
             if (tempModel.allGoodsList && [tempModel.allGoodsList isKindOfClass:[NSArray class]] && [tempModel.allGoodsList count]>0)
             {
-                
                 for (int i=0; i<[tempModel.allGoodsList count]; i++)
                 {
+                    
                     id item = [tempModel.allGoodsList objectAtIndex:i];
                     if (item && [item isKindOfClass:[QSAllGoodsDataModel class]])
                     {
+                        
                         QSAllGoodsDataModel *foodItem = (QSAllGoodsDataModel*)item;
                         NSString *topTypeName = foodItem.typeName;
                         
+                        //判断该类型是否有菜品
+                        BOOL isHadData = NO;
                         if (foodItem.goodsList && [foodItem.goodsList isKindOfClass:[NSArray class]] && [foodItem.goodsList count]>0)
                         {
                             
                             NSMutableDictionary *headDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:topTypeName,@"topTitle", nil];
                             
                             //一级数据
-                            if ([topTypeName isEqualToString:@"优惠特价"]) {
-                                [specialList addObject:foodItem.goodsList];
-                                [specialHeadList addObject:headDic];
-                            }else if ([topTypeName isEqualToString:@"健康餐"]) {
-                                [healthyList addObject:foodItem.goodsList];
-                                [healthyHeadList addObject:headDic];
-                            }else if ([topTypeName isEqualToString:@"养生炖汤"]) {
-                                [soupList addObject:foodItem.goodsList];
-                                [soupHeadList addObject:headDic];
-                            }else if ([topTypeName isEqualToString:@"营养套餐"]) {
-                                [menuPackeList addObject:foodItem.goodsList];
-                                [menuPackeHeadList addObject:headDic];
-                            }
+                            isHadData = YES;
+                            [self.allFoodDataList addObject:foodItem.goodsList];
+                            [self.foodListHeadTitleList addObject:headDic];
                             
                         }else if (foodItem.subGoodsList && [foodItem.subGoodsList isKindOfClass:[NSArray class]] && [foodItem.subGoodsList count]>0)
                         {
@@ -911,136 +876,74 @@ typedef enum {
                                 id subItem = [foodItem.subGoodsList objectAtIndex:j];
                                 if (subItem && [subItem isKindOfClass:[QSAllGoodsSubDataModel class]])
                                 {
+                                    
                                     QSAllGoodsSubDataModel *subFoodItem = (QSAllGoodsSubDataModel*)subItem;
                                     NSString *subTypeName = subFoodItem.typeName;
                                     if (subFoodItem.goodsList&&[subFoodItem.goodsList isKindOfClass:[NSArray class]]&&[subFoodItem.goodsList count]>0)
                                     {
+                                        
                                         NSMutableDictionary *subHeadDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:topTypeName,@"topTitle", subTypeName,@"subTitle",nil];
                                         //二级列表数据
-                                        if ([topTypeName isEqualToString:@"优惠特价"]) {
-                                            [specialList addObject:subFoodItem.goodsList];
-                                            [specialHeadList addObject:subHeadDic];
-                                        }else if ([topTypeName isEqualToString:@"健康餐"]) {
-                                            [healthyList addObject:subFoodItem.goodsList];
-                                            [healthyHeadList addObject:subHeadDic];
-                                        }else if ([topTypeName isEqualToString:@"养生炖汤"]) {
-                                            [soupList addObject:subFoodItem.goodsList];
-                                            [soupHeadList addObject:subHeadDic];
-                                        }else if ([topTypeName isEqualToString:@"营养套餐"]) {
-                                            [menuPackeList addObject:subFoodItem.goodsList];
-                                            [menuPackeHeadList addObject:subHeadDic];
-                                        }
+                                        isHadData = YES;
+                                        [self.allFoodDataList addObject:subFoodItem.goodsList];
+                                        [self.foodListHeadTitleList addObject:subHeadDic];
+                                        
                                     }else if (subFoodItem.subGoodsList&&[subFoodItem.subGoodsList isKindOfClass:[NSArray class]]&&[subFoodItem.subGoodsList count]>0) {
                                         //三级…………
                                     }
+                                    
                                 }
                             }
                         }
+                        if (isHadData) {
+                            
+                            [self.foodTypeList addObject:topTypeName];
+                            
+                        }
                     }
+                    
                 }
             }
             
-            NSInteger arrayIndex = 0;
-            [self.foodTypeIndexList addObject:[NSNumber numberWithInteger:arrayIndex]];
-            if ([specialList count]>0)
-            {
-                [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeSPecial]];
-                arrayIndex += [specialList count];
-                [self.foodTypeIndexList addObject:[NSNumber numberWithInteger:arrayIndex]];
+            for (int i=0; i<[self.foodListHeadTitleList count]; i++) {
+    
+                if (i==0) {
+                    
+                    [self.foodTypeIndexList addObject:[NSNumber numberWithInt:i]];
+                    
+                }else{
+                    
+                    NSDictionary *hedTitleDic = [self.foodListHeadTitleList objectAtIndex:i];
+                    if (hedTitleDic&&[hedTitleDic isKindOfClass:[NSDictionary class]])
+                    {
+                        NSString *topTitleStr = [hedTitleDic objectForKey:@"topTitle"];
+                        NSDictionary *lastTopTitleDic = [self.foodListHeadTitleList objectAtIndex:i-1];
+                        if (lastTopTitleDic&&[lastTopTitleDic isKindOfClass:[NSDictionary class]])
+                        {
+                            NSString *lastTopTitleStr = [lastTopTitleDic objectForKey:@"topTitle"];
+                            if (![lastTopTitleStr isEqualToString:topTitleStr]) {
+                                [self.foodTypeIndexList addObject:[NSNumber numberWithInt:i]];
+                            }
+                        }
+                    }
+                    
+                }
             }
-            if ([healthyList count]>0)
-            {
-                [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeHeathy]];
-                arrayIndex += [healthyList count];
-                [self.foodTypeIndexList addObject:[NSNumber numberWithInteger:arrayIndex]];
-            }
-            if ([soupList count]>0)
-            {
-                [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypeSoup]];
-                arrayIndex += [soupList count];
-                [self.foodTypeIndexList addObject:[NSNumber numberWithInteger:arrayIndex]];
-            }
-            if ([menuPackeList count]>0)
-            {
-                [self.foodTypeList addObject:[NSNumber numberWithInt:FoodTypePackage]];
-
-            }
-
             
+            NSArray *tempLastArray = [self.allFoodDataList lastObject];
             //最后一组添加空数据
-            if ([menuPackeList count]>0)
+            if ([tempLastArray count]>0)
             {
-                NSMutableArray *tempList = [NSMutableArray arrayWithArray:menuPackeList];
-                NSArray *lastArray = [NSMutableArray arrayWithArray:[self addNullDataInTheList:tempList.lastObject]];
-                [tempList removeLastObject];
-                [tempList addObject:lastArray];
-                menuPackeList = tempList;
+                
+                NSMutableArray *tempList = [NSMutableArray arrayWithArray:tempLastArray];
+                NSArray *lastArray = [NSMutableArray arrayWithArray:[self addNullDataInTheList:tempList]];
+                [self.allFoodDataList removeLastObject];
+                [self.allFoodDataList addObject:lastArray];
                                        
-            }else if ([soupList count]>0)
-            {
-//                soupList.lastObject  = [NSMutableArray arrayWithArray:[self addNullDataInTheList:soupList.lastObject]];
-                NSMutableArray *tempList = [NSMutableArray arrayWithArray:soupList];
-                
-                NSArray *lastArray = [NSMutableArray arrayWithArray:[self addNullDataInTheList:tempList.lastObject]];
-                [tempList removeLastObject];
-                [tempList addObject:lastArray];
-                soupList = tempList;
-                                       
-            }else if ([healthyList count]>0)
-            {
-//                healthyList.lastObject  = [NSMutableArray arrayWithArray:[self addNullDataInTheList:healthyList.lastObject]];
-                NSMutableArray *tempList = [NSMutableArray arrayWithArray:healthyList];
-                
-                NSArray *lastArray = [NSMutableArray arrayWithArray:[self addNullDataInTheList:tempList.lastObject]];
-                [tempList removeLastObject];
-                [tempList addObject:lastArray];
-                healthyList = tempList;
-                
-            }else if ([specialList count]>0)
-            {
-//                specialList.lastObject  = [NSMutableArray arrayWithArray:[self addNullDataInTheList:specialList.lastObject]];
-                NSMutableArray *tempList = [NSMutableArray arrayWithArray:healthyList];
-                
-                NSArray *lastArray = [NSMutableArray arrayWithArray:[self addNullDataInTheList:tempList.lastObject]];
-                [tempList removeLastObject];
-                [tempList addObject:lastArray];
-                specialList = tempList;
-                
             }
             
-            //排序
-            [self.allFoodDataList addObjectsFromArray:specialList];
-            [self.allFoodDataList addObjectsFromArray:healthyList];
-            [self.allFoodDataList addObjectsFromArray:soupList];
-            [self.allFoodDataList addObjectsFromArray:menuPackeList];
-            
-            [self.foodListHeadTitleList addObjectsFromArray:specialHeadList];
-            [self.foodListHeadTitleList addObjectsFromArray:healthyHeadList];
-            [self.foodListHeadTitleList addObjectsFromArray:soupHeadList];
-            [self.foodListHeadTitleList addObjectsFromArray:menuPackeHeadList];
-            
-            NSLog(@"allFoodDataList %ld :%@",(long)arrayIndex,self.allFoodDataList);
+            NSLog(@"allFoodDataList:%@",self.allFoodDataList);
 
-//            //最后一组添加空数据
-//            if ([_allGoodsData.menuPackeList count]>0)
-//            {
-//                _allGoodsData.menuPackeList = [self addNullDataInTheList:_allGoodsData.menuPackeList];
-//            }else if ([_allGoodsData.soupList count]>0)
-//            {
-//                _allGoodsData.soupList = [self addNullDataInTheList:_allGoodsData.soupList];
-//            }else if ([_allGoodsData.healthyList count]>0)
-//            {
-//                _allGoodsData.healthyList = [self addNullDataInTheList:_allGoodsData.healthyList];
-//            }else if ([_allGoodsData.specialList count]>0)
-//            {
-//                _allGoodsData.specialList = [self addNullDataInTheList:_allGoodsData.specialList];
-//            }
-//
-//            [self.foodTypeTableView reloadData];
-//            if ([[self.foodTypeTableView visibleCells] count]>0) {
-//                [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
-//            }
-//
             [self.foodTypeTableView reloadData];
             [self.foodInfoListTableView reloadData];
             [_shoppingCarView setHidden:NO];
@@ -1050,12 +953,8 @@ typedef enum {
             if ([[self.foodTypeTableView visibleCells] count]>0) {
                 [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
             }
-
             
         } else {
-            
-            NSLog(@"================所有菜品数据请求失败================");
-            NSLog(@"error : %@",errorInfo);
             
             ///弹出提示
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"获取菜品数据失败，请稍后再试……！" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
