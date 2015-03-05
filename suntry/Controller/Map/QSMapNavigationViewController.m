@@ -234,7 +234,7 @@ static char titleLabelKey;//!<标题关联
         ///显示HUD
         self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
-        [self.hud hide:YES afterDelay:8.0f];
+//        [self.hud hide:YES afterDelay:8.0f];
         
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
