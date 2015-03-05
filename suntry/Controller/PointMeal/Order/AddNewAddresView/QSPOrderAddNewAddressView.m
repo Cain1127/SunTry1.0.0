@@ -290,13 +290,19 @@
     UIButton *cityBt = [UIButton createBlockButtonWithFrame:self.cityTextField.frame andButtonStyle:cityBtStyle andCallBack:^(UIButton *button) {
         NSLog(@"cityBT ");
         [self hideKeybord];
+        
+        //!!!! : 城市数组
+        NSArray *cityArray = [NSArray arrayWithObjects:@"广州", nil ];
+        
+        if ([cityArray count]==1) {//只有一个时直接默认选择，不弹选择框
+            [self.cityTextField setPlaceholder:[cityArray objectAtIndex:0]];
+            return ;
+        }
+        
         QSPItemSelectePopView *selectView = [QSPItemSelectePopView getItemSelectePopView];
         [self addSubview:selectView];
         [selectView setDelegate:self];
         [selectView setTag:110];
-        
-        //!!!! : 城市数组
-        NSArray *cityArray = [NSArray arrayWithObjects:@"广州", nil ];
         [selectView updateSelectData:cityArray];
         [selectView showItemSelectePopView];
     }];
@@ -318,12 +324,9 @@
     UIButton *areaBt = [UIButton createBlockButtonWithFrame:self.areaTextField.frame andButtonStyle:areaBtStyle andCallBack:^(UIButton *button) {
         NSLog(@"areaBT ");
         [self hideKeybord];
-        QSPItemSelectePopView *selectView = [QSPItemSelectePopView getItemSelectePopView];
-        [self addSubview:selectView];
-        [selectView setDelegate:self];
-        [selectView setTag:111];
-        //FIXME: 区数组
         
+        //FIXME: 区数组
+
         ///数据地址
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/districtData"];
@@ -342,6 +345,16 @@
                 }
             }
         }
+        
+        if ([areaArray count]==1) {//只有一个时直接默认选择，不弹选择框
+            [self.areaTextField setPlaceholder:[areaArray objectAtIndex:0]];
+            return ;
+        }
+        
+        QSPItemSelectePopView *selectView = [QSPItemSelectePopView getItemSelectePopView];
+        [self addSubview:selectView];
+        [selectView setDelegate:self];
+        [selectView setTag:111];
         [selectView updateSelectData:areaArray];
         [selectView showItemSelectePopView];
     }];

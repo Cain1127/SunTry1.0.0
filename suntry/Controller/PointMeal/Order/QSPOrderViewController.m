@@ -306,6 +306,10 @@
     
     [self.view addSubview:_shoppingCarView];
     
+    self.orderName = @"";
+    self.orderAddress = @"";
+    self.orderPhone = @"";
+    
     [self updateView];
     
 }
@@ -335,10 +339,6 @@
 
 - (void)updateAddress
 {
-    
-    self.orderName = @"";
-    self.orderAddress = @"";
-    self.orderPhone = @"";
     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
     [_shipToAddress setText:self.orderAddress];
     

@@ -103,7 +103,8 @@
             [view removeFromSuperview];
         }
     }
-    [self.contentBackgroundView setContentSize:CGSizeMake(self.contentBackgroundView.frame.size.width, self.contentBackgroundView.frame.size.height)];
+    
+    CGFloat scrollViewMaxHeight = SIZE_DEVICE_HEIGHT - 150;
     
     if (arrayData&&[arrayData isKindOfClass:[NSArray class]]) {
         for (int i=0;i<[arrayData count];i++) {
@@ -139,9 +140,11 @@
             [itembgView addSubview:itemBt];
             
             [self.contentBackgroundView setContentSize:CGSizeMake(self.contentBackgroundView.frame.size.width, itembgView.frame.origin.y+itembgView.frame.size.height+2)];
+            [self.contentBackgroundView setFrame:CGRectMake(self.contentBackgroundView.frame.origin.x, self.contentBackgroundView.frame.origin.y, self.contentBackgroundView.frame.size.width, self.contentBackgroundView.contentSize.height>scrollViewMaxHeight?scrollViewMaxHeight:self.contentBackgroundView.contentSize.height)];
         }
     }
-
+    
+    [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
 }
 
 
