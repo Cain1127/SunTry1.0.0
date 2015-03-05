@@ -10,7 +10,7 @@
 #import "QSLabel.h"
 #import "DeviceSizeHeader.h"
 #import "QSPFoodTypeTableViewCell.h"
-#import "UIImageView+CacheImage.h"
+#import "UIImageView+AFNetworking.h"
 #import "NSString+Calculation.h"
 #import "ColorHeader.h"
 #import "QSGoodsDataModel.h"
@@ -102,12 +102,12 @@
         [self.contentView addSubview:_pricemarkIconView];
         
         //当前售卖价格
-        NSString* priceStr = @"";
-        CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]+4;
+//        NSString* priceStr = @"";
+        CGFloat priceStrWidth = 80;//[priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]+4;
         self.priceLabel = [[QSLabel alloc] initWithFrame:CGRectMake(_pricemarkIconView.frame.origin.x+_pricemarkIconView.frame.size.width-8, _pricemarkIconView.frame.origin.y+(_pricemarkIconView.frame.size.height-14)/2, priceStrWidth, 14)];
         [self.priceLabel setTextColor:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_COLOR];
         [self.priceLabel setFont:[UIFont systemFontOfSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]];
-        [self.priceLabel setText:priceStr];
+//        [self.priceLabel setText:priceStr];
         [self.contentView addSubview:self.priceLabel];
         
         //增加减少菜品数量控件
@@ -158,7 +158,7 @@
     
     [self setHidden:NO];
     
-    [self.contentImgView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,_foodData.goodsImageUrl]] placeholderImage:nil];
+    [self.contentImgView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,_foodData.goodsImageUrl]]];
     
     //菜名元素
     NSString* foodNameStr = _foodData.goodsName;
@@ -206,8 +206,8 @@
     [_pricemarkIconView setHidden:NO];
     //当前售卖价格
     NSString* priceStr = [_foodData getOnsalePrice];
-    CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]+4;
-    [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
+//    CGFloat priceStrWidth = [priceStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:TABLEVIEW_FOOD_PRICE_ONSALE_STRING_FONT_SIZE]+4;
+//    [self.priceLabel setFrame:CGRectMake(self.priceLabel.frame.origin.x, self.priceLabel.frame.origin.y, priceStrWidth, self.priceLabel.frame.size.height)];
     [self.priceLabel setText:priceStr];
     
 }

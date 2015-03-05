@@ -52,7 +52,6 @@
                     price = (configData.tag_value).floatValue;
                 }
             }
-            
         }
     }
     return price;

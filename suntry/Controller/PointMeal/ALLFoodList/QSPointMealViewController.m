@@ -472,48 +472,6 @@ typedef enum {
                 
                 [cell setSlelectedCount:0];
                 
-//                NSArray *tempArray = nil;
-//                
-//                if (_allGoodsData) {
-//                    
-//                    NSNumber *foodType = _foodTypeList[indexPath.section];
-//                    switch (foodType.intValue) {
-//                        case FoodTypeSPecial:
-//                            if (_allGoodsData.specialList&&[_allGoodsData.specialList isKindOfClass:[NSArray class]]&&[_allGoodsData.specialList count]>indexPath.row)
-//                            {
-//                                tempArray = _allGoodsData.specialList;
-//                            }
-//                            
-//                            break;
-//                        case FoodTypeHeathy:
-//                            if (_allGoodsData.healthyList&&[_allGoodsData.healthyList isKindOfClass:[NSArray class]]&&[_allGoodsData.healthyList count]>indexPath.row)
-//                            {
-//                                tempArray = _allGoodsData.healthyList;
-//                            }
-//                            break;
-//                        case FoodTypeSoup:
-//                            if (_allGoodsData.soupList&&[_allGoodsData.soupList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupList count]>indexPath.row)
-//                            {
-//                                tempArray = _allGoodsData.soupList;
-//                            }
-//                            
-//                            break;
-//                        case FoodTypePackage:
-//                            if (_allGoodsData.menuPackeList&&[_allGoodsData.menuPackeList isKindOfClass:[NSArray class]]&&[_allGoodsData.menuPackeList count]>indexPath.row)
-//                            {
-//                                tempArray = _allGoodsData.menuPackeList;
-//                            }
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//                }
-//                
-//                if (tempArray){
-//                    [cell updateFoodData:tempArray[indexPath.row] withIndex:indexPath.row];
-//                }
-                //////////////////////////////////////////
-                
                 if (_allFoodDataList) {
                     id subList = [_allFoodDataList objectAtIndex:indexPath.section];
                     if (subList&&[subList isKindOfClass:[NSArray class]]) {
@@ -577,55 +535,7 @@ typedef enum {
             
         case FoodInfoListTable:
             {
-//                NSArray *tempArray = nil;
-//                
-//                if (_allGoodsData) {
-//                    
-//                    switch (indexPath.section) {
-//                        case 0:
-//                            if (_allGoodsData.soupList&&[_allGoodsData.soupList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupList count]>indexPath.row)
-//                            {
-//                                tempArray = _allGoodsData.soupList;
-//                            }
-//                            break;
-//                        case 1:
-//                            if (_allGoodsData.healthyList&&[_allGoodsData.healthyList isKindOfClass:[NSArray class]]&&[_allGoodsData.healthyList count]>indexPath.row)
-//                            {
-//                                tempArray = _allGoodsData.healthyList;
-//                            }
-//                            break;
-//                        case 2:
-//                            if (_allGoodsData.soupList&&[_allGoodsData.soupList isKindOfClass:[NSArray class]]&&[_allGoodsData.soupList count]>indexPath.row)
-//                            {
-//                                tempArray = _allGoodsData.soupList;
-//                            }
-//                            break;
-//                        case 3:
-//                            if (_allGoodsData.menuPackeList&&[_allGoodsData.menuPackeList isKindOfClass:[NSArray class]]&&[_allGoodsData.menuPackeList count]>indexPath.row)
-//                            {
-//                                tempArray = _allGoodsData.menuPackeList;
-//                            }
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//                    
-//                }
-//                
-//                if (tempArray){
-//                    QSGoodsDataModel *itemData = tempArray[indexPath.row];
-//                    if (itemData&&[itemData isKindOfClass:[QSGoodsDataModel class]]) {
-//                        if ([itemData.goodsTypeID integerValue] == 1 || [itemData.goodsTypeID integerValue] == 5) {
-//                            
-//                            QSPShakeFoodView *shakeFoodView = [QSPShakeFoodView getShakeFoodView];
-//                            [shakeFoodView setDelegate:self];
-//                            [self.tabBarController.view addSubview:shakeFoodView];
-//                            [shakeFoodView updateFoodData:itemData];
-//                            [shakeFoodView showShakeFoodView];
-//                            
-//                        }
-//                    }
-//                }
+                
             }
             break;
         default:
