@@ -71,6 +71,7 @@
 @property (nonatomic, strong) NSString *orderPhone;     //下单电话
 
 @property (nonatomic, strong) NSArray  *couponList;
+@property (nonatomic, assign) BOOL  needUpdateAddressFlag;
 
 @end
 
@@ -148,9 +149,8 @@
                     self.orderPhone = addressModel.phone;
                     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
                     [_shipToAddress setText:self.orderAddress];
-                    
                 }
-                
+                _needUpdateAddressFlag = !flag;
             }];
             
             [self.navigationController pushViewController:adVc animated:YES];
@@ -310,7 +310,7 @@
     self.orderName = @"";
     self.orderAddress = @"";
     self.orderPhone = @"";
-    
+    _needUpdateAddressFlag = YES;
     [self updateView];
     
 }
@@ -340,7 +340,10 @@
 
 - (void)updateAddress
 {
-    
+    if (!_needUpdateAddressFlag) {
+        _needUpdateAddressFlag = YES;
+        return;
+    }
     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
     [_shipToAddress setText:self.orderAddress];
     
@@ -959,7 +962,7 @@
     NSLog(@"添加新地址：%@",data);
     
     self.orderName = [NSString stringWithFormat:@"%@%@",[data objectForKey:@"name"],[data objectForKey:@"sex"]];
-    self.orderAddress = [data objectForKey:@"address"];
+    self.orderAddress = [NSString stringWithFormat:@"%@%@%@",[data objectForKey:@"city"],[data objectForKey:@"area"],[data objectForKey:@"address"]];
     self.orderPhone = [data objectForKey:@"phone"];
     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
     [_shipToAddress setText:self.orderAddress];

@@ -90,7 +90,7 @@
         self.userInfo = nil;
         
         //半透明背景层
-        [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT)];
+        [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT*2)];
         [self setBackgroundColor:ADD_NEW_ADDRESS_VIEW_BACKGROUND_COLOR];
         
         //背景关闭按钮
@@ -189,7 +189,7 @@
         
         [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, _submitBt.frame.origin.y+_submitBt.frame.size.height+12)];
         
-        [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+        [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, SIZE_DEVICE_HEIGHT/2)];
     }
     
     [self initTextField];
@@ -415,7 +415,7 @@
     
     [_submitBt setFrame:CGRectMake(12, _scrollView.frame.origin.y+_scrollView.frame.size.height+10, _submitBt.frame.size.width, _submitBt.frame.size.height)];
     [_contentBackgroundView setFrame:CGRectMake(_contentBackgroundView.frame.origin.x,_contentBackgroundView.frame.origin.y, _contentBackgroundView.frame.size.width, _submitBt.frame.origin.y+_submitBt.frame.size.height+12)];
-    [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+    [_contentBackgroundView setCenter:CGPointMake(self.frame.size.width/2, SIZE_DEVICE_HEIGHT/2)];
     
 }
 
@@ -444,21 +444,35 @@
     if (flag && [[self.nameTextField text] isEqualToString:@""]) {
         
         flag = NO;
-        infoStr= @"联系人姓名";
+        infoStr= @"请输入联系人姓名";
+        
+    }
+    
+    if (flag && [[self.cityTextField placeholder] isEqualToString:@"请选择城市"]) {
+        
+        flag = NO;
+        infoStr= @"请选择城市";
+        
+    }
+    
+    if (flag && [[self.areaTextField placeholder] isEqualToString:@"请选择区"]) {
+        
+        flag = NO;
+        infoStr= @"请选择区";
         
     }
     
     if (flag && [[self.addressTextField text] isEqualToString:@""]) {
         
         flag = NO;
-        infoStr= @"送餐地址";
+        infoStr= @"请输入送餐地址";
         
     }
     
     if (flag && [[self.telephoneTextField text] isEqualToString:@""]) {
         
         flag = NO;
-        infoStr= @"联系电话";
+        infoStr= @"请输入联系电话";
         
     }
     
@@ -467,7 +481,7 @@
         if (![self isMobileNumberClassification:[self.telephoneTextField text]]) {
             
             flag = NO;
-            infoStr= @"正确的联系电话格式";
+            infoStr= @"请输入正确的联系电话格式";
             
         }
         
@@ -475,7 +489,7 @@
     
     if (!flag) {
         
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"请输入%@",infoStr] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:[NSString stringWithFormat:@"%@",infoStr] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [av show];
         
     }
@@ -508,6 +522,8 @@
     [addressDic setObject:[self.addressTextField text] forKey:@"address"];
     [addressDic setObject:[self.sexLabel text] forKey:@"sex"];
     [addressDic setObject:[self.companyTextField text] forKey:@"company"];
+    [addressDic setObject:[self.cityTextField placeholder] forKey:@"city"];
+    [addressDic setObject:[self.areaTextField placeholder] forKey:@"area"];
     
     return addressDic;
     
@@ -557,7 +573,7 @@
     CGRect rect = [textField convertRect: textField.bounds toView:window];
     
     //设置视图上移的距离，单位像素
-    int movementDistance =(self.frame.size.height - 280) - (rect.origin.y+rect.size.height); // tweak as needed
+    int movementDistance =(SIZE_DEVICE_HEIGHT - 280) - (rect.origin.y+rect.size.height); // tweak as needed
     //三目运算，判定是否需要上移视图或者不变
     int movement = movementDistance<0?movementDistance:0;
     
@@ -648,7 +664,7 @@
         NSString *gender = ([genderString isEqualToString:@"先生"]) ? @"0" : @"1";
         
         ///地址
-        NSString *address = self.addressTextField.text;
+        NSString *address = [NSString stringWithFormat:@"%@%@%@",self.cityTextField.placeholder,self.areaTextField.placeholder,self.addressTextField.text];
         
         ///公司
         NSString *company = self.companyTextField.text;
