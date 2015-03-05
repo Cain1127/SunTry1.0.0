@@ -10,4 +10,17 @@
 
 @implementation QSAnnotation
 
+- (void)setTitle:(NSString *)title
+{
+    _title = title;
+    
+}
+
+-(void)setSubtitle:(NSString *)subtitle
+{
+
+    _subtitle=subtitle;
+    
+}
+
 @end

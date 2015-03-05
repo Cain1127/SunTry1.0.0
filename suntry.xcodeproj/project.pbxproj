@@ -146,6 +146,7 @@
 		CE571F011A84C86A00609788 /* QSWMyStoredCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571F001A84C86A00609788 /* QSWMyStoredCardViewController.m */; };
 		CE571F041A84C8E000609788 /* QSWLoginPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571F031A84C8E000609788 /* QSWLoginPswViewController.m */; };
 		CE571F071A84C92B00609788 /* QSWUserSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE571F061A84C92B00609788 /* QSWUserSettingViewController.m */; };
+		CE5D51F21AA749FF003F8844 /* QSAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D51F11AA749FF003F8844 /* QSAnnotationView.m */; };
 		CE6ED5AE1A89EEF7009FF8A7 /* QSOrderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6ED5AD1A89EEF7009FF8A7 /* QSOrderListViewController.m */; };
 		CE7946AF1A8B6F2F00C0113B /* UIImage+Compressed.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7946A61A8B6F2F00C0113B /* UIImage+Compressed.m */; };
 		CE7946B01A8B6F2F00C0113B /* UIImageView+CacheImage.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7946A91A8B6F2F00C0113B /* UIImageView+CacheImage.m */; };
@@ -543,6 +544,8 @@
 		CE571F031A84C8E000609788 /* QSWLoginPswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWLoginPswViewController.m; sourceTree = "<group>"; };
 		CE571F051A84C92B00609788 /* QSWUserSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSWUserSettingViewController.h; sourceTree = "<group>"; };
 		CE571F061A84C92B00609788 /* QSWUserSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSWUserSettingViewController.m; sourceTree = "<group>"; };
+		CE5D51F01AA749FF003F8844 /* QSAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSAnnotationView.h; sourceTree = "<group>"; };
+		CE5D51F11AA749FF003F8844 /* QSAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSAnnotationView.m; sourceTree = "<group>"; };
 		CE6ED5AC1A89EEF7009FF8A7 /* QSOrderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSOrderListViewController.h; sourceTree = "<group>"; };
 		CE6ED5AD1A89EEF7009FF8A7 /* QSOrderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSOrderListViewController.m; sourceTree = "<group>"; };
 		CE7946A51A8B6F2F00C0113B /* UIImage+Compressed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Compressed.h"; sourceTree = "<group>"; };
@@ -1221,6 +1224,8 @@
 			children = (
 				CE5341341A7FA4CE002BA188 /* QSAnnotation.h */,
 				CE5341351A7FA4CE002BA188 /* QSAnnotation.m */,
+				CE5D51F01AA749FF003F8844 /* QSAnnotationView.h */,
+				CE5D51F11AA749FF003F8844 /* QSAnnotationView.m */,
 				CE5341361A7FA4CE002BA188 /* QSMapNavigationViewController.h */,
 				CE5341371A7FA4CE002BA188 /* QSMapNavigationViewController.m */,
 			);
@@ -2044,6 +2049,7 @@
 				18EE34551AA6FDDB0053B909 /* OpenUDID.m in Sources */,
 				CE5341461A7FA4CE002BA188 /* QSAnnotation.m in Sources */,
 				473902431A9EF3D4000ECF41 /* QSPOrderAddNewAddressView.m in Sources */,
+				CE5D51F21AA749FF003F8844 /* QSAnnotationView.m in Sources */,
 				CE571EF71A84AFEE00609788 /* QSWSettingCell.m in Sources */,
 				1853443E1A9ED82C00A83039 /* base64.m in Sources */,
 				CEEAC3E41A8DA7DF009AC6AA /* MJRefreshFooterView.m in Sources */,

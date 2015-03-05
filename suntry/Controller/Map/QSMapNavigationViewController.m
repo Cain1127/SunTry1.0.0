@@ -8,6 +8,7 @@
 
 #import "QSMapNavigationViewController.h"
 #import "QSAnnotation.h"
+#import "QSAnnotationView.h"
 #import "QSMapManager.h"
 #import "DeviceSizeHeader.h"
 #import "QSBlockButton.h"
@@ -122,36 +123,45 @@ static char titleLabelKey;//!<标题关联
             case 0:
             {
                 // 1.餐车1
+            
                 QSAnnotation *anno0 = [[QSAnnotation alloc] init];
                 anno0.title = self.title;
                 anno0.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
 
                 // 设置地图的显示范围
-                MKCoordinateSpan span = MKCoordinateSpanMake(0.171321, 0.169366);
+                MKCoordinateSpan span = MKCoordinateSpanMake(0.021321, 0.019366);
                 MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(latitude, longitude), span);
                 [_mapView setRegion:region animated:YES];
                 
-//                CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude
-//                                                             longitude:longitude];
-//                //2.反地理编码
-//                CLGeocoder *geocoder=[[CLGeocoder alloc]init];
-//                
-//                [geocoder reverseGeocodeLocation:loc completionHandler:^(NSArray *placemarks, NSError *error) {
-//                    
-//                    if (error) {//有错误
-//                        NSLog(@"========================================");
-//                        NSLog(@"============无法获取当前用户位置===========");
-//                        NSLog(@"========================================");
-//                    }
-//                    
-//                    else{//编码成功
-//                        
-//                        //取出最前面的地址
-//                        CLPlacemark *pm=[placemarks firstObject];
-//                        anno0.subtitle=pm.name;
-//                        
-//                    }
-//                }
+                CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude
+                                                             longitude:longitude];
+                //2.反地理编码
+                CLGeocoder *geocoder=[[CLGeocoder alloc]init];
+                
+                [geocoder reverseGeocodeLocation:loc completionHandler:^(NSArray *placemarks, NSError *error) {
+                    
+                    if (error) {
+                        
+                        //有错误
+                        NSLog(@"========================================");
+                        NSLog(@"============无法获取当前用户位置===========");
+                        NSLog(@"========================================");
+                        
+                    } else {//编码成功
+                        
+                        //取出最前面的地址
+                        CLPlacemark *pm = [placemarks firstObject];
+                        NSMutableString *tempTitle = [pm.name mutableCopy];
+                        
+                        ///删除省份之前的数据
+                        NSRange tempRange = [tempTitle rangeOfString:@"市"];
+                        NSString *resultTitle = [tempTitle substringFromIndex:tempRange.location + 1];
+                        
+                        anno0.subtitle = resultTitle;
+                        
+                        
+                    }
+                }];
                 
                 [self.mapView addAnnotation:anno0];
                 
@@ -211,6 +221,30 @@ static char titleLabelKey;//!<标题关联
     
     return annoView;
 }
+
+/**
+ *  选中了某一个大头针
+ */
+//- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+//{
+//    
+//        
+//        // 1.删除以前的MJTuangouDescAnnotation
+//        for (id annotation in mapView.annotations) {
+//            if ([annotation isKindOfClass:[annotation class]]) {
+//                [mapView removeAnnotation:annotation];
+//            }
+//   
+//        // 在这颗被点击的大头针上面, 添加一颗用于描述的大头针
+//        QSAnnotation *descAnno = [[QSAnnotation alloc] init];
+//        descAnno.tuangou = anno.tuangou;
+//        [mapView addAnnotation:descAnno];
+//        QSAnnotation *anno = view.annotation;
+//
+//    }
+//}
+
+
 
 #pragma mark - 餐车地址网络信息请求
 ///餐车地址网络信息请求
