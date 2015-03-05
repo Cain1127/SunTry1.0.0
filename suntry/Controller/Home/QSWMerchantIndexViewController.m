@@ -350,9 +350,10 @@ static char titleLabelKey;//!<标题key
         cell.foodImageView.image=[UIImage imageNamed:@"home_bannar"];
         cell.foodNameLabel.text= tempModel.goodsName;
         cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
-        [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://admin.9dxz.com/files/%@",tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
+        [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
         cell.priceLabel.text= tempModel.goodsSpecialPrice;
         return cell;
+        
     }
     
     return nil;
