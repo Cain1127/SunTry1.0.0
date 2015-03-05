@@ -143,7 +143,7 @@
                 ///判断是否选择了新的地址
                 if (flag) {
                     
-                    self.orderName = [NSString stringWithFormat:@"%@%@",addressModel.userName,([addressModel.gender intValue] == 0) ? @"先生" : @"女士"];
+                    self.orderName = addressModel.userName;
                     self.orderAddress = addressModel.address;
                     self.orderPhone = addressModel.phone;
                     [_shipToPersonName setText:[NSString stringWithFormat:@"%@  %@",self.orderName, self.orderPhone]];
@@ -357,7 +357,7 @@
             [_shipToAddress setText:self.orderAddress];
             return;
             
-        }else if(userData.address && [userData.address isEqualToString:@""]){
+        } else if(userData.address && [userData.address isEqualToString:@""]){
             ///获取本地数据
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/user_send_address"];
