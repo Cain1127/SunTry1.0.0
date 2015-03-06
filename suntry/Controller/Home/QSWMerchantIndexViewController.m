@@ -627,6 +627,8 @@ static char titleLabelKey;//!<标题key
     //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"1", @"key" : @"",@"goods_tag":@"4",@"send_district_id" : self.distictID};
     
+    NSLog(@"每日特价%@",dict);
+    
     ///广告栏请求
     [self getBannerInfo];
     

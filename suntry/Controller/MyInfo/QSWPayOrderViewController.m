@@ -528,7 +528,7 @@
         NSDictionary *tempParams = @{@"id" : orderID,
                                      @"type" : @"1",
                                      @"is_pay" : @"0",
-                                     @"desc" : @"储值卡购买确认"};
+                                     @"desc" : @"储值卡购买失败"};
         
         ///回调服务端确认支付
         [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
@@ -572,6 +572,15 @@
     
     ///移聊HUD
     [self.hud hide:YES];
+    
+    ///回调服务端支付失败
+    NSDictionary *tempParams = @{@"id" : orderID,
+                                 @"type" : @"1",
+                                 @"is_pay" : @"0",
+                                 @"desc" : @"储值卡购买失败"};
+    
+    ///回调服务端确认支付
+    [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {}];
     
     ///支付失败
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"支付失败，请稍后再试……"] delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];

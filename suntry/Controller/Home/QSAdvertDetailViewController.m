@@ -51,36 +51,29 @@
 ///UI搭建
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
     
-    ///导航栏底view
-    UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
-    navRootView.image = [UIImage imageNamed:@"nav_backgroud"];
-    navRootView.userInteractionEnabled = YES;
-    [self.view addSubview:navRootView];
-    
-    ///标题
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(navRootView.frame.size.width / 2.0f - 60.0f, 27.0f, 120.0f, 30.0f)];
-    titleLabel.text = self.title ? self.title : @"香哉";
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    [navRootView addSubview:titleLabel];
+    self.automaticallyAdjustsScrollViewInsets=NO;
     
     ///自定义返回按钮
-    UIButton *turnBackButton = [UIButton createBlockButtonWithFrame:CGRectMake(5.0f, 20.0f, 44.0f, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
-        
-        ///返回
-        [self.navigationController popViewControllerAnimated:YES];
-        
-    }];
+    UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
+    turnBackButton.tintColor = [UIColor whiteColor];
+    
     ///设置返回按钮的颜色
-    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal];
-    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted];
-    [navRootView addSubview:turnBackButton];
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    self.navigationItem.leftBarButtonItem = turnBackButton;
+    
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
+    [navTitle setTextColor:[UIColor whiteColor]];
+    [navTitle setBackgroundColor:[UIColor clearColor]];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"香哉"];
+    self.navigationItem.titleView = navTitle;
     
     ///广告webview
-    UIWebView *advertView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 64.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 69.0f)];
+    UIWebView *advertView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 69.0f)];
     advertView.backgroundColor = [UIColor whiteColor];
     advertView.scalesPageToFit = YES;
     
@@ -103,6 +96,14 @@
         [advertView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.advertURL]]];
         
     }
+    
+}
+
+#pragma mark - 返回事件
+- (void)turnBackAction
+{
+    
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 
