@@ -21,9 +21,6 @@
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_COLOR         [UIColor colorWithRed:0.505 green:0.513 blue:0.525 alpha:1.000]
 #define ORDER_LIST_VIEWCONTROLLER_CONTENT_FONT_SIZE     17.
 
-///关联
-static char titleLabelKey;//!<标题关联
-
 @interface QSNoNetworkingViewController ()
 
 @property(nonatomic,strong) UIImageView *suntryImage;   //!<关于香哉图片
@@ -96,58 +93,23 @@ static char titleLabelKey;//!<标题关联
     
     [super viewDidLoad];
     
-    ///导航栏
-    UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
-    navRootView.userInteractionEnabled = YES;
-    navRootView.image = [UIImage imageNamed:@"nav_backgroud"];
-    [self.view addSubview:navRootView];
+    ///自定义返回按钮
+    UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
+    turnBackButton.tintColor = [UIColor whiteColor];
     
-    ///添加导航栏标题
-    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake((navRootView.frame.size.width - 80.0f) / 2.0f, 64.0f - 37.0f, 80.0f, 30.0f)];
-    [navTitle setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    ///设置返回按钮的颜色
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    self.navigationItem.leftBarButtonItem = turnBackButton;
+    
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
     [navTitle setTextColor:[UIColor whiteColor]];
     [navTitle setBackgroundColor:[UIColor clearColor]];
-    [navTitle setTextAlignment:NSTextAlignmentRight];
-    navTitle.adjustsFontSizeToFitWidth = YES;
-    [navTitle setText:@"温馨提示"];
-    [navRootView addSubview:navTitle];
-    objc_setAssociatedObject(self, &titleLabelKey, navTitle, OBJC_ASSOCIATION_ASSIGN);
-    
-    ///返回按钮
-    UIButton *turnBackButton = [UIButton createBlockButtonWithFrame:CGRectMake(10.0f, navTitle.frame.origin.y, 30.0f, 30.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
-        
-        ///判断是否需要回调
-        if (self.noNetworkingCallBack) {
-            
-            self.noNetworkingCallBack();
-            
-        }
-        
-        if (self.turnBackStep > 2) {
-            
-            int sumVC = (int)[self.navigationController.viewControllers count];
-            int turnBackIndex = sumVC - self.turnBackStep;
-            UIViewController *tempVC = self.navigationController.viewControllers[turnBackIndex];
-            if (tempVC) {
-                
-                [self.navigationController popToViewController:tempVC animated:YES];
-                
-            } else {
-            
-                [self.navigationController popViewControllerAnimated:YES];
-            
-            }
-            
-        } else {
-            
-            [self.navigationController popViewControllerAnimated:NO];
-            
-        }
-        
-    }];
-    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal];
-    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted];
-    [navRootView addSubview:turnBackButton];
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
+    [navTitle setText:@"车车在哪儿"];
+    self.navigationItem.titleView = navTitle;
     
     ///图片加载
     self.nodataView = [[UIView alloc] initWithFrame:CGRectMake(0, 64.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT-64.0f)];
@@ -201,5 +163,40 @@ static char titleLabelKey;//!<标题关联
     self.view.backgroundColor=[UIColor whiteColor];
     
 }
+#pragma mark - 返回事件
+- (void)turnBackAction
+{
+    
+    ///判断是否需要回调
+    if (self.noNetworkingCallBack) {
+        
+        self.noNetworkingCallBack();
+        
+    }
+    
+    if (self.turnBackStep > 2) {
+        
+        int sumVC = (int)[self.navigationController.viewControllers count];
+        int turnBackIndex = sumVC - self.turnBackStep;
+        UIViewController *tempVC = self.navigationController.viewControllers[turnBackIndex];
+        if (tempVC) {
+            
+            [self.navigationController popToViewController:tempVC animated:YES];
+            
+        } else {
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }
+        
+    } else {
+        
+        [self.navigationController popViewControllerAnimated:NO];
+        
+    }
+
+    
+}
+
 
 @end

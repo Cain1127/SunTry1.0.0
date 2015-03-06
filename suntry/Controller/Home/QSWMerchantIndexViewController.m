@@ -138,12 +138,6 @@ static char titleLabelKey;//!<标题key
     ///加载食品列表
     [self setupFoodListView];
     
-    ///导航栏
-    UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
-    navRootView.userInteractionEnabled = YES;
-    navRootView.image = [UIImage imageNamed:@"nav_backgroud"];
-    [self.view addSubview:navRootView];
-    
     ///0.添加导航栏主题view
     UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, 80.0f, 30.0f)];
     [navTitle setFont:[UIFont boldSystemFontOfSize:18.0f]];
@@ -160,12 +154,13 @@ static char titleLabelKey;//!<标题key
     UIImageView *titleImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"home_arrow_down"] ];
     titleImageView.frame = CGRectMake(110.0f, 0.0f, 30.0f, 30.0f);
     
-    UIButton *districtButton = [[UIButton alloc] initWithFrame:CGRectMake((SIZE_DEVICE_WIDTH - 140.0f) / 2.0f, navRootView.frame.size.height - 37.0f, 140.0f, 30.0f)];
+    UIButton *districtButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 140.0f, 30.0f)];
     [districtButton addSubview:navTitle];
     [districtButton addSubview:titleImageView];
     [districtButton addSubview:localImageView];
     
-    [navRootView addSubview:districtButton];
+    ///中间自定义按钮
+    [self.navigationItem setTitleView:districtButton];
     [districtButton addTarget:self action:@selector(showStreetPicker) forControlEvents:UIControlEventTouchUpInside];
     
     [self initShakeView];
@@ -212,7 +207,7 @@ static char titleLabelKey;//!<标题key
     UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     
-    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, 64.0f-SIZE_DEFAULT_MARGIN_LEFT_RIGHT, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 64.0f - 49.0f+SIZE_DEFAULT_MARGIN_LEFT_RIGHT) collectionViewLayout:flowLayout];
+    self.collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, (iOS7 ? 64.0f : 0.0f) - 10.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 64.0f - 49.0f + 10.0f) collectionViewLayout:flowLayout];
     self.collectionView.showsVerticalScrollIndicator=NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     
@@ -265,7 +260,7 @@ static char titleLabelKey;//!<标题key
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     
-    return [self.specialDataSource count]+1;
+    return [self.specialDataSource count] + 1;
     
 }
 
@@ -351,7 +346,8 @@ static char titleLabelKey;//!<标题key
         cell.foodNameLabel.text= tempModel.goodsName;
         cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
         [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
-        cell.priceLabel.text= [tempModel.goodsSpecialPrice floatValue] > 0.0f ? tempModel.goodsSpecialPrice : tempModel.goodsPrice;
+        NSString *showPriceString = [tempModel.goodsSpecialPrice floatValue] > 0.0f ? tempModel.goodsSpecialPrice : tempModel.goodsPrice;
+        cell.priceLabel.text= [NSString stringWithFormat:@"%.1f",[showPriceString floatValue]];
         return cell;
         
     }
@@ -401,7 +397,7 @@ static char titleLabelKey;//!<标题key
     QSPShakeFoodView *foodDetalPopView = [QSPShakeFoodView getShakeFoodView];
     [foodDetalPopView setDelegate:self];
     [self.tabBarController.view addSubview:foodDetalPopView];
-    NSArray *array = [self.tabBarController.view subviews];
+//    NSArray *array = [self.tabBarController.view subviews];
     [foodDetalPopView updateFoodData:goodsItem];
     [self.tabBarController.view bringSubviewToFront:foodDetalPopView];
     [foodDetalPopView showShakeFoodView];
@@ -499,7 +495,6 @@ static char titleLabelKey;//!<标题key
     
     if (1 == isLogin) {
         
-        
         QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init];
         VC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:VC animated:YES];
@@ -509,9 +504,7 @@ static char titleLabelKey;//!<标题key
         ///弹出登录框
         QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
         loginVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController setNavigationBarHidden:NO];
         [self.navigationController pushViewController:loginVC animated:YES];
-        
     }
     
 }
@@ -788,15 +781,6 @@ static char titleLabelKey;//!<标题key
         
     });
     
-}
-
-#pragma mark - 当前页面将要显示时隐藏navigationBar
-- (void)viewWillAppear:(BOOL)animated
-{
-
-    [self.navigationController setNavigationBarHidden:YES];
-    [super viewWillAppear:animated];
-
 }
 
 @end

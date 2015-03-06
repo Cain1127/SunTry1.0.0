@@ -44,45 +44,36 @@ static char titleLabelKey;//!<标题关联
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets=NO;
     
-    ///导航栏
-    UIImageView *navRootView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, 64.0f)];
-    navRootView.userInteractionEnabled = YES;
-    navRootView.image = [UIImage imageNamed:@"nav_backgroud"];
-    [self.view addSubview:navRootView];
+    ///自定义返回按钮
+    UIBarButtonItem *turnBackButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_back_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(turnBackAction)];
+    turnBackButton.tintColor = [UIColor whiteColor];
     
-    ///添加导航栏标题
-    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake((navRootView.frame.size.width - 80.0f) / 2.0f, 64.0f - 37.0f, 80.0f, 30.0f)];
-    [navTitle setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    ///设置返回按钮的颜色
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [turnBackButton setBackButtonBackgroundImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    self.navigationItem.leftBarButtonItem = turnBackButton;
+    
+    UILabel *navTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [navTitle setFont:[UIFont boldSystemFontOfSize:17]];
     [navTitle setTextColor:[UIColor whiteColor]];
     [navTitle setBackgroundColor:[UIColor clearColor]];
-    [navTitle setTextAlignment:NSTextAlignmentRight];
-    navTitle.adjustsFontSizeToFitWidth = YES;
+    [navTitle setTextAlignment:NSTextAlignmentCenter];
     [navTitle setText:@"车车在哪儿"];
-    [navRootView addSubview:navTitle];
-    objc_setAssociatedObject(self, &titleLabelKey, navTitle, OBJC_ASSOCIATION_ASSIGN);
-    
-    ///返回按钮
-    UIButton *turnBackButton = [UIButton createBlockButtonWithFrame:CGRectMake(10.0f, navTitle.frame.origin.y, 30.0f, 30.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
-        
-        [self.navigationController popViewControllerAnimated:YES];
-        
-    }];
-    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_normal"] forState:UIControlStateNormal];
-    [turnBackButton setImage:[UIImage imageNamed:@"nav_back_selected"] forState:UIControlStateHighlighted];
-    [navRootView addSubview:turnBackButton];
+    self.navigationItem.titleView = navTitle;
     
     ///初始化mapView
     _mapView=[[MKMapView alloc] init];
-    _mapView.frame=CGRectMake(0.0f, 64.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 49.0f);
+    _mapView.frame=CGRectMake(0.0f, 0.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 49.0f);
     
-    // 1.跟踪用户位置(显示用户的具体位置)
-//    self.mapView.showsUserLocation=YES;
-//    self.mapView.userTrackingMode = MKUserTrackingModeNone;
-    ///:19400 48500
-    self.mapView.centerCoordinate = CLLocationCoordinate2DMake(23.12, 113.31);
-    //显示级别
-    //self.mapView.zo = 18;
+    [self.mapView setZoomEnabled:YES];
+    
+    // 设置地图的显示范围
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.601321, 0.609366);
+    MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(23.12, 113.31), span);
+    [_mapView setRegion:region animated:YES];
 
     
     // 2.设置地图类型
@@ -91,19 +82,17 @@ static char titleLabelKey;//!<标题关联
     // 3.设置代理
     self.mapView.delegate = self;
     
-    //    QSMapManager *mapManager=[[QSMapManager alloc] init];
-    //    [mapManager startUserLocation:^(BOOL isLocalSuccess, double longitude, double latitude) {
-    //
-    //        // 设置地图的显示范围
-    //        MKCoordinateSpan span = MKCoordinateSpanMake(0.021321, 0.019366);
-    //        MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(latitude, longitude), span);
-    //        [_mapView setRegion:region animated:YES];
-    //
-    //    }];
-    
     [self.view addSubview:_mapView];
     
     [self getCarPostingInfo];
+    
+}
+
+#pragma mark - 返回事件
+- (void)turnBackAction
+{
+    
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 
@@ -266,6 +255,12 @@ static char titleLabelKey;//!<标题关联
                     
                 });
                 
+            }
+            else{
+                                
+                self.hud.labelText=@"暂无配送中订单...";
+                [self.hud hide:YES afterDelay:2.0f];
+             
             }
             
         } else {

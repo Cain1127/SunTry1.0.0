@@ -275,10 +275,8 @@
 
     ///进行登录事件
     [self gotoLoginVC];
-    
     ///回收键盘
     [textField resignFirstResponder];
-    
     return YES;
 
 }
