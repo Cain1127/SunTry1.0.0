@@ -160,9 +160,6 @@
 #pragma mark - 打电话事件
 - (void)makeCall:(NSString *)number
 {
-    
-    
-    if (iOS7) {
         
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                             message:[NSString stringWithFormat:@"呼叫 %@",number] delegate:self
@@ -171,39 +168,6 @@
         self.phoneNumber = number;
         [alertView show];
         return;
-        
-    }
-    
-    ///电话弹出框
-    __block UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"呼叫 %@",@"02037302282"] preferredStyle:UIAlertControllerStyleAlert];
-    
-    ///确认事件
-    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-        
-        ///打电话
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",@"02037302282"]]];
-        
-        ///隐藏确认框
-        [alertVC dismissViewControllerAnimated:YES completion:nil];
-        
-    }];
-    
-    ///取消事件
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        
-        ///移聊提示
-        [alertVC dismissViewControllerAnimated:YES completion:^{
-            
-        }];
-        
-    }];
-    
-    ///添加事件
-    [alertVC addAction:cancelAction];
-    [alertVC addAction:confirmAction];
-    
-    ///弹出说明框
-    [self presentViewController:alertVC animated:YES completion:^{}];
     
 }
 
