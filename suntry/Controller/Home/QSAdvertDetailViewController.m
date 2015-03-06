@@ -73,7 +73,7 @@
     self.navigationItem.titleView = navTitle;
     
     ///广告webview
-    UIWebView *advertView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 69.0f)];
+    UIWebView *advertView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, (iOS7 ? 64.0f : 0.0f), SIZE_DEVICE_WIDTH, SIZE_DEVICE_HEIGHT - 69.0f)];
     advertView.backgroundColor = [UIColor whiteColor];
     advertView.scalesPageToFit = YES;
     
