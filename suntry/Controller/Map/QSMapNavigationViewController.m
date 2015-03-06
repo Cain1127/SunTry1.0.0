@@ -77,8 +77,13 @@ static char titleLabelKey;//!<标题关联
     _mapView.frame=CGRectMake(0.0f, 64.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 49.0f);
     
     // 1.跟踪用户位置(显示用户的具体位置)
-    //self.mapView.userTrackingMode = MKUserTrackingModeFollow;
-    //self.mapView.showsUserLocation=YES;
+//    self.mapView.showsUserLocation=YES;
+//    self.mapView.userTrackingMode = MKUserTrackingModeNone;
+    ///:19400 48500
+    self.mapView.centerCoordinate = CLLocationCoordinate2DMake(23.12, 113.31);
+    //显示级别
+    //self.mapView.zo = 18;
+
     
     // 2.设置地图类型
     self.mapView.mapType = MKMapTypeStandard;
