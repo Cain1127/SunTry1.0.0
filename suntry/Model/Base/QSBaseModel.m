@@ -60,7 +60,7 @@
     
     NSInteger intTemp = (int)specialPricef;
     
-    if (specialPricef < intTemp+0.1) {
+    if (specialPricef == intTemp) {
         specialPricef = intTemp;
     }else if (specialPricef <= intTemp+0.5) {
         specialPricef = intTemp+0.5;
