@@ -66,7 +66,7 @@ static char titleLabelKey;//!<标题关联
     
     ///初始化mapView
     _mapView=[[MKMapView alloc] init];
-    _mapView.frame=CGRectMake(0.0f, 0.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 49.0f);
+    _mapView.frame=CGRectMake(0.0f, 0.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
     
     [self.mapView setZoomEnabled:YES];
     
