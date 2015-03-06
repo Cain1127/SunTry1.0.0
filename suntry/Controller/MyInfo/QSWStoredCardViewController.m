@@ -276,13 +276,13 @@
         cell.cTimeLabel.text = [confromTimesp substringToIndex:10];
         if (_chargeRecord.selected){
             
-            cell.cPrcieLabel.text = tempModel.amount;
+            cell.cPrcieLabel.text = [NSString stringWithFormat:@"￥%@",tempModel.amount];
             
         }
         
         if (_consumeRecord.selected) {
             
-            cell.cPrcieLabel.text = tempModel.amount;
+            cell.cPrcieLabel.text = [NSString stringWithFormat:@"￥%@",tempModel.amount];
             
         }
         

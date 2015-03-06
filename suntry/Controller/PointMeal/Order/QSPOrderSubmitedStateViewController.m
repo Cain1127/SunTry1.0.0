@@ -40,7 +40,31 @@
     [backButtonStyle setImagesHighted:IMAGE_NAVIGATIONBAR_MEINFO_HIGHLIGHTED];
     
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+        NSArray *array = [self.navigationController childViewControllers];
+        
+        if (array&&[array count]>0) {
+            
+            for (UIViewController *con in array) {
+                
+                if ([con isKindOfClass:[QSPointMealViewController class]]) {
+                    
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    break;
+                    
+                }
+                
+                if ([con isKindOfClass:[QSOrderDetailViewController class]]) {
+                    
+                    [self.navigationController popToViewController:con animated:YES];
+                    
+                    break;
+                    
+                }
+                
+            }
+            
+        }
         
     }];
     
@@ -107,12 +131,9 @@
     UIButton *goonOrderBt = [UIButton createBlockButtonWithFrame:CGRectMake((375-30)/375.*SIZE_DEVICE_WIDTH-checkOrderBt.frame.size.width, checkOrderBt.frame.origin.y, checkOrderBt.frame.size.width, checkOrderBt.frame.size.height) andButtonStyle:goonOrderBtStyleModel andCallBack:^(UIButton *button) {
         
         NSLog(@"goonOrderBtl");
-//        if (paymentSate)
-//        {
-            [self.navigationController popToRootViewControllerAnimated:YES];
-//        }else{
-//            [self.navigationController popViewControllerAnimated:YES];
-//        }
+        
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.tabBarController setSelectedIndex:1];
         
     }];
     [self.view addSubview:goonOrderBt];

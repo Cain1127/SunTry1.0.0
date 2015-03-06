@@ -40,7 +40,7 @@
 @end
 
 @implementation QSPPayForOrderViewController
-@synthesize orderFormModel;
+@synthesize orderFormModel,returnPrePage;
 
 - (void)loadView{
     [super loadView];
@@ -59,7 +59,11 @@
     [backButtonStyle setImagesHighted:IMAGE_NAVIGATIONBAR_MEINFO_HIGHLIGHTED];
     
     UIButton *backButton = [UIButton createBlockButtonWithFrame:CGRectMake(0, 0, 44, 44) andButtonStyle:backButtonStyle andCallBack:^(UIButton *button) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        if (returnPrePage) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     

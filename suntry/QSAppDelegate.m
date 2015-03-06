@@ -45,6 +45,7 @@
         NSString *street = [[NSUserDefaults standardUserDefaults] objectForKey:@"street"];
         NSString *streetID = [[NSUserDefaults standardUserDefaults] objectForKey:@"streetID"];
         QSTabBarViewController *main=[[QSTabBarViewController alloc] initWithID:(streetID ? streetID : @"299") andDistictName:(street ? street : @"体育西路")];
+        [main setDelegate:self];
         [self.window setRootViewController:main];
         
     } else {
@@ -426,5 +427,17 @@
     }];
     
 }
+
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+        
+        [(UINavigationController *)viewController popToRootViewControllerAnimated:YES];
+        
+    }
+    
+}
+
 
 @end
