@@ -25,9 +25,6 @@
 
 #import "QSNoNetworkingViewController.h"
 
-///关联
-static char titleLabelKey;//!<标题关联
-
 @interface QSMapNavigationViewController ()<MKMapViewDelegate,CLLocationManagerDelegate>
 
 @property (nonatomic,strong) MKMapView *mapView;
@@ -182,12 +179,6 @@ static char titleLabelKey;//!<标题关联
     
     // 传递模型
     annoView.annotation = annotation;
-    
-    if (self.carPostionList[0]) {
-        
-        annoView.image = [UIImage imageNamed:@"home_carpostion1"];
-        
-    }
     
     annoView.image=[UIImage imageNamed:@"home_carpostion0"];
     
