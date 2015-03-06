@@ -298,7 +298,7 @@ static char titleLabelKey;//!<标题key
         _advertView = [[QSAutoScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIZE_DEVICE_WIDTH, SIZE_DEFAULT_HOME_BANNAR_HEIGHT) andDelegate:self andScrollDirectionType:aAutoScrollDirectionTypeRightToLeft andShowPageIndex:NO andShowTime:3.0f andTapCallBack:^(id params) {
             
             ///判断是否是有效的广告地址
-            if ([params valueForKey:@"url"]) {
+            if ([params valueForKey:@"url"] && [[params valueForKey:@"url"] hasPrefix:@"http"]) {
                 
                 ///进入广告详情页
                 QSAdvertDetailViewController *advertVC = [[QSAdvertDetailViewController alloc] initWithDetailURL:[params valueForKey:@"url"] andTitle:[params valueForKey:@"title"]];
@@ -315,9 +315,9 @@ static char titleLabelKey;//!<标题key
         CGFloat buttonH = buttonW * 74.0f / 78.0f;
         CGFloat buttonY = SIZE_DEFAULT_HOME_BANNAR_HEIGHT + SIZE_DEFAULT_MARGIN_LEFT_RIGHT;
         
-        _sharkButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, buttonY, buttonW, buttonH);
-        _packageButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 2.0f + buttonW, buttonY, buttonW, buttonH);
-        _carButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 3.0f + 2.0f * buttonW, buttonY, buttonW, buttonH);
+        _sharkButton.frame = CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, buttonY, buttonW, buttonH);
+        _packageButton.frame = CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 2.0f + buttonW, buttonY, buttonW, buttonH);
+        _carButton.frame = CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 3.0f + 2.0f * buttonW, buttonY, buttonW, buttonH);
         _customButton.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT * 4.0f + 3.0f * buttonW, buttonY, buttonW, buttonH);
         _specialsLabel.frame=CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT,buttonY+buttonH+SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 180.0f, 20.0f);
         [_specialsLabel setFont:[UIFont systemFontOfSize:20.0f]];
