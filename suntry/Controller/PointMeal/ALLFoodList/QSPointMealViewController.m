@@ -779,7 +779,8 @@ typedef enum {
                             [self.allFoodDataList addObject:foodItem.goodsList];
                             [self.foodListHeadTitleList addObject:headDic];
                             
-                        }else if (foodItem.subGoodsList && [foodItem.subGoodsList isKindOfClass:[NSArray class]] && [foodItem.subGoodsList count]>0)
+                        }
+                        if (foodItem.subGoodsList && [foodItem.subGoodsList isKindOfClass:[NSArray class]] && [foodItem.subGoodsList count]>0)
                         {
                             for (int j=0; j<[foodItem.subGoodsList count]; j++)
                             {
