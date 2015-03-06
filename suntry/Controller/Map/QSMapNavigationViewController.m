@@ -221,24 +221,22 @@ static char titleLabelKey;//!<标题关联
 - (void)getCarPostingInfo
 {
     
+    ///显示HUD
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     //餐车地址信息请求参数
     NSDictionary *dict = @{@"mer_id" : @"1"};
     [QSRequestManager requestDataWithType:rRequestTypeCarPostion andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
-        ///显示HUD
-        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        
-//        [self.hud hide:YES afterDelay:8.0f];
-        
         ///判断是否请求成功
         if (rRequestResultTypeSuccess == resultStatus) {
-            
-            [self.hud hide:YES afterDelay:0.5];
             
             //模型转换
             QSCarPostionReturnData *tempModel = resultData;
             
             if ([tempModel.carPostionList count] > 0) {
+                
+                [self.hud hide:YES afterDelay:0.5];
                 
                 //清空的数据源
                 [self.carPostionList removeAllObjects];
@@ -255,12 +253,11 @@ static char titleLabelKey;//!<标题关联
                     
                 });
                 
-            }
-            else{
+            } else {
                                 
-                self.hud.labelText=@"暂无配送中订单...";
-                [self.hud hide:YES afterDelay:2.0f];
-             
+                self.hud.labelText = @"暂无配送中的订单...";
+                [self.hud hide:YES afterDelay:1.5f];
+                
             }
             
         } else {
