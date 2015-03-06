@@ -154,7 +154,7 @@ void runtimeAlixPayIMP(id _rec, SEL _cmd, QSOrderInfoDataModel *serverOrderModel
     order.productDescription = orderModel.des;  //商品描述
     
     ///订单金额
-    order.amount = [NSString stringWithFormat:@"%.2f",[orderModel.payPrice floatValue]];
+    order.amount = [NSString stringWithFormat:@"%.1f",[orderModel.payPrice floatValue]];
     order.notifyURL =  orderModel.notify_url; //回调URL
     
     order.service = @"mobile.securitypay.pay";

@@ -12,4 +12,6 @@
 
 @interface QSBaseModel : NSObject <QSDataMappingProtocol,NSCoding>
 
+- (NSString*)computePriceWith5:(NSString*)pirce;
+
 @end

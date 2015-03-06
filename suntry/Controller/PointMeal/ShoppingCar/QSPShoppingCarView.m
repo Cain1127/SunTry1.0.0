@@ -156,7 +156,7 @@
         
         [self.leftInfoLabel setFrame:CGRectMake(_shoppingCarIconView.frame.origin.x+_shoppingCarIconView.frame.size.width, (self.frame.size.height-24)/2, (self.frame.size.width - _rightView.frame.size.width)-(_shoppingCarIconView.frame.origin.x+_shoppingCarIconView.frame.size.width), 24)];
         
-        [self.leftInfoLabel setText:[NSString stringWithFormat:@"共￥%.2f",currentPrice]];
+        [self.leftInfoLabel setText:[NSString stringWithFormat:@"共￥%.1f",currentPrice]];
         
         if (priceInConfigInfo-currentPrice>0) {
             
@@ -166,7 +166,7 @@
                 
             }else{
                 
-                [self.rightInfoLabel setText:[NSString stringWithFormat:@"差￥%.2f配送", priceInConfigInfo-currentPrice]];
+                [self.rightInfoLabel setText:[NSString stringWithFormat:@"差￥%.1f配送", priceInConfigInfo-currentPrice]];
                 
             }
             [self.rightView setBackgroundColor:SHOPPING_CAR_VIEW_RIGHTVIEW_BACKGROUND_COLOR];
@@ -182,7 +182,7 @@
         
         [self.countLabel setHidden:YES];
         [self.leftInfoLabel setText:@"你的购物车是空的"];
-        [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.f起配送",priceInConfigInfo]];
+        [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.1f起配送",priceInConfigInfo]];
         [self.rightView setBackgroundColor:SHOPPING_CAR_VIEW_RIGHTVIEW_BACKGROUND_COLOR];
     }
     
@@ -191,7 +191,7 @@
         [self.shoppingCarIconView setHidden:YES];
         
         [self.leftInfoLabel setFrame:CGRectMake(_shoppingCarIconView.frame.origin.x, (self.frame.size.height-24)/2, (self.frame.size.width - _rightView.frame.size.width), 24)];
-        [self.leftInfoLabel setText:[NSString stringWithFormat:@"%ld份菜品,共￥%.2f",(long)totalCount,currentPrice]];
+        [self.leftInfoLabel setText:[NSString stringWithFormat:@"%ld份菜品,共￥%.1f",(long)totalCount,currentPrice]];
         
         [_countLabel setHidden:YES];
         
@@ -199,11 +199,11 @@
             
             if (currentPrice==0) {
                 
-                [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.f起配送",priceInConfigInfo]];
+                [self.rightInfoLabel setText:[NSString stringWithFormat:@"￥%.1f起配送",priceInConfigInfo]];
                 
             }else{
                 
-                [self.rightInfoLabel setText:[NSString stringWithFormat:@"差￥%.2f配送", priceInConfigInfo-currentPrice]];
+                [self.rightInfoLabel setText:[NSString stringWithFormat:@"差￥%.1f配送", priceInConfigInfo-currentPrice]];
                 
             }
             [self.rightView setBackgroundColor:SHOPPING_CAR_VIEW_RIGHTVIEW_BACKGROUND_COLOR];

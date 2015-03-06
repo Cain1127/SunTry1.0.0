@@ -42,18 +42,43 @@
     
 }
 
+
+/**
+ *  返回菜品价格
+ *
+ *  菜品原价不四舍五入，只显示小数点后一位
+ *  折扣价只显示小数点后一位,进行五内递增
+ *
+ *  @return 菜品价格
+ */
 - (NSString*)getOnsalePrice
 {
+    NSString *price      = _goodsPrice;
+    NSString *specialPrice  = _goodsSpecialPrice;
     
-    NSString* price =@"";
-    if (nil == _goodsSpecialPrice) {
-        price = nil==_goodsPrice?@"":_goodsPrice;
-    }else if (nil == _goodsPrice){
-        price = nil==_goodsSpecialPrice?@"":_goodsSpecialPrice;;
-    }else{
-        price = [_goodsSpecialPrice isEqualToString:@"-1"] ? _goodsPrice:_goodsSpecialPrice;
+    if (price&&[price isKindOfClass:[NSString class]]) {
+        
+        price = [NSString stringWithFormat:@"%.1f",price.floatValue];
+        
     }
-    return price;
+    
+    if (specialPrice&&[specialPrice isKindOfClass:[NSString class]]) {
+        
+        specialPrice = [self computePriceWith5:specialPrice];
+        
+    }
+    
+    NSString* currentPrice =@"";
+    if (nil == specialPrice) {
+        currentPrice = (nil==price?@"":price);
+    }else if (nil == price){
+        currentPrice = (nil==specialPrice?@"":specialPrice);
+    }else{
+        currentPrice = ([specialPrice isEqualToString:@"-1.0"] ? price:specialPrice);
+    }
+    
+    return currentPrice;
+    
 }
 
 @end
