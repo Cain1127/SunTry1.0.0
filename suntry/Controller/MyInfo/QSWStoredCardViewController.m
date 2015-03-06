@@ -265,7 +265,6 @@
             
             cell = [[QSWStoredCardCell alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_HOME_BANNAR_HEIGHT, 0.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
             
-            
         }
         
         ///获取模型
@@ -408,7 +407,19 @@
 - (IBAction)resetPswButton:(id)sender
 {
     
-    QSResetStoreCardPaypswViewController *VC=[[QSResetStoreCardPaypswViewController alloc] init];
+    QSResetStoreCardPaypswViewController *VC=[[QSResetStoreCardPaypswViewController alloc] initWithTurnBackBlock:^(BOOL flag) {
+        
+        if (flag) {
+            
+            ///修改密码开启状态
+            _payPswLabel.text = @"支付密码：已开启(储值卡支付需要支付密码)";
+            
+            ///修改按钮标题
+            [_resetPswButton setTitle:@"重置支付密码" forState:UIControlStateNormal];
+            
+        }
+        
+    }];
     [self.navigationController pushViewController:VC animated:YES];
     
 }

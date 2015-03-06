@@ -274,6 +274,13 @@
             ///刷新用户数据
             [QSUserManager updateUserData:nil];
             
+            ///回调
+            if (self.turnBackBlock) {
+                
+                self.turnBackBlock(YES);
+                
+            }
+            
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
                 ///返回上一页

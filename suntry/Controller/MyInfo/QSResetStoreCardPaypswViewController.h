@@ -23,6 +23,6 @@
  *
  *  @since                  1.0.0
  */
-- (instancetype)initWithTurnBackBlock:(void(^)(BOOL))turnBackBlock;
+- (instancetype)initWithTurnBackBlock:(void(^)(BOOL flag))turnBackBlock;
 
 @end
