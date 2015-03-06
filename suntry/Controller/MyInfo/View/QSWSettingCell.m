@@ -113,7 +113,6 @@
         ///1.添加textfield输入框控件
         _textFieldView=[[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 0, SIZE_DEVICE_WIDTH - 2.0f * SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.frame.size.height)];
 
-        _textFieldView.translatesAutoresizingMaskIntoConstraints=NO;
         _textFieldView.returnKeyType=UIReturnKeyDone;
         _textFieldView.clearButtonMode=UITextFieldViewModeUnlessEditing;
         _textFieldView.delegate = ((QSWTextFieldItem *)self.item).delegate;

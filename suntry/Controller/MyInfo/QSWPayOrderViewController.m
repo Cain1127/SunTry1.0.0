@@ -631,11 +631,11 @@
 -(void)getStoredCardList
 {
     
-    //每日特价信息请求参数
     NSDictionary *dict = @{@"type" : @"11",
                            @"key" : @"",
                            @"goods_tag":@"",
-                           @"source":@"phone"};
+                           @"source":@"phone",
+                           @"status" : @"0,1"};
     
     [QSRequestManager requestDataWithType:rRequestTypeAspecial andParams:dict andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         

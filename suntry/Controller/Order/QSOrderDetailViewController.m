@@ -86,6 +86,7 @@
         
 //        [self.navigationController popViewControllerAnimated:YES];
         [self.navigationController popToRootViewControllerAnimated:YES];
+        
     }];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];

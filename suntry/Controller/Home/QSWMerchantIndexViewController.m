@@ -131,6 +131,8 @@ static char titleLabelKey;//!<标题key
     
     [super viewDidLoad];
     
+    self.view.userInteractionEnabled = NO;
+    
     ///添加摇一摇功能
     [[UIApplication sharedApplication] setApplicationSupportsShakeToEdit:YES];
     [self becomeFirstResponder];
@@ -488,28 +490,37 @@ static char titleLabelKey;//!<标题key
     
 }
 
-#pragma mark - 车在哪按钮
+#pragma mark - 车车在哪按钮
 ///车在哪按钮
 - (IBAction)carButtonClick:(id)sender
 {
     
     ///判断是否已经登录
     int isLogin = [[[NSUserDefaults standardUserDefaults] valueForKey:@"is_login"] intValue];
-    
-    if (1 == isLogin) {
+    if (isLogin != 1 ) {
+        QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
+        loginVC.loginSuccessCallBack = ^(BOOL flag){
+            
+            if (flag) {
+                
+                
+            }
+            
+        };
+        loginVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+        
+    }  else {
         
         QSMapNavigationViewController *VC=[[QSMapNavigationViewController alloc]init];
         VC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:VC animated:YES];
         
-    } else {
-        
-        ///弹出登录框
-        QSWLoginViewController *loginVC = [[QSWLoginViewController alloc] init];
-        loginVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:loginVC animated:YES];
     }
     
+    
+   
 }
 
 #pragma mark - 客服热线
@@ -643,14 +654,14 @@ static char titleLabelKey;//!<标题key
             ///reload数据
             [self.collectionView reloadData];
             
+            self.view.userInteractionEnabled = YES;
+            
         } else {
             
             NSLog(@"================今日特价搜索信息请求失败================");
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================今日特价搜索信息请求失败================");
-            
-//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
-//            [self.navigationController pushViewController:networkingErrorVC animated:YES];
+            [self gotoNoNetworkingVC];
             
         }
         
@@ -743,16 +754,46 @@ static char titleLabelKey;//!<标题key
             NSLog(@"================今日特价搜索信息请求失败================");
             NSLog(@"error : %@",errorInfo);
             NSLog(@"================今日特价搜索信息请求失败================");
-            
-//            QSNoNetworkingViewController *networkingErrorVC=[[QSNoNetworkingViewController alloc] init];
-//            networkingErrorVC.hidesBottomBarWhenPushed = YES;
-//            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
-//            [self.navigationController pushViewController:networkingErrorVC animated:YES];
+            [self gotoNoNetworkingVC];
             
         }
         
     }];
     
+}
+
+#pragma mark - 进入网络错误页面
+- (void)gotoNoNetworkingVC
+{
+
+    static int i = 0;
+    if (i == 0) {
+        
+        i = 1;
+        
+        ///进入无网络页面
+        QSNoNetworkingViewController *networkingErrorVC = [[QSNoNetworkingViewController alloc] initWithTurnBackStep:2 andRefreshBlock:^(BOOL flag) {
+            
+            ///判断是否刷新
+            if (flag) {
+                [self downloadAspecialInfo];
+                [self getBannerInfo];
+                [self getRandomGoods];
+                
+            }
+            
+        }];
+        networkingErrorVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:networkingErrorVC animated:YES];
+        
+    }
+    
+    if (i == 1) {
+        
+        return;
+        
+    }
+
 }
 
 #pragma mark - 菜品详情弹出View改变菜品数量响应处理

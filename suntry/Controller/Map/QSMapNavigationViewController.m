@@ -280,7 +280,6 @@ static char titleLabelKey;//!<标题关联
                 
             }];
             networkingErrorVC.hidesBottomBarWhenPushed = YES;
-            networkingErrorVC.navigationController.hidesBottomBarWhenPushed = NO;
             [self.navigationController pushViewController:networkingErrorVC animated:YES];
             
         }
