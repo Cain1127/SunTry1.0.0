@@ -56,25 +56,20 @@
  */
 - (NSString*)computePriceWith5:(NSString*)pirce
 {
+    CGFloat specialPricef = ((int)(pirce.floatValue * 10))*0.1;
     
-    CGFloat specialPricef = pirce.floatValue;
+    NSInteger intTemp = (int)specialPricef;
     
-    int beforPointIntNum = (int)specialPricef;
-    int afterPointFirstOne = ((int)(specialPricef*10))%10;
-    
-    if (afterPointFirstOne==0) {
-        afterPointFirstOne = 0;
-    }else if (afterPointFirstOne>0&&afterPointFirstOne<=5) {
-        afterPointFirstOne = 5;
-    }else if (afterPointFirstOne>5&&afterPointFirstOne<=9) {
-        afterPointFirstOne = 0;
-        beforPointIntNum += 1;
+    if (specialPricef < intTemp+0.1) {
+        specialPricef = intTemp;
+    }else if (specialPricef <= intTemp+0.5) {
+        specialPricef = intTemp+0.5;
+    }else {
+        specialPricef = intTemp+1;
     }
     
-    NSString *beforPoint = [NSString stringWithFormat:@"%d",beforPointIntNum];
-    NSString *afterPoint = [NSString stringWithFormat:@"%d",afterPointFirstOne];
-    
-    NSString *specialPrice = [NSString stringWithFormat:@"%@.%@",beforPoint,afterPoint];
+    NSString *specialPrice = [NSString stringWithFormat:@"%.1f",specialPricef];
+
     return specialPrice;
     
 }
