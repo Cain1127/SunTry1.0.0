@@ -351,7 +351,7 @@ static char titleLabelKey;//!<标题key
         cell.foodNameLabel.text= tempModel.goodsName;
         cell.priceMarkImageView.image=[UIImage imageNamed:@"home_pricemark"];
         [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
-        cell.priceLabel.text= [tempModel.goodsSpecialPrice floatValue] > 0.0f ? tempModel.goodsSpecialPrice : tempModel.goodsPrice;
+        cell.priceLabel.text= [tempModel computePriceWith5:[tempModel.goodsSpecialPrice floatValue] > 0.0f ? tempModel.goodsSpecialPrice : tempModel.goodsPrice];
         return cell;
         
     }
