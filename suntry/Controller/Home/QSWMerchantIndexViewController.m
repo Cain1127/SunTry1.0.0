@@ -348,6 +348,8 @@ static char titleLabelKey;//!<标题key
         [cell.foodImageView loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IMAGE_SERVER_URL,tempModel.goodsImageUrl]] placeholderImage:[UIImage imageNamed:@"home_bannar"]];
         NSString *showPriceString = [tempModel.goodsSpecialPrice floatValue] > 0.0f ? tempModel.goodsSpecialPrice : tempModel.goodsPrice;
         cell.priceLabel.text= [NSString stringWithFormat:@"%.1f",[showPriceString floatValue]];
+        cell.priceLabel.text= [tempModel computePriceWith5:[tempModel.goodsSpecialPrice floatValue] > 0.0f ? tempModel.goodsSpecialPrice : tempModel.goodsPrice];
+
         return cell;
         
     }

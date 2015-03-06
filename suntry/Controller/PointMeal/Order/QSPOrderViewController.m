@@ -498,7 +498,7 @@
             
         }
         //计算宽度
-        NSString* specialOfferTotalCountStr = [NSString stringWithFormat:@"%.2f",couponPrice];
+        NSString* specialOfferTotalCountStr = [NSString stringWithFormat:@"%.1f",couponPrice];
         CGFloat specialOfferTotalCountStrWidth = [specialOfferTotalCountStr calculateStringDisplayWidthByFixedHeight:14.0 andFontSize:ORDERVIEWCONTROLLER_TITLE_FONT_SIZE]+4;
         [_specialOfferTotalCountTip setFrame:CGRectMake(_specialOfferTotalCountTip.frame.origin.x, _specialOfferTotalCountTip.frame.origin.y, specialOfferTotalCountStrWidth, _specialOfferTotalCountTip.frame.size.height)];
         [_specialOfferTotalCountTip setText:specialOfferTotalCountStr];
@@ -738,7 +738,7 @@
         // mer_id 商家ID
         [tempParams setObject:@"1" forKey:@"mer_id"];
         // total_money 总价
-        [tempParams setObject:[NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]] forKey:@"total_money"];
+        [tempParams setObject:[NSString stringWithFormat:@"%.1f",[QSPShoppingCarData getTotalPrice]] forKey:@"total_money"];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         NSString *currentDateStr = @"";
@@ -889,7 +889,7 @@
                         orderFormModel.des = [NSString stringWithFormat:@"在线支付订单:%@",orderFormModel.order_num];
                         
                         //支付金额
-                        orderFormModel.payPrice = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
+                        orderFormModel.payPrice = [NSString stringWithFormat:@"%.1f",[QSPShoppingCarData getTotalPrice]];
                         
                         //回调
                         __block NSString *orderID = orderFormModel.order_id;
@@ -913,7 +913,7 @@
                         
                         QSPPayForOrderViewController *pfovc = [[QSPPayForOrderViewController alloc] init];
                         //支付金额
-                        orderFormModel.payPrice = [NSString stringWithFormat:@"%.2f",[QSPShoppingCarData getTotalPrice]];
+                        orderFormModel.payPrice = [NSString stringWithFormat:@"%.1f",[QSPShoppingCarData getTotalPrice]];
                         orderFormModel.diet_num = [NSString stringWithFormat:@"%ld",(long)[QSPShoppingCarData getTotalFoodCount]];
                         [pfovc setOrderFormModel:orderFormModel];
                         [self.navigationController pushViewController:pfovc animated:YES];
