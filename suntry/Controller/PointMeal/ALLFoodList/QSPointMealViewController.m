@@ -524,9 +524,14 @@ typedef enum {
                 if (self.foodTypeIndexList && [self.foodTypeIndexList isKindOfClass:[NSArray class]] && [self.foodTypeIndexList count] > indexPath.row) {
                     
                     NSInteger selectRow = [[self.foodTypeIndexList objectAtIndex:indexPath.row] integerValue];
-                    if (selectRow < [self.foodInfoListTableView numberOfSections]) {
+                    
+                    if (self.foodInfoListTableView) {
                         
-                        [self.foodInfoListTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:selectRow] animated:YES scrollPosition:UITableViewScrollPositionTop];
+                        if (selectRow < [self.foodInfoListTableView numberOfSections]) {
+                            
+                            [self.foodInfoListTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:selectRow] animated:YES scrollPosition:UITableViewScrollPositionTop];
+                            
+                        }
                         
                     }
                 }
@@ -560,37 +565,39 @@ typedef enum {
             
         }
         
-        NSInteger currentSectionIdx = 0;
-        
-        NSArray *visbleIndexPath = [self.foodInfoListTableView indexPathsForVisibleRows];
-        
-        if ([visbleIndexPath count]>1) {
+        if (scrollView.dragging) {
+            //用户拖动时
+            NSInteger currentSectionIdx = 0;
             
-            NSIndexPath *second = visbleIndexPath[0];
+            NSArray *visbleIndexPath = [self.foodInfoListTableView indexPathsForVisibleRows];
             
-            if (second) {
+            if ([visbleIndexPath count]>1) {
                 
-                currentSectionIdx = second.section;
-            
-            }
-            
-            if (scrollView&&[scrollView isKindOfClass:[UITableView class]]) {
+                NSIndexPath *second = visbleIndexPath[0];
                 
-                if (self.foodTypeIndexList&&[self.foodTypeIndexList isKindOfClass:[NSArray class]]) {
+                if (second) {
                     
-                    for (int i=0;i<[self.foodTypeIndexList count];i++) {
-                        NSNumber *indexNumber = [self.foodTypeIndexList objectAtIndex:i];
-                        if (currentSectionIdx <= indexNumber.integerValue) {
-                            
-                            [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
-                            break;
+                    currentSectionIdx = second.section;
+                    
+                }
+                
+                if (scrollView&&[scrollView isKindOfClass:[UITableView class]]) {
+                    
+                    if (self.foodTypeIndexList&&[self.foodTypeIndexList isKindOfClass:[NSArray class]]) {
+                        
+                        for (int i=0;i<[self.foodTypeIndexList count];i++) {
+                            NSNumber *indexNumber = [self.foodTypeIndexList objectAtIndex:i];
+                            if (currentSectionIdx <= indexNumber.integerValue) {
+                                
+                                [self.foodTypeTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
     }
-    
 }
 
 - (void)changedCount:(NSInteger)count withFoodData:(id)foodData
