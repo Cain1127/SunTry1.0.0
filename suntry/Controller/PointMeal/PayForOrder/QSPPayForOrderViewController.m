@@ -207,6 +207,7 @@
             ///隐藏HUD
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             
+            
             ///支付成功
             if (rRequestResultTypeSuccess == resultStatus) {
                 
@@ -228,6 +229,13 @@
                 QSHeaderDataModel *tempModel = resultData;
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:(tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"支付失败") : @"支付失败") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [av show];
+                
+                if ([tempModel.info isEqualToString:@"支付密码错误"]) {
+                    
+                    [self.payCardPassTextField setText:@""];
+                    return;
+                    
+                }
                 
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     
