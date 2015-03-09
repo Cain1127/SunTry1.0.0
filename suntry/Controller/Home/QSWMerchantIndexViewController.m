@@ -217,6 +217,9 @@ static char titleLabelKey;//!<标题key
     self.collectionView.delegate=self;
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
     
+    ///让collectionView一直可以滚动
+    self.collectionView.alwaysBounceVertical = YES;
+    
     ///添加头部刷新
     [self.collectionView addHeaderWithTarget:self action:@selector(downloadAspecialInfo)];
     [self.collectionView headerBeginRefreshing];

@@ -237,10 +237,13 @@
         
         cell.selected = YES;
         [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+        self.selectedIndex = 0;
+        self.selectedID = tempModel.goodsID;
         
     } else if (self.selectedID && ([self.selectedID intValue] == [tempModel.goodsID intValue])) {
         
         cell.selected = YES;
+        self.selectedIndex = indexPath.row;
         [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
     }
@@ -395,6 +398,11 @@
     ///下单方式：储值卡购买肯定为在线下单
     [tempParams setObject:@"2" forKey:@"run_type"];
     
+    ///暂存储值卡的可用额
+    NSString *leftPrice = [NSString stringWithFormat:@"%f",[tempModel.goodsPrice floatValue] + [tempModel.goodsSpecialPrice floatValue]];
+    [[NSUserDefaults standardUserDefaults] setObject:leftPrice forKey:@"temp_storecard_price"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     ///生成订单
     [QSRequestManager requestDataWithType:rRequestTypeAddOrder andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
@@ -488,6 +496,11 @@
         
         ///回调服务端确认支付
         [QSRequestManager requestDataWithType:rRequestTypeCommitOrderPayResult andParams:tempParams andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+            
+            ///先修改用户余额
+            QSUserInfoDataModel *tempUserInfo = [QSUserManager getCurrentUserData];
+            tempUserInfo.balance = [[NSUserDefaults standardUserDefaults] objectForKey:@"temp_storecard_price"];
+            [tempUserInfo saveUserData];
             
             ///更新用户信息
             [QSUserManager updateUserData:^(BOOL flag) {
