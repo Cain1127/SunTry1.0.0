@@ -225,7 +225,10 @@
 - (void)getVertificationCode:(NSString *)phone
 {
     
-    [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:@{@"phone" : phone} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+    ///封装参数
+    NSDictionary *params = @{@"sign" : @"3",@"phone" : phone};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///发送成功
         if (rRequestResultTypeSuccess == resultStatus) {

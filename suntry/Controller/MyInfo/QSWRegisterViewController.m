@@ -199,6 +199,11 @@
     UITextField *phoneField = self.userNameItem.property;
     if ([NSString isValidateMobile:phoneField.text ]) {
         
+        ///回收键盘
+        UITextField *pswField = self.passWordItem.property;
+        [self.activateTextfield resignFirstResponder];
+        [phoneField resignFirstResponder];
+        [pswField resignFirstResponder];
         [self getVertificationCode:phoneField.text];
         return;
         
@@ -303,7 +308,6 @@
         } else {
             
             QSHeaderDataModel *tempModel = resultData;
-            
             self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"注册失败") : @"注册失败";
             [self.hud hide:YES afterDelay:1.0f];
             
@@ -322,7 +326,10 @@
     ///显示HUD
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:@{@"phone" : phone} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+    ///封装参数
+    NSDictionary *params = @{@"sign" : @"1",@"phone" : phone};
+    
+    [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///发送成功
         if (rRequestResultTypeSuccess == resultStatus) {
@@ -334,13 +341,23 @@
             
         } else {
             
-            self.hud.labelText = @"手机验证码发送失败，请稍后再试……";
+            QSHeaderDataModel *tempModel = resultData;
+            self.hud.labelText = [tempModel.info length] > 0 ? tempModel.info : @"手机验证码发送失败，请稍后再试……";
             [self.hud hide:YES afterDelay:0.6f];
             
         }
         
     }];
     
+}
+
+#pragma mark - 收键盘
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+
+    [textField resignFirstResponder];
+    return YES;
+
 }
 
 @end

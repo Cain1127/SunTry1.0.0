@@ -33,7 +33,7 @@
 	<key>1107</key>
 	<dict>
 		<key>url</key>
-		<string>message/sendVer</string>
+		<string>user/CheckSendVer</string>
 		<key>class</key>
 		<string>QSCommonStringReturnData</string>
 	</dict>

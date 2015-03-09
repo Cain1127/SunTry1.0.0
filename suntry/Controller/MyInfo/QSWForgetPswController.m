@@ -223,8 +223,11 @@
 ///获取验证码
 - (void)getVertificationCode:(NSString *)phone
 {
+    
+    ///封装参数
+    NSDictionary *params = @{@"sign" : @"2",@"phone" : phone};
 
-    [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:@{@"phone" : phone} andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
+    [QSRequestManager requestDataWithType:rRequestTypeGetVertification andParams:params andCallBack:^(REQUEST_RESULT_STATUS resultStatus, id resultData, NSString *errorInfo, NSString *errorCode) {
         
         ///发送成功
         if (rRequestResultTypeSuccess == resultStatus) {
