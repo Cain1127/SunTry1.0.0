@@ -115,7 +115,7 @@
     
     QSWSettingGroup *group = [self addGroup];
     self.genderItem = [QSPickerViewItem itemWithTitle:@"性别" andDelegate:self];
-    [self.genderItem setValue:([self.addressModel.gender intValue] == 0) ? @"先生" : @"女士" forKey:@"rightTitle"];
+    [self.genderItem setValue:([self.addressModel.gender intValue] == 0) ? @"男" : @"女" forKey:@"rightTitle"];
     group.items = @[self.genderItem];
     
 }
@@ -256,8 +256,8 @@
 
     ///获取性别信息
     UILabel *genderLabel = [genderField.rightView subviews][0];
-    NSString *genderString = genderLabel.text ? genderLabel.text : @"先生";
-    NSString *gender = ([genderString isEqualToString:@"先生"]) ? @"0" : @"1";
+    NSString *genderString = genderLabel.text ? genderLabel.text : @"男";
+    NSString *gender = ([genderString isEqualToString:@"男"]) ? @"0" : @"1";
     
     ///校验地址信息
     NSString *address = addressField.text;
@@ -319,11 +319,12 @@
         ///添加成功
         if (rRequestResultTypeSuccess == resultStatus) {
             
-            ///转换模型
-            QSHeaderDataModel *tempModel = resultData;
-            
-            ///弹出提示
-            self.hud.labelText = tempModel.info;
+//            ///转换模型
+//            QSHeaderDataModel *tempModel = resultData;
+//            
+//            ///弹出提示
+//            self.hud.labelText = tempModel.info;
+            self.hud.labelText = @"修改送餐地址成功";
             
             ///显示1秒后移除提示
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

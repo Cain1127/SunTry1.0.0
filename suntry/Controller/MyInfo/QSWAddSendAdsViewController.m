@@ -99,19 +99,19 @@
 {
     
     ///性别默认信息
-    NSString *genderTitle = @"先生";
+    NSString *genderTitle = @"男";
     
     if (self.userInfo && self.userInfo.gender) {
         
         if ([self.userInfo.gender intValue] == 0) {
             
-            genderTitle = @"先生";
+            genderTitle = @"男";
             
         }
         
         if ([self.userInfo.gender intValue] == 1) {
             
-            genderTitle = @"女士";
+            genderTitle = @"女";
             
         }
         
@@ -262,8 +262,8 @@
     ///性别
     UITextField *genderField = (UITextField *)self.genderItem.property;
     UILabel *genderLabel = [genderField.rightView subviews][0];
-    NSString *genderString = genderLabel.text ? genderLabel.text : @"先生";
-    NSString *gender = ([genderString isEqualToString:@"先生"]) ? @"0" : @"1";
+    NSString *genderString = genderLabel.text ? genderLabel.text : @"男";
+    NSString *gender = ([genderString isEqualToString:@"男"]) ? @"0" : @"1";
     
     ///校验送餐地址
     NSString *address = addressField.text;
@@ -379,7 +379,7 @@
         ///设置选择的VC
         self.pickerVC = [[QSDatePickerViewController alloc] init];
         self.pickerVC.pickerType = kPickerType_Item;
-        self.pickerVC.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女士",@"先生"]];
+        self.pickerVC.dataSource = [[NSMutableArray alloc] initWithArray:@[@"女",@"男"]];
         self.pickerVC.onCancelButtonHandler = ^{
             
             [ASDepthModalViewController dismiss];
