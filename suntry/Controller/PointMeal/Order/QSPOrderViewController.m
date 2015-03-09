@@ -324,6 +324,24 @@
     [self updateHadOrderFoodList];
     [self updateHadOrderCount];
     [self updateSpecialOfferCount];
+    [self updayePaymentSelection];
+}
+
+- (void)updayePaymentSelection
+{
+    if (_paymentView&&[_paymentView isKindOfClass:[QSPOrderPaymentView class]]) {
+        
+        CGFloat totalPrice = [QSPShoppingCarData getTotalPrice];
+        QSUserInfoDataModel *userModel = [QSUserInfoDataModel userDataModel];
+        CGFloat userBalance = userModel.balance.floatValue;
+        if (totalPrice < userBalance) {
+            [_paymentView setSelectedPayment:PaymentTypePayCrads];
+        }else{
+            [_paymentView setSelectedPayment:PaymentTypeAlipay];
+        }
+        
+    }
+    
 }
 
 - (void)updateAddress
@@ -649,7 +667,10 @@
     NSLog(@"changedCount:%ld withFoodData:%@",(long)count,foodData);
     if (foodData&&[foodData isKindOfClass:[NSDictionary class]]) {
         NSDictionary *food = (NSDictionary*)foodData;
-        if ([food objectForKey:@"num_instock"]) {
+        NSArray *dietList = [food objectForKey:@"diet"];
+        if (dietList&&[dietList isKindOfClass:[NSArray class]]&&[dietList count]>0) {
+            
+        }else if ([food objectForKey:@"num_instock"]) {
             NSString *numInstockStr = [food objectForKey:@"num_instock"];
             if (count>numInstockStr.integerValue) {
                 count = numInstockStr.integerValue;
@@ -674,6 +695,8 @@
         [self updateHadOrderCount];
         
     }
+    
+    [self updayePaymentSelection];
     
 }
 
@@ -842,6 +865,9 @@
                     [alertview show];
                     ///隐藏HUD
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    [self updayePaymentSelection];
+                    
                     return;
                 }
                 
@@ -1192,7 +1218,7 @@
         if (totalPrice > userBalance) {
             UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的储值卡余额不足以支付当前订单，请选择其他支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alertview show];
-            [view setSelectedPayment:PaymentTypeNoPayment];
+            [view setSelectedPayment:PaymentTypeAlipay];
         }
     }
 }

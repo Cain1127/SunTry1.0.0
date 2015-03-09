@@ -114,13 +114,21 @@
         NSLog(@"changedCount:%ld withFoodData:%@",(long)count,_foodData);
         if (_foodData&&[_foodData isKindOfClass:[NSDictionary class]]) {
             NSDictionary *food = (NSDictionary*)_foodData;
-            if ([food objectForKey:@"num_instock"]) {
+            
+            NSArray *dietList = [food objectForKey:@"diet"];
+            if (dietList&&[dietList isKindOfClass:[NSArray class]]&&[dietList count]>0) {
+                
+            }else if ([food objectForKey:@"num_instock"]) {
+                
                 NSString *numInstockStr = [food objectForKey:@"num_instock"];
                 if (count>numInstockStr.integerValue) {
                     count = numInstockStr.integerValue;
-                    [self.foodCountControlView setCount:count];
                 }
+                
             }
+            
+            [self.foodCountControlView setCount:count];
+            
         }
         [delegate changedCount:count withFoodData:_foodData];
         
