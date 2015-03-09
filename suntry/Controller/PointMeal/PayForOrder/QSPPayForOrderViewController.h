@@ -13,4 +13,6 @@
 
 @property(nonatomic,strong) QSOrderInfoDataModel *orderFormModel;
 
+@property (nonatomic, assign) BOOL returnPrePage;   //返回键 设置返回前一页，默认返回根页面
+
 @end

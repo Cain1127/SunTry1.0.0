@@ -185,28 +185,6 @@
     return annoView;
 }
 
-#pragma mark --选中某个大头针代理方法
-//- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
-//{
-//
-//
-//        // 1.删除以前的MJTuangouDescAnnotation
-//        for (id annotation in mapView.annotations) {
-//            if ([annotation isKindOfClass:[annotation class]]) {
-//                [mapView removeAnnotation:annotation];
-//            }
-//
-//        // 在这颗被点击的大头针上面, 添加一颗用于描述的大头针
-//        QSAnnotation *descAnno = [[QSAnnotation alloc] init];
-//        descAnno.tuangou = anno.tuangou;
-//        [mapView addAnnotation:descAnno];
-//        QSAnnotation *anno = view.annotation;
-//
-//    }
-//}
-
-
-
 #pragma mark - 餐车地址网络信息请求
 ///餐车地址网络信息请求
 - (void)getCarPostingInfo

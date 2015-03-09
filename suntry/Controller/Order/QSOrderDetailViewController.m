@@ -378,8 +378,6 @@
     
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, _payBt.frame.origin.y+_payBt.frame.size.height+20)];
     
-    [self getDetailData];
-    
 }
 
 - (void)updateView
@@ -648,12 +646,11 @@
     
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-
-//    self.navigationController.navigationBar.hidden = NO;
-    [super viewWillAppear:animated];
-
+    [super viewDidAppear:animated];
+    
+    [self getDetailData];
 }
 
 - (void)getDetailData
@@ -717,6 +714,7 @@
 
 - (void)continueToPay
 {
+    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     if (orderData) {
 
@@ -767,7 +765,6 @@
                 
                 UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"您的储值卡余额不足以支付当前订单，请选择其他支付方式" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [alertview show];
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
                 
                 return;
             } else {
@@ -780,10 +777,12 @@
                 orderInfoModel.bill_num = @"";//订单数据没这个字段。
                 orderInfoModel.payPrice = orderData.total_money;
                 orderInfoModel.diet_num = orderData.diet_num;
+                [pfovc setReturnPrePage:YES];
                 [pfovc setOrderFormModel:orderInfoModel];
                 [self.navigationController pushViewController:pfovc animated:YES];
             }
             
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
         }
     }
 }
