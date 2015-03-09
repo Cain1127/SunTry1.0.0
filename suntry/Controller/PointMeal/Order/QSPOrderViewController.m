@@ -305,6 +305,7 @@
     payFrame.origin.y = _remarkFrameView.frame.origin.y+_remarkFrameView.frame.size.height;
     _paymentView.frame = payFrame;
     [_paymentView setDelegate:self];
+    [_paymentView setSelectedPayment:PaymentTypePayForAfter];
     [_scrollView addSubview:_paymentView];
     
     [self.view addSubview:_shoppingCarView];
