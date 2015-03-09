@@ -130,10 +130,17 @@
     goonOrderBtStyleModel.cornerRadio = 6.;
     UIButton *goonOrderBt = [UIButton createBlockButtonWithFrame:CGRectMake((375-30)/375.*SIZE_DEVICE_WIDTH-checkOrderBt.frame.size.width, checkOrderBt.frame.origin.y, checkOrderBt.frame.size.width, checkOrderBt.frame.size.height) andButtonStyle:goonOrderBtStyleModel andCallBack:^(UIButton *button) {
         
-        NSLog(@"goonOrderBtl");
+        NSLog(@"goonOrderBtl  [self.tabBarController selectedIndex]:%lu",(unsigned long)[self.tabBarController selectedIndex]);
         
-//        [self.navigationController popToRootViewControllerAnimated:YES];
-        [self.tabBarController setSelectedIndex:1];
+        if ([self.tabBarController selectedIndex]==1) {
+            
+            [self.navigationController popToRootViewControllerAnimated:YES];
+            
+        }else{
+
+            [self.tabBarController setSelectedIndex:1];
+            
+        }
         
     }];
     [self.view addSubview:goonOrderBt];
