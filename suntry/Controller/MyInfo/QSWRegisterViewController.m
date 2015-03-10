@@ -30,9 +30,12 @@
 @property (nonatomic,retain) MBProgressHUD *hud;            //!<HUD
 @property (nonatomic,strong) UIImageView *selectImageView;  //!<服务协议图片
 @property (nonatomic,strong) UITextField *activateTextfield;//!<验证码输入框
+@property (nonatomic,strong) UIButton *activateButton;      //!<验证码输入框
+
 @property (nonatomic,strong) UIButton *serviceButton;       //!<服务协议按钮
 @property (nonatomic,strong) UIButton *registerButton;      //!<提交注册按钮
 @property (nonatomic,copy) NSString *code;                  //!<验证码
+
 
 @end
 
@@ -117,14 +120,14 @@
     [footer addSubview:self.activateTextfield];
     
     ///获取激活码按钮
-    UIButton *activateButton=[[UIButton alloc] initWithFrame:CGRectMake(self.activateTextfield.frame.origin.x+self.activateTextfield.frame.size.width + 5.0f, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 100.0f, 44.0f)];
-    [activateButton setTitle:@"获取激活码" forState:UIControlStateNormal];
-    activateButton.backgroundColor=COLOR_CHARACTERS_YELLOW;
-    [activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    activateButton.layer.cornerRadius = 6.0f;
-    [activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    [footer addSubview:activateButton];
-    
+    _activateButton=[[UIButton alloc] initWithFrame:CGRectMake(self.activateTextfield.frame.origin.x+self.activateTextfield.frame.size.width + 5.0f, SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 100.0f, 44.0f)];
+    [_activateButton setTitle:@"获取激活码" forState:UIControlStateNormal];
+    _activateButton.backgroundColor=COLOR_CHARACTERS_YELLOW;
+    [_activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _activateButton.layer.cornerRadius = 6.0f;
+    [_activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [footer addSubview:_activateButton];
+
     
     ///服务协议按钮
     self.serviceButton = [[UIButton alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, _activateTextfield.frame.origin.y+_activateTextfield.frame.size.height+1*SIZE_DEFAULT_MARGIN_LEFT_RIGHT, 300.0f, 20.0f+2*SIZE_DEFAULT_MARGIN_LEFT_RIGHT)];
@@ -195,7 +198,7 @@
 ///点击获取激活码
 -(void)activateButtonAction
 {
-
+    
     UITextField *phoneField = self.userNameItem.property;
     if ([NSString isValidateMobile:phoneField.text ]) {
         
@@ -210,6 +213,40 @@
     }
     
 }
+
+-(void)startTime{
+    __block int timeout=60; //倒计时时间
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
+    dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
+    dispatch_source_set_event_handler(_timer, ^{
+        if(timeout<=0){ //倒计时结束，关闭
+            dispatch_source_cancel(_timer);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //设置界面的按钮显示 根据自己需求设置
+                [_activateButton setTitle:@"发送验证码" forState:UIControlStateNormal];
+                _activateButton.userInteractionEnabled = YES;
+            });
+        }else{
+            //            int minutes = timeout / 60;
+            int seconds = timeout % 60;
+            NSString *strTime = [NSString stringWithFormat:@"%.2d", seconds];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //设置界面的按钮显示 根据自己需求设置
+                NSLog(@"____%@",strTime);
+                [_activateButton setTitle:[NSString stringWithFormat:@"%@秒后重新发送",strTime] forState:UIControlStateNormal];
+                _activateButton.userInteractionEnabled = NO;
+                
+            });
+            timeout--;
+            
+        }
+    });
+    dispatch_resume(_timer);
+    
+}
+
+
 
 ///点击注册按钮
 -(void)gotoRegister
@@ -338,6 +375,8 @@
             self.code = tempModel.verticode;
             self.hud.labelText = @"发送成功";
             [self.hud hide:YES afterDelay:0.6f];
+            
+            [self startTime];
             
         } else {
             
