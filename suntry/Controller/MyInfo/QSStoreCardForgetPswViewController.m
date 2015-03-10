@@ -93,6 +93,8 @@
     ///获取激活码按钮
     _getVercodeButton = [UIButton createBlockButtonWithFrame:CGRectMake(self.verticodeField.frame.size.width + self.verticodeField.frame.origin.x + 5.0f, self.verticodeField.frame.origin.y, 75.0f, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
         
+        _getVercodeButton.userInteractionEnabled = NO;
+        
         ///回收键盘
         [self.phoneField resignFirstResponder];
         [self.verticodeField resignFirstResponder];
@@ -116,7 +118,7 @@
                 [self.phoneField becomeFirstResponder];
                 
             });
-        
+            _getVercodeButton.userInteractionEnabled = YES;
         }
         
     }];
@@ -247,6 +249,8 @@
             self.hud.labelText = tempModel ? ([tempModel.info length] > 0 ? tempModel.info : @"手机验证码发送失败，请稍后再试……") : @"手机验证码发送失败，请稍后再试……";
             [self.hud hide:YES afterDelay:1.0f];
             
+            _getVercodeButton.userInteractionEnabled = YES;
+            
         }
         
     }];
@@ -264,13 +268,13 @@
             dispatch_source_cancel(_timer);
             dispatch_async(dispatch_get_main_queue(), ^{
                 //设置界面的按钮显示 根据自己需求设置
-                [_getVercodeButton setTitle:@"重新获取验证码" forState:UIControlStateNormal];
+                [_getVercodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
                 _getVercodeButton.userInteractionEnabled = YES;
             });
         }else{
             //            int minutes = timeout / 60;
-            int seconds = timeout % 60;
-            NSString *strTime = [NSString stringWithFormat:@"%.2d", seconds];
+//            int seconds = timeout % 60;
+            NSString *strTime = [NSString stringWithFormat:@"%d", timeout];
             dispatch_async(dispatch_get_main_queue(), ^{
                 //设置界面的按钮显示 根据自己需求设置
                 NSLog(@"____%@",strTime);

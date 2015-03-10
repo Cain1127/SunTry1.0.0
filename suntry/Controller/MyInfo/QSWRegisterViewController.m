@@ -231,7 +231,7 @@
             dispatch_source_cancel(_timer);
             dispatch_async(dispatch_get_main_queue(), ^{
                 //设置界面的按钮显示 根据自己需求设置
-                [_activateButton setTitle:@"重新获取验证码" forState:UIControlStateNormal];
+                [_activateButton setTitle:@"获取验证码" forState:UIControlStateNormal];
                 _activateButton.userInteractionEnabled = YES;
             });
         }else{
