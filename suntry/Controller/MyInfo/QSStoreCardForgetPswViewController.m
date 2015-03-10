@@ -127,7 +127,7 @@
     [_getVercodeButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateHighlighted];
     _getVercodeButton.layer.cornerRadius = 6.0f;
     _getVercodeButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    _getVercodeButton.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    _getVercodeButton.backgroundColor = COLOR_CHARACTERS_YELLOW;
     [self.view addSubview:_getVercodeButton];
     
     ///提交按钮
