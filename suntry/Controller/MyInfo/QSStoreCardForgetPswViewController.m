@@ -36,6 +36,7 @@
 
 @property (nonatomic,retain) MBProgressHUD *hud;            //!<HUD
 
+@property (nonatomic,strong) UIButton *getVercodeButton;    //!<获取验证码按钮
 @end
 
 @implementation QSStoreCardForgetPswViewController
@@ -90,7 +91,7 @@
     [self.view addSubview:self.verticodeField];
     
     ///获取激活码按钮
-    UIButton *getVercodeButton = [UIButton createBlockButtonWithFrame:CGRectMake(self.verticodeField.frame.size.width + self.verticodeField.frame.origin.x + 5.0f, self.verticodeField.frame.origin.y, 75.0f, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
+    _getVercodeButton = [UIButton createBlockButtonWithFrame:CGRectMake(self.verticodeField.frame.size.width + self.verticodeField.frame.origin.x + 5.0f, self.verticodeField.frame.origin.y, 75.0f, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
         
         ///回收键盘
         [self.phoneField resignFirstResponder];
@@ -119,13 +120,13 @@
         }
         
     }];
-    [getVercodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
-    [getVercodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [getVercodeButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateHighlighted];
-    getVercodeButton.layer.cornerRadius = 6.0f;
-    getVercodeButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    getVercodeButton.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
-    [self.view addSubview:getVercodeButton];
+    [_getVercodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    [_getVercodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_getVercodeButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateHighlighted];
+    _getVercodeButton.layer.cornerRadius = 6.0f;
+    _getVercodeButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    _getVercodeButton.backgroundColor = COLOR_CHARACTERS_ROOTLINE;
+    [self.view addSubview:_getVercodeButton];
     
     ///提交按钮
     UIButton *commitButton = [UIButton createBlockButtonWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, self.verticodeField.frame.origin.y + self.verticodeField.frame.size.height + 25.0f, SIZE_DEFAULT_MAX_WIDTH, 44.0f) andButtonStyle:nil andCallBack:^(UIButton *button) {
@@ -237,6 +238,8 @@
             self.code = tempModel.verticode;
             self.hud.labelText = @"已发送";
             [self.hud hide:YES afterDelay:1.0f];
+            /// 倒计时
+            [self startTime];
             
         } else {
             
@@ -249,6 +252,40 @@
     }];
     
 }
+
+#pragma mark -验证码倒计时
+-(void)startTime{
+    __block int timeout=60; //倒计时时间
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
+    dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
+    dispatch_source_set_event_handler(_timer, ^{
+        if(timeout<=0){ //倒计时结束，关闭
+            dispatch_source_cancel(_timer);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //设置界面的按钮显示 根据自己需求设置
+                [_getVercodeButton setTitle:@"重新获取验证码" forState:UIControlStateNormal];
+                _getVercodeButton.userInteractionEnabled = YES;
+            });
+        }else{
+            //            int minutes = timeout / 60;
+            int seconds = timeout % 60;
+            NSString *strTime = [NSString stringWithFormat:@"%.2d", seconds];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //设置界面的按钮显示 根据自己需求设置
+                NSLog(@"____%@",strTime);
+                [_getVercodeButton setTitle:[NSString stringWithFormat:@"%@秒后重新发送",strTime] forState:UIControlStateNormal];
+                _getVercodeButton.userInteractionEnabled = NO;
+                
+            });
+            timeout--;
+            
+        }
+    });
+    dispatch_resume(_timer);
+    
+}
+
 
 #pragma mark - 回收键盘
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

@@ -124,6 +124,7 @@
     [_activateButton setTitle:@"获取激活码" forState:UIControlStateNormal];
     _activateButton.backgroundColor=COLOR_CHARACTERS_YELLOW;
     [_activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_activateButton setTitleColor:COLOR_CHARACTERS_RED forState:UIControlStateHighlighted];
     _activateButton.layer.cornerRadius = 6.0f;
     [_activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:_activateButton];
@@ -199,6 +200,7 @@
 -(void)activateButtonAction
 {
     
+    NSLog(@"activateButtonAction");
     UITextField *phoneField = self.userNameItem.property;
     if ([NSString isValidateMobile:phoneField.text ]) {
         
@@ -214,6 +216,7 @@
     
 }
 
+#pragma mark -倒计时
 -(void)startTime{
     __block int timeout=60; //倒计时时间
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -224,7 +227,7 @@
             dispatch_source_cancel(_timer);
             dispatch_async(dispatch_get_main_queue(), ^{
                 //设置界面的按钮显示 根据自己需求设置
-                [_activateButton setTitle:@"发送验证码" forState:UIControlStateNormal];
+                [_activateButton setTitle:@"重新获取验证码" forState:UIControlStateNormal];
                 _activateButton.userInteractionEnabled = YES;
             });
         }else{
