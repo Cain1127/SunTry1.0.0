@@ -152,15 +152,20 @@ typedef enum {
 {
     
     [super viewDidAppear:animated];
-    if ([_shoppingCarView isHidden]) {
-        
-        [self getAllGoodsData];
-        
-    }else{
-        
+//    if ([_shoppingCarView isHidden]) {
+//        
+//        [self getAllGoodsData];
+//        
+//    }else{
+//        
+//        [_shoppingCarView updateShoppingCar];
+//        [_foodInfoListTableView reloadData];
+//        
+//    }
+    
+    [self getAllGoodsData];
+    if (_shoppingCarView) {
         [_shoppingCarView updateShoppingCar];
-        [_foodInfoListTableView reloadData];
-        
     }
     
 }
