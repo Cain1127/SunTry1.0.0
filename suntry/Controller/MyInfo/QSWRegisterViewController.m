@@ -125,6 +125,7 @@
     _activateButton.backgroundColor=COLOR_CHARACTERS_YELLOW;
     [_activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _activateButton.layer.cornerRadius = 6.0f;
+    _activateButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     [_activateButton addTarget:self action:@selector(activateButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:_activateButton];
 
@@ -198,7 +199,7 @@
 ///点击获取激活码
 -(void)activateButtonAction
 {
-    
+    _activateButton.userInteractionEnabled = NO;
     UITextField *phoneField = self.userNameItem.property;
     if ([NSString isValidateMobile:phoneField.text ]) {
         
@@ -210,6 +211,8 @@
         [self getVertificationCode:phoneField.text];
         return;
         
+    }else{
+        _activateButton.userInteractionEnabled = YES;
     }
     
 }
@@ -229,8 +232,8 @@
             });
         }else{
             //            int minutes = timeout / 60;
-            int seconds = timeout % 60;
-            NSString *strTime = [NSString stringWithFormat:@"%.2d", seconds];
+//            int seconds = timeout % 60;
+            NSString *strTime = [NSString stringWithFormat:@"%d", timeout];
             dispatch_async(dispatch_get_main_queue(), ^{
                 //设置界面的按钮显示 根据自己需求设置
                 NSLog(@"____%@",strTime);
@@ -384,6 +387,7 @@
             self.hud.labelText = [tempModel.info length] > 0 ? tempModel.info : @"手机验证码发送失败，请稍后再试……";
             [self.hud hide:YES afterDelay:0.6f];
             
+            _activateButton.userInteractionEnabled = YES;
         }
         
     }];
