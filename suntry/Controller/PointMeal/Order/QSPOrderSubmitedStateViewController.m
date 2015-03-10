@@ -100,7 +100,7 @@
     [infoLabel setFont:[UIFont systemFontOfSize:ORDER_SUBMITED_VIEWCONTROLLER_CONTENT_FONT_SIZE]];
     [infoLabel setBackgroundColor:[UIColor clearColor]];
     [infoLabel setNumberOfLines:2];
-    [infoLabel setText:@"订单已提交，请等候受理。每月不能出现2次的无效下单，请珍惜你的信用度。"];
+    [infoLabel setText:@"亲，您的订单已提交成功，请耐心等候，我们会尽快配送出餐，谢谢！"];
     [infoLabel setTextColor:ORDER_SUBMITED_VIEWCONTROLLER_CONTENT_COLOR];
     [self.view addSubview:infoLabel];
     
