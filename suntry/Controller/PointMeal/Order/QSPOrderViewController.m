@@ -766,7 +766,7 @@
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         NSString *currentDateStr = @"";
         
-        // get_time 送餐的时间,时间戳字符串  上午: 2015-02-28-12：00  下午 2015-02-28-18：00
+        // get_time 送餐的时间,时间戳字符串  午餐: 2015-02-28-12：00  晚餐 2015-02-28-18：00
         DeliveryTimeType currentSelectTime = [self.deliveryTimeView getSelectedDeliveryTime];
         switch (currentSelectTime) {
             case DeliveryTimeTypeTodayAM:

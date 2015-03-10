@@ -35,7 +35,7 @@
         [timeTip setTextColor:[UIColor blackColor]];
         [self addSubview:timeTip];
         
-        NSArray *timeList = [NSArray arrayWithObjects:@"今天上午",@"今天下午",@"明天上午",@"明天下午", nil];
+        NSArray *timeList = [NSArray arrayWithObjects:@"今天午餐",@"今天晚餐",@"明天午餐",@"明天晚餐", nil];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd 12:00:00"];
@@ -57,12 +57,12 @@
         NSComparisonResult pmCompareResult = [currentDate compare: todayPMDate];
         if (amCompareResult == NSOrderedAscending) {
             //比12点早
-            timeList = [NSArray arrayWithObjects:@"今天上午",@"今天下午",@"明天上午",@"明天下午", nil];
+            timeList = [NSArray arrayWithObjects:@"今天午餐",@"今天晚餐",@"明天午餐",@"明天晚餐", nil];
         }else if (pmCompareResult == NSOrderedAscending) {
             //比18点早
-            timeList = [NSArray arrayWithObjects:@"今天下午",@"明天上午",@"明天下午", nil];
+            timeList = [NSArray arrayWithObjects:@"今天晚餐",@"明天午餐",@"明天晚餐", nil];
         }else{
-            timeList = [NSArray arrayWithObjects:@"明天上午",@"明天下午", nil];
+            timeList = [NSArray arrayWithObjects:@"明天午餐",@"明天晚餐", nil];
         }
         
         CGFloat labelWidth = 70;//标题宽度
@@ -91,13 +91,13 @@
                 [button setImage:[UIImage imageNamed:@"order_payment_selected_bt"] forState:UIControlStateNormal];
                 
                 NSString *titleStr = [timeList objectAtIndex:button.tag];
-                if ([titleStr isEqualToString:@"今天上午"]) {
+                if ([titleStr isEqualToString:@"今天午餐"]) {
                     _selectedTimeType = DeliveryTimeTypeTodayAM;
-                }else if ([titleStr isEqualToString:@"今天下午"]) {
+                }else if ([titleStr isEqualToString:@"今天晚餐"]) {
                     _selectedTimeType = DeliveryTimeTypeTodayPM;
-                }else if ([titleStr isEqualToString:@"明天上午"]) {
+                }else if ([titleStr isEqualToString:@"明天午餐"]) {
                     _selectedTimeType = DeliveryTimeTypeTomorrowAM;
-                }else if ([titleStr isEqualToString:@"明天下午"]) {
+                }else if ([titleStr isEqualToString:@"明天晚餐"]) {
                     _selectedTimeType = DeliveryTimeTypeTomorrowPM;
                 }
                 NSLog(@"选择了：%d %@",_selectedTimeType,titleStr);
