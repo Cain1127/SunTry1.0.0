@@ -61,7 +61,7 @@
     [self.window makeKeyAndVisible];
     
     ///检查版本
-    [self checkAppVersion];
+    //[self checkAppVersion];
     
     ///定位请求信息
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
