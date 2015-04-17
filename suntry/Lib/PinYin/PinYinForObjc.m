@@ -11,6 +11,7 @@
 @implementation PinYinForObjc
 
 + (NSString*)chineseConvertToPinYin:(NSString*)chinese {
+    
     NSString *sourceText = chinese;
     HanyuPinyinOutputFormat *outputFormat = [[HanyuPinyinOutputFormat alloc] init];
     [outputFormat setToneType:ToneTypeWithoutTone];
