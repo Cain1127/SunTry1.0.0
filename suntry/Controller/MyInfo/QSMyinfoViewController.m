@@ -171,7 +171,7 @@
     
 }
 
-#pragma mark - IOS7打电话
+#pragma mark - 打电话代理事件
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
