@@ -1025,6 +1025,13 @@
         [alertview show];
         flag = NO;
         return flag;
+        
+    }else if (currentSelectTime == DeliveryTimeTypeOutTime) {
+        
+        UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"对不起，今天送餐时间已过，恕不能下单，敬请见谅！" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertview show];
+        flag = NO;
+        return flag;
     }
     
     PaymentType currentSelectPayment = [_paymentView getSelectedPayment];

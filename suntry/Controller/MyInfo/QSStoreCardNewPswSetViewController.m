@@ -22,6 +22,9 @@
 
 #import "MBProgressHUD.h"
 
+#import "NSString+Format.h"
+
+
 @interface QSStoreCardNewPswSetViewController () <UITextFieldDelegate>
 
 @property (nonatomic,copy) NSString *phone;       //!<手机号码
@@ -91,6 +94,7 @@
     newpswField.placeholder = @"新的支付密码";
     newpswField.delegate = self;
     newpswField.secureTextEntry = YES;
+    newpswField.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:newpswField];
     
     ///确认密码输入框
@@ -99,6 +103,7 @@
     confirmpswField.placeholder = @"再次确认您的支付密码";
     confirmpswField.delegate = self;
     confirmpswField.secureTextEntry = YES;
+    confirmpswField.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:confirmpswField];
     
     ///提交按钮
@@ -130,6 +135,21 @@
             return;
             
         }
+        
+        if ( ![NSString isPureInt:newpsw] ) {
+         
+            self.hud.labelText = @"请设置纯数字的支付密码！";
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [self.hud hide:YES];
+                [newpswField becomeFirstResponder];
+                
+            });
+            
+            return;
+            
+        }
+        
         
         if (nil == confirmpsw || 0 >= confirmpsw) {
             

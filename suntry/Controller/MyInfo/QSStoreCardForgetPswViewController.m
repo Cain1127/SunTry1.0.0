@@ -75,6 +75,7 @@
     self.phoneField = [[UITextField alloc] initWithFrame:CGRectMake(SIZE_DEFAULT_MARGIN_LEFT_RIGHT, (iOS7 ? 72.0f : 8.0f), SIZE_DEFAULT_MAX_WIDTH, 44.0f)];
     self.phoneField.borderStyle = UITextBorderStyleRoundedRect;
     self.phoneField.placeholder = @"输入您的手机号码";
+    self.phoneField.keyboardType = UIKeyboardTypeNumberPad;
     if (self.userInfo.phone && [self.userInfo.phone length] == 11) {
         
         self.phoneField.text = self.userInfo.phone;
@@ -88,6 +89,7 @@
     self.verticodeField.borderStyle = UITextBorderStyleRoundedRect;
     self.verticodeField.placeholder = @"激活码";
     self.verticodeField.delegate = self;
+    self.verticodeField.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:self.verticodeField];
     
     ///获取激活码按钮

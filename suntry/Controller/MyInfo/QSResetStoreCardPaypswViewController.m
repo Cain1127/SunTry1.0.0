@@ -23,6 +23,8 @@
 
 #import "MBProgressHUD.h"
 
+#import "NSString+Format.h"
+
 @interface QSResetStoreCardPaypswViewController () <UITextFieldDelegate>
 
 @property (nonatomic,strong) UITextField *originalPswInputField;    //!<原密码输入框
@@ -130,6 +132,7 @@
         self.originalPswInputField.placeholder = @"您当前的支付密码";
         self.originalPswInputField.secureTextEntry = YES;
         self.originalPswInputField.delegate = self;
+        self.originalPswInputField.keyboardType = UIKeyboardTypeNumberPad;
         [self.view addSubview:self.originalPswInputField];
         
     }
@@ -140,6 +143,7 @@
     self.pswInputField.placeholder = @"新的支付密码";
     self.pswInputField.secureTextEntry = YES;
     self.pswInputField.delegate = self;
+    self.pswInputField.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:self.pswInputField];
     
     ///确认密码输入框
@@ -148,6 +152,7 @@
     self.confirmField.placeholder = @"再次确认您的支付密码";
     self.confirmField.secureTextEntry = YES;
     self.confirmField.delegate = self;
+    self.confirmField.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:self.confirmField];
     
     ///重置按钮
@@ -224,6 +229,19 @@
     if (nil == newPsw || [newPsw length] <=0) {
         
         self.hud.labelText = @"请输入新的支付密码";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.hud hide:YES afterDelay:1.0f];
+            [self.pswInputField becomeFirstResponder];
+            
+        });
+        return;
+        
+    }
+    
+    if ( ![NSString isPureInt:newPsw] ) {
+        
+        self.hud.labelText = @"请设置纯数字的支付密码！";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             [self.hud hide:YES afterDelay:1.0f];

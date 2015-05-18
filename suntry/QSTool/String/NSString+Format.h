@@ -36,4 +36,13 @@
  */
 + (BOOL) isValidateMobile:(NSString *)mobile;
 
+/**
+ *  判断字符串是否整形数字
+ *
+ *  @param string 传入数字字符串
+ *
+ *  @return YES:整数；NO:非整数
+ */
++ (BOOL)isPureInt:(NSString*)string;
+
 @end

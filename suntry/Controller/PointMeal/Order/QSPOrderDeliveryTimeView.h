@@ -15,6 +15,7 @@ typedef enum
     DeliveryTimeTypeTodayPM = 1,
     DeliveryTimeTypeTomorrowAM,
     DeliveryTimeTypeTomorrowPM,
+    DeliveryTimeTypeOutTime,
 }DeliveryTimeType;
 
 @interface QSPOrderDeliveryTimeView : UIView

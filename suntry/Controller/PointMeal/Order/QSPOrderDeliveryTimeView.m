@@ -35,34 +35,35 @@
         [timeTip setTextColor:[UIColor blackColor]];
         [self addSubview:timeTip];
         
-        NSArray *timeList = [NSArray arrayWithObjects:@"今天午餐",@"今天晚餐",@"明天午餐",@"明天晚餐", nil];
+        NSArray *timeList = [NSArray array];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd 12:00:00"];
         NSString *todayAMDateStr = [dateFormatter stringFromDate:[NSDate date]];
-//        NSString *tomorrowAMDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:24*60*60]];
         [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
         NSDate *todayAMDate = [dateFormatter dateFromString:todayAMDateStr];
-//        NSDate *tomorrowAMDate = [dateFormatter dateFromString:tomorrowAMDateStr];
         
         [dateFormatter setDateFormat:@"yyyy-MM-dd 18:00:00"];
         NSString *todayPMDateStr = [dateFormatter stringFromDate:[NSDate date]];
-//        NSString *tomorrowPMDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:24*60*60]];
         [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
         NSDate *todayPMDate = [dateFormatter dateFromString:todayPMDateStr];
-//        NSDate *tomorrowPMDate = [dateFormatter dateFromString:tomorrowPMDateStr];
 
         NSDate *currentDate = [NSDate date];
         NSComparisonResult amCompareResult = [currentDate compare: todayAMDate];
         NSComparisonResult pmCompareResult = [currentDate compare: todayPMDate];
         if (amCompareResult == NSOrderedAscending) {
             //比12点早
-            timeList = [NSArray arrayWithObjects:@"今天午餐",@"今天晚餐",@"明天午餐",@"明天晚餐", nil];
+//            timeList = [NSArray arrayWithObjects:@"今天午餐",@"今天晚餐",@"明天午餐",@"明天晚餐", nil];
+            timeList = [NSArray arrayWithObjects:@"今天午餐",@"今天晚餐", nil];
+            
         }else if (pmCompareResult == NSOrderedAscending) {
             //比18点早
-            timeList = [NSArray arrayWithObjects:@"今天晚餐",@"明天午餐",@"明天晚餐", nil];
+//            timeList = [NSArray arrayWithObjects:@"今天晚餐",@"明天午餐",@"明天晚餐", nil];
+            timeList = [NSArray arrayWithObjects:@"今天晚餐", nil];
+            
         }else{
-            timeList = [NSArray arrayWithObjects:@"明天午餐",@"明天晚餐", nil];
+//            timeList = [NSArray arrayWithObjects:@"明天午餐",@"明天晚餐", nil];
+            
         }
         
         CGFloat labelWidth = 70;//标题宽度
@@ -116,6 +117,22 @@
         
         CGFloat bottomY = lineButtomView.frame.origin.y+lineButtomView.frame.size.height;
         [self setFrame:CGRectMake(0, 0, SIZE_DEVICE_WIDTH, bottomY)];
+        
+        if ( [timeList count] == 0 ) {
+            
+            self.selectedTimeType = DeliveryTimeTypeOutTime;
+            
+            [timeTip setHidden:YES];
+            
+            QSLabel *outTimeTipLabel = [[QSLabel alloc] initWithFrame:CGRectMake(12, 0, SIZE_DEVICE_WIDTH-24, bottomY)];
+            [outTimeTipLabel setFont:[UIFont boldSystemFontOfSize:ORDER_DELIVERY_VIEW_TITLE_FONT_SIZE]];
+            [outTimeTipLabel setText:@"今天送餐时间已过"];
+            [outTimeTipLabel setTextAlignment:NSTextAlignmentCenter];
+            [outTimeTipLabel setTextColor:[UIColor blackColor]];
+            [self addSubview:outTimeTipLabel];
+            
+        }
+        
     }
     return self;
 }

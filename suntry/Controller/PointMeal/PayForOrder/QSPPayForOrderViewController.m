@@ -157,6 +157,7 @@
     self.payCardPassTextField = [[QSPAddNewAddressTextField alloc] initWithFrame:CGRectMake(foodCountLabel.frame.origin.x, lineView3.frame.origin.y+lineView3.frame.size.height+12, foodCountLabel.frame.size.width, 44)];
     [self.payCardPassTextField setPlaceholder:@"请输入您的储值卡支付密码"];
     [self.payCardPassTextField setDelegate:self];
+    [self.payCardPassTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [self.payCardPassTextField setSecureTextEntry:YES];
     [self.view addSubview:self.payCardPassTextField];
 
